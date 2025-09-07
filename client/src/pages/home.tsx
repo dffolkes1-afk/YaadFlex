@@ -452,6 +452,95 @@ export default function Home() {
           </Card>
         </div>
 
+        {/* ALL JAMAICA BUSINESSES WANT TO JOIN! */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-br from-green-900/95 via-yellow-900/95 to-orange-900/95 border-8 border-green-400/100 relative overflow-hidden min-h-[700px] shadow-2xl shadow-green-500/80" data-testid="all-businesses-jamaica-section">
+            {/* EXPLOSIVE Animated Background */}
+            <div className="absolute inset-0 opacity-30">
+              <div className="absolute top-4 left-4 text-8xl animate-bounce">🏦</div>
+              <div className="absolute top-4 right-4 text-8xl animate-pulse">🏠</div>
+              <div className="absolute bottom-4 left-4 text-8xl animate-bounce delay-300">💰</div>
+              <div className="absolute bottom-4 right-4 text-8xl animate-pulse delay-500">🏢</div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-12xl animate-pulse delay-200">🇯🇲</div>
+            </div>
+            
+            <CardHeader className="relative z-10 pb-8">
+              <CardTitle className="text-center space-y-6">
+                <div className="text-4xl md:text-8xl font-black text-green-400 animate-pulse leading-tight">
+                  🏢 ALL JAMAICA BUSINESSES! 🏢
+                </div>
+                <div className="text-2xl md:text-6xl font-black text-yellow-300 animate-bounce leading-tight">
+                  EVERYBODY WANTS ON YARDFLEX!
+                </div>
+                <div className="text-xl md:text-4xl font-black text-white animate-pulse">
+                  INSURANCE • REAL ESTATE • LOANS • EVERYONE!
+                </div>
+                <div className="text-lg md:text-3xl font-black text-orange-400 animate-bounce">
+                  🏦 TURN YOUR BUSINESS INTO AN APP! 🏦
+                </div>
+              </CardTitle>
+            </CardHeader>
+            
+            <CardContent className="relative z-10 space-y-6">
+              <div className="bg-gradient-to-r from-green-600/50 to-yellow-600/50 border-2 border-green-400/70 rounded-2xl p-8 text-center shadow-2xl shadow-green-500/30">
+                <h3 className="text-2xl md:text-5xl font-black text-green-300 mb-6 animate-pulse leading-tight">
+                  🎯 EVERYONE JUMPS ON BOARD! 🎯
+                </h3>
+                <p className="text-white text-lg md:text-2xl mb-8 font-bold leading-relaxed">
+                  <strong className="text-yellow-400">INSURANCE COMPANIES?</strong> → Want YardFlex!<br/>
+                  <strong className="text-blue-400">REAL ESTATE?</strong> → Love YardFlex!<br/>
+                  <strong className="text-green-400">LOAN SHARKS?</strong> → Need YardFlex!<br/>
+                  <strong className="text-purple-400">ALL BUSINESSES?</strong> → Jump on YardFlex!<br/>
+                  <strong className="text-red-400 text-xl md:text-3xl animate-bounce">🏢 EVERYONE LOVES WHAT THEY GET! 🏢</strong>
+                </p>
+                
+                {/* Business Categories Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                  <div className="bg-blue-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-blue-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-bounce">🏦</div>
+                    <div className="text-lg md:text-xl font-black text-blue-300">INSURANCE</div>
+                    <div className="text-sm text-blue-200">Digital policies</div>
+                  </div>
+                  <div className="bg-green-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-green-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-pulse">🏠</div>
+                    <div className="text-lg md:text-xl font-black text-green-300">REAL ESTATE</div>
+                    <div className="text-sm text-green-200">Property app</div>
+                  </div>
+                  <div className="bg-yellow-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-yellow-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-bounce delay-200">💰</div>
+                    <div className="text-lg md:text-xl font-black text-yellow-300">LOANS</div>
+                    <div className="text-sm text-yellow-200">Digital lending</div>
+                  </div>
+                  <div className="bg-purple-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-purple-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-pulse delay-300">🏢</div>
+                    <div className="text-lg md:text-xl font-black text-purple-300">ALL BUSINESS</div>
+                    <div className="text-sm text-purple-200">Everything digital</div>
+                  </div>
+                </div>
+                
+                <div className="bg-gradient-to-r from-orange-600/50 to-red-600/50 border-4 border-orange-400/80 rounded-2xl p-6 mb-8 animate-pulse">
+                  <h4 className="text-2xl md:text-4xl font-black text-orange-300 mb-4">🇯🇲 ALL JAMAICA ON YARDFLEX! 🇯🇲</h4>
+                  <div className="text-white text-lg md:text-xl font-bold">
+                    <strong>EVERY BUSINESS WANTS TO BE HERE!</strong><br/>
+                    Turn your business into an app! Everyone loves what they get!<br/>
+                    <span className="text-yellow-400">🌟 ONE PLATFORM, ALL BUSINESSES! 🌟</span>
+                  </div>
+                </div>
+                
+                <div className="text-center">
+                  <Button 
+                    onClick={() => setLocation('/business-signup')}
+                    className="bg-gradient-to-r from-green-600 to-yellow-600 hover:from-green-700 hover:to-yellow-700 text-white text-3xl px-12 py-6 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-green-400/80"
+                    data-testid="button-join-yardflex-business"
+                  >
+                    🏢 JOIN YARDFLEX NOW! 🏢
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* B2B Wholesale & Dropshipping CTA */}
         <div className="mb-8">
           <Card className="bg-gradient-to-r from-green-900/30 to-yellow-900/30 border-yellow-500/30" data-testid="b2b-cta-card">
