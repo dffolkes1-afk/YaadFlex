@@ -17,6 +17,10 @@ import {
   serviceQuotes,
   toolEquipment,
   serviceReviews,
+  pricingRules,
+  toolRentalRates,
+  priceCalculations,
+  locationZones,
   type User,
   type UpsertUser,
   type Transaction,
@@ -53,9 +57,17 @@ import {
   type InsertToolEquipment,
   type ServiceReview,
   type InsertServiceReview,
+  type PricingRule,
+  type InsertPricingRule,
+  type ToolRentalRate,
+  type InsertToolRentalRate,
+  type PriceCalculation,
+  type InsertPriceCalculation,
+  type LocationZone,
+  type InsertLocationZone,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc, and, sql } from "drizzle-orm";
 
 // Interface for storage operations
 export interface IStorage {
@@ -135,6 +147,16 @@ export interface IStorage {
   createToolEquipment(tool: InsertToolEquipment): Promise<ToolEquipment>;
   getServiceReviews(providerId?: string): Promise<ServiceReview[]>;
   createServiceReview(review: InsertServiceReview): Promise<ServiceReview>;
+  
+  // Intelligent Pricing Engine operations
+  calculateServicePrice(serviceType: string, measurements: any, location: string, complexity?: string): Promise<PriceCalculation>;
+  getPricingRules(serviceType?: string): Promise<PricingRule[]>;
+  createPricingRule(rule: InsertPricingRule): Promise<PricingRule>;
+  getToolRentalRates(serviceType?: string): Promise<ToolRentalRate[]>;
+  createToolRentalRate(rate: InsertToolRentalRate): Promise<ToolRentalRate>;
+  getLocationZones(): Promise<LocationZone[]>;
+  createLocationZone(zone: InsertLocationZone): Promise<LocationZone>;
+  getPriceCalculation(id: string): Promise<PriceCalculation | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -731,6 +753,211 @@ export class DatabaseStorage implements IStorage {
       .values(reviewData)
       .returning();
     return review;
+  }
+
+  // Intelligent Pricing Engine operations
+  async calculateServicePrice(
+    serviceType: string, 
+    measurements: any, 
+    location: string, 
+    complexity: string = "standard"
+  ): Promise<PriceCalculation> {
+    // Get pricing rule for service type
+    const [pricingRule] = await db
+      .select()
+      .from(pricingRules)
+      .where(and(
+        eq(pricingRules.serviceType, serviceType),
+        eq(pricingRules.isActive, true)
+      ));
+
+    if (!pricingRule) {
+      throw new Error(`No pricing rule found for service type: ${serviceType}`);
+    }
+
+    // Calculate base work area/units
+    let units = 0;
+    if (pricingRule.unit === "square_foot") {
+      units = (measurements.length || 10) * (measurements.width || 10);
+    } else if (pricingRule.unit === "hour") {
+      units = measurements.estimatedHours || 4;
+    } else if (pricingRule.unit === "room") {
+      units = measurements.roomCount || 1;
+    }
+
+    // Calculate base work cost
+    const baseRate = parseFloat(pricingRule.baseRatePerUnit);
+    const baseWorkCost = units * baseRate;
+
+    // Calculate cleanup cost (often forgotten by workers!)
+    const cleanupRate = parseFloat(pricingRule.cleanupRatePerUnit || "0");
+    const cleanupCost = units * cleanupRate;
+
+    // Get location multiplier
+    const [locationZone] = await db
+      .select()
+      .from(locationZones)
+      .where(eq(locationZones.name, location || 'Kingston Urban'));
+    
+    const locationMultiplier = locationZone ? parseFloat(locationZone.priceMultiplier) : 1.0;
+    const locationAdjustment = (baseWorkCost + cleanupCost) * (locationMultiplier - 1.0);
+
+    // Apply complexity factor
+    const complexityFactors = pricingRule.complexityFactors as any || { simple: 1.0, standard: 1.2, complex: 1.5 };
+    const complexityMultiplier = complexityFactors[complexity] || 1.2;
+    const complexityAdjustment = baseWorkCost * (complexityMultiplier - 1.0);
+
+    // Calculate tool rental costs
+    const toolRentalCosts = await this.calculateToolRentalCosts(serviceType, measurements.estimatedDays || 1);
+
+    // Calculate totals
+    const totalBeforeTax = baseWorkCost + cleanupCost + locationAdjustment + complexityAdjustment + toolRentalCosts;
+    const taxRate = 0.15; // 15% GCT for Jamaica
+    const taxAmount = totalBeforeTax * taxRate;
+    const finalTotal = totalBeforeTax + taxAmount;
+
+    // Create detailed breakdown for transparency
+    const breakdown = {
+      baseWork: {
+        description: `${serviceType} work (${units} ${pricingRule.unit})`,
+        rate: baseRate,
+        units: units,
+        cost: baseWorkCost
+      },
+      cleanup: {
+        description: `Cleanup and site preparation`,
+        rate: cleanupRate,
+        units: units,
+        cost: cleanupCost
+      },
+      location: {
+        description: `${location} area adjustment`,
+        multiplier: locationMultiplier,
+        cost: locationAdjustment
+      },
+      complexity: {
+        description: `${complexity} complexity factor`,
+        multiplier: complexityMultiplier,
+        cost: complexityAdjustment
+      },
+      tools: {
+        description: "Tool rental (if needed)",
+        cost: toolRentalCosts
+      },
+      tax: {
+        description: "GCT (15%)",
+        rate: taxRate,
+        cost: taxAmount
+      }
+    };
+
+    // Save calculation to database
+    const calculationData: InsertPriceCalculation = {
+      serviceType,
+      measurements,
+      baseWorkCost: baseWorkCost.toString(),
+      cleanupCost: cleanupCost.toString(),
+      toolRentalCost: toolRentalCosts.toString(),
+      locationAdjustment: locationAdjustment.toString(),
+      complexityAdjustment: complexityAdjustment.toString(),
+      totalBeforeTax: totalBeforeTax.toString(),
+      taxAmount: taxAmount.toString(),
+      finalTotal: finalTotal.toString(),
+      breakdown,
+    };
+
+    const [calculation] = await db
+      .insert(priceCalculations)
+      .values(calculationData)
+      .returning();
+
+    return calculation;
+  }
+
+  private async calculateToolRentalCosts(serviceType: string, days: number): Promise<number> {
+    const tools = await db
+      .select()
+      .from(toolRentalRates)
+      .where(and(
+        eq(toolRentalRates.isActive, true),
+        sql`${serviceType} = ANY(service_types)`
+      ));
+
+    let totalCost = 0;
+    for (const tool of tools) {
+      const dailyRate = parseFloat(tool.dailyRate);
+      totalCost += dailyRate * days;
+    }
+
+    return totalCost;
+  }
+
+  async getPricingRules(serviceType?: string): Promise<PricingRule[]> {
+    const query = db.select().from(pricingRules);
+    
+    if (serviceType) {
+      return await query
+        .where(and(
+          eq(pricingRules.serviceType, serviceType),
+          eq(pricingRules.isActive, true)
+        ));
+    }
+    
+    return await query.where(eq(pricingRules.isActive, true));
+  }
+
+  async createPricingRule(ruleData: InsertPricingRule): Promise<PricingRule> {
+    const [rule] = await db
+      .insert(pricingRules)
+      .values(ruleData)
+      .returning();
+    return rule;
+  }
+
+  async getToolRentalRates(serviceType?: string): Promise<ToolRentalRate[]> {
+    const query = db.select().from(toolRentalRates);
+    
+    if (serviceType) {
+      return await query
+        .where(and(
+          eq(toolRentalRates.isActive, true),
+          sql`${serviceType} = ANY(service_types)`
+        ));
+    }
+    
+    return await query.where(eq(toolRentalRates.isActive, true));
+  }
+
+  async createToolRentalRate(rateData: InsertToolRentalRate): Promise<ToolRentalRate> {
+    const [rate] = await db
+      .insert(toolRentalRates)
+      .values(rateData)
+      .returning();
+    return rate;
+  }
+
+  async getLocationZones(): Promise<LocationZone[]> {
+    return await db
+      .select()
+      .from(locationZones)
+      .where(eq(locationZones.isActive, true))
+      .orderBy(locationZones.name);
+  }
+
+  async createLocationZone(zoneData: InsertLocationZone): Promise<LocationZone> {
+    const [zone] = await db
+      .insert(locationZones)
+      .values(zoneData)
+      .returning();
+    return zone;
+  }
+
+  async getPriceCalculation(id: string): Promise<PriceCalculation | undefined> {
+    const [calculation] = await db
+      .select()
+      .from(priceCalculations)
+      .where(eq(priceCalculations.id, id));
+    return calculation;
   }
 }
 

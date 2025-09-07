@@ -580,7 +580,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/services/providers', isAuthenticated, async (req: any, res) => {
     try {
       const validatedData = insertServiceProviderSchema.parse(req.body);
-      validatedData.userId = req.user.claims.sub; // Set current user as provider
+      (validatedData as any).userId = req.user.claims.sub; // Set current user as provider
       const provider = await storage.createServiceProvider(validatedData);
       res.json(provider);
     } catch (error) {
@@ -618,7 +618,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/services/requests', isAuthenticated, async (req: any, res) => {
     try {
       const validatedData = insertServiceRequestSchema.parse(req.body);
-      validatedData.customerId = req.user.claims.sub; // Set current user as customer
+      (validatedData as any).customerId = req.user.claims.sub; // Set current user as customer
       const request = await storage.createServiceRequest(validatedData);
       res.json(request);
     } catch (error) {
@@ -690,7 +690,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/services/tools', isAuthenticated, async (req: any, res) => {
     try {
       const validatedData = insertToolEquipmentSchema.parse(req.body);
-      validatedData.ownerId = req.user.claims.sub; // Set current user as owner
+      (validatedData as any).ownerId = req.user.claims.sub; // Set current user as owner
       const tool = await storage.createToolEquipment(validatedData);
       res.json(tool);
     } catch (error) {
@@ -714,7 +714,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/services/reviews', isAuthenticated, async (req: any, res) => {
     try {
       const validatedData = insertServiceReviewSchema.parse(req.body);
-      validatedData.reviewerId = req.user.claims.sub; // Set current user as reviewer
+      (validatedData as any).reviewerId = req.user.claims.sub; // Set current user as reviewer
       const review = await storage.createServiceReview(validatedData);
       res.json(review);
     } catch (error) {

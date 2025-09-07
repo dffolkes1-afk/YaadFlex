@@ -473,6 +473,97 @@ export type InsertToolEquipment = typeof toolEquipment.$inferInsert;
 export type ServiceReview = typeof serviceReviews.$inferSelect;
 export type InsertServiceReview = typeof serviceReviews.$inferInsert;
 
+// Intelligent Pricing Engine Tables
+export const pricingRules = pgTable("pricing_rules", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  categoryId: varchar("category_id").notNull().references(() => serviceCategories.id),
+  serviceType: varchar("service_type").notNull(), // "drywall", "painting", "cleaning"
+  baseRatePerUnit: decimal("base_rate_per_unit", { precision: 10, scale: 2 }).notNull(),
+  unit: varchar("unit").notNull(), // "square_foot", "hour", "room"
+  cleanupRatePerUnit: decimal("cleanup_rate_per_unit", { precision: 8, scale: 2 }).default("0"),
+  minimumCharge: decimal("minimum_charge", { precision: 8, scale: 2 }),
+  locationMultipliers: jsonb("location_multipliers"), // {"urban": 1.2, "suburban": 1.0, "rural": 0.8}
+  complexityFactors: jsonb("complexity_factors"), // {"simple": 1.0, "standard": 1.2, "complex": 1.5}
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const toolRentalRates = pgTable("tool_rental_rates", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  toolName: varchar("tool_name").notNull(),
+  category: varchar("category").notNull(), // "power_tools", "hand_tools", "equipment"
+  dailyRate: decimal("daily_rate", { precision: 8, scale: 2 }).notNull(),
+  weeklyRate: decimal("weekly_rate", { precision: 8, scale: 2 }),
+  depositRequired: decimal("deposit_required", { precision: 8, scale: 2 }),
+  serviceTypes: text("service_types").array(), // Which services typically need this tool
+  availability: jsonb("availability"),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const priceCalculations = pgTable("price_calculations", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  requestId: varchar("request_id").references(() => serviceRequests.id),
+  serviceType: varchar("service_type").notNull(),
+  measurements: jsonb("measurements"), // {"length": 10, "width": 12, "height": 9}
+  baseWorkCost: decimal("base_work_cost", { precision: 10, scale: 2 }).notNull(),
+  cleanupCost: decimal("cleanup_cost", { precision: 8, scale: 2 }).default("0"),
+  toolRentalCost: decimal("tool_rental_cost", { precision: 8, scale: 2 }).default("0"),
+  locationAdjustment: decimal("location_adjustment", { precision: 8, scale: 2 }).default("0"),
+  complexityAdjustment: decimal("complexity_adjustment", { precision: 8, scale: 2 }).default("0"),
+  materialsCost: decimal("materials_cost", { precision: 10, scale: 2 }).default("0"),
+  totalBeforeTax: decimal("total_before_tax", { precision: 10, scale: 2 }).notNull(),
+  taxAmount: decimal("tax_amount", { precision: 8, scale: 2 }).default("0"),
+  finalTotal: decimal("final_total", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency").default("KWD"),
+  breakdown: jsonb("breakdown"), // Detailed cost breakdown for transparency
+  calculatedAt: timestamp("calculated_at").defaultNow(),
+});
+
+export const locationZones = pgTable("location_zones", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name").notNull(), // "Kingston Urban", "Spanish Town", etc.
+  zoneType: varchar("zone_type").notNull(), // "urban", "suburban", "rural"
+  country: varchar("country").default("Jamaica"),
+  priceMultiplier: decimal("price_multiplier", { precision: 4, scale: 2 }).default("1.0"),
+  averageIncome: decimal("average_income", { precision: 10, scale: 2 }),
+  demandLevel: varchar("demand_level").default("medium"), // "low", "medium", "high"
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Relations for Pricing Engine
+export const pricingRulesRelations = relations(pricingRules, ({ one }) => ({
+  category: one(serviceCategories, {
+    fields: [pricingRules.categoryId],
+    references: [serviceCategories.id],
+  }),
+}));
+
+export const priceCalculationsRelations = relations(priceCalculations, ({ one }) => ({
+  request: one(serviceRequests, {
+    fields: [priceCalculations.requestId],
+    references: [serviceRequests.id],
+  }),
+}));
+
+// Insert schemas using drizzle-zod
+export const insertPricingRuleSchema = createInsertSchema(pricingRules);
+export const insertToolRentalRateSchema = createInsertSchema(toolRentalRates);
+export const insertPriceCalculationSchema = createInsertSchema(priceCalculations);
+export const insertLocationZoneSchema = createInsertSchema(locationZones);
+
+// Types
+export type PricingRule = typeof pricingRules.$inferSelect;
+export type InsertPricingRule = typeof pricingRules.$inferInsert;
+export type ToolRentalRate = typeof toolRentalRates.$inferSelect;
+export type InsertToolRentalRate = typeof toolRentalRates.$inferInsert;
+export type PriceCalculation = typeof priceCalculations.$inferSelect;
+export type InsertPriceCalculation = typeof priceCalculations.$inferInsert;
+export type LocationZone = typeof locationZones.$inferSelect;
+export type InsertLocationZone = typeof locationZones.$inferInsert;
+
 export const insertTransactionSchema = createInsertSchema(transactions).omit({
   id: true,
   createdAt: true,
