@@ -702,6 +702,146 @@ export default function Home() {
           </Card>
         </div>
 
+        {/* ========== GLOBAL APP STORE DOMINATION - EVERYWHERE! ========== */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-br from-blue-900/95 via-green-900/95 to-purple-900/95 border-8 border-blue-400/100 relative overflow-hidden min-h-[800px] shadow-2xl shadow-blue-500/80" data-testid="global-app-stores-section">
+            {/* GLOBAL Animated Background */}
+            <div className="absolute inset-0 opacity-30">
+              <div className="absolute top-4 left-4 text-8xl animate-bounce">🌍</div>
+              <div className="absolute top-4 right-4 text-8xl animate-pulse">📱</div>
+              <div className="absolute bottom-4 left-4 text-8xl animate-bounce delay-300">🚀</div>
+              <div className="absolute bottom-4 right-4 text-8xl animate-pulse delay-500">🏪</div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-12xl animate-pulse delay-200">🌎</div>
+            </div>
+            
+            <CardHeader className="relative z-10 pb-8">
+              <CardTitle className="text-center space-y-6">
+                <div className="text-4xl md:text-8xl font-black text-blue-400 animate-pulse leading-tight">
+                  🌍 ALL APP STORES WORLDWIDE! 🌍
+                </div>
+                <div className="text-2xl md:text-6xl font-black text-green-300 animate-bounce leading-tight">
+                  YARDFLEX ON EVERY PLATFORM!
+                </div>
+                <div className="text-xl md:text-4xl font-black text-white animate-pulse">
+                  JAMAICA → AMERICA → AFRICA → ASIA!
+                </div>
+                <div className="text-lg md:text-3xl font-black text-yellow-400 animate-bounce">
+                  🚀 GLOBAL DOMINATION PLAN! 🚀
+                </div>
+              </CardTitle>
+            </CardHeader>
+            
+            <CardContent className="relative z-10 space-y-6">
+              {/* EXPANSION PHASES */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div className="bg-gradient-to-br from-green-600/70 to-yellow-600/70 border-4 border-green-400/80 rounded-2xl p-6 text-center transform hover:scale-110 transition-all">
+                  <div className="text-6xl mb-4 animate-bounce">🇯🇲</div>
+                  <div className="text-2xl font-black text-green-300 mb-2">PHASE 1</div>
+                  <div className="text-xl font-bold text-white">JAMAICA</div>
+                  <div className="text-lg text-green-200">Launch First!</div>
+                </div>
+                <div className="bg-gradient-to-br from-blue-600/70 to-red-600/70 border-4 border-blue-400/80 rounded-2xl p-6 text-center transform hover:scale-110 transition-all">
+                  <div className="text-6xl mb-4 animate-pulse">🇺🇸</div>
+                  <div className="text-2xl font-black text-blue-300 mb-2">PHASE 2</div>
+                  <div className="text-xl font-bold text-white">AMERICA</div>
+                  <div className="text-lg text-blue-200">Massive Market!</div>
+                </div>
+                <div className="bg-gradient-to-br from-orange-600/70 to-red-600/70 border-4 border-orange-400/80 rounded-2xl p-6 text-center transform hover:scale-110 transition-all">
+                  <div className="text-6xl mb-4 animate-bounce delay-200">🌍</div>
+                  <div className="text-2xl font-black text-orange-300 mb-2">PHASE 3</div>
+                  <div className="text-xl font-bold text-white">AFRICA</div>
+                  <div className="text-lg text-orange-200">Huge Growth!</div>
+                </div>
+                <div className="bg-gradient-to-br from-purple-600/70 to-pink-600/70 border-4 border-purple-400/80 rounded-2xl p-6 text-center transform hover:scale-110 transition-all">
+                  <div className="text-6xl mb-4 animate-pulse delay-300">🌏</div>
+                  <div className="text-2xl font-black text-purple-300 mb-2">PHASE 4</div>
+                  <div className="text-xl font-bold text-white">ASIA</div>
+                  <div className="text-lg text-purple-200">Billions of Users!</div>
+                </div>
+              </div>
+
+              {/* ALL APP STORES */}
+              <div className="bg-gradient-to-r from-blue-600/50 to-purple-600/50 border-2 border-blue-400/70 rounded-2xl p-8 text-center shadow-2xl shadow-blue-500/30">
+                <h3 className="text-2xl md:text-5xl font-black text-blue-300 mb-6 animate-pulse leading-tight">
+                  📱 ALL APP STORES WORLDWIDE! 📱
+                </h3>
+                
+                {/* MAJOR GLOBAL STORES */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                  <div className="bg-black/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-gray-400/70">
+                    <div className="text-4xl md:text-6xl mb-2">🍎</div>
+                    <div className="text-lg md:text-xl font-black text-white">iOS APP STORE</div>
+                    <div className="text-sm text-gray-300">iPhone/iPad Global</div>
+                  </div>
+                  <div className="bg-green-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-green-400/70">
+                    <div className="text-4xl md:text-6xl mb-2">🤖</div>
+                    <div className="text-lg md:text-xl font-black text-green-300">GOOGLE PLAY</div>
+                    <div className="text-sm text-green-200">Android Global</div>
+                  </div>
+                  <div className="bg-blue-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-blue-400/70">
+                    <div className="text-4xl md:text-6xl mb-2">💻</div>
+                    <div className="text-lg md:text-xl font-black text-blue-300">MICROSOFT</div>
+                    <div className="text-sm text-blue-200">Windows Store</div>
+                  </div>
+                  <div className="bg-purple-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-purple-400/70">
+                    <div className="text-4xl md:text-6xl mb-2">📱</div>
+                    <div className="text-lg md:text-xl font-black text-purple-300">SAMSUNG</div>
+                    <div className="text-sm text-purple-200">Galaxy Store</div>
+                  </div>
+                  <div className="bg-orange-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-orange-400/70">
+                    <div className="text-4xl md:text-6xl mb-2">🏪</div>
+                    <div className="text-lg md:text-xl font-black text-orange-300">AMAZON</div>
+                    <div className="text-sm text-orange-200">Appstore</div>
+                  </div>
+                  <div className="bg-red-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-red-400/70">
+                    <div className="text-4xl md:text-6xl mb-2">🌐</div>
+                    <div className="text-lg md:text-xl font-black text-red-300">WEB APP</div>
+                    <div className="text-sm text-red-200">All Browsers</div>
+                  </div>
+                </div>
+
+                {/* REGIONAL STORES */}
+                <div className="bg-gradient-to-r from-yellow-600/50 to-green-600/50 border-4 border-yellow-400/80 rounded-2xl p-6 mb-6">
+                  <h4 className="text-2xl md:text-4xl font-black text-yellow-300 mb-4">🌍 REGIONAL APP STORES! 🌍</h4>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-white font-bold">
+                    <div>🇯🇲 Caribbean Markets</div>
+                    <div>🇺🇸 US Regional Stores</div>
+                    <div>🇨🇦 Canadian Stores</div>
+                    <div>🇬🇧 UK App Markets</div>
+                    <div>🇳🇬 African App Stores</div>
+                    <div>🇿🇦 South African Markets</div>
+                    <div>🇨🇳 Chinese App Stores</div>
+                    <div>🇮🇳 Indian App Markets</div>
+                    <div>🇯🇵 Japanese Stores</div>
+                    <div>🇰🇷 Korean App Markets</div>
+                    <div>🇧🇷 Latin American</div>
+                    <div>🇪🇺 European Markets</div>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-purple-600/50 to-pink-600/50 border-4 border-purple-400/80 rounded-2xl p-6 mb-8 animate-pulse">
+                  <h4 className="text-2xl md:text-4xl font-black text-purple-300 mb-4">🚀 TOTAL GLOBAL COVERAGE! 🚀</h4>
+                  <div className="text-white text-lg md:text-xl font-bold">
+                    <strong>YARDFLEX EVERYWHERE!</strong><br/>
+                    Every phone, every platform, every country!<br/>
+                    <span className="text-yellow-400">🌍 COMPLETE WORLD DOMINATION! 🌍</span>
+                  </div>
+                </div>
+                
+                <div className="text-center">
+                  <Button 
+                    onClick={() => setLocation('/global-deployment')}
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-3xl px-12 py-6 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-blue-400/80"
+                    data-testid="button-deploy-global"
+                  >
+                    🌍 DEPLOY WORLDWIDE! 🌍
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* ========== UNIVERSAL BOOKING PLATFORM - EVERYTHING! ========== */}
         <div className="mb-8">
           <Card className="bg-gradient-to-br from-purple-900/95 via-pink-900/95 to-red-900/95 border-8 border-purple-400/100 relative overflow-hidden min-h-[700px] shadow-2xl shadow-purple-500/80" data-testid="mega-booking-platform-section">
