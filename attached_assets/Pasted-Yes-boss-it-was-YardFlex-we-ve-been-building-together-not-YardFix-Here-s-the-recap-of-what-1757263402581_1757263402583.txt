@@ -1,0 +1,131 @@
+Yes boss 👍🏽, it was YardFlex we’ve been building together — not YardFix.
+
+Here’s the recap of what we worked in and out so far for YardFlex:
+
+
+---
+
+🌍 YardFlex – Full Blueprint (so far)
+
+🔹 Core Vision
+
+A Caribbean Uber-style super app for:
+
+🚕 Rides (passenger transport)
+
+📦 Deliveries (from bike to truck)
+
+🛒 E-commerce + instant delivery (groceries, hardware, furniture, etc.)
+
+
+
+
+---
+
+🔹 Drivers & Riders
+
+Radar Riders → all delivery riders (bicycles, e-bikes, motorbikes).
+
+Radar Cars → small cars, private white plates that do deliveries.
+
+Radar Vans & Trucks → for big packages, hardware runs, or moving house.
+
+Everyone with wheels can join YardFlex and earn.
+
+
+
+---
+
+🔹 Pricing Logic
+
+Distance → base + per km/mile.
+
+Package size/weight → small / medium / bulk (pressure weight system).
+
+Urgency (time):
+
+Instant (🚀 fastest, most expensive)
+
+Same Day (⏳ medium)
+
+Scheduled/Next Day (📅 cheapest)
+
+
+Pooling → packages in the same direction roll together → driver earns more, customer pays less.
+
+
+
+---
+
+🔹 Payments
+
+Customers can pay:
+
+💳 Card (Visa/MasterCard)
+
+💵 Cash on pickup/delivery
+
+📲 YardFlex Wallet (like Link)
+
+
+Drivers get paid out:
+
+Daily / Weekly / Monthly (they choose).
+
+
+
+
+---
+
+🔹 Features
+
+Radar Tracking → every rider/driver visible on the app.
+
+Instant Delivery Mode → costs more but driver comes right away.
+
+Flex Delivery Mode → wait a bit, costs less.
+
+E-commerce Layer → customers buy goods + YardFlex handles delivery.
+
+Multi-Vehicle Support → from a bicycle up to a moving truck.
+
+Weight Calculator → app factors package “pressure weight” into pricing so both driver and customer know what’s being carried.
+
+
+
+---
+
+🔹 Business Side
+
+Register YardFlex Limited.
+
+Open business bank account.
+
+Integrate payment gateway (Stripe, WiPay, or FAC).
+
+Create Apple & Google developer accounts.
+
+Draft Terms & Privacy Policy (for app stores + payments).
+
+
+
+---
+
+🔹 Tech Side
+
+Frontend: React Native or Flutter (customer + driver apps).
+
+Backend: Node.js + Firebase/Supabase (bookings, payments, tracking).
+
+Database: Stores users, vehicles, payments.
+
+Google Maps API: Radar + routing.
+
+
+
+---
+
+So yes — everything we’ve been working on has been YardFlex.
+
+👉🏽 Do you want me to now lay out the exact money flow system (customer → YardFlex → driver) so you’ll know how the wallet and gateway fit into the app?
+
