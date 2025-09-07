@@ -13,6 +13,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import globalHeroImage from '@assets/generated_images/CEO_touching_global_world_silhouette_ad066b65.png';
 import yardFlexLogo from '@assets/generated_images/YardFlex_global_connectivity_logo_d834a244.png';
+import rocketToMoonImage from '@assets/generated_images/Jamaica_rocket_to_moon_launch_d8e2fc61.png';
+import rocketLogoImage from '@assets/generated_images/Stylized_Jamaica_moon_rocket_400418f0.png';
 
 type Transaction = {
   id: string;
@@ -343,10 +345,10 @@ export default function Home() {
                 <span className="text-green-500 text-shadow-lg">FLEX</span>
               </h1>
               <p className="text-xl md:text-2xl font-semibold mb-2" data-testid="text-hero-subtitle">
-                🇯🇲 Connecting Jamaica to the World 🌍
+                🇯🇲 TAKING JAMAICA TO THE MOON 🚀🌙
               </p>
               <p className="text-lg md:text-xl" data-testid="text-hero-description">
-                One App. Endless Opportunities. Global Reach.
+                One App. Infinite Possibilities. Universal Success.
               </p>
             </div>
           </div>
@@ -391,6 +393,65 @@ export default function Home() {
       </header>
 
       <div className="container mx-auto px-6 py-8">
+        {/* ROCKET TO THE MOON - JAMAICA'S SPACE MISSION */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-r from-purple-900/30 via-blue-900/30 to-yellow-900/30 border-purple-500/30 relative overflow-hidden" data-testid="moon-mission-card">
+            {/* Background Rocket Image */}
+            <div className="absolute inset-0 opacity-20">
+              <img 
+                src={rocketToMoonImage} 
+                alt="Jamaica Rocket to Moon" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            
+            <CardHeader className="relative z-10">
+              <CardTitle className="flex items-center space-x-3 text-purple-300">
+                <img 
+                  src={rocketLogoImage} 
+                  alt="Rocket Logo" 
+                  className="w-12 h-12"
+                />
+                <span className="text-2xl font-black">🚀 JAMAICA TO THE MOON MISSION 🌙</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="relative z-10">
+              <div className="text-center">
+                <h3 className="text-3xl font-black text-yellow-400 mb-4 animate-pulse">
+                  🇯🇲 LAUNCH SEQUENCE INITIATED 🇯🇲
+                </h3>
+                <p className="text-white mb-4 text-lg">
+                  <strong>YardFlex isn't just reaching for the stars - we're taking Jamaica TO THE MOON!</strong><br/>
+                  Every connection, every opportunity, every success launches us higher into the universe of possibilities.
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                  <div className="text-center">
+                    <div className="text-3xl">🌍</div>
+                    <div className="text-sm text-purple-300">Earth Launch</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl">🛰️</div>
+                    <div className="text-sm text-blue-300">Orbit Phase</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl">🚀</div>
+                    <div className="text-sm text-yellow-300">Moon Transit</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl">🌙</div>
+                    <div className="text-sm text-green-300">Moon Landing</div>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-sm text-purple-400 font-semibold animate-bounce">
+                    🚀 T-MINUS ZERO: YARDFLEX MISSION TO THE MOON 🚀
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* B2B Wholesale & Dropshipping CTA */}
         <div className="mb-8">
           <Card className="bg-gradient-to-r from-green-900/30 to-yellow-900/30 border-yellow-500/30" data-testid="b2b-cta-card">
@@ -408,7 +469,7 @@ export default function Home() {
                     <strong>Dropshipping:</strong> Start selling globally with $0 inventory risk.
                   </p>
                   <div className="text-sm text-yellow-400 font-semibold">
-                    🚀 FROM JAMAICA TO THE WORLD
+                    🚀 FROM JAMAICA TO THE MOON
                   </div>
                 </div>
                 <div className="flex space-x-3">
