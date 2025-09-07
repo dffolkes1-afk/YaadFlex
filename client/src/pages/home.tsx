@@ -220,7 +220,7 @@ export default function Home() {
   });
 
   // Fetch security logs
-  const { data: securityLogs, isLoading: logsLoading } = useQuery({
+  const { data: securityLogs, isLoading: logsLoading } = useQuery<any[]>({
     queryKey: ['/api/security/logs'],
     retry: false,
   });
