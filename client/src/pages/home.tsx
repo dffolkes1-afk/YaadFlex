@@ -842,6 +842,140 @@ export default function Home() {
           </Card>
         </div>
 
+        {/* ========== AI ASSISTANT - HANDLES EVERYTHING INSTANTLY! ========== */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-br from-cyan-900/95 via-blue-900/95 to-purple-900/95 border-8 border-cyan-400/100 relative overflow-hidden min-h-[700px] shadow-2xl shadow-cyan-500/80" data-testid="ai-assistant-section">
+            {/* AI Animated Background */}
+            <div className="absolute inset-0 opacity-30">
+              <div className="absolute top-4 left-4 text-8xl animate-bounce">🤖</div>
+              <div className="absolute top-4 right-4 text-8xl animate-pulse">✨</div>
+              <div className="absolute bottom-4 left-4 text-8xl animate-bounce delay-300">🎯</div>
+              <div className="absolute bottom-4 right-4 text-8xl animate-pulse delay-500">🚀</div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-12xl animate-pulse delay-200">🧠</div>
+            </div>
+            
+            <CardHeader className="relative z-10 pb-8">
+              <CardTitle className="text-center space-y-6">
+                <div className="text-4xl md:text-8xl font-black text-cyan-400 animate-pulse leading-tight">
+                  🤖 AI ASSISTANT FOR EVERYTHING! 🤖
+                </div>
+                <div className="text-2xl md:text-6xl font-black text-blue-300 animate-bounce leading-tight">
+                  ANYTHING YOU WANT - INSTANT!
+                </div>
+                <div className="text-xl md:text-4xl font-black text-white animate-pulse">
+                  POOLS! TOOLS! PARTIES! TAXIS! ANYTHING!
+                </div>
+                <div className="text-lg md:text-3xl font-black text-yellow-400 animate-bounce">
+                  🧠 NO STRESS - EVERYTHING POPS UP! 🧠
+                </div>
+              </CardTitle>
+            </CardHeader>
+            
+            <CardContent className="relative z-10 space-y-6">
+              <div className="bg-gradient-to-r from-cyan-600/50 to-blue-600/50 border-2 border-cyan-400/70 rounded-2xl p-8 text-center shadow-2xl shadow-cyan-500/30">
+                <h3 className="text-2xl md:text-5xl font-black text-cyan-300 mb-6 animate-pulse leading-tight">
+                  🎯 INTELLIGENT SYSTEM - HANDLES ANYTHING! 🎯
+                </h3>
+                <p className="text-white text-lg md:text-2xl mb-8 font-bold leading-relaxed">
+                  <strong className="text-cyan-400">WANT POOL TOOLS?</strong> → System finds them instantly!<br/>
+                  <strong className="text-blue-400">NEED PARTY SUPPLIES?</strong> → Everything pops up!<br/>
+                  <strong className="text-green-400">WANT A TAXI?</strong> → Car appears immediately!<br/>
+                  <strong className="text-purple-400">ANYTHING ELSE?</strong> → AI assistant handles it!<br/>
+                  <strong className="text-yellow-400 text-xl md:text-3xl animate-bounce">🤖 YOUR PERSONAL ASSISTANT! 🤖</strong>
+                </p>
+                
+                {/* AI Features Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                  <div className="bg-cyan-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-cyan-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-bounce">🏊‍♂️</div>
+                    <div className="text-lg md:text-xl font-black text-cyan-300">POOLS</div>
+                    <div className="text-sm text-cyan-200">Tools, cleaning, parties</div>
+                  </div>
+                  <div className="bg-blue-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-blue-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-pulse">🔧</div>
+                    <div className="text-lg md:text-xl font-black text-blue-300">TOOLS</div>
+                    <div className="text-sm text-blue-200">Any equipment needed</div>
+                  </div>
+                  <div className="bg-purple-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-purple-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-bounce delay-200">🎉</div>
+                    <div className="text-lg md:text-xl font-black text-purple-300">PARTIES</div>
+                    <div className="text-sm text-purple-200">Everything for events</div>
+                  </div>
+                  <div className="bg-green-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-green-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-pulse delay-300">🚖</div>
+                    <div className="text-lg md:text-xl font-black text-green-300">TAXIS</div>
+                    <div className="text-sm text-green-200">Transportation instantly</div>
+                  </div>
+                </div>
+
+                {/* INSTANT RESPONSE SYSTEM */}
+                <div className="bg-gradient-to-r from-purple-600/50 to-pink-600/50 border-4 border-purple-400/80 rounded-2xl p-6 mb-8">
+                  <h4 className="text-2xl md:text-4xl font-black text-purple-300 mb-4">⚡ INSTANT RESPONSE SYSTEM! ⚡</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-white font-bold">
+                    <div className="bg-purple-700/50 rounded-xl p-4">
+                      <div className="text-4xl mb-2">💭</div>
+                      <div className="text-xl font-black text-purple-200">YOU THINK IT</div>
+                      <div className="text-sm">Want something? Just ask!</div>
+                    </div>
+                    <div className="bg-blue-700/50 rounded-xl p-4">
+                      <div className="text-4xl mb-2">⚡</div>
+                      <div className="text-xl font-black text-blue-200">IT POPS UP</div>
+                      <div className="text-sm">System responds instantly!</div>
+                    </div>
+                    <div className="bg-green-700/50 rounded-xl p-4">
+                      <div className="text-4xl mb-2">✅</div>
+                      <div className="text-xl font-black text-green-200">YOU GET IT</div>
+                      <div className="text-sm">No stress, everything handled!</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* COMPREHENSIVE AI SERVICES */}
+                <div className="bg-gradient-to-r from-orange-600/50 to-red-600/50 border-4 border-orange-400/80 rounded-2xl p-6 mb-8">
+                  <h4 className="text-2xl md:text-4xl font-black text-orange-300 mb-4">🧠 AI HANDLES EVERYTHING! 🧠</h4>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-white font-bold text-sm">
+                    <div>🏊‍♂️ Pool maintenance</div>
+                    <div>🔧 Tool rentals</div>
+                    <div>🎉 Party planning</div>
+                    <div>🚖 Transportation</div>
+                    <div>🏠 Home services</div>
+                    <div>🍕 Food delivery</div>
+                    <div>🛒 Shopping</div>
+                    <div>💼 Business services</div>
+                    <div>🎵 Entertainment</div>
+                    <div>🧹 Cleaning</div>
+                    <div>🔌 Repairs</div>
+                    <div>📱 Tech support</div>
+                    <div>🎯 Anything else!</div>
+                    <div>✨ Magic happens!</div>
+                    <div>🚀 Instant results!</div>
+                    <div>😊 No stress ever!</div>
+                  </div>
+                </div>
+                
+                <div className="bg-gradient-to-r from-yellow-600/50 to-orange-600/50 border-4 border-yellow-400/80 rounded-2xl p-6 mb-8 animate-pulse">
+                  <h4 className="text-2xl md:text-4xl font-black text-yellow-300 mb-4">🤖 YOUR PERSONAL AI ASSISTANT! 🤖</h4>
+                  <div className="text-white text-lg md:text-xl font-bold">
+                    <strong>WHATEVER YOU WANT!</strong><br/>
+                    Just tell YardFlex and it happens instantly!<br/>
+                    <span className="text-cyan-400">🧠 NO STRESS - EVERYTHING AUTOMATIC! 🧠</span>
+                  </div>
+                </div>
+                
+                <div className="text-center">
+                  <Button 
+                    onClick={() => setLocation('/ai-assistant')}
+                    className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white text-3xl px-12 py-6 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-cyan-400/80"
+                    data-testid="button-ai-assistant"
+                  >
+                    🤖 ASK AI ANYTHING! 🤖
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* ========== UNIVERSAL BOOKING PLATFORM - EVERYTHING! ========== */}
         <div className="mb-8">
           <Card className="bg-gradient-to-br from-purple-900/95 via-pink-900/95 to-red-900/95 border-8 border-purple-400/100 relative overflow-hidden min-h-[700px] shadow-2xl shadow-purple-500/80" data-testid="mega-booking-platform-section">
