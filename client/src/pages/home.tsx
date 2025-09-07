@@ -613,6 +613,95 @@ export default function Home() {
           </Card>
         </div>
 
+        {/* ========== MASSIVE EMAIL CAMPAIGN - SHAKE UP JAMAICA! ========== */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-br from-red-900/95 via-orange-900/95 to-yellow-900/95 border-8 border-red-400/100 relative overflow-hidden min-h-[600px] shadow-2xl shadow-red-500/80" data-testid="massive-email-campaign-section">
+            {/* EXPLOSIVE Animated Background */}
+            <div className="absolute inset-0 opacity-30">
+              <div className="absolute top-4 left-4 text-8xl animate-bounce">📧</div>
+              <div className="absolute top-4 right-4 text-8xl animate-pulse">🇯🇲</div>
+              <div className="absolute bottom-4 left-4 text-8xl animate-bounce delay-300">📱</div>
+              <div className="absolute bottom-4 right-4 text-8xl animate-pulse delay-500">🔥</div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-12xl animate-pulse delay-200">💥</div>
+            </div>
+            
+            <CardHeader className="relative z-10 pb-8">
+              <CardTitle className="text-center space-y-6">
+                <div className="text-4xl md:text-8xl font-black text-red-400 animate-pulse leading-tight">
+                  📧 SHAKE UP ALL JAMAICA! 📧
+                </div>
+                <div className="text-2xl md:text-6xl font-black text-orange-300 animate-bounce leading-tight">
+                  EVERYONE GETS EMAIL INVITATION!
+                </div>
+                <div className="text-xl md:text-4xl font-black text-white animate-pulse">
+                  MASSIVE EMAIL CAMPAIGN ACROSS THE ISLAND!
+                </div>
+                <div className="text-lg md:text-3xl font-black text-yellow-400 animate-bounce">
+                  🔥 EVERYONE ON THE ISLAND KNOWS ABOUT YARDFLEX! 🔥
+                </div>
+              </CardTitle>
+            </CardHeader>
+            
+            <CardContent className="relative z-10 space-y-6">
+              <div className="bg-gradient-to-r from-red-600/50 to-orange-600/50 border-2 border-red-400/70 rounded-2xl p-8 text-center shadow-2xl shadow-red-500/30">
+                <h3 className="text-2xl md:text-5xl font-black text-red-300 mb-6 animate-pulse leading-tight">
+                  🎯 MASS EMAIL INVITATION CAMPAIGN! 🎯
+                </h3>
+                <p className="text-white text-lg md:text-2xl mb-8 font-bold leading-relaxed">
+                  <strong className="text-yellow-400">EVERY EMAIL IN JAMAICA?</strong> → Gets YardFlex invitation!<br/>
+                  <strong className="text-blue-400">EVERY BUSINESS OWNER?</strong> → Knows about YardFlex!<br/>
+                  <strong className="text-green-400">EVERY PERSON?</strong> → Excited about YardFlex!<br/>
+                  <strong className="text-purple-400">WHOLE ISLAND?</strong> → Talking about YardFlex!<br/>
+                  <strong className="text-red-400 text-xl md:text-3xl animate-bounce">📧 SHAKE UP EVERYONE! 📧</strong>
+                </p>
+                
+                {/* Campaign Features Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                  <div className="bg-red-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-red-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-bounce">📧</div>
+                    <div className="text-lg md:text-xl font-black text-red-300">MASS EMAIL</div>
+                    <div className="text-sm text-red-200">Everyone invited</div>
+                  </div>
+                  <div className="bg-orange-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-orange-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-pulse">🇯🇲</div>
+                    <div className="text-lg md:text-xl font-black text-orange-300">ALL JAMAICA</div>
+                    <div className="text-sm text-orange-200">Island-wide reach</div>
+                  </div>
+                  <div className="bg-yellow-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-yellow-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-bounce delay-200">🔥</div>
+                    <div className="text-lg md:text-xl font-black text-yellow-300">VIRAL</div>
+                    <div className="text-sm text-yellow-200">Everyone sharing</div>
+                  </div>
+                  <div className="bg-green-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-green-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-pulse delay-300">📱</div>
+                    <div className="text-lg md:text-xl font-black text-green-300">APP READY</div>
+                    <div className="text-sm text-green-200">Download instantly</div>
+                  </div>
+                </div>
+                
+                <div className="bg-gradient-to-r from-purple-600/50 to-pink-600/50 border-4 border-purple-400/80 rounded-2xl p-6 mb-8 animate-pulse">
+                  <h4 className="text-2xl md:text-4xl font-black text-purple-300 mb-4">🇯🇲 EVERYONE ON THE ISLAND! 🇯🇲</h4>
+                  <div className="text-white text-lg md:text-xl font-bold">
+                    <strong>MASSIVE EMAIL BLAST TO ALL JAMAICA!</strong><br/>
+                    Every person gets excited! Everyone downloads YardFlex!<br/>
+                    <span className="text-yellow-400">💥 SHAKE UP THE WHOLE ISLAND! 💥</span>
+                  </div>
+                </div>
+                
+                <div className="text-center">
+                  <Button 
+                    onClick={() => setLocation('/email-campaign')}
+                    className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white text-3xl px-12 py-6 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-red-400/80"
+                    data-testid="button-launch-email-campaign"
+                  >
+                    📧 LAUNCH EMAIL CAMPAIGN! 📧
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* ========== UNIVERSAL BOOKING PLATFORM - EVERYTHING! ========== */}
         <div className="mb-8">
           <Card className="bg-gradient-to-br from-purple-900/95 via-pink-900/95 to-red-900/95 border-8 border-purple-400/100 relative overflow-hidden min-h-[700px] shadow-2xl shadow-purple-500/80" data-testid="mega-booking-platform-section">
