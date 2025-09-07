@@ -2617,6 +2617,176 @@ export type InsertBusinessVerification = typeof businessVerifications.$inferInse
 export type BusinessAccessControl = typeof businessAccessControls.$inferSelect;
 export type InsertBusinessAccessControl = typeof businessAccessControls.$inferInsert;
 
+// ===================== SECURE BROWSER SYSTEM =====================
+
+// Secure Browser Sessions - Track safe browsing within YardFlex
+export const secureBrowserSessions = pgTable("secure_browser_sessions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  
+  // Session Details
+  sessionToken: varchar("session_token").unique().notNull(),
+  userAgent: text("user_agent"),
+  ipAddress: varchar("ip_address"),
+  
+  // Security Features
+  vpnEnabled: boolean("vpn_enabled").default(true),
+  adBlockEnabled: boolean("ad_block_enabled").default(true),
+  trackingProtection: boolean("tracking_protection").default(true),
+  httpsOnly: boolean("https_only").default(true),
+  
+  // Browsing History (for security monitoring)
+  visitedSites: jsonb("visited_sites"), // Array of safe visited sites
+  blockedSites: jsonb("blocked_sites"), // Array of blocked malicious sites
+  securityWarnings: jsonb("security_warnings"), // Any security alerts
+  
+  // Session Management
+  isActive: boolean("is_active").default(true),
+  lastActivity: timestamp("last_activity").defaultNow(),
+  sessionDuration: integer("session_duration").default(0), // Minutes
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Trusted Website Whitelist - Pre-approved safe sites
+export const trustedWebsites = pgTable("trusted_websites", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  
+  // Website Details
+  domain: varchar("domain").unique().notNull(), // "banking.scotiabank.com"
+  displayName: varchar("display_name").notNull(), // "Scotia Bank"
+  category: varchar("category").notNull(), // "banking", "government", "business", "education"
+  
+  // Trust Metrics
+  verificationLevel: varchar("verification_level").default("verified"), // "verified", "trusted", "premium"
+  securityRating: varchar("security_rating").default("A+"), // "A+", "A", "B", "C"
+  lastSecurityCheck: timestamp("last_security_check").defaultNow(),
+  
+  // Visual Indicators
+  logoUrl: varchar("logo_url"), // Website logo for recognition
+  primaryColor: varchar("primary_color"), // Brand color
+  description: text("description"), // "Jamaica's trusted banking partner"
+  
+  // Usage Statistics
+  totalVisits: integer("total_visits").default(0),
+  uniqueUsers: integer("unique_users").default(0),
+  averageSessionTime: integer("average_session_time").default(0),
+  
+  // Admin Controls
+  isActive: boolean("is_active").default(true),
+  addedBy: varchar("added_by"), // YardFlex admin who approved it
+  approvalDate: timestamp("approval_date").defaultNow(),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Browser Security Events - Log all security incidents
+export const browserSecurityEvents = pgTable("browser_security_events", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  sessionId: varchar("session_id").notNull().references(() => secureBrowserSessions.id),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  
+  // Event Details
+  eventType: varchar("event_type").notNull(), // "blocked_malware", "phishing_attempt", "unsafe_download", "ssl_warning"
+  severity: varchar("severity").default("medium"), // "low", "medium", "high", "critical"
+  
+  // Threat Information
+  threatUrl: text("threat_url"), // The dangerous URL that was blocked
+  threatType: varchar("threat_type"), // "malware", "phishing", "scam", "adult", "gambling"
+  threatDescription: text("threat_description"),
+  
+  // Protection Action
+  actionTaken: varchar("action_taken").notNull(), // "blocked", "warned", "redirected", "quarantined"
+  userResponse: varchar("user_response"), // "accepted_warning", "navigated_away", "force_proceeded"
+  
+  // Context
+  referrerUrl: text("referrer_url"), // Where they came from
+  browserData: jsonb("browser_data"), // Technical details
+  
+  // Resolution
+  isResolved: boolean("is_resolved").default(false),
+  resolutionNotes: text("resolution_notes"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Browser Bookmarks - User's saved trusted sites
+export const browserBookmarks = pgTable("browser_bookmarks", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  
+  // Bookmark Details
+  title: varchar("title").notNull(),
+  url: text("url").notNull(),
+  faviconUrl: varchar("favicon_url"),
+  
+  // Organization
+  category: varchar("category").default("general"), // "banking", "business", "personal", "work"
+  tags: jsonb("tags"), // Array of tags for organization
+  sortOrder: integer("sort_order").default(0),
+  
+  // Security
+  isTrusted: boolean("is_trusted").default(false), // Verified safe site
+  lastVerified: timestamp("last_verified"),
+  securityNotes: text("security_notes"),
+  
+  // Usage
+  visitCount: integer("visit_count").default(0),
+  lastVisited: timestamp("last_visited"),
+  
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// ===================== RELATIONS =====================
+
+export const secureBrowserSessionsRelations = relations(secureBrowserSessions, ({ one, many }) => ({
+  user: one(users, {
+    fields: [secureBrowserSessions.userId],
+    references: [users.id],
+  }),
+  securityEvents: many(browserSecurityEvents),
+}));
+
+export const browserSecurityEventsRelations = relations(browserSecurityEvents, ({ one }) => ({
+  session: one(secureBrowserSessions, {
+    fields: [browserSecurityEvents.sessionId],
+    references: [secureBrowserSessions.id],
+  }),
+  user: one(users, {
+    fields: [browserSecurityEvents.userId],
+    references: [users.id],
+  }),
+}));
+
+export const browserBookmarksRelations = relations(browserBookmarks, ({ one }) => ({
+  user: one(users, {
+    fields: [browserBookmarks.userId],
+    references: [users.id],
+  }),
+}));
+
+// ===================== INSERT SCHEMAS =====================
+
+export const insertSecureBrowserSessionSchema = createInsertSchema(secureBrowserSessions);
+export const insertTrustedWebsiteSchema = createInsertSchema(trustedWebsites);
+export const insertBrowserSecurityEventSchema = createInsertSchema(browserSecurityEvents);
+export const insertBrowserBookmarkSchema = createInsertSchema(browserBookmarks);
+
+// ===================== TYPES =====================
+
+export type SecureBrowserSession = typeof secureBrowserSessions.$inferSelect;
+export type InsertSecureBrowserSession = typeof secureBrowserSessions.$inferInsert;
+export type TrustedWebsite = typeof trustedWebsites.$inferSelect;
+export type InsertTrustedWebsite = typeof trustedWebsites.$inferInsert;
+export type BrowserSecurityEvent = typeof browserSecurityEvents.$inferSelect;
+export type InsertBrowserSecurityEvent = typeof browserSecurityEvents.$inferInsert;
+export type BrowserBookmark = typeof browserBookmarks.$inferSelect;
+export type InsertBrowserBookmark = typeof browserBookmarks.$inferInsert;
+
 export const insertTransactionSchema = createInsertSchema(transactions).omit({
   id: true,
   createdAt: true,

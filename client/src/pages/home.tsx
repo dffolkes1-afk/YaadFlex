@@ -429,6 +429,40 @@ export default function Home() {
           </Card>
         </div>
 
+        {/* Secure Browser CTA */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-r from-blue-900/30 to-purple-900/30 border-blue-500/30" data-testid="secure-browser-cta-card">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2 text-blue-400">
+                <span className="text-2xl">🛡️</span>
+                <span>Ultra-Secure Browser - Your Safe Space Online</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-blue-300 mb-2">
+                    <strong>Enterprise-Grade Security:</strong> VPN protection, ad-blocking, malware detection.<br/>
+                    <strong>Pre-approved Jamaican Sites:</strong> Banks, government, businesses - all verified safe.
+                  </p>
+                  <div className="text-sm text-blue-400 font-semibold">
+                    🚀 SAFER THAN ANY OTHER BROWSER
+                  </div>
+                </div>
+                <div className="flex space-x-3">
+                  <Button 
+                    onClick={() => setLocation('/secure-browser')}
+                    className="bg-blue-600 text-white hover:bg-blue-700 font-bold"
+                    data-testid="button-access-secure-browser"
+                  >
+                    🛡️ SECURE BROWSER
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Security Status Dashboard */}
         <div className="mb-8">
           <h1 className="text-4xl font-black text-premium text-glow floating mb-6" data-testid="dashboard-title">

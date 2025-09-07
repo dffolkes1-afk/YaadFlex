@@ -9,6 +9,7 @@ import Landing from "@/pages/landing";
 import Home from "@/pages/home";
 import RealTimeTracking from "@/pages/tracking";
 import CBRadio from "@/pages/cb-radio";
+import SecureBrowser from "@/pages/secure-browser";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -22,6 +23,7 @@ function Router() {
           <Route path="/" component={Home} />
           <Route path="/tracking" component={RealTimeTracking} />
           <Route path="/cb-radio" component={CBRadio} />
+          <Route path="/secure-browser" component={SecureBrowser} />
         </>
       )}
       <Route component={NotFound} />
