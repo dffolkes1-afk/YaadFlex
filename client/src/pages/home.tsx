@@ -493,52 +493,188 @@ export default function Home() {
           </Card>
         </div>
 
-        {/* VIRAL SOCIAL COMMERCE SYSTEM */}
-        <div className="mb-8">
-          <Card className="bg-gradient-to-r from-pink-900/30 via-purple-900/30 to-blue-900/30 border-pink-500/30 relative overflow-hidden" data-testid="social-commerce-cta-card">
-            <CardHeader className="relative z-10">
-              <CardTitle className="flex items-center space-x-3 text-pink-300">
-                <span className="text-3xl animate-bounce">🔥</span>
-                <span className="text-2xl font-black">GET YOUR BUSINESS EVERYWHERE!</span>
+        {/* ========== MEGA VIRAL SOCIAL COMMERCE - MAXIMUM EXCITEMENT! ========== */}
+        <div className="mb-12">
+          <Card className="bg-gradient-to-br from-pink-900/60 via-purple-900/60 via-red-900/60 to-orange-900/60 border-pink-400/70 relative overflow-hidden min-h-[700px]" data-testid="mega-social-commerce-explosion">
+            {/* EXPLOSIVE Animated Background */}
+            <div className="absolute inset-0 opacity-30">
+              <div className="absolute top-8 left-8 text-8xl animate-bounce">🔥</div>
+              <div className="absolute top-8 right-8 text-8xl animate-pulse">💥</div>
+              <div className="absolute bottom-8 left-8 text-8xl animate-bounce delay-300">⚡</div>
+              <div className="absolute bottom-8 right-8 text-8xl animate-pulse delay-500">🚀</div>
+              <div className="absolute top-1/3 left-1/4 text-6xl animate-spin slow-spin">📱</div>
+              <div className="absolute top-2/3 right-1/4 text-6xl animate-bounce delay-700">💰</div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-9xl animate-pulse delay-200">🌟</div>
+            </div>
+            
+            <CardHeader className="relative z-10 pb-4">
+              <CardTitle className="text-center space-y-4">
+                <div className="text-6xl font-black text-pink-300 animate-pulse leading-tight">
+                  🔥💥 YARDFLEX SOCIAL COMMERCE 💥🔥
+                </div>
+                <div className="text-4xl font-black text-yellow-400 animate-bounce leading-tight">
+                  GET YOUR BUSINESS EVERYWHERE!
+                </div>
+                <div className="text-3xl font-black text-white animate-pulse">
+                  FACEBOOK • INSTAGRAM • TIKTOK • TELEGRAM!
+                </div>
               </CardTitle>
             </CardHeader>
-            <CardContent className="relative z-10">
-              <div className="text-center">
-                <h3 className="text-3xl font-black text-yellow-400 mb-4 animate-pulse">
-                  📱 FACEBOOK • INSTAGRAM • TIKTOK • TELEGRAM 📱
+            
+            <CardContent className="relative z-10 space-y-8">
+              
+              {/* MASSIVE MAIN ATTRACTION SECTION */}
+              <div className="bg-gradient-to-r from-red-600/40 to-pink-600/40 border border-red-400/50 rounded-2xl p-8 text-center">
+                <h3 className="text-5xl font-black text-red-300 mb-6 animate-pulse">
+                  🌍 TELL THE WORLD ABOUT YOURSELF! 🌍
                 </h3>
-                <p className="text-white mb-4 text-lg">
-                  <strong>Create your business profile and YardFlex automatically posts everywhere!</strong><br/>
-                  Everyone gets their own space. Age verified. Professional standards. Clean business only.
+                <p className="text-white text-2xl mb-8 leading-relaxed">
+                  <strong>CREATE YOUR BUSINESS PROFILE AND YARDFLEX AUTOMATICALLY POSTS EVERYWHERE!</strong><br/>
+                  <strong>FACEBOOK! INSTAGRAM! TIKTOK! TELEGRAM! ALL PLATFORMS!</strong><br/>
+                  <strong>YOUR BUSINESS WILL BE ALL OVER THE PLACE TELLING EVERYONE ABOUT ITSELF!</strong>
                 </p>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                  <div className="text-center">
-                    <div className="text-3xl">📱</div>
-                    <div className="text-sm text-pink-300">Auto-Posting</div>
+                
+                {/* EXPLOSIVE Social Media Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                  <div className="bg-blue-600/50 rounded-xl p-6 text-center transform hover:scale-110 transition-all">
+                    <div className="text-6xl mb-3 animate-bounce">📘</div>
+                    <div className="text-xl font-black text-blue-300">FACEBOOK</div>
+                    <div className="text-sm text-white">Auto-Post Daily</div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-3xl">🎯</div>
-                    <div className="text-sm text-purple-300">Viral Reach</div>
+                  <div className="bg-purple-600/50 rounded-xl p-6 text-center transform hover:scale-110 transition-all">
+                    <div className="text-6xl mb-3 animate-pulse">📸</div>
+                    <div className="text-xl font-black text-purple-300">INSTAGRAM</div>
+                    <div className="text-sm text-white">Stories & Posts</div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-3xl">💼</div>
-                    <div className="text-sm text-blue-300">Professional</div>
+                  <div className="bg-pink-600/50 rounded-xl p-6 text-center transform hover:scale-110 transition-all">
+                    <div className="text-6xl mb-3 animate-bounce delay-200">🎵</div>
+                    <div className="text-xl font-black text-pink-300">TIKTOK</div>
+                    <div className="text-sm text-white">Viral Videos</div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-3xl">🔞</div>
-                    <div className="text-sm text-green-300">Age Verified</div>
+                  <div className="bg-cyan-600/50 rounded-xl p-6 text-center transform hover:scale-110 transition-all">
+                    <div className="text-6xl mb-3 animate-pulse delay-300">📧</div>
+                    <div className="text-xl font-black text-cyan-300">TELEGRAM</div>
+                    <div className="text-sm text-white">Instant Messages</div>
                   </div>
                 </div>
-                <div className="text-center">
+              </div>
+
+              {/* EVERYONE WELCOME SECTION */}
+              <div className="bg-gradient-to-r from-green-600/40 to-emerald-600/40 border border-green-400/50 rounded-2xl p-8">
+                <h3 className="text-4xl font-black text-green-300 mb-6 text-center animate-bounce">
+                  🌈 EVERYBODY CAN BE ON IT! 🌈
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  
+                  {/* Regular Services */}
+                  <div className="bg-blue-600/30 rounded-xl p-6">
+                    <h4 className="text-2xl font-black text-blue-300 mb-4">💼 REGULAR BUSINESSES</h4>
+                    <div className="space-y-2 text-white">
+                      <div>🚗 Transportation Services</div>
+                      <div>🍽️ Food & Restaurant</div>
+                      <div>💄 Beauty & Hair</div>
+                      <div>🔧 Handyman & Repairs</div>
+                      <div>🎵 Entertainment & DJ</div>
+                      <div>📚 Education & Tutoring</div>
+                    </div>
+                  </div>
+                  
+                  {/* Age-Verified Services */}
+                  <div className="bg-purple-600/30 rounded-xl p-6 border border-purple-400/50">
+                    <h4 className="text-2xl font-black text-purple-300 mb-4">🔞 AGE-VERIFIED PRIVATE</h4>
+                    <div className="space-y-3 text-white">
+                      <div className="flex items-center space-x-2">
+                        <span>🔐</span>
+                        <span><strong>Adults Only - Age Verified</strong></span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <span>🏠</span>
+                        <span><strong>Proper Place Required</strong></span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <span>💼</span>
+                        <span><strong>Professional Standards</strong></span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <span>🚫</span>
+                        <span><strong>NO KIDS - Protected Space</strong></span>
+                      </div>
+                      <div className="bg-yellow-600/40 rounded-lg p-3 mt-4">
+                        <div className="text-sm font-bold text-yellow-200">
+                          Special guidelines provided for clean, professional business conduct
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* FEATURES SHOWCASE */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                <div className="bg-red-600/40 rounded-xl p-4 text-center animate-pulse">
+                  <div className="text-4xl mb-2">🎯</div>
+                  <div className="text-lg font-bold text-red-300">VIRAL REACH</div>
+                  <div className="text-sm text-white">Millions See You</div>
+                </div>
+                <div className="bg-orange-600/40 rounded-xl p-4 text-center animate-bounce">
+                  <div className="text-4xl mb-2">📱</div>
+                  <div className="text-lg font-bold text-orange-300">AUTO-POSTING</div>
+                  <div className="text-sm text-white">Everywhere Daily</div>
+                </div>
+                <div className="bg-green-600/40 rounded-xl p-4 text-center animate-pulse delay-200">
+                  <div className="text-4xl mb-2">💰</div>
+                  <div className="text-lg font-bold text-green-300">EASY MONEY</div>
+                  <div className="text-sm text-white">Get More Customers</div>
+                </div>
+                <div className="bg-blue-600/40 rounded-xl p-4 text-center animate-bounce delay-300">
+                  <div className="text-4xl mb-2">🌟</div>
+                  <div className="text-lg font-bold text-blue-300">PROFESSIONAL</div>
+                  <div className="text-sm text-white">Clean Standards</div>
+                </div>
+              </div>
+
+              {/* MASSIVE ACTION BUTTONS */}
+              <div className="space-y-6">
+                <Button 
+                  onClick={() => setLocation('/social-commerce')}
+                  className="w-full bg-gradient-to-r from-pink-600 via-red-600 via-orange-600 to-yellow-600 hover:from-pink-700 hover:via-red-700 hover:via-orange-700 hover:to-yellow-700 text-white font-black text-4xl py-10 px-12 animate-pulse transform hover:scale-105 transition-all"
+                  data-testid="button-access-mega-social-commerce"
+                >
+                  🚀💥 CREATE MY VIRAL BUSINESS NOW! 💥🚀
+                </Button>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Button 
                     onClick={() => setLocation('/social-commerce')}
-                    className="bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 hover:from-pink-700 hover:via-purple-700 hover:to-blue-700 text-white font-black text-xl px-8 py-4"
-                    data-testid="button-access-social-commerce"
+                    variant="outline"
+                    className="border-pink-400 text-pink-400 hover:bg-pink-400 hover:text-black font-black text-xl py-6 animate-bounce"
+                    data-testid="button-regular-business"
                   >
-                    🚀 CREATE MY VIRAL BUSINESS PAGE!
+                    💼 REGULAR BUSINESS PROFILE
+                  </Button>
+                  <Button 
+                    onClick={() => setLocation('/social-commerce')}
+                    variant="outline"
+                    className="border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-black font-black text-xl py-6 animate-pulse"
+                    data-testid="button-private-verified"
+                  >
+                    🔞 AGE-VERIFIED PRIVATE
                   </Button>
                 </div>
               </div>
+
+              {/* EXCITEMENT FOOTER */}
+              <div className="text-center bg-black/40 rounded-2xl p-8">
+                <h4 className="text-3xl font-black text-yellow-400 mb-4 animate-pulse">
+                  🌟 YOUR BUSINESS WILL BE EVERYWHERE! 🌟
+                </h4>
+                <p className="text-xl text-white leading-relaxed">
+                  <strong>Facebook telling people about you! Instagram showing your work!</strong><br/>
+                  <strong>TikTok making you famous! Telegram bringing customers!</strong><br/>
+                  <strong>ALL OVER THE PLACE - YOUR BUSINESS TALKING TO THE WORLD!</strong>
+                </p>
+              </div>
+              
             </CardContent>
           </Card>
         </div>

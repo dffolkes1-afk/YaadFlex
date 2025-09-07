@@ -749,7 +749,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       if (maxBudget) {
-        conditions.push(lte(rentalProperties.dailyRate, maxBudget as string));
+        conditions.push(lte(rentalProperties.dailyRate, parseFloat(maxBudget as string)));
       }
       
       const properties = await db.select().from(rentalProperties)
@@ -827,8 +827,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         category,
         address,
         parish,
-        dailyRate: dailyRate ? parseFloat(dailyRate) : null,
-        monthlyRate: monthlyRate ? parseFloat(monthlyRate) : null,
+        dailyRate: dailyRate ? String(parseFloat(dailyRate)) : null,
+        monthlyRate: monthlyRate ? String(parseFloat(monthlyRate)) : null,
         amenities: amenities || [],
         contactPhone,
         isAvailable: true,
@@ -869,7 +869,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         propertyType,
         category,
         parish,
-        maxBudget: maxBudget ? parseFloat(maxBudget) : null,
+        maxBudget: maxBudget ? String(parseFloat(maxBudget)) : null,
         minBedrooms,
         requiredAmenities: requiredAmenities || [],
         alertFrequency,
