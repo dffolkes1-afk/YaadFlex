@@ -493,6 +493,56 @@ export default function Home() {
           </Card>
         </div>
 
+        {/* VIRAL SOCIAL COMMERCE SYSTEM */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-r from-pink-900/30 via-purple-900/30 to-blue-900/30 border-pink-500/30 relative overflow-hidden" data-testid="social-commerce-cta-card">
+            <CardHeader className="relative z-10">
+              <CardTitle className="flex items-center space-x-3 text-pink-300">
+                <span className="text-3xl animate-bounce">🔥</span>
+                <span className="text-2xl font-black">GET YOUR BUSINESS EVERYWHERE!</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="relative z-10">
+              <div className="text-center">
+                <h3 className="text-3xl font-black text-yellow-400 mb-4 animate-pulse">
+                  📱 FACEBOOK • INSTAGRAM • TIKTOK • TELEGRAM 📱
+                </h3>
+                <p className="text-white mb-4 text-lg">
+                  <strong>Create your business profile and YardFlex automatically posts everywhere!</strong><br/>
+                  Everyone gets their own space. Age verified. Professional standards. Clean business only.
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                  <div className="text-center">
+                    <div className="text-3xl">📱</div>
+                    <div className="text-sm text-pink-300">Auto-Posting</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl">🎯</div>
+                    <div className="text-sm text-purple-300">Viral Reach</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl">💼</div>
+                    <div className="text-sm text-blue-300">Professional</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl">🔞</div>
+                    <div className="text-sm text-green-300">Age Verified</div>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <Button 
+                    onClick={() => setLocation('/social-commerce')}
+                    className="bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 hover:from-pink-700 hover:via-purple-700 hover:to-blue-700 text-white font-black text-xl px-8 py-4"
+                    data-testid="button-access-social-commerce"
+                  >
+                    🚀 CREATE MY VIRAL BUSINESS PAGE!
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Secure Browser CTA */}
         <div className="mb-8">
           <Card className="bg-gradient-to-r from-blue-900/30 to-purple-900/30 border-blue-500/30" data-testid="secure-browser-cta-card">

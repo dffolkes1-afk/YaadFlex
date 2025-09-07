@@ -2787,6 +2787,317 @@ export type InsertBrowserSecurityEvent = typeof browserSecurityEvents.$inferInse
 export type BrowserBookmark = typeof browserBookmarks.$inferSelect;
 export type InsertBrowserBookmark = typeof browserBookmarks.$inferInsert;
 
+// ===================== SOCIAL COMMERCE & VIRAL MARKETING SYSTEM =====================
+
+// Business Profile Pages - Everyone Gets Their Own Space  
+export const businessProfiles = pgTable("business_profiles", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  
+  // Profile Information
+  businessName: varchar("business_name").notNull(),
+  displayName: varchar("display_name").notNull(), // How they appear publicly
+  slug: varchar("slug").unique().notNull(), // yardflex.com/@username
+  tagline: text("tagline"), // Short business description
+  description: text("description").notNull(), // Full business description
+  
+  // Business Category & Type
+  category: varchar("category").notNull(), // "transport", "beauty", "food", "entertainment", "personal_services"
+  subcategory: varchar("subcategory"), // "hair_salon", "massage", "DJ", "catering"
+  businessType: varchar("business_type").default("individual"), // "individual", "team", "company"
+  
+  // Contact & Location
+  phone: varchar("phone"),
+  email: varchar("email"),
+  whatsappNumber: varchar("whatsapp_number"),
+  address: text("address"),
+  parish: varchar("parish"), // Jamaica parishes
+  servicesArea: jsonb("services_area"), // Areas they cover
+  
+  // Profile Media
+  profileImageUrl: varchar("profile_image_url"),
+  coverImageUrl: varchar("cover_image_url"),
+  portfolioImages: jsonb("portfolio_images"), // Array of work samples
+  videoIntroUrl: varchar("video_intro_url"), // 30-second intro video
+  
+  // Pricing & Services
+  services: jsonb("services"), // Array of services offered
+  startingPrice: decimal("starting_price", { precision: 10, scale: 2 }),
+  currency: varchar("currency").default("JMD"),
+  paymentMethods: jsonb("payment_methods"), // ["cash", "card", "mobile_money"]
+  
+  // Availability
+  workingHours: jsonb("working_hours"), // Schedule by day
+  availableDays: jsonb("available_days"), // Days of week
+  isAvailable: boolean("is_available").default(true),
+  responseTime: varchar("response_time").default("within_1_hour"), // How fast they respond
+  
+  // Age Verification & Compliance
+  isAgeVerified: boolean("is_age_verified").default(false),
+  ageVerificationDate: timestamp("age_verification_date"),
+  requiresAgeVerification: boolean("requires_age_verification").default(false), // For adult services
+  complianceLevel: varchar("compliance_level").default("standard"), // "standard", "verified", "premium"
+  
+  // Social Media Links
+  instagramHandle: varchar("instagram_handle"),
+  tiktokHandle: varchar("tiktok_handle"),
+  facebookPage: varchar("facebook_page"),
+  youtubeChannel: varchar("youtube_channel"),
+  websiteUrl: varchar("website_url"),
+  
+  // Performance Metrics
+  totalBookings: integer("total_bookings").default(0),
+  averageRating: decimal("average_rating", { precision: 3, scale: 2 }).default("5.0"),
+  responseRate: decimal("response_rate", { precision: 5, scale: 2 }).default("100.0"),
+  completionRate: decimal("completion_rate", { precision: 5, scale: 2 }).default("100.0"),
+  
+  // Visibility & Status
+  isPublished: boolean("is_published").default(true),
+  isVerified: boolean("is_verified").default(false),
+  isFeatured: boolean("is_featured").default(false),
+  isPremium: boolean("is_premium").default(false),
+  
+  // SEO & Discovery
+  keywords: jsonb("keywords"), // Search keywords
+  seoTitle: varchar("seo_title"),
+  seoDescription: text("seo_description"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Social Media Auto-Posting System
+export const socialMediaPosts = pgTable("social_media_posts", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  profileId: varchar("profile_id").notNull().references(() => businessProfiles.id),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  
+  // Post Content
+  title: varchar("title").notNull(),
+  content: text("content").notNull(),
+  hashtags: jsonb("hashtags"), // Array of hashtags
+  imageUrls: jsonb("image_urls"), // Multiple images
+  videoUrl: varchar("video_url"),
+  
+  // Posting Schedule
+  scheduledFor: timestamp("scheduled_for"),
+  platforms: jsonb("platforms"), // ["facebook", "instagram", "tiktok", "telegram"]
+  postType: varchar("post_type").default("promotional"), // "promotional", "educational", "showcase"
+  
+  // Platform-Specific Content
+  facebookContent: text("facebook_content"),
+  instagramContent: text("instagram_content"),
+  tiktokContent: text("tiktok_content"),
+  telegramContent: text("telegram_content"),
+  
+  // Auto-Generation Settings
+  isAutoGenerated: boolean("is_auto_generated").default(false),
+  templateUsed: varchar("template_used"), // Which template was used
+  aiGenerated: boolean("ai_generated").default(false),
+  
+  // Performance Tracking
+  totalReach: integer("total_reach").default(0),
+  totalEngagement: integer("total_engagement").default(0),
+  clickThroughs: integer("click_throughs").default(0),
+  bookingsGenerated: integer("bookings_generated").default(0),
+  
+  // Status
+  status: varchar("status").default("draft"), // "draft", "scheduled", "published", "failed"
+  publishedAt: timestamp("published_at"),
+  errorMessage: text("error_message"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Viral Marketing Templates
+export const marketingTemplates = pgTable("marketing_templates", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  
+  // Template Info
+  name: varchar("name").notNull(),
+  category: varchar("category").notNull(), // Business category this template is for
+  platform: varchar("platform").notNull(), // "facebook", "instagram", "tiktok", etc
+  
+  // Template Content
+  titleTemplate: text("title_template"), // "🔥 {business_name} - {service} in {location}!"
+  contentTemplate: text("content_template").notNull(), // Full post template with placeholders
+  hashtagTemplate: text("hashtag_template"), // "#{category} #{location} #YardFlex"
+  
+  // Design Elements
+  backgroundColor: varchar("background_color").default("#000000"),
+  textColor: varchar("text_color").default("#FFFFFF"),
+  accentColor: varchar("accent_color").default("#FFD700"),
+  fontStyle: varchar("font_style").default("bold"),
+  
+  // Template Variables
+  variables: jsonb("variables"), // Available placeholders like {business_name}
+  examples: jsonb("examples"), // Example posts using this template
+  
+  // Performance
+  usageCount: integer("usage_count").default(0),
+  avgEngagementRate: decimal("avg_engagement_rate", { precision: 5, scale: 2 }).default("0"),
+  isActive: boolean("is_active").default(true),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Customer Reviews & Testimonials
+export const customerReviews = pgTable("customer_reviews", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  profileId: varchar("profile_id").notNull().references(() => businessProfiles.id),
+  customerId: varchar("customer_id").references(() => users.id),
+  
+  // Review Content
+  rating: integer("rating").notNull(), // 1-5 stars
+  title: varchar("title"),
+  content: text("content").notNull(),
+  images: jsonb("images"), // Photos of work/service
+  
+  // Customer Info (if not registered user)
+  customerName: varchar("customer_name"),
+  customerPhone: varchar("customer_phone"),
+  
+  // Review Details
+  serviceType: varchar("service_type"), // What service was reviewed
+  serviceCost: decimal("service_cost", { precision: 10, scale: 2 }),
+  serviceDate: timestamp("service_date"),
+  
+  // Verification
+  isVerified: boolean("is_verified").default(false),
+  verificationMethod: varchar("verification_method"), // "phone", "receipt", "photo"
+  
+  // Moderation
+  isApproved: boolean("is_approved").default(true),
+  moderationNotes: text("moderation_notes"),
+  
+  // Usage in Marketing
+  canUseInMarketing: boolean("can_use_in_marketing").default(true),
+  featuredInPosts: integer("featured_in_posts").default(0),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Age Verification System
+export const ageVerifications = pgTable("age_verifications", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  
+  // Verification Method
+  verificationType: varchar("verification_type").notNull(), // "drivers_license", "passport", "national_id"
+  documentNumber: varchar("document_number").notNull(),
+  documentImageUrl: varchar("document_image_url"),
+  
+  // Verification Details
+  birthDate: timestamp("birth_date").notNull(),
+  age: integer("age").notNull(),
+  isOver18: boolean("is_over18").notNull(),
+  isOver21: boolean("is_over21").notNull(),
+  
+  // Verification Status
+  status: varchar("status").default("pending"), // "pending", "approved", "rejected", "expired"
+  verifiedBy: varchar("verified_by"), // Staff member who verified
+  verificationDate: timestamp("verification_date"),
+  expiryDate: timestamp("expiry_date"),
+  
+  // Rejection Details
+  rejectionReason: text("rejection_reason"),
+  resubmissionAllowed: boolean("resubmission_allowed").default(true),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Professional Guidelines & Compliance
+export const complianceGuidelines = pgTable("compliance_guidelines", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  
+  // Guideline Info
+  category: varchar("category").notNull(), // Business category
+  title: varchar("title").notNull(),
+  description: text("description").notNull(),
+  
+  // Requirements
+  requirements: jsonb("requirements"), // List of requirements
+  prohibitedContent: jsonb("prohibited_content"), // What's not allowed
+  recommendedPractices: jsonb("recommended_practices"), // Best practices
+  
+  // Compliance Level
+  complianceLevel: varchar("compliance_level").default("standard"),
+  isRequired: boolean("is_required").default(true),
+  
+  // Content
+  fullGuidelines: text("full_guidelines").notNull(),
+  examples: jsonb("examples"), // Good and bad examples
+  resources: jsonb("resources"), // Helpful resources
+  
+  isActive: boolean("is_active").default(true),
+  updatedAt: timestamp("updated_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// ===================== RELATIONS =====================
+
+export const businessProfilesRelations = relations(businessProfiles, ({ one, many }) => ({
+  user: one(users, {
+    fields: [businessProfiles.userId],
+    references: [users.id],
+  }),
+  posts: many(socialMediaPosts),
+  reviews: many(customerReviews),
+}));
+
+export const socialMediaPostsRelations = relations(socialMediaPosts, ({ one }) => ({
+  profile: one(businessProfiles, {
+    fields: [socialMediaPosts.profileId],
+    references: [businessProfiles.id],
+  }),
+  user: one(users, {
+    fields: [socialMediaPosts.userId],
+    references: [users.id],
+  }),
+}));
+
+export const customerReviewsRelations = relations(customerReviews, ({ one }) => ({
+  profile: one(businessProfiles, {
+    fields: [customerReviews.profileId],
+    references: [businessProfiles.id],
+  }),
+  customer: one(users, {
+    fields: [customerReviews.customerId],
+    references: [users.id],
+  }),
+}));
+
+export const ageVerificationsRelations = relations(ageVerifications, ({ one }) => ({
+  user: one(users, {
+    fields: [ageVerifications.userId],
+    references: [users.id],
+  }),
+}));
+
+// ===================== INSERT SCHEMAS =====================
+
+export const insertBusinessProfileSchema = createInsertSchema(businessProfiles);
+export const insertSocialMediaPostSchema = createInsertSchema(socialMediaPosts);
+export const insertMarketingTemplateSchema = createInsertSchema(marketingTemplates);
+export const insertCustomerReviewSchema = createInsertSchema(customerReviews);
+export const insertAgeVerificationSchema = createInsertSchema(ageVerifications);
+export const insertComplianceGuidelineSchema = createInsertSchema(complianceGuidelines);
+
+// ===================== TYPES =====================
+
+export type BusinessProfile = typeof businessProfiles.$inferSelect;
+export type InsertBusinessProfile = typeof businessProfiles.$inferInsert;
+export type SocialMediaPost = typeof socialMediaPosts.$inferSelect;
+export type InsertSocialMediaPost = typeof socialMediaPosts.$inferInsert;
+export type MarketingTemplate = typeof marketingTemplates.$inferSelect;
+export type InsertMarketingTemplate = typeof marketingTemplates.$inferInsert;
+export type CustomerReview = typeof customerReviews.$inferSelect;
+export type InsertCustomerReview = typeof customerReviews.$inferInsert;
+export type AgeVerification = typeof ageVerifications.$inferSelect;
+export type InsertAgeVerification = typeof ageVerifications.$inferInsert;
+export type ComplianceGuideline = typeof complianceGuidelines.$inferSelect;
+export type InsertComplianceGuideline = typeof complianceGuidelines.$inferInsert;
+
 export const insertTransactionSchema = createInsertSchema(transactions).omit({
   id: true,
   createdAt: true,
