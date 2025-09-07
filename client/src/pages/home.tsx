@@ -335,7 +335,7 @@ export default function Home() {
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-muted-foreground" data-testid="user-welcome">
-                Welcome, {user?.firstName || 'Secure User'}
+                Welcome, Secure User
               </span>
               <Button variant="outline" onClick={handleLogout} data-testid="button-logout">
                 Logout
