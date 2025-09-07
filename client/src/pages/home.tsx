@@ -535,6 +535,16 @@ export default function Home() {
                   <strong className="text-red-400 text-xl md:text-3xl animate-bounce">🏠 ALL RENTALS IN ONE PLACE! 🚗</strong>
                 </p>
                 
+                {/* SMART CAR CONTROL HIGHLIGHT */}
+                <div className="bg-gradient-to-r from-red-600/50 to-orange-600/50 border-4 border-red-400/80 rounded-2xl p-6 mb-8 animate-pulse">
+                  <h4 className="text-2xl md:text-4xl font-black text-red-300 mb-4">🚗⚡ SMART CAR CONTROL! ⚡🚗</h4>
+                  <div className="text-white text-lg md:text-xl font-bold">
+                    <strong>YARDFLEX CONTROLS HOW PEOPLE DRIVE YOUR RENTAL CAR!</strong><br/>
+                    Bad driving? Car slows down + Driver gets warning!<br/>
+                    <span className="text-yellow-400">🛡️ PROTECT YOUR CAR FROM DAMAGE! 🛡️</span>
+                  </div>
+                </div>
+                
                 {/* Rental Categories Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
                   <div className="bg-yellow-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-yellow-400/70">

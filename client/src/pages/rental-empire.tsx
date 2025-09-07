@@ -218,6 +218,35 @@ export default function RentalEmpire() {
                 <strong>The moment something becomes available - it's INSTANTLY on YardFlex!</strong><br/>
                 House empty? Store vacant? Car available? Pool ready? It's all here in one place!
               </p>
+              
+              {/* SMART CAR CONTROL SECTION */}
+              <div className="bg-gradient-to-r from-red-600/40 to-orange-600/40 border-2 border-red-400/70 rounded-xl p-6 mb-6">
+                <h4 className="text-2xl font-black text-red-300 mb-4">🚗⚡ SMART CAR CONTROL! ⚡🚗</h4>
+                <div className="space-y-3 text-white">
+                  <div className="flex items-center justify-center space-x-2">
+                    <span>📊</span>
+                    <span><strong>REAL-TIME DRIVER MONITORING</strong></span>
+                  </div>
+                  <div className="flex items-center justify-center space-x-2">
+                    <span>🛑</span>
+                    <span><strong>AUTO-SLOW DOWN BAD DRIVERS</strong></span>
+                  </div>
+                  <div className="flex items-center justify-center space-x-2">
+                    <span>💬</span>
+                    <span><strong>TELL THEM WHAT THEY'RE DOING WRONG</strong></span>
+                  </div>
+                  <div className="flex items-center justify-center space-x-2">
+                    <span>🛡️</span>
+                    <span><strong>PROTECT YOUR CAR FROM DAMAGE</strong></span>
+                  </div>
+                  <div className="bg-yellow-600/40 rounded-lg p-3 mt-4">
+                    <div className="text-sm font-bold text-yellow-200">
+                      ⚡ <strong>YardFlex controls how people drive your rental car!</strong><br/>
+                      Bad driving = Car slows down + Driver gets instant warning!
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <div className="text-center">
                   <div className="text-4xl mb-2">⚡</div>
