@@ -196,6 +196,62 @@ export const securityEvents = pgTable("security_events", {
   resolvedAt: timestamp("resolved_at"),
 });
 
+// CB Radio Channels for driver communication
+export const cbRadioChannels = pgTable("cb_radio_channels", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  channelNumber: integer("channel_number").notNull().unique(), // 1-40 (traditional CB channels)
+  channelName: varchar("channel_name").notNull(), // 'Highway 1', 'Truckers Only', 'Emergency', etc.
+  description: text("description"),
+  isEmergencyChannel: boolean("is_emergency_channel").default(false),
+  isActive: boolean("is_active").default(true),
+  region: varchar("region"), // 'kingston', 'montego_bay', 'nationwide'
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// CB Radio Messages for real-time driver communication
+export const cbRadioMessages = pgTable("cb_radio_messages", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  channelId: varchar("channel_id").references(() => cbRadioChannels.id).notNull(),
+  senderId: varchar("sender_id").references(() => users.id).notNull(),
+  senderCallSign: varchar("sender_call_sign").notNull(), // Driver's CB handle/call sign
+  message: text("message").notNull(),
+  messageType: varchar("message_type").notNull().default('chat'), // 'chat', 'alert', 'emergency', 'traffic_update'
+  priority: varchar("priority").notNull().default('normal'), // 'low', 'normal', 'high', 'emergency'
+  latitude: decimal("latitude", { precision: 10, scale: 8 }),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }),
+  isLocationShared: boolean("is_location_shared").default(false),
+  isRead: boolean("is_read").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("idx_channel_timestamp").on(table.channelId, table.createdAt),
+]);
+
+// Driver CB Radio Profiles
+export const driverCbProfiles = pgTable("driver_cb_profiles", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  driverId: varchar("driver_id").references(() => users.id).notNull().unique(),
+  callSign: varchar("call_sign").notNull().unique(), // Unique CB handle like 'BigRig42', 'YardFlex1'
+  preferredChannels: jsonb("preferred_channels"), // Array of channel IDs they monitor
+  currentChannelId: varchar("current_channel_id").references(() => cbRadioChannels.id),
+  isOnline: boolean("is_online").default(false),
+  lastActivity: timestamp("last_activity").defaultNow(),
+  totalMessages: integer("total_messages").default(0),
+  reputation: decimal("reputation", { precision: 5, scale: 2 }).default('5.0'), // 1.0-5.0 rating
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// CB Radio Channel Subscriptions (which drivers are listening to which channels)
+export const cbChannelSubscriptions = pgTable("cb_channel_subscriptions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  driverId: varchar("driver_id").references(() => users.id).notNull(),
+  channelId: varchar("channel_id").references(() => cbRadioChannels.id).notNull(),
+  isActive: boolean("is_active").default(true),
+  joinedAt: timestamp("joined_at").defaultNow(),
+}, (table) => [
+  index("idx_driver_channel").on(table.driverId, table.channelId),
+]);
+
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
 export type InsertTransaction = typeof transactions.$inferInsert;
@@ -216,6 +272,14 @@ export type InsertUserDevice = typeof userDevices.$inferInsert;
 export type UserDevice = typeof userDevices.$inferSelect;
 export type InsertAuthenticationLog = typeof authenticationLogs.$inferInsert;
 export type AuthenticationLog = typeof authenticationLogs.$inferSelect;
+export type InsertCbRadioChannel = typeof cbRadioChannels.$inferInsert;
+export type CbRadioChannel = typeof cbRadioChannels.$inferSelect;
+export type InsertCbRadioMessage = typeof cbRadioMessages.$inferInsert;
+export type CbRadioMessage = typeof cbRadioMessages.$inferSelect;
+export type InsertDriverCbProfile = typeof driverCbProfiles.$inferInsert;
+export type DriverCbProfile = typeof driverCbProfiles.$inferSelect;
+export type InsertCbChannelSubscription = typeof cbChannelSubscriptions.$inferInsert;
+export type CbChannelSubscription = typeof cbChannelSubscriptions.$inferSelect;
 
 export const insertTransactionSchema = createInsertSchema(transactions).omit({
   id: true,
@@ -263,4 +327,25 @@ export const insertUserDeviceSchema = createInsertSchema(userDevices).omit({
 export const insertAuthenticationLogSchema = createInsertSchema(authenticationLogs).omit({
   id: true,
   createdAt: true,
+});
+
+export const insertCbRadioChannelSchema = createInsertSchema(cbRadioChannels).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertCbRadioMessageSchema = createInsertSchema(cbRadioMessages).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertDriverCbProfileSchema = createInsertSchema(driverCbProfiles).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertCbChannelSubscriptionSchema = createInsertSchema(cbChannelSubscriptions).omit({
+  id: true,
+  joinedAt: true,
 });
