@@ -526,6 +526,37 @@ export default function Home() {
                     <span className="text-yellow-400">🌟 ONE PLATFORM, ALL BUSINESSES! 🌟</span>
                   </div>
                 </div>
+
+                {/* GAS STATION PAYMENT SYSTEM */}
+                <div className="bg-gradient-to-r from-blue-600/50 to-green-600/50 border-4 border-blue-400/80 rounded-2xl p-6 mb-8 animate-bounce">
+                  <h4 className="text-2xl md:text-4xl font-black text-blue-300 mb-4">⛽ GAS STATION PAYMENTS! ⛽</h4>
+                  <div className="space-y-4">
+                    <div className="text-white text-lg md:text-xl font-bold text-center">
+                      <strong>SCAN → PAY → DONE!</strong><br/>
+                      <strong className="text-yellow-400">ONE PAYMENT SYSTEM FOR ALL GAS STATIONS!</strong>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="bg-blue-600/40 rounded-lg p-3 text-center">
+                        <div className="text-3xl mb-2">📱</div>
+                        <div className="text-sm font-bold text-blue-200">SCAN QR CODE</div>
+                      </div>
+                      <div className="bg-green-600/40 rounded-lg p-3 text-center">
+                        <div className="text-3xl mb-2">💳</div>
+                        <div className="text-sm font-bold text-green-200">INSTANT PAYMENT</div>
+                      </div>
+                      <div className="bg-purple-600/40 rounded-lg p-3 text-center">
+                        <div className="text-3xl mb-2">⛽</div>
+                        <div className="text-sm font-bold text-purple-200">GAS DELIVERED</div>
+                      </div>
+                    </div>
+                    <div className="bg-yellow-600/40 rounded-lg p-3 text-center">
+                      <div className="text-sm font-bold text-yellow-200">
+                        📧 <strong>SIMPLE SETUP:</strong> Send email → Get contact → Add to system → START EARNING!<br/>
+                        ⛽ <strong>ALL GAS STATIONS can join YardFlex payment system!</strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 
                 <div className="text-center">
                   <Button 
