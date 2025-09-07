@@ -493,6 +493,90 @@ export default function Home() {
           </Card>
         </div>
 
+        {/* ========== RENTAL EMPIRE CONTROLS EVERYTHING! ========== */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-br from-green-900/95 via-blue-900/95 to-purple-900/95 border-8 border-yellow-400/100 relative overflow-hidden min-h-[600px] shadow-2xl shadow-green-500/80" data-testid="mega-rental-empire-section">
+            {/* EXPLOSIVE Animated Background */}
+            <div className="absolute inset-0 opacity-30">
+              <div className="absolute top-4 left-4 text-8xl animate-bounce">🏠</div>
+              <div className="absolute top-4 right-4 text-8xl animate-pulse">🚗</div>
+              <div className="absolute bottom-4 left-4 text-8xl animate-bounce delay-300">🏢</div>
+              <div className="absolute bottom-4 right-4 text-8xl animate-pulse delay-500">🏊‍♀️</div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-12xl animate-pulse delay-200">⚡</div>
+            </div>
+            
+            <CardHeader className="relative z-10 pb-8">
+              <CardTitle className="text-center space-y-6">
+                <div className="text-4xl md:text-8xl font-black text-yellow-400 animate-pulse leading-tight">
+                  🏠 YARDFLEX RENTAL EMPIRE! 🚗
+                </div>
+                <div className="text-2xl md:text-6xl font-black text-green-300 animate-bounce leading-tight">
+                  CONTROLS EVERYTHING IN JAMAICA!
+                </div>
+                <div className="text-xl md:text-4xl font-black text-white animate-pulse">
+                  HOUSES • CARS • STORES • APARTMENTS • POOLS!
+                </div>
+                <div className="text-lg md:text-3xl font-black text-blue-400 animate-bounce">
+                  ⚡ INSTANT AVAILABILITY - EMPTY = AVAILABLE NOW! ⚡
+                </div>
+              </CardTitle>
+            </CardHeader>
+            
+            <CardContent className="relative z-10 space-y-6">
+              <div className="bg-gradient-to-r from-green-600/50 to-blue-600/50 border-2 border-green-400/70 rounded-2xl p-8 text-center shadow-2xl shadow-green-500/30">
+                <h3 className="text-2xl md:text-5xl font-black text-green-300 mb-6 animate-pulse leading-tight">
+                  🎯 THE MOMENT SOMETHING BECOMES EMPTY! 🎯
+                </h3>
+                <p className="text-white text-lg md:text-2xl mb-8 font-bold leading-relaxed">
+                  <strong className="text-yellow-400">HOUSE EMPTY?</strong> → Instantly available on YardFlex!<br/>
+                  <strong className="text-blue-400">STORE VACANT?</strong> → Immediately listed for rental!<br/>
+                  <strong className="text-green-400">CAR AVAILABLE?</strong> → Right away on the platform!<br/>
+                  <strong className="text-purple-400">POOL READY?</strong> → Boom! Available to rent!<br/>
+                  <strong className="text-red-400 text-xl md:text-3xl animate-bounce">🏠 ALL RENTALS IN ONE PLACE! 🚗</strong>
+                </p>
+                
+                {/* Rental Categories Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                  <div className="bg-yellow-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-yellow-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-bounce">🏠</div>
+                    <div className="text-lg md:text-xl font-black text-yellow-300">HOUSES</div>
+                  </div>
+                  <div className="bg-blue-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-blue-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-pulse">🚗</div>
+                    <div className="text-lg md:text-xl font-black text-blue-300">CARS</div>
+                  </div>
+                  <div className="bg-purple-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-purple-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-bounce delay-200">🏢</div>
+                    <div className="text-lg md:text-xl font-black text-purple-300">STORES</div>
+                  </div>
+                  <div className="bg-green-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-green-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-pulse delay-300">🏠</div>
+                    <div className="text-lg md:text-xl font-black text-green-300">APARTMENTS</div>
+                  </div>
+                  <div className="bg-cyan-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-cyan-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-bounce delay-400">🏊‍♀️</div>
+                    <div className="text-lg md:text-xl font-black text-cyan-300">POOLS</div>
+                  </div>
+                  <div className="bg-orange-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-orange-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-pulse delay-500">🔧</div>
+                    <div className="text-lg md:text-xl font-black text-orange-300">EVERYTHING</div>
+                  </div>
+                </div>
+                
+                <div className="text-center">
+                  <Button 
+                    onClick={() => setLocation('/rental-empire')}
+                    className="bg-gradient-to-r from-yellow-600 to-green-600 hover:from-yellow-700 hover:to-green-700 text-white text-3xl px-12 py-6 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-yellow-400/80"
+                    data-testid="button-enter-rental-empire-mega"
+                  >
+                    🏠 ENTER RENTAL EMPIRE NOW! 🚗
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* ========== ABSOLUTELY EXPLOSIVE SOCIAL COMMERCE - TAKING OVER THE ENTIRE PAGE! ========== */}
         <div className="mb-20">
           <Card className="bg-gradient-to-br from-pink-900/95 via-purple-900/95 via-red-900/95 to-orange-900/95 border-8 border-pink-400/100 relative overflow-hidden min-h-[1800px] shadow-2xl shadow-pink-500/80" data-testid="mega-social-commerce-explosion">
