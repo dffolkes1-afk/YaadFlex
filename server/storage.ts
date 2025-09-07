@@ -11,6 +11,12 @@ import {
   cbRadioMessages,
   driverCbProfiles,
   cbChannelSubscriptions,
+  serviceCategories,
+  serviceProviders,
+  serviceRequests,
+  serviceQuotes,
+  toolEquipment,
+  serviceReviews,
   type User,
   type UpsertUser,
   type Transaction,
@@ -35,6 +41,18 @@ import {
   type InsertDriverCbProfile,
   type CbChannelSubscription,
   type InsertCbChannelSubscription,
+  type ServiceCategory,
+  type InsertServiceCategory,
+  type ServiceProvider,
+  type InsertServiceProvider,
+  type ServiceRequest,
+  type InsertServiceRequest,
+  type ServiceQuote,
+  type InsertServiceQuote,
+  type ToolEquipment,
+  type InsertToolEquipment,
+  type ServiceReview,
+  type InsertServiceReview,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
@@ -98,6 +116,25 @@ export interface IStorage {
   updateDriverCbProfile(driverId: string, updateData: Partial<DriverCbProfile>): Promise<DriverCbProfile>;
   getCbRadioMessages(channelId: string, limit?: number): Promise<CbRadioMessage[]>;
   getOnlineDriversInChannel(channelId: string): Promise<DriverCbProfile[]>;
+  
+  // Services Marketplace operations
+  getServiceCategories(): Promise<ServiceCategory[]>;
+  createServiceCategory(category: InsertServiceCategory): Promise<ServiceCategory>;
+  getServiceProviders(categoryId?: string): Promise<ServiceProvider[]>;
+  createServiceProvider(provider: InsertServiceProvider): Promise<ServiceProvider>;
+  getServiceProvider(id: string): Promise<ServiceProvider | undefined>;
+  updateServiceProvider(id: string, updateData: Partial<ServiceProvider>): Promise<ServiceProvider>;
+  getServiceRequests(userId?: string, status?: string): Promise<ServiceRequest[]>;
+  createServiceRequest(request: InsertServiceRequest): Promise<ServiceRequest>;
+  getServiceRequest(id: string): Promise<ServiceRequest | undefined>;
+  updateServiceRequestStatus(id: string, status: string, providerId?: string): Promise<ServiceRequest>;
+  getServiceQuotes(requestId: string): Promise<ServiceQuote[]>;
+  createServiceQuote(quote: InsertServiceQuote): Promise<ServiceQuote>;
+  acceptServiceQuote(quoteId: string): Promise<ServiceQuote>;
+  getToolEquipment(ownerId?: string): Promise<ToolEquipment[]>;
+  createToolEquipment(tool: InsertToolEquipment): Promise<ToolEquipment>;
+  getServiceReviews(providerId?: string): Promise<ServiceReview[]>;
+  createServiceReview(review: InsertServiceReview): Promise<ServiceReview>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -523,6 +560,177 @@ export class DatabaseStorage implements IStorage {
         eq(driverCbProfiles.isOnline, true)
       ))
       .then(results => results.map(row => row.driver_cb_profiles));
+  }
+
+  // Services Marketplace operations
+  async getServiceCategories(): Promise<ServiceCategory[]> {
+    return await db
+      .select()
+      .from(serviceCategories)
+      .where(eq(serviceCategories.isActive, true))
+      .orderBy(serviceCategories.name);
+  }
+
+  async createServiceCategory(categoryData: InsertServiceCategory): Promise<ServiceCategory> {
+    const [category] = await db
+      .insert(serviceCategories)
+      .values(categoryData)
+      .returning();
+    return category;
+  }
+
+  async getServiceProviders(categoryId?: string): Promise<ServiceProvider[]> {
+    const query = db.select().from(serviceProviders);
+    
+    if (categoryId) {
+      // Join with service requests to filter by category
+      return await db
+        .selectDistinct()
+        .from(serviceProviders)
+        .innerJoin(serviceRequests, eq(serviceProviders.id, serviceRequests.providerId))
+        .where(and(
+          eq(serviceRequests.categoryId, categoryId),
+          eq(serviceProviders.isActive, true)
+        ));
+    }
+    
+    return await query
+      .where(eq(serviceProviders.isActive, true))
+      .orderBy(desc(serviceProviders.rating));
+  }
+
+  async createServiceProvider(providerData: InsertServiceProvider): Promise<ServiceProvider> {
+    const [provider] = await db
+      .insert(serviceProviders)
+      .values(providerData)
+      .returning();
+    return provider;
+  }
+
+  async getServiceProvider(id: string): Promise<ServiceProvider | undefined> {
+    const [provider] = await db
+      .select()
+      .from(serviceProviders)
+      .where(eq(serviceProviders.id, id));
+    return provider;
+  }
+
+  async updateServiceProvider(id: string, updateData: Partial<ServiceProvider>): Promise<ServiceProvider> {
+    const [provider] = await db
+      .update(serviceProviders)
+      .set({ ...updateData, updatedAt: new Date() })
+      .where(eq(serviceProviders.id, id))
+      .returning();
+    return provider;
+  }
+
+  async getServiceRequests(userId?: string, status?: string): Promise<ServiceRequest[]> {
+    let query = db.select().from(serviceRequests);
+    
+    const conditions = [];
+    if (userId) conditions.push(eq(serviceRequests.customerId, userId));
+    if (status) conditions.push(eq(serviceRequests.status, status));
+    
+    if (conditions.length > 0) {
+      query = query.where(and(...conditions));
+    }
+    
+    return await query.orderBy(desc(serviceRequests.createdAt));
+  }
+
+  async createServiceRequest(requestData: InsertServiceRequest): Promise<ServiceRequest> {
+    const [request] = await db
+      .insert(serviceRequests)
+      .values(requestData)
+      .returning();
+    return request;
+  }
+
+  async getServiceRequest(id: string): Promise<ServiceRequest | undefined> {
+    const [request] = await db
+      .select()
+      .from(serviceRequests)
+      .where(eq(serviceRequests.id, id));
+    return request;
+  }
+
+  async updateServiceRequestStatus(id: string, status: string, providerId?: string): Promise<ServiceRequest> {
+    const updateData: any = { status, updatedAt: new Date() };
+    if (providerId) updateData.providerId = providerId;
+    
+    const [request] = await db
+      .update(serviceRequests)
+      .set(updateData)
+      .where(eq(serviceRequests.id, id))
+      .returning();
+    return request;
+  }
+
+  async getServiceQuotes(requestId: string): Promise<ServiceQuote[]> {
+    return await db
+      .select()
+      .from(serviceQuotes)
+      .where(eq(serviceQuotes.requestId, requestId))
+      .orderBy(serviceQuotes.amount);
+  }
+
+  async createServiceQuote(quoteData: InsertServiceQuote): Promise<ServiceQuote> {
+    const [quote] = await db
+      .insert(serviceQuotes)
+      .values(quoteData)
+      .returning();
+    return quote;
+  }
+
+  async acceptServiceQuote(quoteId: string): Promise<ServiceQuote> {
+    const [quote] = await db
+      .update(serviceQuotes)
+      .set({ isAccepted: true })
+      .where(eq(serviceQuotes.id, quoteId))
+      .returning();
+    return quote;
+  }
+
+  async getToolEquipment(ownerId?: string): Promise<ToolEquipment[]> {
+    const query = db.select().from(toolEquipment);
+    
+    if (ownerId) {
+      return await query
+        .where(eq(toolEquipment.ownerId, ownerId))
+        .orderBy(desc(toolEquipment.createdAt));
+    }
+    
+    return await query
+      .where(eq(toolEquipment.isAvailable, true))
+      .orderBy(toolEquipment.dailyRate);
+  }
+
+  async createToolEquipment(toolData: InsertToolEquipment): Promise<ToolEquipment> {
+    const [tool] = await db
+      .insert(toolEquipment)
+      .values(toolData)
+      .returning();
+    return tool;
+  }
+
+  async getServiceReviews(providerId?: string): Promise<ServiceReview[]> {
+    const query = db.select().from(serviceReviews);
+    
+    if (providerId) {
+      return await query
+        .where(eq(serviceReviews.providerId, providerId))
+        .orderBy(desc(serviceReviews.createdAt));
+    }
+    
+    return await query.orderBy(desc(serviceReviews.createdAt));
+  }
+
+  async createServiceReview(reviewData: InsertServiceReview): Promise<ServiceReview> {
+    const [review] = await db
+      .insert(serviceReviews)
+      .values(reviewData)
+      .returning();
+    return review;
   }
 }
 
