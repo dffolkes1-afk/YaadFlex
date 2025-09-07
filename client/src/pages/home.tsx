@@ -647,7 +647,17 @@ export default function Home() {
                         <span>🚫</span>
                         <span><strong>NO KIDS - Protected Space</strong></span>
                       </div>
-                      <div className="bg-yellow-600/40 rounded-lg p-3 mt-4">
+                      <div className="bg-red-600/40 rounded-lg p-3 mt-2">
+                        <div className="text-sm font-bold text-red-300">
+                          🎯 <strong>SMART ALGORITHM:</strong> Only shown to adults who want to see it
+                        </div>
+                      </div>
+                      <div className="bg-green-600/40 rounded-lg p-3 mt-2">
+                        <div className="text-sm font-bold text-green-300">
+                          ✅ <strong>RIGHT PEOPLE:</strong> Perfect filtering - not like Facebook
+                        </div>
+                      </div>
+                      <div className="bg-yellow-600/40 rounded-lg p-3 mt-2">
                         <div className="text-sm font-bold text-yellow-200">
                           Special guidelines provided for clean, professional business conduct
                         </div>
