@@ -495,7 +495,7 @@ export default function Home() {
 
         {/* ========== ABSOLUTELY EXPLOSIVE SOCIAL COMMERCE - TAKING OVER THE ENTIRE PAGE! ========== */}
         <div className="mb-20">
-          <Card className="bg-gradient-to-br from-pink-900/90 via-purple-900/90 via-red-900/90 to-orange-900/90 border-8 border-pink-400/95 relative overflow-hidden min-h-[1600px] shadow-2xl shadow-pink-500/60" data-testid="mega-social-commerce-explosion">
+          <Card className="bg-gradient-to-br from-pink-900/95 via-purple-900/95 via-red-900/95 to-orange-900/95 border-8 border-pink-400/100 relative overflow-hidden min-h-[1800px] shadow-2xl shadow-pink-500/80" data-testid="mega-social-commerce-explosion">
             {/* ABSOLUTELY EXPLOSIVE Animated Background - EVERYWHERE! */}
             <div className="absolute inset-0 opacity-40">
               <div className="absolute top-4 left-4 text-9xl animate-bounce">🔥</div>
@@ -575,36 +575,43 @@ export default function Home() {
                   </div>
                 </div>
                 
-                {/* VIRAL MESSAGING SECTION */}
-                <div className="bg-gradient-to-r from-yellow-600/40 to-orange-600/40 border-2 border-yellow-400/60 rounded-2xl p-8 mb-8 shadow-2xl shadow-yellow-500/30">
-                  <h4 className="text-6xl font-black text-yellow-300 mb-6 animate-pulse text-center">
+                {/* ABSOLUTELY EXPLOSIVE VIRAL MESSAGING SECTION */}
+                <div className="bg-gradient-to-r from-yellow-600/60 to-orange-600/60 border-4 border-yellow-400/80 rounded-2xl p-12 mb-12 shadow-2xl shadow-yellow-500/50">
+                  <h4 className="text-4xl md:text-8xl font-black text-yellow-300 mb-8 animate-pulse text-center leading-tight">
                     📢 YOUR BUSINESS EVERYWHERE! 📢
                   </h4>
-                  <div className="text-center space-y-4">
-                    <div className="text-2xl font-bold text-white animate-bounce">
+                  <div className="text-center space-y-6">
+                    <div className="text-xl md:text-4xl font-bold text-white animate-bounce bg-blue-600/40 rounded-xl p-4 border-2 border-blue-400/70">
                       🗣️ <strong>FACEBOOK TELLING PEOPLE ABOUT YOU!</strong> 🗣️
                     </div>
-                    <div className="text-2xl font-bold text-white animate-pulse">
+                    <div className="text-xl md:text-4xl font-bold text-white animate-pulse bg-purple-600/40 rounded-xl p-4 border-2 border-purple-400/70">
                       📸 <strong>INSTAGRAM SHOWING YOUR AMAZING WORK!</strong> 📸
                     </div>
-                    <div className="text-2xl font-bold text-white animate-bounce delay-200">
+                    <div className="text-xl md:text-4xl font-bold text-white animate-bounce delay-200 bg-pink-600/40 rounded-xl p-4 border-2 border-pink-400/70">
                       🎵 <strong>TIKTOK MAKING YOU FAMOUS!</strong> 🎵
                     </div>
-                    <div className="text-2xl font-bold text-white animate-pulse delay-300">
+                    <div className="text-xl md:text-4xl font-bold text-white animate-pulse delay-300 bg-cyan-600/40 rounded-xl p-4 border-2 border-cyan-400/70">
                       📧 <strong>TELEGRAM BRINGING CUSTOMERS TO YOU!</strong> 📧
                     </div>
-                    <div className="text-4xl font-black text-orange-300 animate-bounce mt-6">
+                    <div className="text-3xl md:text-6xl font-black text-orange-300 animate-bounce mt-8 bg-orange-600/40 rounded-2xl p-6 border-4 border-orange-400/80">
                       🌍 <strong>ALL OVER THE PLACE!</strong> 🌍
+                    </div>
+                    <div className="text-2xl md:text-5xl font-black text-red-300 animate-pulse mt-6 bg-red-600/40 rounded-2xl p-6 border-4 border-red-400/80">
+                      🗣️ <strong>TELLING EVERYONE ABOUT ITSELF!</strong> 🗣️
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* EVERYONE WELCOME SECTION */}
-              <div className="bg-gradient-to-r from-green-600/40 to-emerald-600/40 border border-green-400/50 rounded-2xl p-8">
-                <h3 className="text-4xl font-black text-green-300 mb-6 text-center animate-bounce">
+              {/* EVERYONE WELCOME SECTION - MAXIMUM EXCITEMENT */}
+              <div className="bg-gradient-to-r from-green-600/60 to-emerald-600/60 border-4 border-green-400/80 rounded-2xl p-12 mb-12">
+                <h3 className="text-3xl md:text-7xl font-black text-green-300 mb-8 text-center animate-bounce leading-tight">
                   🌈 EVERYBODY CAN BE ON IT! 🌈
                 </h3>
+                <div className="text-center text-2xl md:text-4xl font-bold text-white mb-8 animate-pulse">
+                  <strong>ONCE YOU'RE WILLING TO BE AWESOME!</strong><br/>
+                  <strong>EVERYBODY YOU HAVE PAID FOR!</strong>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   
                   {/* Regular Services */}
@@ -706,15 +713,27 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* EXCITEMENT FOOTER */}
-              <div className="text-center bg-black/40 rounded-2xl p-8">
-                <h4 className="text-3xl font-black text-yellow-400 mb-4 animate-pulse">
+              {/* MEGA EXPLOSIVE EXCITEMENT FOOTER */}
+              <div className="text-center bg-black/60 rounded-2xl p-12 border-4 border-yellow-400/80 shadow-2xl shadow-yellow-500/50">
+                <h4 className="text-2xl md:text-6xl font-black text-yellow-400 mb-6 animate-pulse leading-tight">
                   🌟 YOUR BUSINESS WILL BE EVERYWHERE! 🌟
                 </h4>
-                <p className="text-xl text-white leading-relaxed">
-                  <strong>Facebook telling people about you! Instagram showing your work!</strong><br/>
-                  <strong>TikTok making you famous! Telegram bringing customers!</strong><br/>
-                  <strong>ALL OVER THE PLACE - YOUR BUSINESS TALKING TO THE WORLD!</strong>
+                <p className="text-lg md:text-3xl text-white leading-relaxed font-bold space-y-3">
+                  <div className="animate-bounce bg-blue-600/30 rounded-xl p-3 mb-3">
+                    <strong>📘 FACEBOOK TELLING PEOPLE ABOUT YOU!</strong>
+                  </div>
+                  <div className="animate-pulse bg-purple-600/30 rounded-xl p-3 mb-3">
+                    <strong>📸 INSTAGRAM SHOWING YOUR WORK!</strong>
+                  </div>
+                  <div className="animate-bounce bg-pink-600/30 rounded-xl p-3 mb-3">
+                    <strong>🎵 TIKTOK MAKING YOU FAMOUS!</strong>
+                  </div>
+                  <div className="animate-pulse bg-cyan-600/30 rounded-xl p-3 mb-3">
+                    <strong>📧 TELEGRAM BRINGING CUSTOMERS!</strong>
+                  </div>
+                  <div className="text-xl md:text-5xl font-black text-red-400 animate-bounce mt-6 bg-red-600/40 rounded-2xl p-6">
+                    🗣️ <strong>ALL OVER THE PLACE - YOUR BUSINESS TALKING TO THE WORLD!</strong> 🗣️
+                  </div>
                 </p>
               </div>
               
