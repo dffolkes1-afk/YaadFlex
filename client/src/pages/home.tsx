@@ -321,7 +321,10 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen text-foreground relative">
+      {/* Starfield Background */}
+      <div className="starfield fixed inset-0 z-0"></div>
+      
       {/* Global Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-r from-green-900/20 to-yellow-900/20 border-b border-yellow-500/30">
         <div className="relative">
