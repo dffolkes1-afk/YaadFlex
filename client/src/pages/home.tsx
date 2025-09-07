@@ -493,6 +493,97 @@ export default function Home() {
           </Card>
         </div>
 
+        {/* ========== UNIVERSAL BOOKING PLATFORM - EVERYTHING! ========== */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-br from-purple-900/95 via-pink-900/95 to-red-900/95 border-8 border-purple-400/100 relative overflow-hidden min-h-[700px] shadow-2xl shadow-purple-500/80" data-testid="mega-booking-platform-section">
+            {/* EXPLOSIVE Animated Background */}
+            <div className="absolute inset-0 opacity-30">
+              <div className="absolute top-4 left-4 text-8xl animate-bounce">🎭</div>
+              <div className="absolute top-4 right-4 text-8xl animate-pulse">✈️</div>
+              <div className="absolute bottom-4 left-4 text-8xl animate-bounce delay-300">🏨</div>
+              <div className="absolute bottom-4 right-4 text-8xl animate-pulse delay-500">🎉</div>
+              <div className="absolute top-1/3 left-1/6 text-7xl animate-spin slow-spin">🎵</div>
+              <div className="absolute bottom-1/3 right-1/6 text-7xl animate-bounce delay-700">📅</div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-12xl animate-pulse delay-200">🌟</div>
+            </div>
+            
+            <CardHeader className="relative z-10 pb-8">
+              <CardTitle className="text-center space-y-6">
+                <div className="text-4xl md:text-8xl font-black text-purple-400 animate-pulse leading-tight">
+                  📅 YARDFLEX BOOKS EVERYTHING! 📅
+                </div>
+                <div className="text-2xl md:text-6xl font-black text-pink-300 animate-bounce leading-tight">
+                  THE ULTIMATE BOOKING PLATFORM!
+                </div>
+                <div className="text-xl md:text-4xl font-black text-white animate-pulse">
+                  ENTERTAINERS • HOTELS • FLIGHTS • PARTIES!
+                </div>
+                <div className="text-lg md:text-3xl font-black text-red-400 animate-bounce">
+                  📅 BOOK EVERYTHING IN ONE PLACE! 📅
+                </div>
+              </CardTitle>
+            </CardHeader>
+            
+            <CardContent className="relative z-10 space-y-6">
+              <div className="bg-gradient-to-r from-purple-600/50 to-pink-600/50 border-2 border-purple-400/70 rounded-2xl p-8 text-center shadow-2xl shadow-purple-500/30">
+                <h3 className="text-2xl md:text-5xl font-black text-purple-300 mb-6 animate-pulse leading-tight">
+                  🎯 WANT TO BOOK SOMETHING? IT'S HERE! 🎯
+                </h3>
+                <p className="text-white text-lg md:text-2xl mb-8 font-bold leading-relaxed">
+                  <strong className="text-yellow-400">NEED ENTERTAINER?</strong> → Book on YardFlex!<br/>
+                  <strong className="text-blue-400">WANT HOTEL ROOM?</strong> → Book here!<br/>
+                  <strong className="text-green-400">NEED PLANE TICKET?</strong> → Book right here!<br/>
+                  <strong className="text-purple-400">PLANNING PARTY?</strong> → Book everything here!<br/>
+                  <strong className="text-red-400 text-xl md:text-3xl animate-bounce">📅 ALL BOOKINGS IN ONE PLACE! 📅</strong>
+                </p>
+                
+                {/* Booking Categories Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                  <div className="bg-purple-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-purple-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-bounce">🎭</div>
+                    <div className="text-lg md:text-xl font-black text-purple-300">ENTERTAINERS</div>
+                    <div className="text-sm text-purple-200">DJs, Models, Performers</div>
+                  </div>
+                  <div className="bg-blue-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-blue-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-pulse">✈️</div>
+                    <div className="text-lg md:text-xl font-black text-blue-300">TRAVEL</div>
+                    <div className="text-sm text-blue-200">Hotels, Flights, Packages</div>
+                  </div>
+                  <div className="bg-pink-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-pink-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-bounce delay-200">🎉</div>
+                    <div className="text-lg md:text-xl font-black text-pink-300">PARTIES</div>
+                    <div className="text-sm text-pink-200">Complete Party Setup</div>
+                  </div>
+                  <div className="bg-green-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-green-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-pulse delay-300">🎵</div>
+                    <div className="text-lg md:text-xl font-black text-green-300">SOUND</div>
+                    <div className="text-sm text-green-200">Sound Systems, Equipment</div>
+                  </div>
+                </div>
+                
+                <div className="bg-gradient-to-r from-yellow-600/50 to-orange-600/50 border-4 border-yellow-400/80 rounded-2xl p-6 mb-8 animate-pulse">
+                  <h4 className="text-2xl md:text-4xl font-black text-yellow-300 mb-4">📅 ONE PLACE FOR EVERYTHING! 📅</h4>
+                  <div className="text-white text-lg md:text-xl font-bold">
+                    <strong>YARDFLEX IS THE BOOKING PLATFORM FOR ALL JAMAICA!</strong><br/>
+                    Need anything? Book it here! We have EVERYTHING!<br/>
+                    <span className="text-yellow-400">🌟 ALL BOOKINGS, ONE APP! 🌟</span>
+                  </div>
+                </div>
+                
+                <div className="text-center">
+                  <Button 
+                    onClick={() => setLocation('/bookings')}
+                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-3xl px-12 py-6 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-purple-400/80"
+                    data-testid="button-enter-booking-platform"
+                  >
+                    📅 BOOK EVERYTHING NOW! 📅
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* ========== RENTAL EMPIRE CONTROLS EVERYTHING! ========== */}
         <div className="mb-8">
           <Card className="bg-gradient-to-br from-green-900/95 via-blue-900/95 to-purple-900/95 border-8 border-yellow-400/100 relative overflow-hidden min-h-[600px] shadow-2xl shadow-green-500/80" data-testid="mega-rental-empire-section">
