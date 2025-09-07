@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { isUnauthorizedError } from "@/lib/authUtils";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -36,6 +37,7 @@ export default function Home() {
   const { user } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [, setLocation] = useLocation();
   const [beastModeActive, setBeastModeActive] = useState(false);
 
   // Transaction form state
@@ -241,13 +243,52 @@ export default function Home() {
                     Status: {beastModeActive ? "🟢 ACTIVE" : "🔴 STANDBY"}
                   </div>
                 </div>
+                <div className="flex space-x-3">
+                  <Button 
+                    onClick={() => setLocation('/tracking')}
+                    className="bg-green-600 text-white hover:bg-green-700 font-bold"
+                    data-testid="button-view-tracking"
+                  >
+                    🗺️ VIEW TRACKING
+                  </Button>
+                  <Button 
+                    onClick={() => activateBeastModeMutation.mutate()}
+                    disabled={activateBeastModeMutation.isPending || beastModeActive}
+                    className="bg-accent text-accent-foreground hover:bg-accent/90 font-bold"
+                    data-testid="button-activate-beast-mode"
+                  >
+                    {beastModeActive ? "🛡️ ACTIVE" : "⚡ ACTIVATE"}
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Global Tracking Alert */}
+          <Card className="mb-8 bg-gradient-to-r from-green-900/30 to-blue-900/30 border-green-500/30" data-testid="tracking-alert-card">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2 text-green-400">
+                <span className="text-2xl">🛡️</span>
+                <span>Revolutionary Global Tracking System</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-green-300 mb-2">
+                    Real-time vehicle tracking with security twice as powerful as Interpol. 
+                    Complete transparency - anyone can see public trip movements for ultimate safety.
+                  </p>
+                  <div className="text-sm text-green-400 font-semibold">
+                    🚨 INTERPOL+ SECURITY ACTIVE
+                  </div>
+                </div>
                 <Button 
-                  onClick={() => activateBeastModeMutation.mutate()}
-                  disabled={activateBeastModeMutation.isPending || beastModeActive}
-                  className="bg-accent text-accent-foreground hover:bg-accent/90 font-bold"
-                  data-testid="button-activate-beast-mode"
+                  onClick={() => setLocation('/tracking')}
+                  className="bg-green-600 text-white hover:bg-green-700 font-bold text-lg px-6 py-3"
+                  data-testid="button-access-tracking"
                 >
-                  {beastModeActive ? "🛡️ ACTIVE" : "⚡ ACTIVATE"}
+                  🌍 ACCESS TRACKING
                 </Button>
               </div>
             </CardContent>
