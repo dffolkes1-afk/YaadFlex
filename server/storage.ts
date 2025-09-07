@@ -1,6 +1,7 @@
 import {
   users,
   transactions,
+  userWallets,
   securityLogs,
   vehicles,
   trips,
@@ -10,6 +11,8 @@ import {
   type UpsertUser,
   type Transaction,
   type InsertTransaction,
+  type UserWallet,
+  type InsertUserWallet,
   type SecurityLog,
   type InsertSecurityLog,
   type Vehicle,
@@ -36,6 +39,14 @@ export interface IStorage {
   getUserTransactions(userId: string): Promise<Transaction[]>;
   getTransaction(id: string): Promise<Transaction | undefined>;
   updateTransactionStatus(id: string, status: string): Promise<Transaction>;
+  
+  // Wallet operations (KWD/YFD Currency System)
+  createWallet(wallet: InsertUserWallet): Promise<UserWallet>;
+  getUserWallets(userId: string): Promise<UserWallet[]>;
+  getUserWalletByCurrency(userId: string, currency: string): Promise<UserWallet | undefined>;
+  updateWalletBalance(userId: string, currency: string, amount: number): Promise<UserWallet>;
+  addKWDFunds(userId: string, amount: number): Promise<{ wallet: UserWallet; transaction: Transaction }>;
+  exchangeCurrency(userId: string, fromCurrency: string, toCurrency: string, amount: number): Promise<{ transaction: Transaction; fromWallet: UserWallet; toWallet: UserWallet }>;
   
   // Security operations
   logSecurityEvent(log: InsertSecurityLog): Promise<SecurityLog>;
@@ -124,6 +135,118 @@ export class DatabaseStorage implements IStorage {
       .where(eq(transactions.id, id))
       .returning();
     return transaction;
+  }
+
+  // Wallet operations (KWD/YFD Currency System)
+  async createWallet(walletData: InsertUserWallet): Promise<UserWallet> {
+    const [wallet] = await db
+      .insert(userWallets)
+      .values(walletData)
+      .returning();
+    return wallet;
+  }
+
+  async getUserWallets(userId: string): Promise<UserWallet[]> {
+    return await db
+      .select()
+      .from(userWallets)
+      .where(and(
+        eq(userWallets.userId, userId),
+        eq(userWallets.isActive, true)
+      ))
+      .orderBy(desc(userWallets.updatedAt));
+  }
+
+  async getUserWalletByCurrency(userId: string, currency: string): Promise<UserWallet | undefined> {
+    const [wallet] = await db
+      .select()
+      .from(userWallets)
+      .where(and(
+        eq(userWallets.userId, userId),
+        eq(userWallets.currency, currency),
+        eq(userWallets.isActive, true)
+      ));
+    return wallet;
+  }
+
+  async updateWalletBalance(userId: string, currency: string, amount: number): Promise<UserWallet> {
+    // Get or create wallet
+    let wallet = await this.getUserWalletByCurrency(userId, currency);
+    
+    if (!wallet) {
+      wallet = await this.createWallet({
+        userId,
+        currency,
+        balance: '0.00',
+        isActive: true,
+      });
+    }
+
+    const currentBalance = parseFloat(wallet.balance);
+    const newBalance = (currentBalance + amount).toFixed(2);
+
+    const [updatedWallet] = await db
+      .update(userWallets)
+      .set({ 
+        balance: newBalance,
+        lastTransactionAt: new Date(),
+        updatedAt: new Date()
+      })
+      .where(and(
+        eq(userWallets.userId, userId),
+        eq(userWallets.currency, currency)
+      ))
+      .returning();
+    return updatedWallet;
+  }
+
+  async addKWDFunds(userId: string, amount: number): Promise<{ wallet: UserWallet; transaction: Transaction }> {
+    // Update KWD wallet balance
+    const wallet = await this.updateWalletBalance(userId, 'KWD', amount);
+    
+    // Create transaction record
+    const transaction = await this.createTransaction({
+      userId,
+      type: 'yard_cash_add',
+      amount: amount.toFixed(2),
+      currency: 'KWD',
+      status: 'completed',
+      description: `Added ${amount} KWD to YardFlex wallet`,
+      securityLevel: 'enhanced',
+      isSecureTransfer: true,
+      exchangeRate: '1.0000', // 1 KWD = 1 YFD
+    });
+
+    return { wallet, transaction };
+  }
+
+  async exchangeCurrency(userId: string, fromCurrency: string, toCurrency: string, amount: number): Promise<{ transaction: Transaction; fromWallet: UserWallet; toWallet: UserWallet }> {
+    // For KWD/YFD: 1 KWD = 1 YFD (perfect 1:1 exchange)
+    const exchangeRate = 1.0;
+    const convertedAmount = amount * exchangeRate;
+
+    // Update source wallet (subtract)
+    const fromWallet = await this.updateWalletBalance(userId, fromCurrency, -amount);
+    
+    // Update destination wallet (add)
+    const toWallet = await this.updateWalletBalance(userId, toCurrency, convertedAmount);
+
+    // Create exchange transaction
+    const transaction = await this.createTransaction({
+      userId,
+      type: 'exchange',
+      amount: convertedAmount.toFixed(2),
+      currency: toCurrency,
+      status: 'completed',
+      description: `Exchanged ${amount} ${fromCurrency} to ${convertedAmount} ${toCurrency}`,
+      securityLevel: 'enhanced',
+      isSecureTransfer: true,
+      exchangeRate: exchangeRate.toFixed(4),
+      originalCurrency: fromCurrency,
+      originalAmount: amount.toFixed(2),
+    });
+
+    return { transaction, fromWallet, toWallet };
   }
 
   // Security operations

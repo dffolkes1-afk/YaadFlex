@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { 
   insertTransactionSchema, 
+  insertUserWalletSchema,
   insertSecurityLogSchema,
   insertVehicleSchema,
   insertTripSchema,
@@ -88,6 +89,89 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching transaction:", error);
       res.status(500).json({ message: "Failed to fetch transaction" });
+    }
+  });
+
+  // KWD/YFD Currency System Routes
+  app.get('/api/wallets', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const wallets = await storage.getUserWallets(userId);
+      res.json(wallets);
+    } catch (error) {
+      console.error("Error fetching wallets:", error);
+      res.status(500).json({ message: "Failed to fetch wallets" });
+    }
+  });
+
+  app.post('/api/wallets/add-kwd', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { amount } = req.body;
+
+      if (!amount || amount <= 0) {
+        return res.status(400).json({ message: "Invalid amount. Must be greater than 0." });
+      }
+
+      // Log security event for KWD addition
+      await storage.logSecurityEvent({
+        userId,
+        eventType: 'transfer',
+        severity: 'medium',
+        description: `User added ${amount} KWD to YardFlex wallet`,
+        ipAddress: req.ip,
+        userAgent: req.get('User-Agent'),
+      });
+
+      const result = await storage.addKWDFunds(userId, parseFloat(amount));
+      res.json(result);
+    } catch (error) {
+      console.error("Error adding KWD funds:", error);
+      res.status(500).json({ message: "Failed to add KWD funds" });
+    }
+  });
+
+  app.post('/api/wallets/exchange', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { fromCurrency, toCurrency, amount } = req.body;
+
+      if (!fromCurrency || !toCurrency || !amount || amount <= 0) {
+        return res.status(400).json({ message: "Invalid exchange parameters" });
+      }
+
+      // Log security event for currency exchange
+      await storage.logSecurityEvent({
+        userId,
+        eventType: 'transfer',
+        severity: 'medium',
+        description: `User exchanged ${amount} ${fromCurrency} to ${toCurrency}`,
+        ipAddress: req.ip,
+        userAgent: req.get('User-Agent'),
+      });
+
+      const result = await storage.exchangeCurrency(userId, fromCurrency, toCurrency, parseFloat(amount));
+      res.json(result);
+    } catch (error) {
+      console.error("Error exchanging currency:", error);
+      res.status(500).json({ message: "Failed to exchange currency" });
+    }
+  });
+
+  app.get('/api/wallets/:currency', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { currency } = req.params;
+      
+      const wallet = await storage.getUserWalletByCurrency(userId, currency.toUpperCase());
+      if (!wallet) {
+        return res.status(404).json({ message: "Wallet not found" });
+      }
+      
+      res.json(wallet);
+    } catch (error) {
+      console.error("Error fetching wallet:", error);
+      res.status(500).json({ message: "Failed to fetch wallet" });
     }
   });
 

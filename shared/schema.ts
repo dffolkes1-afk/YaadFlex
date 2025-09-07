@@ -79,9 +79,9 @@ export const authenticationLogs = pgTable("authentication_logs", {
 export const transactions = pgTable("transactions", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   userId: varchar("user_id").references(() => users.id).notNull(),
-  type: varchar("type").notNull(), // 'transfer', 'deposit', 'withdrawal'
+  type: varchar("type").notNull(), // 'transfer', 'deposit', 'withdrawal', 'exchange', 'yard_cash_add'
   amount: decimal("amount", { precision: 12, scale: 2 }).notNull(),
-  currency: varchar("currency", { length: 3 }).notNull().default('USD'),
+  currency: varchar("currency", { length: 3 }).notNull().default('USD'), // 'USD', 'KWD', 'YFD'
   recipientId: varchar("recipient_id").references(() => users.id),
   recipientPhone: varchar("recipient_phone"),
   status: varchar("status").notNull().default('pending'), // 'pending', 'completed', 'failed', 'cancelled'
@@ -89,9 +89,27 @@ export const transactions = pgTable("transactions", {
   securityLevel: varchar("security_level").notNull().default('standard'), // 'standard', 'enhanced', 'beast_mode'
   countryCode: varchar("country_code", { length: 2 }),
   isSecureTransfer: boolean("is_secure_transfer").default(true),
+  // KWD/YFD specific fields
+  exchangeRate: decimal("exchange_rate", { precision: 10, scale: 4 }).default('1.0000'), // 1 KWD = 1 YFD
+  originalCurrency: varchar("original_currency", { length: 3 }), // For exchange transactions
+  originalAmount: decimal("original_amount", { precision: 12, scale: 2 }), // For exchange transactions
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+
+// User wallet balances for multi-currency support
+export const userWallets = pgTable("user_wallets", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  currency: varchar("currency", { length: 3 }).notNull(), // 'USD', 'KWD', 'YFD'
+  balance: decimal("balance", { precision: 12, scale: 2 }).notNull().default('0.00'),
+  isActive: boolean("is_active").default(true),
+  lastTransactionAt: timestamp("last_transaction_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("idx_user_currency").on(table.userId, table.currency),
+]);
 
 // Security logs for tracking defense activities
 export const securityLogs = pgTable("security_logs", {
@@ -182,6 +200,8 @@ export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
 export type InsertTransaction = typeof transactions.$inferInsert;
 export type Transaction = typeof transactions.$inferSelect;
+export type InsertUserWallet = typeof userWallets.$inferInsert;
+export type UserWallet = typeof userWallets.$inferSelect;
 export type InsertSecurityLog = typeof securityLogs.$inferInsert;
 export type SecurityLog = typeof securityLogs.$inferSelect;
 export type InsertVehicle = typeof vehicles.$inferInsert;
@@ -198,6 +218,12 @@ export type InsertAuthenticationLog = typeof authenticationLogs.$inferInsert;
 export type AuthenticationLog = typeof authenticationLogs.$inferSelect;
 
 export const insertTransactionSchema = createInsertSchema(transactions).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertUserWalletSchema = createInsertSchema(userWallets).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
