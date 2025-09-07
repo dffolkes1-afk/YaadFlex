@@ -345,10 +345,10 @@ export default function Home() {
                 <span className="text-green-500 text-shadow-lg">FLEX</span>
               </h1>
               <p className="text-xl md:text-2xl font-semibold mb-2" data-testid="text-hero-subtitle">
-                🇯🇲 TAKING JAMAICA TO THE MOON 🚀🌙
+                🇯🇲🇨🇦 JAMAICA & CANADA TO THE MOON 🚀🌙
               </p>
               <p className="text-lg md:text-xl" data-testid="text-hero-description">
-                One App. Infinite Possibilities. Universal Success.
+                One App. Two Countries. Infinite Possibilities. Universal Success.
               </p>
             </div>
           </div>
@@ -412,16 +412,16 @@ export default function Home() {
                   alt="Rocket Logo" 
                   className="w-12 h-12"
                 />
-                <span className="text-2xl font-black">🚀 JAMAICA TO THE MOON MISSION 🌙</span>
+                <span className="text-2xl font-black">🚀 JAMAICA & CANADA TO THE MOON MISSION 🌙</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="relative z-10">
               <div className="text-center">
                 <h3 className="text-3xl font-black text-yellow-400 mb-4 animate-pulse">
-                  🇯🇲 LAUNCH SEQUENCE INITIATED 🇯🇲
+                  🇯🇲🇨🇦 LAUNCH SEQUENCE INITIATED 🇯🇲🇨🇦
                 </h3>
                 <p className="text-white mb-4 text-lg">
-                  <strong>YardFlex isn't just reaching for the stars - we're taking Jamaica TO THE MOON!</strong><br/>
+                  <strong>YardFlex isn't just reaching for the stars - we're taking JAMAICA & CANADA TO THE MOON!</strong><br/>
                   Every connection, every opportunity, every success launches us higher into the universe of possibilities.
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -564,9 +564,9 @@ export default function Home() {
                 <div className="bg-gradient-to-r from-yellow-600/50 to-orange-600/50 border-4 border-yellow-400/80 rounded-2xl p-6 mb-8 animate-pulse">
                   <h4 className="text-2xl md:text-4xl font-black text-yellow-300 mb-4">📅 ONE PLACE FOR EVERYTHING! 📅</h4>
                   <div className="text-white text-lg md:text-xl font-bold">
-                    <strong>YARDFLEX IS THE BOOKING PLATFORM FOR ALL JAMAICA!</strong><br/>
+                    <strong>YARDFLEX IS THE BOOKING PLATFORM FOR JAMAICA & CANADA!</strong><br/>
                     Need anything? Book it here! We have EVERYTHING!<br/>
-                    <span className="text-yellow-400">🌟 ALL BOOKINGS, ONE APP! 🌟</span>
+                    <span className="text-yellow-400">🌟 ALL BOOKINGS, ONE APP, TWO COUNTRIES! 🌟</span>
                   </div>
                 </div>
                 
@@ -602,7 +602,7 @@ export default function Home() {
                   🏠 YARDFLEX RENTAL EMPIRE! 🚗
                 </div>
                 <div className="text-2xl md:text-6xl font-black text-green-300 animate-bounce leading-tight">
-                  CONTROLS EVERYTHING IN JAMAICA!
+                  CONTROLS EVERYTHING IN JAMAICA & CANADA!
                 </div>
                 <div className="text-xl md:text-4xl font-black text-white animate-pulse">
                   HOUSES • CARS • STORES • APARTMENTS • POOLS!
