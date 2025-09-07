@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
+import { CBRadioWebSocketServer } from "./cbRadioWebSocket";
 import { 
   insertTransactionSchema, 
   insertUserWalletSchema,
@@ -9,7 +10,9 @@ import {
   insertVehicleSchema,
   insertTripSchema,
   insertLocationUpdateSchema,
-  insertSecurityEventSchema
+  insertSecurityEventSchema,
+  insertCbRadioChannelSchema,
+  insertDriverCbProfileSchema
 } from "@shared/schema";
 import { z } from "zod";
 
@@ -443,6 +446,100 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // CB Radio API Endpoints
+  
+  // Get all CB radio channels
+  app.get('/api/cb-radio/channels', isAuthenticated, async (req: any, res) => {
+    try {
+      const channels = await storage.getCbRadioChannels();
+      res.json(channels);
+    } catch (error) {
+      console.error("Error fetching CB radio channels:", error);
+      res.status(500).json({ message: "Failed to fetch CB radio channels" });
+    }
+  });
+
+  // Create CB radio channel (admin only for now)
+  app.post('/api/cb-radio/channels', isAuthenticated, async (req: any, res) => {
+    try {
+      const validatedData = insertCbRadioChannelSchema.parse(req.body);
+      const channel = await storage.createCbRadioChannel(validatedData);
+      res.json(channel);
+    } catch (error) {
+      console.error("Error creating CB radio channel:", error);
+      res.status(500).json({ message: "Failed to create CB radio channel" });
+    }
+  });
+
+  // Get or create driver CB profile
+  app.get('/api/cb-radio/profile', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      let profile = await storage.getDriverCbProfile(userId);
+      
+      if (!profile) {
+        // Create default profile with auto-generated call sign
+        const callSign = `YF${Math.floor(Math.random() * 10000)}`;
+        profile = await storage.createDriverCbProfile({
+          driverId: userId,
+          callSign: callSign,
+          preferredChannels: [],
+          isOnline: false,
+          totalMessages: 0,
+          reputation: 5.0
+        });
+      }
+      
+      res.json(profile);
+    } catch (error) {
+      console.error("Error fetching CB radio profile:", error);
+      res.status(500).json({ message: "Failed to fetch CB radio profile" });
+    }
+  });
+
+  // Update driver CB profile
+  app.patch('/api/cb-radio/profile', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const updateData = req.body;
+      const profile = await storage.updateDriverCbProfile(userId, updateData);
+      res.json(profile);
+    } catch (error) {
+      console.error("Error updating CB radio profile:", error);
+      res.status(500).json({ message: "Failed to update CB radio profile" });
+    }
+  });
+
+  // Get channel message history
+  app.get('/api/cb-radio/channels/:channelId/messages', isAuthenticated, async (req: any, res) => {
+    try {
+      const { channelId } = req.params;
+      const limit = parseInt(req.query.limit as string) || 50;
+      const messages = await storage.getCbRadioMessages(channelId, limit);
+      res.json(messages);
+    } catch (error) {
+      console.error("Error fetching CB radio messages:", error);
+      res.status(500).json({ message: "Failed to fetch CB radio messages" });
+    }
+  });
+
+  // Get online drivers in channel
+  app.get('/api/cb-radio/channels/:channelId/drivers', isAuthenticated, async (req: any, res) => {
+    try {
+      const { channelId } = req.params;
+      const drivers = await storage.getOnlineDriversInChannel(channelId);
+      res.json(drivers);
+    } catch (error) {
+      console.error("Error fetching online drivers:", error);
+      res.status(500).json({ message: "Failed to fetch online drivers" });
+    }
+  });
+
   const httpServer = createServer(app);
+  
+  // Initialize CB Radio WebSocket server
+  const cbRadioWS = new CBRadioWebSocketServer(httpServer);
+  console.log('🔊 CB Radio WebSocket server initialized');
+  
   return httpServer;
 }

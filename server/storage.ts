@@ -7,6 +7,10 @@ import {
   trips,
   locationUpdates,
   securityEvents,
+  cbRadioChannels,
+  cbRadioMessages,
+  driverCbProfiles,
+  cbChannelSubscriptions,
   type User,
   type UpsertUser,
   type Transaction,
@@ -23,6 +27,14 @@ import {
   type InsertLocationUpdate,
   type SecurityEvent,
   type InsertSecurityEvent,
+  type CbRadioChannel,
+  type InsertCbRadioChannel,
+  type CbRadioMessage,
+  type InsertCbRadioMessage,
+  type DriverCbProfile,
+  type InsertDriverCbProfile,
+  type CbChannelSubscription,
+  type InsertCbChannelSubscription,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
@@ -77,6 +89,15 @@ export interface IStorage {
   getSecurityEvents(vehicleId?: string): Promise<SecurityEvent[]>;
   getThreatsByLevel(threatLevel: string): Promise<SecurityEvent[]>;
   getUnresolvedThreats(): Promise<SecurityEvent[]>;
+  
+  // CB Radio operations (Driver-to-driver communication)
+  getCbRadioChannels(): Promise<CbRadioChannel[]>;
+  createCbRadioChannel(channel: InsertCbRadioChannel): Promise<CbRadioChannel>;
+  getDriverCbProfile(driverId: string): Promise<DriverCbProfile | undefined>;
+  createDriverCbProfile(profile: InsertDriverCbProfile): Promise<DriverCbProfile>;
+  updateDriverCbProfile(driverId: string, updateData: Partial<DriverCbProfile>): Promise<DriverCbProfile>;
+  getCbRadioMessages(channelId: string, limit?: number): Promise<CbRadioMessage[]>;
+  getOnlineDriversInChannel(channelId: string): Promise<DriverCbProfile[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -438,6 +459,70 @@ export class DatabaseStorage implements IStorage {
       .from(securityEvents)
       .where(eq(securityEvents.isResolved, false))
       .orderBy(desc(securityEvents.createdAt));
+  }
+
+  // CB Radio operations (Driver-to-driver communication)
+  async getCbRadioChannels(): Promise<CbRadioChannel[]> {
+    return await db
+      .select()
+      .from(cbRadioChannels)
+      .where(eq(cbRadioChannels.isActive, true))
+      .orderBy(cbRadioChannels.channelNumber);
+  }
+
+  async createCbRadioChannel(channelData: InsertCbRadioChannel): Promise<CbRadioChannel> {
+    const [channel] = await db
+      .insert(cbRadioChannels)
+      .values(channelData)
+      .returning();
+    return channel;
+  }
+
+  async getDriverCbProfile(driverId: string): Promise<DriverCbProfile | undefined> {
+    const [profile] = await db
+      .select()
+      .from(driverCbProfiles)
+      .where(eq(driverCbProfiles.driverId, driverId));
+    return profile;
+  }
+
+  async createDriverCbProfile(profileData: InsertDriverCbProfile): Promise<DriverCbProfile> {
+    const [profile] = await db
+      .insert(driverCbProfiles)
+      .values(profileData)
+      .returning();
+    return profile;
+  }
+
+  async updateDriverCbProfile(driverId: string, updateData: Partial<DriverCbProfile>): Promise<DriverCbProfile> {
+    const [profile] = await db
+      .update(driverCbProfiles)
+      .set({ ...updateData, updatedAt: new Date() })
+      .where(eq(driverCbProfiles.driverId, driverId))
+      .returning();
+    return profile;
+  }
+
+  async getCbRadioMessages(channelId: string, limit: number = 50): Promise<CbRadioMessage[]> {
+    return await db
+      .select()
+      .from(cbRadioMessages)
+      .where(eq(cbRadioMessages.channelId, channelId))
+      .orderBy(desc(cbRadioMessages.createdAt))
+      .limit(limit);
+  }
+
+  async getOnlineDriversInChannel(channelId: string): Promise<DriverCbProfile[]> {
+    return await db
+      .select()
+      .from(driverCbProfiles)
+      .innerJoin(cbChannelSubscriptions, eq(driverCbProfiles.driverId, cbChannelSubscriptions.driverId))
+      .where(and(
+        eq(cbChannelSubscriptions.channelId, channelId),
+        eq(cbChannelSubscriptions.isActive, true),
+        eq(driverCbProfiles.isOnline, true)
+      ))
+      .then(results => results.map(row => row.driver_cb_profiles));
   }
 }
 
