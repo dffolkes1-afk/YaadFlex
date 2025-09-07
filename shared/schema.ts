@@ -439,7 +439,7 @@ export const toolEquipmentRelations = relations(toolEquipment, ({ one }) => ({
 export const serviceReviewsRelations = relations(serviceReviews, ({ one }) => ({
   request: one(serviceRequests, {
     fields: [serviceReviews.requestId],
-    references: [serviceReviews.id],
+    references: [serviceRequests.id],
   }),
   reviewer: one(users, {
     fields: [serviceReviews.reviewerId],

@@ -580,21 +580,22 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getServiceProviders(categoryId?: string): Promise<ServiceProvider[]> {
-    const query = db.select().from(serviceProviders);
-    
     if (categoryId) {
-      // Join with service requests to filter by category
-      return await db
-        .selectDistinct()
+      // For providers with experience in specific category
+      const results = await db
+        .selectDistinct({ serviceProvider: serviceProviders })
         .from(serviceProviders)
         .innerJoin(serviceRequests, eq(serviceProviders.id, serviceRequests.providerId))
         .where(and(
           eq(serviceRequests.categoryId, categoryId),
           eq(serviceProviders.isActive, true)
         ));
+      return results.map(r => r.serviceProvider);
     }
     
-    return await query
+    return await db
+      .select()
+      .from(serviceProviders)
       .where(eq(serviceProviders.isActive, true))
       .orderBy(desc(serviceProviders.rating));
   }
@@ -625,12 +626,11 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getServiceRequests(userId?: string, status?: string): Promise<ServiceRequest[]> {
-    let query = db.select().from(serviceRequests);
-    
     const conditions = [];
     if (userId) conditions.push(eq(serviceRequests.customerId, userId));
     if (status) conditions.push(eq(serviceRequests.status, status));
     
+    let query = db.select().from(serviceRequests);
     if (conditions.length > 0) {
       query = query.where(and(...conditions));
     }

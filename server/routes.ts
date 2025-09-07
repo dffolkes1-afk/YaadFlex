@@ -12,7 +12,13 @@ import {
   insertLocationUpdateSchema,
   insertSecurityEventSchema,
   insertCbRadioChannelSchema,
-  insertDriverCbProfileSchema
+  insertDriverCbProfileSchema,
+  insertServiceCategorySchema,
+  insertServiceProviderSchema,
+  insertServiceRequestSchema,
+  insertServiceQuoteSchema,
+  insertToolEquipmentSchema,
+  insertServiceReviewSchema
 } from "@shared/schema";
 import { z } from "zod";
 
@@ -532,6 +538,188 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching online drivers:", error);
       res.status(500).json({ message: "Failed to fetch online drivers" });
+    }
+  });
+
+  // Services Marketplace API Endpoints
+
+  // Service Categories
+  app.get('/api/services/categories', isAuthenticated, async (req: any, res) => {
+    try {
+      const categories = await storage.getServiceCategories();
+      res.json(categories);
+    } catch (error) {
+      console.error("Error fetching service categories:", error);
+      res.status(500).json({ message: "Failed to fetch service categories" });
+    }
+  });
+
+  app.post('/api/services/categories', isAuthenticated, async (req: any, res) => {
+    try {
+      const validatedData = insertServiceCategorySchema.parse(req.body);
+      const category = await storage.createServiceCategory(validatedData);
+      res.json(category);
+    } catch (error) {
+      console.error("Error creating service category:", error);
+      res.status(500).json({ message: "Failed to create service category" });
+    }
+  });
+
+  // Service Providers
+  app.get('/api/services/providers', isAuthenticated, async (req: any, res) => {
+    try {
+      const { categoryId } = req.query;
+      const providers = await storage.getServiceProviders(categoryId);
+      res.json(providers);
+    } catch (error) {
+      console.error("Error fetching service providers:", error);
+      res.status(500).json({ message: "Failed to fetch service providers" });
+    }
+  });
+
+  app.post('/api/services/providers', isAuthenticated, async (req: any, res) => {
+    try {
+      const validatedData = insertServiceProviderSchema.parse(req.body);
+      validatedData.userId = req.user.claims.sub; // Set current user as provider
+      const provider = await storage.createServiceProvider(validatedData);
+      res.json(provider);
+    } catch (error) {
+      console.error("Error creating service provider:", error);
+      res.status(500).json({ message: "Failed to create service provider" });
+    }
+  });
+
+  app.get('/api/services/providers/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const provider = await storage.getServiceProvider(id);
+      if (!provider) {
+        return res.status(404).json({ message: "Service provider not found" });
+      }
+      res.json(provider);
+    } catch (error) {
+      console.error("Error fetching service provider:", error);
+      res.status(500).json({ message: "Failed to fetch service provider" });
+    }
+  });
+
+  // Service Requests
+  app.get('/api/services/requests', isAuthenticated, async (req: any, res) => {
+    try {
+      const { userId, status } = req.query;
+      const requests = await storage.getServiceRequests(userId, status);
+      res.json(requests);
+    } catch (error) {
+      console.error("Error fetching service requests:", error);
+      res.status(500).json({ message: "Failed to fetch service requests" });
+    }
+  });
+
+  app.post('/api/services/requests', isAuthenticated, async (req: any, res) => {
+    try {
+      const validatedData = insertServiceRequestSchema.parse(req.body);
+      validatedData.customerId = req.user.claims.sub; // Set current user as customer
+      const request = await storage.createServiceRequest(validatedData);
+      res.json(request);
+    } catch (error) {
+      console.error("Error creating service request:", error);
+      res.status(500).json({ message: "Failed to create service request" });
+    }
+  });
+
+  app.get('/api/services/requests/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const request = await storage.getServiceRequest(id);
+      if (!request) {
+        return res.status(404).json({ message: "Service request not found" });
+      }
+      res.json(request);
+    } catch (error) {
+      console.error("Error fetching service request:", error);
+      res.status(500).json({ message: "Failed to fetch service request" });
+    }
+  });
+
+  // Service Quotes
+  app.get('/api/services/requests/:requestId/quotes', isAuthenticated, async (req: any, res) => {
+    try {
+      const { requestId } = req.params;
+      const quotes = await storage.getServiceQuotes(requestId);
+      res.json(quotes);
+    } catch (error) {
+      console.error("Error fetching service quotes:", error);
+      res.status(500).json({ message: "Failed to fetch service quotes" });
+    }
+  });
+
+  app.post('/api/services/quotes', isAuthenticated, async (req: any, res) => {
+    try {
+      const validatedData = insertServiceQuoteSchema.parse(req.body);
+      const quote = await storage.createServiceQuote(validatedData);
+      res.json(quote);
+    } catch (error) {
+      console.error("Error creating service quote:", error);
+      res.status(500).json({ message: "Failed to create service quote" });
+    }
+  });
+
+  app.patch('/api/services/quotes/:id/accept', isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const quote = await storage.acceptServiceQuote(id);
+      res.json(quote);
+    } catch (error) {
+      console.error("Error accepting service quote:", error);
+      res.status(500).json({ message: "Failed to accept service quote" });
+    }
+  });
+
+  // Tool Equipment
+  app.get('/api/services/tools', isAuthenticated, async (req: any, res) => {
+    try {
+      const { ownerId } = req.query;
+      const tools = await storage.getToolEquipment(ownerId);
+      res.json(tools);
+    } catch (error) {
+      console.error("Error fetching tool equipment:", error);
+      res.status(500).json({ message: "Failed to fetch tool equipment" });
+    }
+  });
+
+  app.post('/api/services/tools', isAuthenticated, async (req: any, res) => {
+    try {
+      const validatedData = insertToolEquipmentSchema.parse(req.body);
+      validatedData.ownerId = req.user.claims.sub; // Set current user as owner
+      const tool = await storage.createToolEquipment(validatedData);
+      res.json(tool);
+    } catch (error) {
+      console.error("Error creating tool equipment:", error);
+      res.status(500).json({ message: "Failed to create tool equipment" });
+    }
+  });
+
+  // Service Reviews
+  app.get('/api/services/reviews', isAuthenticated, async (req: any, res) => {
+    try {
+      const { providerId } = req.query;
+      const reviews = await storage.getServiceReviews(providerId);
+      res.json(reviews);
+    } catch (error) {
+      console.error("Error fetching service reviews:", error);
+      res.status(500).json({ message: "Failed to fetch service reviews" });
+    }
+  });
+
+  app.post('/api/services/reviews', isAuthenticated, async (req: any, res) => {
+    try {
+      const validatedData = insertServiceReviewSchema.parse(req.body);
+      validatedData.reviewerId = req.user.claims.sub; // Set current user as reviewer
+      const review = await storage.createServiceReview(validatedData);
+      res.json(review);
+    } catch (error) {
+      console.error("Error creating service review:", error);
+      res.status(500).json({ message: "Failed to create service review" });
     }
   });
 
