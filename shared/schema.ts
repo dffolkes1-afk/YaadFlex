@@ -281,6 +281,198 @@ export type DriverCbProfile = typeof driverCbProfiles.$inferSelect;
 export type InsertCbChannelSubscription = typeof cbChannelSubscriptions.$inferInsert;
 export type CbChannelSubscription = typeof cbChannelSubscriptions.$inferSelect;
 
+// Services Marketplace Tables (Construction, Cleaning, Trade Work)
+export const serviceCategories = pgTable("service_categories", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name").notNull(), // "Construction", "Cleaning", "Plumbing", etc.
+  description: text("description"),
+  iconName: varchar("icon_name"), // Lucide icon name
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const serviceProviders = pgTable("service_providers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  businessName: varchar("business_name"),
+  description: text("description"),
+  skills: text("skills").array(), // ["drywall", "painting", "carpentry"]
+  serviceAreas: text("service_areas").array(), // Geographic areas served
+  hourlyRate: decimal("hourly_rate", { precision: 10, scale: 2 }),
+  minimumJob: decimal("minimum_job", { precision: 10, scale: 2 }),
+  availability: jsonb("availability"), // Weekly schedule
+  isVerified: boolean("is_verified").default(false),
+  hasInsurance: boolean("has_insurance").default(false),
+  licenseNumber: varchar("license_number"),
+  rating: decimal("rating", { precision: 3, scale: 2 }).default("5.00"),
+  totalJobs: integer("total_jobs").default(0),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const serviceRequests = pgTable("service_requests", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  customerId: varchar("customer_id").notNull().references(() => users.id),
+  categoryId: varchar("category_id").notNull().references(() => serviceCategories.id),
+  providerId: varchar("provider_id").references(() => serviceProviders.id),
+  title: varchar("title").notNull(),
+  description: text("description").notNull(),
+  location: text("location").notNull(),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }),
+  urgency: varchar("urgency").notNull().default("normal"), // "low", "normal", "high", "emergency"
+  estimatedHours: decimal("estimated_hours", { precision: 5, scale: 2 }),
+  budgetRange: varchar("budget_range"), // "$100-$500", "$500-$1000", etc.
+  preferredDate: timestamp("preferred_date"),
+  images: text("images").array(), // Array of image URLs
+  status: varchar("status").notNull().default("open"), // "open", "quoted", "accepted", "in_progress", "completed", "cancelled"
+  totalAmount: decimal("total_amount", { precision: 10, scale: 2 }),
+  currency: varchar("currency").default("KWD"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const serviceQuotes = pgTable("service_quotes", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  requestId: varchar("request_id").notNull().references(() => serviceRequests.id),
+  providerId: varchar("provider_id").notNull().references(() => serviceProviders.id),
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency").default("KWD"),
+  description: text("description"),
+  estimatedDuration: varchar("estimated_duration"), // "2-3 hours", "1-2 days"
+  startDate: timestamp("start_date"),
+  materials: jsonb("materials"), // List of materials needed
+  isAccepted: boolean("is_accepted").default(false),
+  expiresAt: timestamp("expires_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const toolEquipment = pgTable("tool_equipment", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  ownerId: varchar("owner_id").notNull().references(() => users.id),
+  name: varchar("name").notNull(),
+  category: varchar("category").notNull(), // "power_tools", "hand_tools", "equipment"
+  description: text("description"),
+  condition: varchar("condition").default("good"), // "excellent", "good", "fair", "poor"
+  dailyRate: decimal("daily_rate", { precision: 8, scale: 2 }),
+  currency: varchar("currency").default("KWD"),
+  location: text("location"),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }),
+  images: text("images").array(),
+  availability: jsonb("availability"),
+  isAvailable: boolean("is_available").default(true),
+  requiresDeposit: boolean("requires_deposit").default(false),
+  depositAmount: decimal("deposit_amount", { precision: 8, scale: 2 }),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const serviceReviews = pgTable("service_reviews", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  requestId: varchar("request_id").notNull().references(() => serviceRequests.id),
+  reviewerId: varchar("reviewer_id").notNull().references(() => users.id),
+  providerId: varchar("provider_id").notNull().references(() => serviceProviders.id),
+  rating: integer("rating").notNull(), // 1-5 stars
+  comment: text("comment"),
+  workQuality: integer("work_quality"), // 1-5
+  communication: integer("communication"), // 1-5
+  punctuality: integer("punctuality"), // 1-5
+  cleanliness: integer("cleanliness"), // 1-5
+  wouldRecommend: boolean("would_recommend").default(true),
+  images: text("images").array(), // Before/after photos
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Relations for Services Marketplace
+export const serviceCategoriesRelations = relations(serviceCategories, ({ many }) => ({
+  serviceRequests: many(serviceRequests),
+}));
+
+export const serviceProvidersRelations = relations(serviceProviders, ({ one, many }) => ({
+  user: one(users, {
+    fields: [serviceProviders.userId],
+    references: [users.id],
+  }),
+  serviceRequests: many(serviceRequests),
+  quotes: many(serviceQuotes),
+  reviews: many(serviceReviews),
+}));
+
+export const serviceRequestsRelations = relations(serviceRequests, ({ one, many }) => ({
+  customer: one(users, {
+    fields: [serviceRequests.customerId],
+    references: [users.id],
+  }),
+  category: one(serviceCategories, {
+    fields: [serviceRequests.categoryId],
+    references: [serviceCategories.id],
+  }),
+  provider: one(serviceProviders, {
+    fields: [serviceRequests.providerId],
+    references: [serviceProviders.id],
+  }),
+  quotes: many(serviceQuotes),
+  reviews: many(serviceReviews),
+}));
+
+export const serviceQuotesRelations = relations(serviceQuotes, ({ one }) => ({
+  request: one(serviceRequests, {
+    fields: [serviceQuotes.requestId],
+    references: [serviceRequests.id],
+  }),
+  provider: one(serviceProviders, {
+    fields: [serviceQuotes.providerId],
+    references: [serviceProviders.id],
+  }),
+}));
+
+export const toolEquipmentRelations = relations(toolEquipment, ({ one }) => ({
+  owner: one(users, {
+    fields: [toolEquipment.ownerId],
+    references: [users.id],
+  }),
+}));
+
+export const serviceReviewsRelations = relations(serviceReviews, ({ one }) => ({
+  request: one(serviceRequests, {
+    fields: [serviceReviews.requestId],
+    references: [serviceReviews.id],
+  }),
+  reviewer: one(users, {
+    fields: [serviceReviews.reviewerId],
+    references: [users.id],
+  }),
+  provider: one(serviceProviders, {
+    fields: [serviceReviews.providerId],
+    references: [serviceProviders.id],
+  }),
+}));
+
+// Insert schemas using drizzle-zod
+export const insertServiceCategorySchema = createInsertSchema(serviceCategories);
+export const insertServiceProviderSchema = createInsertSchema(serviceProviders);
+export const insertServiceRequestSchema = createInsertSchema(serviceRequests);
+export const insertServiceQuoteSchema = createInsertSchema(serviceQuotes);
+export const insertToolEquipmentSchema = createInsertSchema(toolEquipment);
+export const insertServiceReviewSchema = createInsertSchema(serviceReviews);
+
+// Types
+export type ServiceCategory = typeof serviceCategories.$inferSelect;
+export type InsertServiceCategory = typeof serviceCategories.$inferInsert;
+export type ServiceProvider = typeof serviceProviders.$inferSelect;
+export type InsertServiceProvider = typeof serviceProviders.$inferInsert;
+export type ServiceRequest = typeof serviceRequests.$inferSelect;
+export type InsertServiceRequest = typeof serviceRequests.$inferInsert;
+export type ServiceQuote = typeof serviceQuotes.$inferSelect;
+export type InsertServiceQuote = typeof serviceQuotes.$inferInsert;
+export type ToolEquipment = typeof toolEquipment.$inferSelect;
+export type InsertToolEquipment = typeof toolEquipment.$inferInsert;
+export type ServiceReview = typeof serviceReviews.$inferSelect;
+export type InsertServiceReview = typeof serviceReviews.$inferInsert;
+
 export const insertTransactionSchema = createInsertSchema(transactions).omit({
   id: true,
   createdAt: true,
