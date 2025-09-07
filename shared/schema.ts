@@ -3098,6 +3098,348 @@ export type InsertAgeVerification = typeof ageVerifications.$inferInsert;
 export type ComplianceGuideline = typeof complianceGuidelines.$inferSelect;
 export type InsertComplianceGuideline = typeof complianceGuidelines.$inferInsert;
 
+// ===================== COMPLETE RENTAL EMPIRE SYSTEM =====================
+
+// Rental Properties - EVERYTHING Can Be Rented
+export const rentalProperties = pgTable("rental_properties", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  ownerId: varchar("owner_id").notNull().references(() => users.id),
+  
+  // Property Basic Info
+  title: varchar("title").notNull(),
+  description: text("description").notNull(),
+  slug: varchar("slug").unique().notNull(), // yardflex.com/rent/property-name
+  
+  // Property Type & Category
+  propertyType: varchar("property_type").notNull(), // "residential", "commercial", "vehicle", "equipment", "recreational"
+  category: varchar("category").notNull(), // "house", "apartment", "store", "car", "pool", "office", "warehouse"
+  subcategory: varchar("subcategory"), // "studio", "1bedroom", "sedan", "SUV", "retail_shop", "restaurant_space"
+  
+  // Location Details
+  address: text("address").notNull(),
+  parish: varchar("parish").notNull(), // Jamaica parishes
+  coordinates: jsonb("coordinates"), // GPS coordinates
+  landmark: varchar("landmark"), // Near KFC, beside gas station
+  gpsLocation: varchar("gps_location"), // What3words or GPS
+  
+  // Property Specifications
+  specifications: jsonb("specifications"), // Bedrooms, bathrooms, size, features
+  amenities: jsonb("amenities"), // Pool, parking, AC, WiFi, etc
+  condition: varchar("condition").default("excellent"), // "excellent", "good", "fair", "needs_work"
+  furnishingStatus: varchar("furnishing_status"), // "furnished", "unfurnished", "semi_furnished"
+  
+  // Visual Media
+  primaryImageUrl: varchar("primary_image_url"),
+  imageUrls: jsonb("image_urls"), // Multiple photos
+  videoTourUrl: varchar("video_tour_url"), // Virtual tour video
+  floorPlanUrl: varchar("floor_plan_url"), // For properties
+  
+  // Rental Details
+  dailyRate: decimal("daily_rate", { precision: 10, scale: 2 }),
+  weeklyRate: decimal("weekly_rate", { precision: 10, scale: 2 }),
+  monthlyRate: decimal("monthly_rate", { precision: 10, scale: 2 }),
+  yearlyRate: decimal("yearly_rate", { precision: 10, scale: 2 }),
+  currency: varchar("currency").default("JMD"),
+  
+  // Rental Terms
+  minimumRentalPeriod: varchar("minimum_rental_period").default("1_day"), // "1_hour", "1_day", "1_week", "1_month"
+  maximumRentalPeriod: varchar("maximum_rental_period"), // Optional max limit
+  securityDeposit: decimal("security_deposit", { precision: 10, scale: 2 }),
+  cleaningFee: decimal("cleaning_fee", { precision: 8, scale: 2 }),
+  
+  // Availability
+  isAvailable: boolean("is_available").default(true),
+  availableFrom: timestamp("available_from").defaultNow(),
+  availableUntil: timestamp("available_until"), // Optional end date
+  instantBooking: boolean("instant_booking").default(true), // Can book immediately
+  
+  // Requirements & Rules  
+  minimumAge: integer("minimum_age").default(18),
+  requiresDeposit: boolean("requires_deposit").default(true),
+  requiresLicense: boolean("requires_license").default(false), // For vehicles
+  allowsPets: boolean("allows_pets").default(true),
+  allowsSmoking: boolean("allows_smoking").default(false),
+  maxOccupancy: integer("max_occupancy"), // Max people allowed
+  
+  // Owner Contact
+  contactPhone: varchar("contact_phone"),
+  contactWhatsapp: varchar("contact_whatsapp"),
+  contactEmail: varchar("contact_email"),
+  preferredContactMethod: varchar("preferred_contact_method").default("whatsapp"),
+  
+  // Performance Metrics
+  totalBookings: integer("total_bookings").default(0),
+  averageRating: decimal("average_rating", { precision: 3, scale: 2 }).default("5.0"),
+  totalRevenue: decimal("total_revenue", { precision: 12, scale: 2 }).default("0"),
+  occupancyRate: decimal("occupancy_rate", { precision: 5, scale: 2 }).default("0"), // % of time booked
+  
+  // SEO & Discovery
+  keywords: jsonb("keywords"), // Search keywords
+  tags: jsonb("tags"), // Property tags for filtering
+  
+  // Status & Verification
+  isVerified: boolean("is_verified").default(false),
+  isFeatured: boolean("is_featured").default(false),
+  isPremium: boolean("is_premium").default(false),
+  verificationDate: timestamp("verification_date"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Rental Bookings & Reservations
+export const rentalBookings = pgTable("rental_bookings", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  bookingNumber: varchar("booking_number").unique().notNull(),
+  
+  // Parties Involved
+  propertyId: varchar("property_id").notNull().references(() => rentalProperties.id),
+  renterId: varchar("renter_id").notNull().references(() => users.id), // Person renting
+  ownerId: varchar("owner_id").notNull().references(() => users.id), // Property owner
+  
+  // Booking Dates
+  checkIn: timestamp("check_in").notNull(),
+  checkOut: timestamp("check_out").notNull(),
+  totalDays: integer("total_days").notNull(),
+  
+  // Pricing Breakdown
+  baseRate: decimal("base_rate", { precision: 10, scale: 2 }).notNull(),
+  totalAmount: decimal("total_amount", { precision: 12, scale: 2 }).notNull(),
+  securityDeposit: decimal("security_deposit", { precision: 10, scale: 2 }).default("0"),
+  cleaningFee: decimal("cleaning_fee", { precision: 8, scale: 2 }).default("0"),
+  serviceFee: decimal("service_fee", { precision: 8, scale: 2 }).default("0"), // YardFlex fee
+  taxes: decimal("taxes", { precision: 8, scale: 2 }).default("0"),
+  
+  // Booking Details
+  guestCount: integer("guest_count").default(1),
+  purpose: varchar("purpose"), // "vacation", "business", "event", "storage"
+  specialRequests: text("special_requests"),
+  
+  // Status & Timeline
+  status: varchar("status").default("pending"), // "pending", "confirmed", "checked_in", "checked_out", "cancelled", "completed"
+  confirmationDate: timestamp("confirmation_date"),
+  paymentStatus: varchar("payment_status").default("pending"), // "pending", "partial", "paid", "refunded"
+  
+  // Communication
+  renterNotes: text("renter_notes"),
+  ownerNotes: text("owner_notes"),
+  checkInInstructions: text("check_in_instructions"),
+  
+  // YardFlex Commission
+  platformFeeAmount: decimal("platform_fee_amount", { precision: 8, scale: 2 }),
+  platformFeeRate: decimal("platform_fee_rate", { precision: 5, scale: 2 }).default("15.0"), // 15%
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Rental Reviews & Ratings
+export const rentalReviews = pgTable("rental_reviews", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  bookingId: varchar("booking_id").notNull().references(() => rentalBookings.id),
+  propertyId: varchar("property_id").notNull().references(() => rentalProperties.id),
+  reviewerId: varchar("reviewer_id").notNull().references(() => users.id),
+  
+  // Review Content
+  rating: integer("rating").notNull(), // 1-5 stars
+  title: varchar("title"),
+  content: text("content").notNull(),
+  photos: jsonb("photos"), // Review photos
+  
+  // Review Categories
+  cleanlinessRating: integer("cleanliness_rating"), // 1-5
+  accuracyRating: integer("accuracy_rating"), // How accurate was listing
+  communicationRating: integer("communication_rating"), // Owner responsiveness
+  locationRating: integer("location_rating"), // Location convenience
+  valueRating: integer("value_rating"), // Value for money
+  
+  // Review Type
+  reviewType: varchar("review_type").default("renter"), // "renter", "owner" (owner can review renter too)
+  
+  // Verification
+  isVerified: boolean("is_verified").default(true), // Must have stayed to review
+  isPublic: boolean("is_public").default(true),
+  
+  // Response
+  ownerResponse: text("owner_response"), // Owner can respond to reviews
+  ownerResponseDate: timestamp("owner_response_date"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Property Availability Calendar
+export const propertyAvailability = pgTable("property_availability", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  propertyId: varchar("property_id").notNull().references(() => rentalProperties.id),
+  
+  // Date Range
+  startDate: timestamp("start_date").notNull(),
+  endDate: timestamp("end_date").notNull(),
+  
+  // Availability Status
+  status: varchar("status").notNull(), // "available", "booked", "blocked", "maintenance"
+  blockReason: varchar("block_reason"), // "maintenance", "owner_use", "renovation"
+  
+  // Pricing Overrides (for special dates)
+  specialRate: decimal("special_rate", { precision: 10, scale: 2 }), // Holiday pricing
+  minimumStay: integer("minimum_stay"), // Minimum nights for this period
+  
+  // Notes
+  notes: text("notes"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Instant Notifications - When Properties Become Available
+export const availabilityAlerts = pgTable("availability_alerts", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  
+  // Search Criteria
+  propertyType: varchar("property_type"), // What they're looking for
+  category: varchar("category"),
+  parish: varchar("parish"), // Preferred location
+  maxBudget: decimal("max_budget", { precision: 10, scale: 2 }),
+  minBedrooms: integer("min_bedrooms"),
+  requiredAmenities: jsonb("required_amenities"),
+  
+  // Alert Preferences
+  alertFrequency: varchar("alert_frequency").default("instant"), // "instant", "daily", "weekly"
+  isActive: boolean("is_active").default(true),
+  
+  // Notification Methods
+  notifyEmail: boolean("notify_email").default(true),
+  notifySMS: boolean("notify_sms").default(true),
+  notifyWhatsapp: boolean("notify_whatsapp").default(true),
+  notifyPush: boolean("notify_push").default(true),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Property Management Tools
+export const propertyMaintenance = pgTable("property_maintenance", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  propertyId: varchar("property_id").notNull().references(() => rentalProperties.id),
+  
+  // Maintenance Details
+  title: varchar("title").notNull(),
+  description: text("description").notNull(),
+  category: varchar("category").notNull(), // "cleaning", "repair", "inspection", "upgrade"
+  priority: varchar("priority").default("medium"), // "low", "medium", "high", "urgent"
+  
+  // Scheduling
+  scheduledDate: timestamp("scheduled_date"),
+  estimatedDuration: integer("estimated_duration"), // Hours
+  
+  // Cost
+  estimatedCost: decimal("estimated_cost", { precision: 10, scale: 2 }),
+  actualCost: decimal("actual_cost", { precision: 10, scale: 2 }),
+  
+  // Status
+  status: varchar("status").default("pending"), // "pending", "scheduled", "in_progress", "completed", "cancelled"
+  completionDate: timestamp("completion_date"),
+  
+  // Provider
+  serviceProvider: varchar("service_provider"), // Company/person doing the work
+  serviceProviderContact: varchar("service_provider_contact"),
+  
+  // Documentation
+  beforePhotos: jsonb("before_photos"),
+  afterPhotos: jsonb("after_photos"),
+  receipts: jsonb("receipts"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// ===================== RELATIONS =====================
+
+export const rentalPropertiesRelations = relations(rentalProperties, ({ one, many }) => ({
+  owner: one(users, {
+    fields: [rentalProperties.ownerId],
+    references: [users.id],
+  }),
+  bookings: many(rentalBookings, { relationName: "propertyBookings" }),
+  reviews: many(rentalReviews),
+  availability: many(propertyAvailability),
+  maintenance: many(propertyMaintenance),
+}));
+
+export const rentalBookingsRelations = relations(rentalBookings, ({ one }) => ({
+  property: one(rentalProperties, {
+    fields: [rentalBookings.propertyId],
+    references: [rentalProperties.id],
+  }),
+  renter: one(users, {
+    fields: [rentalBookings.renterId],
+    references: [users.id],
+  }),
+  owner: one(users, {
+    fields: [rentalBookings.ownerId],
+    references: [users.id],
+  }),
+}));
+
+export const rentalReviewsRelations = relations(rentalReviews, ({ one }) => ({
+  booking: one(rentalBookings, {
+    fields: [rentalReviews.bookingId],
+    references: [rentalBookings.id],
+  }),
+  property: one(rentalProperties, {
+    fields: [rentalReviews.propertyId],
+    references: [rentalProperties.id],
+  }),
+  reviewer: one(users, {
+    fields: [rentalReviews.reviewerId],
+    references: [users.id],
+  }),
+}));
+
+export const propertyAvailabilityRelations = relations(propertyAvailability, ({ one }) => ({
+  property: one(rentalProperties, {
+    fields: [propertyAvailability.propertyId],
+    references: [rentalProperties.id],
+  }),
+}));
+
+export const availabilityAlertsRelations = relations(availabilityAlerts, ({ one }) => ({
+  user: one(users, {
+    fields: [availabilityAlerts.userId],
+    references: [users.id],
+  }),
+}));
+
+export const propertyMaintenanceRelations = relations(propertyMaintenance, ({ one }) => ({
+  property: one(rentalProperties, {
+    fields: [propertyMaintenance.propertyId],
+    references: [rentalProperties.id],
+  }),
+}));
+
+// ===================== INSERT SCHEMAS =====================
+
+export const insertRentalPropertySchema = createInsertSchema(rentalProperties);
+export const insertRentalBookingSchema = createInsertSchema(rentalBookings);
+export const insertRentalReviewSchema = createInsertSchema(rentalReviews);
+export const insertPropertyAvailabilitySchema = createInsertSchema(propertyAvailability);
+export const insertAvailabilityAlertSchema = createInsertSchema(availabilityAlerts);
+export const insertPropertyMaintenanceSchema = createInsertSchema(propertyMaintenance);
+
+// ===================== TYPES =====================
+
+export type RentalProperty = typeof rentalProperties.$inferSelect;
+export type InsertRentalProperty = typeof rentalProperties.$inferInsert;
+export type RentalBooking = typeof rentalBookings.$inferSelect;
+export type InsertRentalBooking = typeof rentalBookings.$inferInsert;
+export type RentalReview = typeof rentalReviews.$inferSelect;
+export type InsertRentalReview = typeof rentalReviews.$inferInsert;
+export type PropertyAvailability = typeof propertyAvailability.$inferSelect;
+export type InsertPropertyAvailability = typeof propertyAvailability.$inferInsert;
+export type AvailabilityAlert = typeof availabilityAlerts.$inferSelect;
+export type InsertAvailabilityAlert = typeof availabilityAlerts.$inferInsert;
+export type PropertyMaintenance = typeof propertyMaintenance.$inferSelect;
+export type InsertPropertyMaintenance = typeof propertyMaintenance.$inferInsert;
+
 export const insertTransactionSchema = createInsertSchema(transactions).omit({
   id: true,
   createdAt: true,

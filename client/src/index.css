@@ -673,3 +673,17 @@
     @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
   }
 }
+
+/* Custom animations for rental empire */
+@keyframes slow-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.slow-spin {
+  animation: slow-spin 8s linear infinite;
+}

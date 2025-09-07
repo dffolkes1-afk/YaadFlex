@@ -11,6 +11,7 @@ import RealTimeTracking from "@/pages/tracking";
 import CBRadio from "@/pages/cb-radio";
 import SecureBrowser from "@/pages/secure-browser";
 import SocialCommerce from "@/pages/social-commerce";
+import RentalEmpire from "@/pages/rental-empire";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -26,6 +27,7 @@ function Router() {
           <Route path="/cb-radio" component={CBRadio} />
           <Route path="/secure-browser" component={SecureBrowser} />
           <Route path="/social-commerce" component={SocialCommerce} />
+          <Route path="/rental-empire" component={RentalEmpire} />
         </>
       )}
       <Route component={NotFound} />

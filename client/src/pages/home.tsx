@@ -543,6 +543,131 @@ export default function Home() {
           </Card>
         </div>
 
+        {/* ========== COMPLETE RENTAL EMPIRE - EVERYTHING FOR RENT! ========== */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-br from-green-900/40 via-emerald-900/40 to-teal-900/40 border-green-400/50 relative overflow-hidden" data-testid="rental-empire-mega-cta">
+            {/* Animated Background Elements */}
+            <div className="absolute inset-0 opacity-20">
+              <div className="absolute top-4 left-4 text-6xl animate-bounce">🏠</div>
+              <div className="absolute top-4 right-4 text-6xl animate-pulse">🚗</div>
+              <div className="absolute bottom-4 left-4 text-6xl animate-bounce delay-500">🏪</div>
+              <div className="absolute bottom-4 right-4 text-6xl animate-pulse delay-700">🏢</div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-8xl animate-spin slow-spin">💫</div>
+            </div>
+            
+            <CardHeader className="relative z-10 pb-2">
+              <CardTitle className="text-center">
+                <div className="text-4xl font-black text-green-300 mb-2 animate-pulse">
+                  🏠 YARDFLEX RENTAL EMPIRE! 🏠
+                </div>
+                <div className="text-2xl font-black text-yellow-400 animate-bounce">
+                  EVERYTHING FOR RENT • INSTANTLY AVAILABLE!
+                </div>
+              </CardTitle>
+            </CardHeader>
+            
+            <CardContent className="relative z-10">
+              <div className="text-center mb-6">
+                <div className="text-3xl font-black text-white mb-4 leading-tight">
+                  🏠 HOUSES • 🚗 CARS • 🏪 STORES • 🏢 APARTMENTS<br/>
+                  🏊 POOLS • 🚛 TRUCKS • 🏭 WAREHOUSES • EVERYTHING!
+                </div>
+                
+                <div className="bg-yellow-400/20 border border-yellow-400/50 rounded-lg p-4 mb-6">
+                  <h3 className="text-2xl font-black text-yellow-300 mb-2">
+                    ⚡ INSTANT RENTAL SYSTEM ⚡
+                  </h3>
+                  <p className="text-white text-lg">
+                    <strong>Store gets empty? It's INSTANTLY on YardFlex for rent!</strong><br/>
+                    <strong>House available? Boom - listed immediately!</strong><br/>
+                    <strong>Car free? Up for rental in seconds!</strong>
+                  </p>
+                </div>
+                
+                {/* Features Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                  <div className="bg-green-600/30 rounded-lg p-3 text-center">
+                    <div className="text-3xl mb-1">⚡</div>
+                    <div className="text-sm font-bold text-green-300">Instant Listing</div>
+                  </div>
+                  <div className="bg-blue-600/30 rounded-lg p-3 text-center">
+                    <div className="text-3xl mb-1">🔔</div>
+                    <div className="text-sm font-bold text-blue-300">Smart Alerts</div>
+                  </div>
+                  <div className="bg-purple-600/30 rounded-lg p-3 text-center">
+                    <div className="text-3xl mb-1">💰</div>
+                    <div className="text-sm font-bold text-purple-300">Easy Money</div>
+                  </div>
+                  <div className="bg-orange-600/30 rounded-lg p-3 text-center">
+                    <div className="text-3xl mb-1">📱</div>
+                    <div className="text-sm font-bold text-orange-300">One App</div>
+                  </div>
+                </div>
+                
+                {/* Rental Categories Showcase */}
+                <div className="bg-black/30 rounded-lg p-4 mb-6">
+                  <h4 className="text-xl font-black text-white mb-3">RENT EVERYTHING:</h4>
+                  <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+                    <div className="text-center">
+                      <div className="text-2xl">🏠</div>
+                      <div className="text-xs text-green-300">Houses</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl">🏢</div>
+                      <div className="text-xs text-blue-300">Apartments</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl">🏪</div>
+                      <div className="text-xs text-purple-300">Stores</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl">🚗</div>
+                      <div className="text-xs text-yellow-300">Cars</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl">🚛</div>
+                      <div className="text-xs text-red-300">Trucks</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl">🏊</div>
+                      <div className="text-xs text-cyan-300">Pools</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-4">
+                  <Button 
+                    onClick={() => setLocation('/rental-empire')}
+                    className="w-full bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 hover:from-green-700 hover:via-emerald-700 hover:to-teal-700 text-white font-black text-2xl py-6 px-8 animate-pulse"
+                    data-testid="button-access-rental-empire"
+                  >
+                    🚀 ACCESS RENTAL EMPIRE NOW! 🚀
+                  </Button>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Button 
+                      onClick={() => setLocation('/rental-empire')}
+                      variant="outline"
+                      className="border-green-400 text-green-400 hover:bg-green-400 hover:text-black font-bold py-4"
+                      data-testid="button-list-property"
+                    >
+                      🏠 LIST MY PROPERTY
+                    </Button>
+                    <Button 
+                      onClick={() => setLocation('/rental-empire')}
+                      variant="outline"
+                      className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-black font-bold py-4"
+                      data-testid="button-find-rental"
+                    >
+                      🔍 FIND RENTALS
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Secure Browser CTA */}
         <div className="mb-8">
           <Card className="bg-gradient-to-r from-blue-900/30 to-purple-900/30 border-blue-500/30" data-testid="secure-browser-cta-card">

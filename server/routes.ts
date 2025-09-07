@@ -21,6 +21,13 @@ import {
   insertServiceReviewSchema
 } from "@shared/schema";
 import { z } from "zod";
+import { desc, eq, and, sql, lte, gte } from "drizzle-orm";
+import { db } from "./db";
+import { 
+  rentalProperties, 
+  rentalBookings, 
+  availabilityAlerts
+} from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
@@ -720,6 +727,204 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error creating service review:", error);
       res.status(500).json({ message: "Failed to create service review" });
+    }
+  });
+
+  // ===================== COMPLETE RENTAL EMPIRE API ROUTES =====================
+
+  // Get all available rental properties (with filtering)
+  app.get('/api/rental-properties', async (req, res) => {
+    try {
+      const { category, parish, maxBudget } = req.query;
+      
+      // Start with base conditions
+      const conditions = [eq(rentalProperties.isAvailable, true)];
+      
+      if (category && category !== 'all') {
+        conditions.push(eq(rentalProperties.category, category as string));
+      }
+      
+      if (parish && parish !== 'all') {
+        conditions.push(eq(rentalProperties.parish, parish as string));
+      }
+      
+      if (maxBudget) {
+        conditions.push(lte(rentalProperties.dailyRate, maxBudget as string));
+      }
+      
+      const properties = await db.select().from(rentalProperties)
+        .where(and(...conditions))
+        .orderBy(desc(rentalProperties.createdAt))
+        .limit(50);
+      
+      res.json(properties.map(property => ({
+        ...property,
+        amenities: property.amenities || [],
+        dailyRate: property.dailyRate?.toString(),
+        monthlyRate: property.monthlyRate?.toString(),
+        averageRating: property.averageRating?.toString() || "5.0"
+      })));
+    } catch (error) {
+      console.error("Error fetching rental properties:", error);
+      res.status(500).json({ message: "Failed to fetch rental properties" });
+    }
+  });
+
+  // Get user's rental properties
+  app.get('/api/my-rental-properties', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      
+      const properties = await db.select().from(rentalProperties)
+        .where(eq(rentalProperties.ownerId, userId))
+        .orderBy(desc(rentalProperties.createdAt));
+      
+      res.json(properties.map(property => ({
+        ...property,
+        amenities: property.amenities || [],
+        dailyRate: property.dailyRate?.toString(),
+        monthlyRate: property.monthlyRate?.toString(),
+        averageRating: property.averageRating?.toString() || "5.0"
+      })));
+    } catch (error) {
+      console.error("Error fetching user properties:", error);
+      res.status(500).json({ message: "Failed to fetch your properties" });
+    }
+  });
+
+  // Add new rental property
+  app.post('/api/rental-properties', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const {
+        title,
+        description,
+        propertyType,
+        category,
+        address,
+        parish,
+        dailyRate,
+        monthlyRate,
+        amenities,
+        contactPhone,
+      } = req.body;
+
+      if (!title || !description || !address) {
+        return res.status(400).json({ message: "Title, description, and address are required" });
+      }
+
+      // Generate slug from title
+      const slug = title.toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+
+      const [newProperty] = await db.insert(rentalProperties).values({
+        ownerId: userId,
+        title,
+        description,
+        slug: `${slug}-${Date.now()}`, // Ensure uniqueness
+        propertyType: propertyType || 'residential',
+        category,
+        address,
+        parish,
+        dailyRate: dailyRate ? parseFloat(dailyRate) : null,
+        monthlyRate: monthlyRate ? parseFloat(monthlyRate) : null,
+        amenities: amenities || [],
+        contactPhone,
+        isAvailable: true,
+        instantBooking: true,
+      }).returning();
+
+      // Log the instant availability
+      console.log(`🏠 NEW PROPERTY INSTANTLY AVAILABLE: ${title} in ${parish}`);
+      
+      res.status(201).json({
+        ...newProperty,
+        dailyRate: newProperty.dailyRate?.toString(),
+        monthlyRate: newProperty.monthlyRate?.toString(),
+        averageRating: newProperty.averageRating?.toString() || "5.0"
+      });
+    } catch (error) {
+      console.error("Error adding rental property:", error);
+      res.status(500).json({ message: "Failed to add rental property" });
+    }
+  });
+
+  // Set availability alert
+  app.post('/api/availability-alerts', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const {
+        propertyType,
+        category,
+        parish,
+        maxBudget,
+        minBedrooms,
+        requiredAmenities,
+        alertFrequency = 'instant'
+      } = req.body;
+
+      const [newAlert] = await db.insert(availabilityAlerts).values({
+        userId,
+        propertyType,
+        category,
+        parish,
+        maxBudget: maxBudget ? parseFloat(maxBudget) : null,
+        minBedrooms,
+        requiredAmenities: requiredAmenities || [],
+        alertFrequency,
+        isActive: true,
+        notifyEmail: true,
+        notifySMS: true,
+        notifyWhatsapp: true,
+        notifyPush: true,
+      }).returning();
+
+      console.log(`🔔 NEW INSTANT ALERT SET: User wants ${category} in ${parish}`);
+      
+      res.status(201).json(newAlert);
+    } catch (error) {
+      console.error("Error setting availability alert:", error);
+      res.status(500).json({ message: "Failed to set availability alert" });
+    }
+  });
+
+  // Update property availability (for owners)
+  app.put('/api/rental-properties/:id/availability', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { id } = req.params;
+      const { isAvailable, blockReason } = req.body;
+
+      // Verify ownership
+      const [property] = await db.select().from(rentalProperties)
+        .where(and(
+          eq(rentalProperties.id, id),
+          eq(rentalProperties.ownerId, userId)
+        ));
+
+      if (!property) {
+        return res.status(404).json({ message: "Property not found or not owned by you" });
+      }
+
+      // Update availability
+      await db.update(rentalProperties)
+        .set({ 
+          isAvailable,
+          updatedAt: new Date()
+        })
+        .where(eq(rentalProperties.id, id));
+
+      if (isAvailable) {
+        console.log(`🏠 PROPERTY INSTANTLY AVAILABLE: ${property.title}`);
+      } else {
+        console.log(`🚫 PROPERTY BLOCKED: ${property.title} - ${blockReason}`);
+      }
+      
+      res.json({ message: "Availability updated successfully" });
+    } catch (error) {
+      console.error("Error updating property availability:", error);
+      res.status(500).json({ message: "Failed to update availability" });
     }
   });
 
