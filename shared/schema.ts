@@ -8,6 +8,7 @@ import {
   text,
   decimal,
   boolean,
+  integer,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -68,12 +69,91 @@ export const securityLogs = pgTable("security_logs", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Vehicles for real-time tracking
+export const vehicles = pgTable("vehicles", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  driverId: varchar("driver_id").references(() => users.id).notNull(),
+  vehicleType: varchar("vehicle_type").notNull(), // 'bike', 'car', 'van', 'truck'
+  licensePlate: varchar("license_plate").notNull(),
+  model: varchar("model"),
+  color: varchar("color"),
+  isActive: boolean("is_active").default(true),
+  currentLatitude: decimal("current_latitude", { precision: 10, scale: 8 }),
+  currentLongitude: decimal("current_longitude", { precision: 11, scale: 8 }),
+  lastLocationUpdate: timestamp("last_location_update"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Trips for tracking journeys
+export const trips = pgTable("trips", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  riderId: varchar("rider_id").references(() => users.id).notNull(),
+  driverId: varchar("driver_id").references(() => users.id),
+  vehicleId: varchar("vehicle_id").references(() => vehicles.id),
+  type: varchar("type").notNull(), // 'ride', 'delivery', 'package'
+  status: varchar("status").notNull().default('requested'), // 'requested', 'accepted', 'in_progress', 'completed', 'cancelled'
+  pickupLatitude: decimal("pickup_latitude", { precision: 10, scale: 8 }).notNull(),
+  pickupLongitude: decimal("pickup_longitude", { precision: 11, scale: 8 }).notNull(),
+  pickupAddress: text("pickup_address"),
+  dropoffLatitude: decimal("dropoff_latitude", { precision: 10, scale: 8 }),
+  dropoffLongitude: decimal("dropoff_longitude", { precision: 11, scale: 8 }),
+  dropoffAddress: text("dropoff_address"),
+  estimatedFare: decimal("estimated_fare", { precision: 10, scale: 2 }),
+  actualFare: decimal("actual_fare", { precision: 10, scale: 2 }),
+  distance: decimal("distance", { precision: 8, scale: 2 }), // in kilometers
+  duration: integer("duration"), // in minutes
+  isPubliclyVisible: boolean("is_publicly_visible").default(true),
+  securityLevel: varchar("security_level").notNull().default('enhanced'), // 'standard', 'enhanced', 'interpol_plus'
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Real-time location tracking
+export const locationUpdates = pgTable("location_updates", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  vehicleId: varchar("vehicle_id").references(() => vehicles.id).notNull(),
+  tripId: varchar("trip_id").references(() => trips.id),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }).notNull(),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }).notNull(),
+  speed: decimal("speed", { precision: 5, scale: 2 }), // km/h
+  heading: decimal("heading", { precision: 5, scale: 2 }), // degrees
+  accuracy: decimal("accuracy", { precision: 5, scale: 2 }), // meters
+  timestamp: timestamp("timestamp").defaultNow(),
+});
+
+// Enhanced security events (Beyond Interpol)
+export const securityEvents = pgTable("security_events", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tripId: varchar("trip_id").references(() => trips.id),
+  vehicleId: varchar("vehicle_id").references(() => vehicles.id),
+  userId: varchar("user_id").references(() => users.id),
+  eventType: varchar("event_type").notNull(), // 'threat_detection', 'route_deviation', 'panic_button', 'ai_alert'
+  threatLevel: varchar("threat_level").notNull(), // 'low', 'medium', 'high', 'critical', 'interpol_level'
+  aiConfidence: decimal("ai_confidence", { precision: 5, scale: 2 }), // 0-100 AI confidence score
+  description: text("description").notNull(),
+  actionTaken: text("action_taken"),
+  isResolved: boolean("is_resolved").default(false),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }),
+  createdAt: timestamp("created_at").defaultNow(),
+  resolvedAt: timestamp("resolved_at"),
+});
+
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
 export type InsertTransaction = typeof transactions.$inferInsert;
 export type Transaction = typeof transactions.$inferSelect;
 export type InsertSecurityLog = typeof securityLogs.$inferInsert;
 export type SecurityLog = typeof securityLogs.$inferSelect;
+export type InsertVehicle = typeof vehicles.$inferInsert;
+export type Vehicle = typeof vehicles.$inferSelect;
+export type InsertTrip = typeof trips.$inferInsert;
+export type Trip = typeof trips.$inferSelect;
+export type InsertLocationUpdate = typeof locationUpdates.$inferInsert;
+export type LocationUpdate = typeof locationUpdates.$inferSelect;
+export type InsertSecurityEvent = typeof securityEvents.$inferInsert;
+export type SecurityEvent = typeof securityEvents.$inferSelect;
 
 export const insertTransactionSchema = createInsertSchema(transactions).omit({
   id: true,
@@ -82,6 +162,27 @@ export const insertTransactionSchema = createInsertSchema(transactions).omit({
 });
 
 export const insertSecurityLogSchema = createInsertSchema(securityLogs).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertVehicleSchema = createInsertSchema(vehicles).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertTripSchema = createInsertSchema(trips).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertLocationUpdateSchema = createInsertSchema(locationUpdates).omit({
+  id: true,
+});
+
+export const insertSecurityEventSchema = createInsertSchema(securityEvents).omit({
   id: true,
   createdAt: true,
 });
