@@ -493,33 +493,42 @@ export default function Home() {
           </Card>
         </div>
 
-        {/* ========== MEGA VIRAL SOCIAL COMMERCE - MAXIMUM EXCITEMENT! ========== */}
-        <div className="mb-16">
-          <Card className="bg-gradient-to-br from-pink-900/70 via-purple-900/70 via-red-900/70 to-orange-900/70 border-pink-400/80 relative overflow-hidden min-h-[1000px] shadow-2xl shadow-pink-500/20" data-testid="mega-social-commerce-explosion">
-            {/* EXPLOSIVE Animated Background */}
-            <div className="absolute inset-0 opacity-30">
-              <div className="absolute top-8 left-8 text-8xl animate-bounce">🔥</div>
-              <div className="absolute top-8 right-8 text-8xl animate-pulse">💥</div>
-              <div className="absolute bottom-8 left-8 text-8xl animate-bounce delay-300">⚡</div>
-              <div className="absolute bottom-8 right-8 text-8xl animate-pulse delay-500">🚀</div>
-              <div className="absolute top-1/3 left-1/4 text-6xl animate-spin slow-spin">📱</div>
-              <div className="absolute top-2/3 right-1/4 text-6xl animate-bounce delay-700">💰</div>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-9xl animate-pulse delay-200">🌟</div>
+        {/* ========== ABSOLUTELY EXPLOSIVE SOCIAL COMMERCE - TAKING OVER THE ENTIRE PAGE! ========== */}
+        <div className="mb-20">
+          <Card className="bg-gradient-to-br from-pink-900/80 via-purple-900/80 via-red-900/80 to-orange-900/80 border-4 border-pink-400/90 relative overflow-hidden min-h-[1400px] shadow-2xl shadow-pink-500/40" data-testid="mega-social-commerce-explosion">
+            {/* ABSOLUTELY EXPLOSIVE Animated Background - EVERYWHERE! */}
+            <div className="absolute inset-0 opacity-40">
+              <div className="absolute top-4 left-4 text-9xl animate-bounce">🔥</div>
+              <div className="absolute top-4 right-4 text-9xl animate-pulse">💥</div>
+              <div className="absolute bottom-4 left-4 text-9xl animate-bounce delay-300">⚡</div>
+              <div className="absolute bottom-4 right-4 text-9xl animate-pulse delay-500">🚀</div>
+              <div className="absolute top-1/4 left-1/6 text-8xl animate-spin slow-spin">📱</div>
+              <div className="absolute top-3/4 right-1/6 text-8xl animate-bounce delay-700">💰</div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-12xl animate-pulse delay-200">🌟</div>
+              <div className="absolute top-1/6 right-1/3 text-7xl animate-bounce delay-1000">📘</div>
+              <div className="absolute bottom-1/6 left-1/3 text-7xl animate-pulse delay-1200">📸</div>
+              <div className="absolute top-2/3 left-1/6 text-7xl animate-bounce delay-1400">🎵</div>
+              <div className="absolute top-1/3 right-1/6 text-7xl animate-pulse delay-1600">📧</div>
+              <div className="absolute top-1/8 left-1/2 text-6xl animate-bounce delay-800">🗣️</div>
+              <div className="absolute bottom-1/8 right-1/2 text-6xl animate-pulse delay-900">🌍</div>
             </div>
             
-            <CardHeader className="relative z-10 pb-6">
-              <CardTitle className="text-center space-y-6">
-                <div className="text-8xl font-black text-pink-300 animate-pulse leading-tight">
+            <CardHeader className="relative z-10 pb-8">
+              <CardTitle className="text-center space-y-8">
+                <div className="text-9xl font-black text-pink-300 animate-pulse leading-tight">
                   🔥💥 YARDFLEX SOCIAL COMMERCE 💥🔥
                 </div>
-                <div className="text-6xl font-black text-yellow-400 animate-bounce leading-tight">
+                <div className="text-7xl font-black text-yellow-400 animate-bounce leading-tight">
                   GET YOUR BUSINESS EVERYWHERE!
                 </div>
-                <div className="text-5xl font-black text-white animate-pulse">
+                <div className="text-6xl font-black text-white animate-pulse">
                   FACEBOOK • INSTAGRAM • TIKTOK • TELEGRAM!
                 </div>
-                <div className="text-4xl font-black text-red-400 animate-bounce">
+                <div className="text-5xl font-black text-red-400 animate-bounce">
                   ALL OVER THE PLACE TELLING EVERYONE ABOUT YOU!
+                </div>
+                <div className="text-4xl font-black text-green-400 animate-pulse">
+                  🗣️ YOUR BUSINESS TALKING TO THE WHOLE WORLD! 🗣️
                 </div>
               </CardTitle>
             </CardHeader>
