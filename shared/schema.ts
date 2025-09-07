@@ -33,8 +33,46 @@ export const users = pgTable("users", {
   firstName: varchar("first_name"),
   lastName: varchar("last_name"),
   profileImageUrl: varchar("profile_image_url"),
+  // Enhanced Security Features
+  mfaEnabled: boolean("mfa_enabled").default(false),
+  mfaSecret: varchar("mfa_secret"), // TOTP secret for authenticator apps
+  backupCodes: jsonb("backup_codes"), // Emergency backup codes
+  securityLevel: varchar("security_level").notNull().default('standard'), // 'standard', 'enhanced', 'fortress'
+  lastSecurityCheck: timestamp("last_security_check"),
+  trustedDevices: jsonb("trusted_devices"), // Array of trusted device IDs
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Device authentication and security
+export const userDevices = pgTable("user_devices", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  deviceId: varchar("device_id").notNull(), // Unique device identifier
+  deviceType: varchar("device_type").notNull(), // 'mobile', 'web', 'tablet'
+  platform: varchar("platform"), // 'ios', 'android', 'web'
+  deviceName: varchar("device_name"),
+  isTrusted: boolean("is_trusted").default(false),
+  canAccessFinancials: boolean("can_access_financials").default(false), // Mobile only
+  biometricEnabled: boolean("biometric_enabled").default(false),
+  lastUsed: timestamp("last_used").defaultNow(),
+  securityToken: varchar("security_token"), // Device-specific security token
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Enhanced authentication logs
+export const authenticationLogs = pgTable("authentication_logs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id),
+  deviceId: varchar("device_id").references(() => userDevices.id),
+  authMethod: varchar("auth_method").notNull(), // 'password', 'mfa', 'biometric', 'backup_code'
+  success: boolean("success").notNull(),
+  ipAddress: varchar("ip_address"),
+  userAgent: text("user_agent"),
+  location: varchar("location"), // Geo location if available
+  riskScore: decimal("risk_score", { precision: 5, scale: 2 }), // AI-calculated risk 0-100
+  blockedReason: text("blocked_reason"), // If authentication was blocked
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 // Financial transactions table for YardFlex
@@ -154,6 +192,10 @@ export type InsertLocationUpdate = typeof locationUpdates.$inferInsert;
 export type LocationUpdate = typeof locationUpdates.$inferSelect;
 export type InsertSecurityEvent = typeof securityEvents.$inferInsert;
 export type SecurityEvent = typeof securityEvents.$inferSelect;
+export type InsertUserDevice = typeof userDevices.$inferInsert;
+export type UserDevice = typeof userDevices.$inferSelect;
+export type InsertAuthenticationLog = typeof authenticationLogs.$inferInsert;
+export type AuthenticationLog = typeof authenticationLogs.$inferSelect;
 
 export const insertTransactionSchema = createInsertSchema(transactions).omit({
   id: true,
@@ -183,6 +225,16 @@ export const insertLocationUpdateSchema = createInsertSchema(locationUpdates).om
 });
 
 export const insertSecurityEventSchema = createInsertSchema(securityEvents).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertUserDeviceSchema = createInsertSchema(userDevices).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertAuthenticationLogSchema = createInsertSchema(authenticationLogs).omit({
   id: true,
   createdAt: true,
 });
