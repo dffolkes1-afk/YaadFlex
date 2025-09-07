@@ -1786,6 +1786,576 @@ export type InsertDesignSuggestion = typeof designSuggestions.$inferInsert;
 export type RenovationContractor = typeof renovationContractors.$inferSelect;
 export type InsertRenovationContractor = typeof renovationContractors.$inferInsert;
 
+// ===================== CORPORATE LOGISTICS INTEGRATION SYSTEM =====================
+
+// Major Logistics Company Partnerships
+export const logisticsPartners = pgTable("logistics_partners", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  
+  // Company Information
+  companyName: varchar("company_name").notNull(), // "Amazon", "FedEx", "UPS", "DHL", "USPS"
+  companyCode: varchar("company_code").unique().notNull(), // "AMZN", "FEDX", "UPS", "DHL", "USPS"
+  apiEndpoint: varchar("api_endpoint"), // Their API URL
+  webhookUrl: varchar("webhook_url"), // Where they send us jobs
+  
+  // Integration Details
+  integrationType: varchar("integration_type").notNull(), // "api", "webhook", "ftp", "email"
+  authMethod: varchar("auth_method"), // "api_key", "oauth", "basic_auth", "certificate"
+  isActive: boolean("is_active").default(true),
+  testMode: boolean("test_mode").default(true), // Start in test mode
+  
+  // Business Terms
+  contractType: varchar("contract_type").default("partner"), // "partner", "subcontractor", "franchise"
+  paymentTerms: varchar("payment_terms").default("net_7"), // "net_7", "net_14", "net_30"
+  baseRate: decimal("base_rate", { precision: 8, scale: 2 }), // Per delivery
+  volumeDiscounts: jsonb("volume_discounts"), // Tiered pricing
+  
+  // Performance Requirements (SLAs)
+  deliveryTimeRequirement: integer("delivery_time_requirement"), // Hours
+  onTimeRequirement: decimal("on_time_requirement", { precision: 5, scale: 2 }).default("95.0"), // %
+  damageRate: decimal("damage_rate", { precision: 5, scale: 4 }).default("0.1"), // Max % damaged packages
+  
+  // Service Areas & Capabilities
+  serviceAreas: jsonb("service_areas"), // Geographic coverage
+  serviceTypes: jsonb("service_types"), // ["standard", "express", "same_day", "fragile"]
+  maxPackageWeight: decimal("max_package_weight", { precision: 6, scale: 2 }), // kg
+  maxPackageSize: jsonb("max_package_size"), // {"length": 100, "width": 80, "height": 60}
+  
+  // Integration Status
+  totalJobsReceived: integer("total_jobs_received").default(0),
+  totalJobsCompleted: integer("total_jobs_completed").default(0),
+  averageRating: decimal("average_rating", { precision: 3, scale: 2 }).default("5.0"),
+  lastJobReceived: timestamp("last_job_received"),
+  
+  // Contact Information
+  contactPerson: varchar("contact_person"),
+  contactEmail: varchar("contact_email"),
+  contactPhone: varchar("contact_phone"),
+  escalationContact: varchar("escalation_contact"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Corporate Delivery Jobs from Partners
+export const corporateJobs = pgTable("corporate_jobs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  
+  // Job Identification
+  partnerJobId: varchar("partner_job_id").notNull(), // Their tracking number
+  partnerId: varchar("partner_id").notNull().references(() => logisticsPartners.id),
+  yardflexTrackingNumber: varchar("yardflex_tracking_number").unique().notNull(),
+  
+  // Job Details
+  jobType: varchar("job_type").notNull(), // "pickup", "delivery", "pickup_delivery"
+  priority: varchar("priority").default("standard"), // "low", "standard", "high", "urgent", "rush"
+  serviceType: varchar("service_type").default("standard"), // "standard", "express", "same_day", "next_day"
+  
+  // Pickup Information
+  pickupAddress: text("pickup_address").notNull(),
+  pickupCoordinates: jsonb("pickup_coordinates"),
+  pickupContact: varchar("pickup_contact").notNull(),
+  pickupPhone: varchar("pickup_phone").notNull(),
+  pickupInstructions: text("pickup_instructions"),
+  pickupTimeWindow: jsonb("pickup_time_window"), // {"start": "09:00", "end": "17:00"}
+  
+  // Delivery Information
+  deliveryAddress: text("delivery_address").notNull(),
+  deliveryCoordinates: jsonb("delivery_coordinates"),
+  recipientName: varchar("recipient_name").notNull(),
+  recipientPhone: varchar("recipient_phone"),
+  deliveryInstructions: text("delivery_instructions"),
+  deliveryTimeWindow: jsonb("delivery_time_window"),
+  
+  // Package Details
+  packageCount: integer("package_count").default(1),
+  totalWeight: decimal("total_weight", { precision: 8, scale: 3 }), // kg
+  dimensions: jsonb("dimensions"), // Per package
+  packageValue: decimal("package_value", { precision: 10, scale: 2 }),
+  isFragile: boolean("is_fragile").default(false),
+  requiresSignature: boolean("requires_signature").default(false),
+  requiresIdCheck: boolean("requires_id_check").default(false),
+  
+  // Pricing
+  partnerRate: decimal("partner_rate", { precision: 8, scale: 2 }), // What partner pays us
+  driverPayout: decimal("driver_payout", { precision: 8, scale: 2 }), // What driver gets
+  yardflexMargin: decimal("yardflex_margin", { precision: 8, scale: 2 }), // Our cut
+  
+  // Assignment & Status
+  assignedDriverId: varchar("assigned_driver_id").references(() => users.id),
+  status: varchar("status").default("pending"), // "pending", "assigned", "picked_up", "in_transit", "delivered", "failed", "cancelled"
+  assignedAt: timestamp("assigned_at"),
+  pickedUpAt: timestamp("picked_up_at"),
+  deliveredAt: timestamp("delivered_at"),
+  
+  // SLA Tracking
+  slaDeadline: timestamp("sla_deadline"), // When it must be delivered
+  slaStatus: varchar("sla_status").default("on_track"), // "on_track", "at_risk", "breach"
+  partnerNotified: boolean("partner_notified").default(false), // If we notified partner of issues
+  
+  // Quality & Feedback
+  customerRating: decimal("customer_rating", { precision: 3, scale: 2 }),
+  partnerFeedback: text("partner_feedback"),
+  issueReports: jsonb("issue_reports"), // Damage, delay, etc.
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+});
+
+// Corporate Performance Analytics
+export const corporatePerformance = pgTable("corporate_performance", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  partnerId: varchar("partner_id").notNull().references(() => logisticsPartners.id),
+  period: varchar("period").notNull(), // "daily", "weekly", "monthly"
+  periodDate: date("period_date").notNull(),
+  
+  // Volume Metrics
+  totalJobs: integer("total_jobs").default(0),
+  completedJobs: integer("completed_jobs").default(0),
+  failedJobs: integer("failed_jobs").default(0),
+  cancelledJobs: integer("cancelled_jobs").default(0),
+  
+  // Performance Metrics
+  onTimeDeliveries: integer("on_time_deliveries").default(0),
+  onTimePercentage: decimal("on_time_percentage", { precision: 5, scale: 2 }),
+  averageDeliveryTime: decimal("average_delivery_time", { precision: 5, scale: 1 }), // Hours
+  customerSatisfactionScore: decimal("customer_satisfaction_score", { precision: 3, scale: 2 }),
+  
+  // Financial Metrics
+  totalRevenue: decimal("total_revenue", { precision: 10, scale: 2 }),
+  totalDriverPayouts: decimal("total_driver_payouts", { precision: 10, scale: 2 }),
+  totalYardflexEarnings: decimal("total_yardflex_earnings", { precision: 10, scale: 2 }),
+  averageJobValue: decimal("average_job_value", { precision: 8, scale: 2 }),
+  
+  // Quality Metrics
+  damageReports: integer("damage_reports").default(0),
+  lostPackages: integer("lost_packages").default(0),
+  customerComplaints: integer("customer_complaints").default(0),
+  issueResolutionTime: decimal("issue_resolution_time", { precision: 5, scale: 1 }), // Hours
+  
+  // Capacity Utilization
+  totalDriversUsed: integer("total_drivers_used"),
+  peakHourDemand: integer("peak_hour_demand"),
+  capacityUtilization: decimal("capacity_utilization", { precision: 5, scale: 2 }), // %
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Driver Corporate Job Preferences
+export const driverCorporatePreferences = pgTable("driver_corporate_preferences", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  driverId: varchar("driver_id").notNull().references(() => users.id),
+  
+  // Partner Preferences
+  preferredPartners: jsonb("preferred_partners"), // Which companies they like working with
+  excludedPartners: jsonb("excluded_partners"), // Companies they don't want jobs from
+  
+  // Job Type Preferences  
+  preferredJobTypes: jsonb("preferred_job_types"), // "pickup", "delivery", "pickup_delivery"
+  preferredServiceTypes: jsonb("preferred_service_types"), // "standard", "express", "same_day"
+  maxPackageWeight: decimal("max_package_weight", { precision: 6, scale: 2 }),
+  
+  // Schedule Preferences
+  corporateHoursOnly: boolean("corporate_hours_only").default(false), // 9-5 jobs only
+  weekendsAvailable: boolean("weekends_available").default(true),
+  eveningsAvailable: boolean("evenings_available").default(true),
+  
+  // Performance Tracking
+  corporateJobsCompleted: integer("corporate_jobs_completed").default(0),
+  corporateRating: decimal("corporate_rating", { precision: 3, scale: 2 }).default("5.0"),
+  preferredByPartners: jsonb("preferred_by_partners"), // Which partners rate them highly
+  
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// API Integration Logs
+export const integrationLogs = pgTable("integration_logs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  partnerId: varchar("partner_id").notNull().references(() => logisticsPartners.id),
+  
+  // Request Details
+  requestType: varchar("request_type").notNull(), // "job_received", "status_update", "webhook", "api_call"
+  requestData: jsonb("request_data"), // Full request payload
+  responseData: jsonb("response_data"), // Our response
+  
+  // Status & Timing
+  status: varchar("status").notNull(), // "success", "error", "timeout", "retry"
+  errorMessage: text("error_message"),
+  processingTime: integer("processing_time"), // Milliseconds
+  retryCount: integer("retry_count").default(0),
+  
+  // Related Records
+  corporateJobId: varchar("corporate_job_id").references(() => corporateJobs.id),
+  ipAddress: varchar("ip_address"),
+  userAgent: text("user_agent"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// ===================== RELATIONS =====================
+
+export const logisticsPartnersRelations = relations(logisticsPartners, ({ many }) => ({
+  corporateJobs: many(corporateJobs),
+  performanceMetrics: many(corporatePerformance),
+  integrationLogs: many(integrationLogs),
+}));
+
+export const corporateJobsRelations = relations(corporateJobs, ({ one }) => ({
+  partner: one(logisticsPartners, {
+    fields: [corporateJobs.partnerId],
+    references: [logisticsPartners.id],
+  }),
+  assignedDriver: one(users, {
+    fields: [corporateJobs.assignedDriverId],
+    references: [users.id],
+  }),
+}));
+
+export const corporatePerformanceRelations = relations(corporatePerformance, ({ one }) => ({
+  partner: one(logisticsPartners, {
+    fields: [corporatePerformance.partnerId],
+    references: [logisticsPartners.id],
+  }),
+}));
+
+export const driverCorporatePreferencesRelations = relations(driverCorporatePreferences, ({ one }) => ({
+  driver: one(users, {
+    fields: [driverCorporatePreferences.driverId],
+    references: [users.id],
+  }),
+}));
+
+export const integrationLogsRelations = relations(integrationLogs, ({ one }) => ({
+  partner: one(logisticsPartners, {
+    fields: [integrationLogs.partnerId],
+    references: [logisticsPartners.id],
+  }),
+  corporateJob: one(corporateJobs, {
+    fields: [integrationLogs.corporateJobId],
+    references: [corporateJobs.id],
+  }),
+}));
+
+// ===================== INSERT SCHEMAS =====================
+
+export const insertLogisticsPartnerSchema = createInsertSchema(logisticsPartners);
+export const insertCorporateJobSchema = createInsertSchema(corporateJobs);
+export const insertCorporatePerformanceSchema = createInsertSchema(corporatePerformance);
+export const insertDriverCorporatePreferencesSchema = createInsertSchema(driverCorporatePreferences);
+export const insertIntegrationLogSchema = createInsertSchema(integrationLogs);
+
+// ===================== TYPES =====================
+
+export type LogisticsPartner = typeof logisticsPartners.$inferSelect;
+export type InsertLogisticsPartner = typeof logisticsPartners.$inferInsert;
+export type CorporateJob = typeof corporateJobs.$inferSelect;
+export type InsertCorporateJob = typeof corporateJobs.$inferInsert;
+export type CorporatePerformance = typeof corporatePerformance.$inferSelect;
+export type InsertCorporatePerformance = typeof corporatePerformance.$inferInsert;
+export type DriverCorporatePreferences = typeof driverCorporatePreferences.$inferSelect;
+export type InsertDriverCorporatePreferences = typeof driverCorporatePreferences.$inferInsert;
+export type IntegrationLog = typeof integrationLogs.$inferSelect;
+export type InsertIntegrationLog = typeof integrationLogs.$inferInsert;
+
+// ===================== MICRO-TASK & APPRENTICE SYSTEM =====================
+
+// Quick Tasks - Small jobs for quick cash
+export const quickTasks = pgTable("quick_tasks", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  posterId: varchar("poster_id").notNull().references(() => users.id),
+  
+  // Task Details
+  title: varchar("title").notNull(), // "Clean my yard", "Paint small room", "Move furniture"
+  description: text("description").notNull(),
+  category: varchar("category").notNull(), // "cleaning", "painting", "moving", "landscaping", "handyman"
+  skillLevel: varchar("skill_level").default("beginner"), // "beginner", "apprentice", "experienced"
+  
+  // Location
+  address: text("address").notNull(),
+  coordinates: jsonb("coordinates"),
+  workLocation: varchar("work_location").default("customer_location"), // "customer_location", "remote", "pickup_required"
+  
+  // Pricing - Multiple options for different skill levels
+  budget: decimal("budget", { precision: 8, scale: 2 }).notNull(), // What customer wants to pay
+  professionalRate: decimal("professional_rate", { precision: 8, scale: 2 }), // Full professional cost
+  apprenticeRate: decimal("apprentice_rate", { precision: 8, scale: 2 }), // Reduced rate for learners
+  helperRate: decimal("helper_rate", { precision: 8, scale: 2 }), // Basic helper rate
+  
+  // Task Requirements
+  estimatedHours: decimal("estimated_hours", { precision: 4, scale: 1 }).default("1.0"),
+  peopleNeeded: integer("people_needed").default(1),
+  toolsRequired: jsonb("tools_required"), // ["rake", "paint_brush", "ladder"]
+  toolsProvided: jsonb("tools_provided"), // What customer provides
+  
+  // Scheduling
+  flexibleTiming: boolean("flexible_timing").default(true),
+  urgency: varchar("urgency").default("flexible"), // "urgent", "today", "this_week", "flexible"
+  availableHours: jsonb("available_hours"), // When work can be done
+  
+  // Task Status
+  status: varchar("status").default("open"), // "open", "assigned", "in_progress", "completed", "cancelled"
+  assignedWorkerId: varchar("assigned_worker_id").references(() => users.id),
+  assignedAt: timestamp("assigned_at"),
+  startedAt: timestamp("started_at"),
+  completedAt: timestamp("completed_at"),
+  
+  // Payment & Reviews
+  finalPayment: decimal("final_payment", { precision: 8, scale: 2 }),
+  customerRating: decimal("customer_rating", { precision: 3, scale: 2 }),
+  workerRating: decimal("worker_rating", { precision: 3, scale: 2 }),
+  customerReview: text("customer_review"),
+  workerReview: text("worker_review"),
+  
+  // Special Features
+  teachingOpportunity: boolean("teaching_opportunity").default(false), // Professional teaches apprentice
+  groupTask: boolean("group_task").default(false), // Multiple people work together
+  repeatTask: boolean("repeat_task").default(false), // Recurring job
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Worker Profiles for Micro-Tasks
+export const taskWorkers = pgTable("task_workers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  
+  // Worker Level
+  workerLevel: varchar("worker_level").default("helper"), // "helper", "apprentice", "skilled", "professional"
+  experienceYears: decimal("experience_years", { precision: 3, scale: 1 }).default("0.0"),
+  
+  // Skills & Categories
+  skillCategories: jsonb("skill_categories"), // ["cleaning", "painting", "moving", "yard_work"]
+  toolsOwned: jsonb("tools_owned"), // Tools they have
+  transportation: varchar("transportation"), // "walk", "bike", "car", "truck"
+  maxTravelDistance: decimal("max_travel_distance", { precision: 4, scale: 1 }).default("5.0"), // km
+  
+  // Availability
+  availableHours: jsonb("available_hours"), // When they can work
+  minJobSize: decimal("min_job_size", { precision: 6, scale: 2 }).default("15.00"), // Minimum they'll take
+  preferredJobSize: varchar("preferred_job_size").default("small"), // "micro", "small", "medium", "large"
+  
+  // Performance
+  tasksCompleted: integer("tasks_completed").default(0),
+  averageRating: decimal("average_rating", { precision: 3, scale: 2 }).default("5.0"),
+  successRate: decimal("success_rate", { precision: 5, scale: 2 }).default("100.0"), // % of tasks completed
+  responseTime: decimal("response_time", { precision: 4, scale: 1 }), // Average hours to respond
+  
+  // Earnings & Goals
+  totalEarned: decimal("total_earned", { precision: 10, scale: 2 }).default("0"),
+  weeklyGoal: decimal("weekly_goal", { precision: 8, scale: 2 }), // How much they want to earn
+  dailyGoal: decimal("daily_goal", { precision: 6, scale: 2 }),
+  
+  // Learning & Development
+  learningMode: boolean("learning_mode").default(false), // Wants to learn from professionals
+  teachingMode: boolean("teaching_mode").default(false), // Can teach others
+  skillsLearning: jsonb("skills_learning"), // What they're trying to learn
+  mentorId: varchar("mentor_id").references(() => users.id), // Professional who guides them
+  
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Task Applications - When workers apply for tasks
+export const taskApplications = pgTable("task_applications", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  taskId: varchar("task_id").notNull().references(() => quickTasks.id),
+  workerId: varchar("worker_id").notNull().references(() => users.id),
+  
+  // Application Details
+  proposedRate: decimal("proposed_rate", { precision: 8, scale: 2 }).notNull(),
+  proposedHours: decimal("proposed_hours", { precision: 4, scale: 1 }),
+  proposedStartTime: timestamp("proposed_start_time"),
+  
+  // Worker's Message
+  message: text("message"), // Why they're right for the job
+  experience: text("experience"), // Relevant experience
+  approach: text("approach"), // How they'll do the work
+  
+  // Status
+  status: varchar("status").default("pending"), // "pending", "accepted", "rejected", "withdrawn"
+  responseMessage: text("response_message"), // Customer's response
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  respondedAt: timestamp("responded_at"),
+});
+
+// Apprentice Learning System
+export const learningPrograms = pgTable("learning_programs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  mentorId: varchar("mentor_id").notNull().references(() => users.id), // Professional
+  apprenticeId: varchar("apprentice_id").notNull().references(() => users.id), // Learner
+  
+  // Program Details
+  skillArea: varchar("skill_area").notNull(), // "painting", "electrical", "plumbing", "construction"
+  programLevel: varchar("program_level").default("basic"), // "basic", "intermediate", "advanced"
+  
+  // Structure
+  totalLessons: integer("total_lessons").default(10),
+  completedLessons: integer("completed_lessons").default(0),
+  practicalTasks: integer("practical_tasks").default(5), // Real jobs done together
+  completedTasks: integer("completed_tasks").default(0),
+  
+  // Progress Tracking
+  skillAssessments: jsonb("skill_assessments"), // Periodic skill tests
+  strengths: jsonb("strengths"), // What apprentice is good at
+  improvements: jsonb("improvements"), // What needs work
+  
+  // Financials
+  programFee: decimal("program_fee", { precision: 8, scale: 2 }), // What apprentice pays
+  earningsShare: decimal("earnings_share", { precision: 5, scale: 2 }).default("60.0"), // % apprentice gets from shared jobs
+  
+  // Status
+  status: varchar("status").default("active"), // "active", "completed", "paused", "cancelled"
+  graduationRequirements: jsonb("graduation_requirements"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+});
+
+// Task Categories with Pricing Guidelines
+export const taskCategories = pgTable("task_categories", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  
+  name: varchar("name").notNull(), // "Yard Cleanup", "Room Painting", "Furniture Moving"
+  description: text("description"),
+  parentCategory: varchar("parent_category"), // "cleaning", "painting", "moving"
+  
+  // Pricing Guidelines
+  typicalHelperRate: decimal("typical_helper_rate", { precision: 6, scale: 2 }), // $15-25
+  typicalApprenticeRate: decimal("typical_apprentice_rate", { precision: 6, scale: 2 }), // $25-35
+  typicalProfessionalRate: decimal("typical_professional_rate", { precision: 6, scale: 2 }), // $40-60
+  
+  // Time Estimates
+  minHours: decimal("min_hours", { precision: 3, scale: 1 }).default("0.5"),
+  maxHours: decimal("max_hours", { precision: 3, scale: 1 }).default("8.0"),
+  averageHours: decimal("average_hours", { precision: 3, scale: 1 }).default("2.0"),
+  
+  // Requirements
+  commonTools: jsonb("common_tools"), // Tools usually needed
+  skillsRequired: jsonb("skills_required"), // Basic skills needed
+  safetyRequirements: jsonb("safety_requirements"), // Safety gear, precautions
+  
+  // Popular Tasks
+  totalTasks: integer("total_tasks").default(0),
+  averageRating: decimal("average_rating", { precision: 3, scale: 2 }).default("5.0"),
+  isActive: boolean("is_active").default(true),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Quick Payment System for Micro-Tasks
+export const taskPayments = pgTable("task_payments", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  taskId: varchar("task_id").notNull().references(() => quickTasks.id),
+  customerId: varchar("customer_id").notNull().references(() => users.id),
+  workerId: varchar("worker_id").notNull().references(() => users.id),
+  
+  // Payment Details
+  agreedAmount: decimal("agreed_amount", { precision: 8, scale: 2 }).notNull(),
+  platformFee: decimal("platform_fee", { precision: 6, scale: 2 }), // YardFlex cut (15%)
+  workerEarnings: decimal("worker_earnings", { precision: 8, scale: 2 }),
+  
+  // Payment Status
+  status: varchar("status").default("pending"), // "pending", "paid", "disputed", "refunded"
+  paymentMethod: varchar("payment_method").default("kwd_wallet"), // "kwd_wallet", "cash", "bank_transfer"
+  
+  // Timing
+  paidAt: timestamp("paid_at"),
+  disputeReason: text("dispute_reason"),
+  resolvedAt: timestamp("resolved_at"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// ===================== RELATIONS =====================
+
+export const quickTasksRelations = relations(quickTasks, ({ one, many }) => ({
+  poster: one(users, {
+    fields: [quickTasks.posterId],
+    references: [users.id],
+  }),
+  assignedWorker: one(users, {
+    fields: [quickTasks.assignedWorkerId],
+    references: [users.id],
+  }),
+  applications: many(taskApplications),
+  payment: one(taskPayments),
+}));
+
+export const taskWorkersRelations = relations(taskWorkers, ({ one }) => ({
+  user: one(users, {
+    fields: [taskWorkers.userId],
+    references: [users.id],
+  }),
+  mentor: one(users, {
+    fields: [taskWorkers.mentorId],
+    references: [users.id],
+  }),
+}));
+
+export const taskApplicationsRelations = relations(taskApplications, ({ one }) => ({
+  task: one(quickTasks, {
+    fields: [taskApplications.taskId],
+    references: [quickTasks.id],
+  }),
+  worker: one(users, {
+    fields: [taskApplications.workerId],
+    references: [users.id],
+  }),
+}));
+
+export const learningProgramsRelations = relations(learningPrograms, ({ one }) => ({
+  mentor: one(users, {
+    fields: [learningPrograms.mentorId],
+    references: [users.id],
+  }),
+  apprentice: one(users, {
+    fields: [learningPrograms.apprenticeId],
+    references: [users.id],
+  }),
+}));
+
+export const taskPaymentsRelations = relations(taskPayments, ({ one }) => ({
+  task: one(quickTasks, {
+    fields: [taskPayments.taskId],
+    references: [quickTasks.id],
+  }),
+  customer: one(users, {
+    fields: [taskPayments.customerId],
+    references: [users.id],
+  }),
+  worker: one(users, {
+    fields: [taskPayments.workerId],
+    references: [users.id],
+  }),
+}));
+
+// ===================== INSERT SCHEMAS =====================
+
+export const insertQuickTaskSchema = createInsertSchema(quickTasks);
+export const insertTaskWorkerSchema = createInsertSchema(taskWorkers);
+export const insertTaskApplicationSchema = createInsertSchema(taskApplications);
+export const insertLearningProgramSchema = createInsertSchema(learningPrograms);
+export const insertTaskCategorySchema = createInsertSchema(taskCategories);
+export const insertTaskPaymentSchema = createInsertSchema(taskPayments);
+
+// ===================== TYPES =====================
+
+export type QuickTask = typeof quickTasks.$inferSelect;
+export type InsertQuickTask = typeof quickTasks.$inferInsert;
+export type TaskWorker = typeof taskWorkers.$inferSelect;
+export type InsertTaskWorker = typeof taskWorkers.$inferInsert;
+export type TaskApplication = typeof taskApplications.$inferSelect;
+export type InsertTaskApplication = typeof taskApplications.$inferInsert;
+export type LearningProgram = typeof learningPrograms.$inferSelect;
+export type InsertLearningProgram = typeof learningPrograms.$inferInsert;
+export type TaskCategory = typeof taskCategories.$inferSelect;
+export type InsertTaskCategory = typeof taskCategories.$inferInsert;
+export type TaskPayment = typeof taskPayments.$inferSelect;
+export type InsertTaskPayment = typeof taskPayments.$inferInsert;
+
 export const insertTransactionSchema = createInsertSchema(transactions).omit({
   id: true,
   createdAt: true,

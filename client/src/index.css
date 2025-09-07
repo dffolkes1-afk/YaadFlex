@@ -4,30 +4,43 @@
 @tailwind utilities;
 
 :root {
-  --background: hsl(222 84% 5%);
-  --foreground: hsl(210 40% 98%);
-  --card: hsl(222 84% 8%);
-  --card-foreground: hsl(210 40% 98%);
-  --popover: hsl(222 84% 8%);
-  --popover-foreground: hsl(210 40% 98%);
-  --primary: hsl(217 91% 60%);
-  --primary-foreground: hsl(210 40% 98%);
-  --secondary: hsl(217 19% 16%);
-  --secondary-foreground: hsl(210 40% 98%);
-  --muted: hsl(217 19% 12%);
-  --muted-foreground: hsl(215 20% 65%);
-  --accent: hsl(45 93% 58%);
-  --accent-foreground: hsl(222 84% 5%);
+  /* 🇯🇲 JAMAICA FLAG COLORS - AUTHENTIC YARDFLEX VIBE 🇯🇲 */
+  --jamaica-green: hsl(153, 100%, 26%);      /* Rich Jamaica Green */
+  --jamaica-gold: hsl(50, 100%, 50%);        /* Bright Jamaica Gold */
+  --jamaica-black: hsl(0, 0%, 8%);           /* Deep Jamaica Black */
+  --jamaica-green-light: hsl(153, 80%, 35%); /* Lighter Green */
+  --jamaica-green-dark: hsl(153, 100%, 20%); /* Darker Green */
+  
+  /* 🌍 GLOBAL PLANETARY THEME 🌍 */
+  --earth-blue: hsl(210, 100%, 45%);         /* Ocean Blue */
+  --earth-green: hsl(120, 60%, 40%);         /* Land Green */
+  --cosmic-purple: hsl(260, 80%, 45%);       /* Space Purple */
+  --solar-orange: hsl(35, 100%, 55%);        /* Sun Orange */
+  
+  --background: linear-gradient(135deg, var(--jamaica-black) 0%, hsl(153, 50%, 10%) 50%, var(--jamaica-black) 100%);
+  --foreground: hsl(50, 100%, 95%);
+  --card: linear-gradient(135deg, var(--jamaica-black) 0%, hsl(153, 30%, 12%) 100%);
+  --card-foreground: hsl(50, 100%, 95%);
+  --popover: var(--jamaica-black);
+  --popover-foreground: hsl(50, 100%, 95%);
+  --primary: var(--jamaica-green);
+  --primary-foreground: var(--jamaica-gold);
+  --secondary: var(--jamaica-green-dark);
+  --secondary-foreground: var(--jamaica-gold);
+  --muted: hsl(153, 20%, 15%);
+  --muted-foreground: hsl(50, 50%, 70%);
+  --accent: var(--jamaica-gold);
+  --accent-foreground: var(--jamaica-black);
   --destructive: hsl(0 84% 60%);
-  --destructive-foreground: hsl(210 40% 98%);
-  --border: hsl(217 19% 16%);
-  --input: hsl(217 19% 16%);
-  --ring: hsl(217 91% 60%);
-  --chart-1: hsl(217 91% 60%);
-  --chart-2: hsl(45 93% 58%);
-  --chart-3: hsl(142 76% 36%);
-  --chart-4: hsl(0 84% 60%);
-  --chart-5: hsl(280 65% 60%);
+  --destructive-foreground: hsl(50, 100%, 95%);
+  --border: var(--jamaica-green-dark);
+  --input: hsl(153, 30%, 12%);
+  --ring: var(--jamaica-green);
+  --chart-1: var(--jamaica-green);
+  --chart-2: var(--jamaica-gold);
+  --chart-3: var(--earth-blue);
+  --chart-4: var(--solar-orange);
+  --chart-5: var(--cosmic-purple);
   --sidebar: hsl(222 84% 8%);
   --sidebar-foreground: hsl(210 40% 98%);
   --sidebar-primary: hsl(217 91% 60%);
@@ -248,6 +261,112 @@
 @keyframes textFlow {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
+}
+
+/* 🇯🇲 JAMAICAN GLOBAL THEME ANIMATIONS 🌍 */
+
+/* Planet Earth Rotation */
+.planet-earth {
+  animation: planetRotation 20s linear infinite;
+  background: radial-gradient(circle at 30% 30%, 
+    var(--earth-blue) 0%, 
+    var(--earth-green) 35%, 
+    var(--jamaica-green) 70%, 
+    var(--jamaica-black) 100%);
+  border-radius: 50%;
+  box-shadow: 
+    0 0 30px var(--jamaica-green),
+    inset -10px -10px 20px rgba(0,0,0,0.3);
+}
+
+@keyframes planetRotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Jamaica Flag Wave Effect */
+.jamaica-wave {
+  background: linear-gradient(
+    45deg,
+    var(--jamaica-green) 0%,
+    var(--jamaica-gold) 25%,
+    var(--jamaica-black) 50%,
+    var(--jamaica-gold) 75%,
+    var(--jamaica-green) 100%
+  );
+  background-size: 400% 400%;
+  animation: jamaicaWave 4s ease-in-out infinite;
+}
+
+@keyframes jamaicaWave {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Global Connection Lines */
+.global-connections {
+  position: relative;
+}
+
+.global-connections::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(2px 2px at 20px 30px, var(--jamaica-gold), transparent),
+    radial-gradient(2px 2px at 40px 70px, var(--jamaica-green), transparent),
+    radial-gradient(1px 1px at 90px 40px, var(--earth-blue), transparent),
+    radial-gradient(1px 1px at 130px 80px, var(--jamaica-gold), transparent),
+    linear-gradient(90deg, transparent 79px, var(--jamaica-green) 79px, var(--jamaica-green) 81px, transparent 81px),
+    linear-gradient(transparent 39px, var(--jamaica-gold) 39px, var(--jamaica-gold) 41px, transparent 41px);
+  background-size: 150px 100px;
+  animation: globalPulse 8s ease-in-out infinite;
+  opacity: 0.3;
+}
+
+@keyframes globalPulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.6; }
+}
+
+/* Jamaican Glow Effects */
+.jamaica-glow {
+  box-shadow: 
+    0 0 20px var(--jamaica-green),
+    0 0 40px var(--jamaica-gold),
+    0 0 60px var(--jamaica-green);
+  animation: jamaicaGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes jamaicaGlow {
+  0% { 
+    box-shadow: 
+      0 0 20px var(--jamaica-green),
+      0 0 30px var(--jamaica-gold);
+  }
+  100% { 
+    box-shadow: 
+      0 0 40px var(--jamaica-green),
+      0 0 60px var(--jamaica-gold),
+      0 0 80px var(--earth-blue);
+  }
+}
+
+/* World Map Background */
+.world-map-bg {
+  background: 
+    radial-gradient(circle at 20% 80%, var(--jamaica-green) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, var(--jamaica-gold) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, var(--earth-blue) 0%, transparent 50%);
+  animation: worldPulse 6s ease-in-out infinite;
+}
+
+@keyframes worldPulse {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.3; }
 }
 
 /* Pulse Border Effect */
