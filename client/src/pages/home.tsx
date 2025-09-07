@@ -33,6 +33,163 @@ type GlobalStats = {
   securityLevel: string;
 };
 
+type UserWallet = {
+  id: string;
+  currency: string;
+  balance: string;
+  isActive: boolean;
+  lastTransactionAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+function KWDWalletSection() {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [kwdAmount, setKwdAmount] = useState('');
+
+  // Fetch user wallets
+  const { data: wallets, isLoading: walletsLoading } = useQuery<UserWallet[]>({
+    queryKey: ['/api/wallets'],
+    retry: false,
+  });
+
+  // Add KWD funds mutation
+  const addKWDMutation = useMutation({
+    mutationFn: async (amount: number) => {
+      const response = await apiRequest('POST', '/api/wallets/add-kwd', { amount });
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Success!",
+        description: `Successfully added ${kwdAmount} KWD to your YardFlex wallet!`,
+      });
+      setKwdAmount('');
+      queryClient.invalidateQueries({ queryKey: ['/api/wallets'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/transactions'] });
+    },
+    onError: (error) => {
+      if (isUnauthorizedError(error)) {
+        toast({
+          title: "Unauthorized",
+          description: "You are logged out. Logging in again...",
+          variant: "destructive",
+        });
+        setTimeout(() => {
+          window.location.href = "/api/login";
+        }, 500);
+        return;
+      }
+      toast({
+        title: "Error",
+        description: "Failed to add KWD funds. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleAddKWD = (e: React.FormEvent) => {
+    e.preventDefault();
+    const amount = parseFloat(kwdAmount);
+    if (amount <= 0 || isNaN(amount)) {
+      toast({
+        title: "Invalid Amount",
+        description: "Please enter a valid amount greater than 0.",
+        variant: "destructive",
+      });
+      return;
+    }
+    addKWDMutation.mutate(amount);
+  };
+
+  const kwdWallet = wallets?.find(w => w.currency === 'KWD');
+  const yfdWallet = wallets?.find(w => w.currency === 'YFD');
+
+  return (
+    <Card data-testid="kwd-wallet-section">
+      <CardHeader>
+        <CardTitle className="flex items-center space-x-2">
+          <span className="text-xl">💎</span>
+          <span>YardFlex Currency (KWD/YFD)</span>
+          <div className="text-sm text-muted-foreground ml-4">1 KWD = 1 YFD</div>
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        
+        {/* Wallet Balances */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-primary/10 p-4 rounded-lg">
+            <div className="text-sm text-muted-foreground">KWD Balance</div>
+            <div className="text-2xl font-bold text-primary">
+              {walletsLoading ? '...' : (kwdWallet?.balance || '0.00')} KWD
+            </div>
+          </div>
+          <div className="bg-accent/10 p-4 rounded-lg">
+            <div className="text-sm text-muted-foreground">YFD Balance</div>
+            <div className="text-2xl font-bold text-accent">
+              {walletsLoading ? '...' : (yfdWallet?.balance || '0.00')} YFD
+            </div>
+          </div>
+        </div>
+
+        {/* Add KWD Funds */}
+        <form onSubmit={handleAddKWD} className="space-y-4">
+          <div>
+            <Label htmlFor="kwd-amount">Add KWD to YardFlex Wallet</Label>
+            <div className="flex space-x-2">
+              <Input
+                id="kwd-amount"
+                type="number"
+                step="0.01"
+                min="0.01"
+                placeholder="Enter KWD amount"
+                value={kwdAmount}
+                onChange={(e) => setKwdAmount(e.target.value)}
+                className="flex-1"
+                data-testid="input-kwd-amount"
+              />
+              <Button 
+                type="submit" 
+                disabled={addKWDMutation.isPending || !kwdAmount}
+                className="bg-primary text-primary-foreground"
+                data-testid="button-add-kwd"
+              >
+                {addKWDMutation.isPending ? "Adding..." : "Add KWD"}
+              </Button>
+            </div>
+          </div>
+          
+          {/* Quick Amount Buttons */}
+          <div className="flex space-x-2">
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={() => setKwdAmount('1')}
+              data-testid="button-add-1-kwd"
+            >
+              Test $1 KWD
+            </Button>
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={() => setKwdAmount('100')}
+              data-testid="button-add-100-kwd"
+            >
+              Add $100 KWD
+            </Button>
+          </div>
+        </form>
+
+        <div className="text-sm text-muted-foreground bg-muted/20 p-3 rounded-lg">
+          <strong>How it works:</strong> KWD is YardFlex's ultimate currency. 1 KWD equals 1 YFD (YardFlex Dollar). 
+          Start with $1 KWD to test the system, then scale to $100 KWD as your yard cash reference.
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function Home() {
   const { user } = useAuth();
   const { toast } = useToast();
@@ -408,6 +565,9 @@ export default function Home() {
               </form>
             </CardContent>
           </Card>
+
+          {/* KWD/YFD Currency System */}
+          <KWDWalletSection />
 
           {/* Recent Transactions */}
           <Card data-testid="recent-transactions-card">
