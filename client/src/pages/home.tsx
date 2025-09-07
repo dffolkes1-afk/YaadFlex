@@ -11,6 +11,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import globalHeroImage from '@assets/generated_images/CEO_touching_global_world_silhouette_ad066b65.png';
+import yardFlexLogo from '@assets/generated_images/YardFlex_global_connectivity_logo_d834a244.png';
 
 type Transaction = {
   id: string;
@@ -320,13 +322,53 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* Global Hero Section */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-green-900/20 to-yellow-900/20 border-b border-yellow-500/30">
+        <div className="relative">
+          <img 
+            src={globalHeroImage} 
+            alt="YardFlex Global Vision - Connecting Jamaica to the World" 
+            className="w-full h-64 md:h-96 object-cover opacity-90"
+            data-testid="img-global-hero"
+          />
+          
+          {/* Hero Overlay Content */}
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-black/40 to-transparent">
+            <div className="text-center text-white z-10">
+              <h1 className="text-4xl md:text-6xl font-bold mb-4" data-testid="text-hero-title">
+                <span className="text-yellow-400 text-shadow-lg">YARD</span>
+                <span className="text-green-500 text-shadow-lg">FLEX</span>
+              </h1>
+              <p className="text-xl md:text-2xl font-semibold mb-2" data-testid="text-hero-subtitle">
+                🇯🇲 Connecting Jamaica to the World 🌍
+              </p>
+              <p className="text-lg md:text-xl" data-testid="text-hero-description">
+                One App. Endless Opportunities. Global Reach.
+              </p>
+            </div>
+          </div>
+          
+          {/* Decorative Elements */}
+          <div className="absolute top-4 left-4 w-16 h-16 bg-yellow-400/20 rounded-full blur-xl animate-pulse"></div>
+          <div className="absolute bottom-4 right-4 w-20 h-20 bg-green-500/20 rounded-full blur-xl animate-pulse delay-1000"></div>
+        </div>
+      </div>
+
       {/* Header */}
       <header className="glass-card border-b border-border pulse-border">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="text-3xl text-premium floating text-glow" data-testid="logo-shield">🛡️</div>
+              <img 
+                src={yardFlexLogo} 
+                alt="YardFlex Logo" 
+                className="w-10 h-10 rounded-full"
+                data-testid="img-yardflex-logo"
+              />
               <span className="text-2xl font-bold text-premium" data-testid="brand-name">YardFlex</span>
+              <span className="text-xs bg-green-600 text-white px-2 py-1 rounded-full font-medium" data-testid="global-indicator">
+                GLOBAL
+              </span>
               {beastModeActive && (
                 <span className="text-xs bg-destructive text-destructive-foreground px-2 py-1 rounded-full font-medium animate-pulse" data-testid="beast-mode-indicator">
                   BEAST MODE
@@ -335,7 +377,7 @@ export default function Home() {
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-muted-foreground" data-testid="user-welcome">
-                Welcome, Secure User
+                Welcome to the Global Economy
               </span>
               <Button variant="outline" onClick={handleLogout} data-testid="button-logout">
                 Logout
@@ -346,10 +388,51 @@ export default function Home() {
       </header>
 
       <div className="container mx-auto px-6 py-8">
+        {/* B2B Wholesale & Dropshipping CTA */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-r from-green-900/30 to-yellow-900/30 border-yellow-500/30" data-testid="b2b-cta-card">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2 text-yellow-400">
+                <span className="text-2xl">🌍</span>
+                <span>Start Your Global Business Today</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-yellow-300 mb-2">
+                    <strong>B2B Wholesale:</strong> Furniture makers → Stores only. No retail customers. <br/>
+                    <strong>Dropshipping:</strong> Start selling globally with $0 inventory risk.
+                  </p>
+                  <div className="text-sm text-yellow-400 font-semibold">
+                    🚀 FROM JAMAICA TO THE WORLD
+                  </div>
+                </div>
+                <div className="flex space-x-3">
+                  <Button 
+                    onClick={() => setLocation('/wholesale')}
+                    className="bg-yellow-600 text-black hover:bg-yellow-700 font-bold"
+                    data-testid="button-access-wholesale"
+                  >
+                    🏭 B2B WHOLESALE
+                  </Button>
+                  <Button 
+                    onClick={() => setLocation('/dropshipping')}
+                    className="bg-green-600 text-white hover:bg-green-700 font-bold"
+                    data-testid="button-access-dropshipping"
+                  >
+                    📦 DROPSHIPPING
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Security Status Dashboard */}
         <div className="mb-8">
           <h1 className="text-4xl font-black text-premium text-glow floating mb-6" data-testid="dashboard-title">
-            Fortress Command Center
+            Global Command Center
           </h1>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

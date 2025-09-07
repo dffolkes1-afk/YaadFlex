@@ -2356,6 +2356,267 @@ export type InsertTaskCategory = typeof taskCategories.$inferInsert;
 export type TaskPayment = typeof taskPayments.$inferSelect;
 export type InsertTaskPayment = typeof taskPayments.$inferInsert;
 
+// ===================== B2B WHOLESALE MARKETPLACE =====================
+
+// Business Account Types - Strict B2B Only
+export const businessAccounts = pgTable("business_accounts", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  
+  // Business Type - VERY IMPORTANT FOR ACCESS CONTROL
+  businessType: varchar("business_type").notNull(), // "manufacturer", "wholesaler", "retailer", "distributor"
+  businessCategory: varchar("business_category").notNull(), // "furniture", "hardware", "construction", "automotive"
+  
+  // Business Information
+  businessName: varchar("business_name").notNull(),
+  businessRegistration: varchar("business_registration"), // TRN number in Jamaica
+  businessLicense: varchar("business_license"),
+  tradingName: varchar("trading_name"), // DBA name
+  
+  // Verification Status
+  isVerified: boolean("is_verified").default(false),
+  verificationLevel: varchar("verification_level").default("pending"), // "pending", "basic", "premium", "enterprise"
+  verificationDocuments: jsonb("verification_documents"), // Uploaded docs
+  
+  // Contact & Location
+  businessAddress: text("business_address").notNull(),
+  businessPhone: varchar("business_phone").notNull(),
+  businessEmail: varchar("business_email").notNull(),
+  website: varchar("website"),
+  
+  // Business Details
+  establishedYear: integer("established_year"),
+  employeeCount: varchar("employee_count"), // "1-5", "6-20", "21-100", "100+"
+  annualRevenue: varchar("annual_revenue"), // "under_100k", "100k_500k", "500k_1m", "1m+"
+  
+  // Trading Credentials
+  minimumOrderValue: decimal("minimum_order_value", { precision: 10, scale: 2 }),
+  paymentTerms: varchar("payment_terms").default("net_30"), // "cash", "net_15", "net_30", "net_60"
+  creditLimit: decimal("credit_limit", { precision: 12, scale: 2 }),
+  
+  // Access Controls - WHO CAN SEE WHAT
+  sellsTo: jsonb("sells_to"), // ["retailer", "distributor"] - NOT "consumer"
+  buysFrom: jsonb("buys_from"), // ["manufacturer", "wholesaler"]
+  allowedCategories: jsonb("allowed_categories"), // What they can access
+  
+  // Performance
+  totalOrders: integer("total_orders").default(0),
+  totalValue: decimal("total_value", { precision: 12, scale: 2 }).default("0"),
+  averageRating: decimal("average_rating", { precision: 3, scale: 2 }).default("5.0"),
+  paymentHistory: varchar("payment_history").default("excellent"), // "excellent", "good", "fair", "poor"
+  
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Wholesale Product Catalog - B2B ONLY
+export const wholesaleProducts = pgTable("wholesale_products", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  supplierId: varchar("supplier_id").notNull().references(() => businessAccounts.id),
+  
+  // Product Information
+  productName: varchar("product_name").notNull(),
+  productCode: varchar("product_code").unique(), // Supplier's internal code
+  category: varchar("category").notNull(), // "chairs", "tables", "bed_heads", "coffee_tables"
+  subcategory: varchar("subcategory"), // "dining_chairs", "office_chairs", "bar_stools"
+  
+  // Product Details
+  description: text("description").notNull(),
+  specifications: jsonb("specifications"), // Dimensions, materials, colors, etc.
+  materials: jsonb("materials"), // "solid_wood", "metal", "fabric", etc.
+  finishOptions: jsonb("finish_options"), // Available colors/finishes
+  
+  // Wholesale Pricing - NO RETAIL PRICES
+  unitWholesalePrice: decimal("unit_wholesale_price", { precision: 10, scale: 2 }).notNull(),
+  bulkPricing: jsonb("bulk_pricing"), // Tiered pricing for quantities
+  minimumOrderQty: integer("minimum_order_qty").default(1),
+  
+  // Business Terms
+  leadTime: integer("lead_time").default(7), // Days to manufacture/prepare
+  shelfLife: integer("shelf_life"), // Days product stays good
+  warranty: varchar("warranty"), // "1_year", "2_years", "lifetime"
+  
+  // Stock Information
+  currentStock: integer("current_stock").default(0),
+  productionCapacity: integer("production_capacity"), // Units per month
+  isCustomizable: boolean("is_customizable").default(false),
+  customizationOptions: jsonb("customization_options"),
+  
+  // Visibility Control
+  visibleTo: jsonb("visible_to"), // ["retailer", "distributor"] - NEVER "consumer"
+  requiredBusinessTypes: jsonb("required_business_types"), // Who can see this
+  
+  // Product Images & Media
+  imageUrls: jsonb("image_urls"),
+  catalogPdfUrl: varchar("catalog_pdf_url"),
+  videoUrl: varchar("video_url"),
+  
+  // Performance Tracking
+  totalOrders: integer("total_orders").default(0),
+  averageRating: decimal("average_rating", { precision: 3, scale: 2 }).default("5.0"),
+  
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// B2B Orders - Wholesale Only
+export const wholesaleOrders = pgTable("wholesale_orders", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  orderNumber: varchar("order_number").unique().notNull(),
+  
+  // Business Relationship
+  buyerId: varchar("buyer_id").notNull().references(() => businessAccounts.id), // Store/Retailer
+  supplierId: varchar("supplier_id").notNull().references(() => businessAccounts.id), // Manufacturer
+  
+  // Order Details
+  orderItems: jsonb("order_items").notNull(), // Products and quantities
+  subtotal: decimal("subtotal", { precision: 12, scale: 2 }).notNull(),
+  discountAmount: decimal("discount_amount", { precision: 10, scale: 2 }).default("0"),
+  taxAmount: decimal("tax_amount", { precision: 10, scale: 2 }).default("0"),
+  shippingCost: decimal("shipping_cost", { precision: 8, scale: 2 }).default("0"),
+  totalAmount: decimal("total_amount", { precision: 12, scale: 2 }).notNull(),
+  
+  // Business Terms
+  paymentTerms: varchar("payment_terms").notNull(), // "net_30", "cash_on_delivery"
+  deliveryTerms: varchar("delivery_terms").default("fob_supplier"), // "fob_supplier", "delivered"
+  expectedDelivery: timestamp("expected_delivery"),
+  
+  // Order Status
+  status: varchar("status").default("pending"), // "pending", "confirmed", "production", "shipped", "delivered", "cancelled"
+  confirmationDate: timestamp("confirmation_date"),
+  productionStartDate: timestamp("production_start_date"),
+  shippedDate: timestamp("shipped_date"),
+  deliveredDate: timestamp("delivered_date"),
+  
+  // Communication
+  buyerNotes: text("buyer_notes"),
+  supplierNotes: text("supplier_notes"),
+  internalNotes: text("internal_notes"),
+  
+  // Payment Tracking
+  paymentStatus: varchar("payment_status").default("pending"), // "pending", "partial", "paid", "overdue"
+  paymentDueDate: timestamp("payment_due_date"),
+  paidAmount: decimal("paid_amount", { precision: 12, scale: 2 }).default("0"),
+  paidDate: timestamp("paid_date"),
+  
+  // YardFlex Commission
+  platformFee: decimal("platform_fee", { precision: 10, scale: 2 }), // 3-5% for B2B
+  platformFeePaid: boolean("platform_fee_paid").default(false),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Business Verification System
+export const businessVerifications = pgTable("business_verifications", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  businessAccountId: varchar("business_account_id").notNull().references(() => businessAccounts.id),
+  
+  // Verification Type
+  verificationType: varchar("verification_type").notNull(), // "trn", "business_license", "address", "references"
+  
+  // Documentation
+  documentType: varchar("document_type"), // "tax_registration", "business_license", "utility_bill"
+  documentUrl: varchar("document_url"),
+  documentNumber: varchar("document_number"),
+  
+  // Verification Status
+  status: varchar("status").default("pending"), // "pending", "approved", "rejected", "expired"
+  verifiedBy: varchar("verified_by"), // YardFlex staff member
+  verificationDate: timestamp("verification_date"),
+  expiryDate: timestamp("expiry_date"),
+  
+  // Notes
+  rejectionReason: text("rejection_reason"),
+  notes: text("notes"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Access Control Matrix - Who Can See What
+export const businessAccessControls = pgTable("business_access_controls", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  
+  // Access Rules
+  fromBusinessType: varchar("from_business_type").notNull(), // "manufacturer"
+  toBusinessType: varchar("to_business_type").notNull(), // "retailer" 
+  category: varchar("category").notNull(), // "furniture"
+  
+  // Permissions
+  canViewProducts: boolean("can_view_products").default(true),
+  canViewPricing: boolean("can_view_pricing").default(true),
+  canPlaceOrders: boolean("can_place_orders").default(true),
+  canRequestQuotes: boolean("can_request_quotes").default(true),
+  
+  // Minimum Requirements
+  minVerificationLevel: varchar("min_verification_level").default("basic"),
+  minOrderValue: decimal("min_order_value", { precision: 10, scale: 2 }),
+  
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// ===================== RELATIONS =====================
+
+export const businessAccountsRelations = relations(businessAccounts, ({ one, many }) => ({
+  user: one(users, {
+    fields: [businessAccounts.userId],
+    references: [users.id],
+  }),
+  suppliedProducts: many(wholesaleProducts),
+  buyerOrders: many(wholesaleOrders, { relationName: "buyerOrders" }),
+  supplierOrders: many(wholesaleOrders, { relationName: "supplierOrders" }),
+  verifications: many(businessVerifications),
+}));
+
+export const wholesaleProductsRelations = relations(wholesaleProducts, ({ one }) => ({
+  supplier: one(businessAccounts, {
+    fields: [wholesaleProducts.supplierId],
+    references: [businessAccounts.id],
+  }),
+}));
+
+export const wholesaleOrdersRelations = relations(wholesaleOrders, ({ one }) => ({
+  buyer: one(businessAccounts, {
+    fields: [wholesaleOrders.buyerId],
+    references: [businessAccounts.id],
+  }),
+  supplier: one(businessAccounts, {
+    fields: [wholesaleOrders.supplierId],
+    references: [businessAccounts.id],
+  }),
+}));
+
+export const businessVerificationsRelations = relations(businessVerifications, ({ one }) => ({
+  businessAccount: one(businessAccounts, {
+    fields: [businessVerifications.businessAccountId],
+    references: [businessAccounts.id],
+  }),
+}));
+
+// ===================== INSERT SCHEMAS =====================
+
+export const insertBusinessAccountSchema = createInsertSchema(businessAccounts);
+export const insertWholesaleProductSchema = createInsertSchema(wholesaleProducts);
+export const insertWholesaleOrderSchema = createInsertSchema(wholesaleOrders);
+export const insertBusinessVerificationSchema = createInsertSchema(businessVerifications);
+export const insertBusinessAccessControlSchema = createInsertSchema(businessAccessControls);
+
+// ===================== TYPES =====================
+
+export type BusinessAccount = typeof businessAccounts.$inferSelect;
+export type InsertBusinessAccount = typeof businessAccounts.$inferInsert;
+export type WholesaleProduct = typeof wholesaleProducts.$inferSelect;
+export type InsertWholesaleProduct = typeof wholesaleProducts.$inferInsert;
+export type WholesaleOrder = typeof wholesaleOrders.$inferSelect;
+export type InsertWholesaleOrder = typeof wholesaleOrders.$inferInsert;
+export type BusinessVerification = typeof businessVerifications.$inferSelect;
+export type InsertBusinessVerification = typeof businessVerifications.$inferInsert;
+export type BusinessAccessControl = typeof businessAccessControls.$inferSelect;
+export type InsertBusinessAccessControl = typeof businessAccessControls.$inferInsert;
+
 export const insertTransactionSchema = createInsertSchema(transactions).omit({
   id: true,
   createdAt: true,
