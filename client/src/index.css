@@ -122,6 +122,169 @@
   }
 }
 
+/* ✨ PREMIUM INTERFACE UPGRADES - WAY BETTER THAN SUPREME VENTURE ✨ */
+
+/* Glass Morphism Effects */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(59, 130, 246, 0.3);
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+}
+
+/* Premium Button Effects */
+.btn-premium {
+  @apply relative overflow-hidden bg-gradient-to-r from-primary via-accent to-primary text-primary-foreground font-bold rounded-xl px-6 py-3 transition-all duration-500 transform hover:scale-105;
+  background-size: 200% 100%;
+  background-position: 0% 0%;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.btn-premium:hover {
+  background-position: 100% 0%;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
+}
+
+.btn-premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-premium:hover::before {
+  left: 100%;
+}
+
+/* Advanced Glow Effects */
+.premium-glow {
+  animation: premiumGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes premiumGlow {
+  0% { 
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    border-color: rgba(59, 130, 246, 0.2);
+  }
+  100% { 
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.6), 0 0 60px rgba(45, 212, 191, 0.3);
+    border-color: rgba(59, 130, 246, 0.5);
+  }
+}
+
+/* Floating Animation */
+.floating {
+  animation: floating 6s ease-in-out infinite;
+}
+
+@keyframes floating {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+/* Shimmer Effect */
+.shimmer {
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(59, 130, 246, 0.1), 
+    rgba(45, 212, 191, 0.1),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Ultra-Modern Cards */
+.card-ultra {
+  @apply relative backdrop-blur-xl border rounded-2xl transition-all duration-500;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.card-ultra:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 25px 50px -12px rgba(59, 130, 246, 0.25),
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+/* Advanced Text Effects */
+.text-glow {
+  text-shadow: 
+    0 0 10px currentColor,
+    0 0 20px currentColor,
+    0 0 40px currentColor;
+}
+
+.text-premium {
+  @apply bg-gradient-to-r from-primary via-accent to-chart-2 bg-clip-text text-transparent font-black;
+  background-size: 200% 100%;
+  animation: textFlow 4s ease-in-out infinite;
+}
+
+@keyframes textFlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Pulse Border Effect */
+.pulse-border {
+  position: relative;
+  border: 2px solid transparent;
+}
+
+.pulse-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  background: linear-gradient(45deg, #3b82f6, #2dd4bf, #8b5cf6, #3b82f6);
+  background-size: 300% 300%;
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: subtract;
+  animation: pulseBorder 3s ease-in-out infinite;
+}
+
+@keyframes pulseBorder {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Modern Loading States */
+.loading-skeleton {
+  background: linear-gradient(90deg, 
+    rgba(255, 255, 255, 0.05) 25%, 
+    rgba(255, 255, 255, 0.15) 50%, 
+    rgba(255, 255, 255, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
 @layer components {
   .btn-fortress {
     @apply bg-primary text-primary-foreground hover:bg-primary/90 font-bold rounded-xl px-6 py-3 transition-all transform hover:scale-105 security-pulse;

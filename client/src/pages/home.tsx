@@ -107,28 +107,28 @@ function KWDWalletSection() {
   const yfdWallet = wallets?.find(w => w.currency === 'YFD');
 
   return (
-    <Card data-testid="kwd-wallet-section">
+    <Card data-testid="kwd-wallet-section" className="card-ultra premium-glow">
       <CardHeader>
         <CardTitle className="flex items-center space-x-2">
-          <span className="text-xl">💎</span>
-          <span>YardFlex Currency (KWD/YFD)</span>
-          <div className="text-sm text-muted-foreground ml-4">1 KWD = 1 YFD</div>
+          <span className="text-xl floating">💎</span>
+          <span className="text-premium">YardFlex Currency (KWD/YFD)</span>
+          <div className="text-sm text-muted-foreground ml-4 shimmer">1 KWD = 1 YFD</div>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         
         {/* Wallet Balances */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-primary/10 p-4 rounded-lg">
+          <div className="glass-card p-4 rounded-lg premium-glow">
             <div className="text-sm text-muted-foreground">KWD Balance</div>
-            <div className="text-2xl font-bold text-primary">
-              {walletsLoading ? '...' : (kwdWallet?.balance || '0.00')} KWD
+            <div className="text-2xl font-bold text-premium text-glow">
+              {walletsLoading ? <span className="loading-skeleton h-8 w-20 rounded"></span> : (kwdWallet?.balance || '0.00')} KWD
             </div>
           </div>
-          <div className="bg-accent/10 p-4 rounded-lg">
+          <div className="glass-card p-4 rounded-lg premium-glow">
             <div className="text-sm text-muted-foreground">YFD Balance</div>
-            <div className="text-2xl font-bold text-accent">
-              {walletsLoading ? '...' : (yfdWallet?.balance || '0.00')} YFD
+            <div className="text-2xl font-bold text-premium text-glow">
+              {walletsLoading ? <span className="loading-skeleton h-8 w-20 rounded"></span> : (yfdWallet?.balance || '0.00')} YFD
             </div>
           </div>
         </div>
@@ -152,7 +152,7 @@ function KWDWalletSection() {
               <Button 
                 type="submit" 
                 disabled={addKWDMutation.isPending || !kwdAmount}
-                className="bg-primary text-primary-foreground"
+                className="btn-premium premium-glow"
                 data-testid="button-add-kwd"
               >
                 {addKWDMutation.isPending ? "Adding..." : "Add KWD"}
@@ -164,7 +164,7 @@ function KWDWalletSection() {
           <div className="flex space-x-2">
             <Button 
               type="button" 
-              variant="outline" 
+              className="btn-premium premium-glow floating"
               onClick={() => setKwdAmount('1')}
               data-testid="button-add-1-kwd"
             >
@@ -172,7 +172,7 @@ function KWDWalletSection() {
             </Button>
             <Button 
               type="button" 
-              variant="outline" 
+              className="btn-premium premium-glow floating"
               onClick={() => setKwdAmount('100')}
               data-testid="button-add-100-kwd"
             >
@@ -181,7 +181,7 @@ function KWDWalletSection() {
           </div>
         </form>
 
-        <div className="text-sm text-muted-foreground bg-muted/20 p-3 rounded-lg">
+        <div className="text-sm text-muted-foreground glass-card p-3 rounded-lg shimmer">
           <strong>How it works:</strong> KWD is YardFlex's ultimate currency. 1 KWD equals 1 YFD (YardFlex Dollar). 
           Start with $1 KWD to test the system, then scale to $100 KWD as your yard cash reference.
         </div>
@@ -321,12 +321,12 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <header className="bg-card/50 backdrop-blur-sm border-b border-border">
+      <header className="glass-card border-b border-border pulse-border">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="text-3xl text-primary shield-glow" data-testid="logo-shield">🛡️</div>
-              <span className="text-2xl font-bold text-foreground" data-testid="brand-name">YardFlex</span>
+              <div className="text-3xl text-premium floating text-glow" data-testid="logo-shield">🛡️</div>
+              <span className="text-2xl font-bold text-premium" data-testid="brand-name">YardFlex</span>
               {beastModeActive && (
                 <span className="text-xs bg-destructive text-destructive-foreground px-2 py-1 rounded-full font-medium animate-pulse" data-testid="beast-mode-indicator">
                   BEAST MODE
@@ -348,28 +348,28 @@ export default function Home() {
       <div className="container mx-auto px-6 py-8">
         {/* Security Status Dashboard */}
         <div className="mb-8">
-          <h1 className="text-4xl font-black text-foreground mb-6" data-testid="dashboard-title">
+          <h1 className="text-4xl font-black text-premium text-glow floating mb-6" data-testid="dashboard-title">
             Fortress Command Center
           </h1>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <Card className="security-pulse" data-testid="stat-countries">
+            <Card className="card-ultra premium-glow floating" data-testid="stat-countries">
               <CardContent className="p-6 text-center">
-                <div className="text-3xl font-bold text-primary mb-2">{globalStats?.countries || 195}</div>
+                <div className="text-3xl font-bold text-premium text-glow mb-2">{globalStats?.countries || 195}</div>
                 <div className="text-sm text-muted-foreground">Countries Protected</div>
               </CardContent>
             </Card>
             
-            <Card className="security-pulse" data-testid="stat-uptime">
+            <Card className="card-ultra premium-glow floating" data-testid="stat-uptime">
               <CardContent className="p-6 text-center">
-                <div className="text-3xl font-bold text-chart-3 mb-2">{globalStats?.uptime || '99.99%'}</div>
+                <div className="text-3xl font-bold text-premium text-glow mb-2">{globalStats?.uptime || '99.99%'}</div>
                 <div className="text-sm text-muted-foreground">System Uptime</div>
               </CardContent>
             </Card>
             
-            <Card className="security-pulse" data-testid="stat-breaches">
+            <Card className="card-ultra premium-glow floating" data-testid="stat-breaches">
               <CardContent className="p-6 text-center">
-                <div className="text-3xl font-bold text-accent mb-2">{globalStats?.breaches || 0}</div>
+                <div className="text-3xl font-bold text-premium text-glow mb-2">{globalStats?.breaches || 0}</div>
                 <div className="text-sm text-muted-foreground">Security Breaches</div>
               </CardContent>
             </Card>
