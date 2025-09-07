@@ -1180,6 +1180,612 @@ export type InsertShipmentTracking = typeof shipmentTracking.$inferInsert;
 export type CostAnalytics = typeof costAnalytics.$inferSelect;
 export type InsertCostAnalytics = typeof costAnalytics.$inferInsert;
 
+// ===================== AR REAL ESTATE SCANNING SYSTEM =====================
+
+// Property Listings with AR Integration
+export const properties = pgTable("properties", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  listingNumber: varchar("listing_number").unique().notNull(),
+  ownerId: varchar("owner_id").notNull().references(() => users.id),
+  
+  // Basic Property Info
+  title: varchar("title").notNull(),
+  description: text("description"),
+  propertyType: varchar("property_type").notNull(), // "house", "apartment", "condo", "commercial", "land"
+  address: text("address").notNull(),
+  city: varchar("city").notNull(),
+  parish: varchar("parish").notNull(), // Jamaica parishes
+  coordinates: jsonb("coordinates"), // {"lat": 18.0, "lng": -77.0}
+  
+  // Property Details
+  bedrooms: integer("bedrooms"),
+  bathrooms: decimal("bathrooms", { precision: 3, scale: 1 }), // 2.5 bathrooms
+  squareFootage: decimal("square_footage", { precision: 8, scale: 2 }),
+  lotSize: decimal("lot_size", { precision: 10, scale: 2 }), // In square meters
+  yearBuilt: integer("year_built"),
+  
+  // Pricing
+  askingPrice: decimal("asking_price", { precision: 12, scale: 2 }).notNull(), // KWD
+  pricePerSqFt: decimal("price_per_sq_ft", { precision: 8, scale: 2 }),
+  negotiable: boolean("negotiable").default(true),
+  
+  // AR Scan Status
+  hasScan: boolean("has_scan").default(false),
+  scanQuality: varchar("scan_quality"), // "basic", "standard", "premium", "professional"
+  scanDate: timestamp("scan_date"),
+  scannerUserId: varchar("scanner_user_id").references(() => users.id),
+  
+  // Listing Status
+  status: varchar("status").default("draft"), // "draft", "active", "pending", "sold", "withdrawn"
+  listingDate: timestamp("listing_date"),
+  soldDate: timestamp("sold_date"),
+  soldPrice: decimal("sold_price", { precision: 12, scale: 2 }),
+  buyerId: varchar("buyer_id").references(() => users.id),
+  
+  // Platform Fees
+  yardflexCommission: decimal("yardflex_commission", { precision: 8, scale: 2 }).default("2.0"), // 2% vs 6% traditional
+  sellerSavings: decimal("seller_savings", { precision: 10, scale: 2 }), // How much saved vs traditional agents
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// AR 3D Scan Data Storage
+export const arScans = pgTable("ar_scans", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  propertyId: varchar("property_id").notNull().references(() => properties.id),
+  scannerUserId: varchar("scanner_user_id").notNull().references(() => users.id),
+  
+  // Scan Technical Details
+  scanType: varchar("scan_type").notNull(), // "lidar", "photogrammetry", "hybrid"
+  deviceUsed: varchar("device_used"), // "iPhone 15 Pro", "Meta Ray-Ban", "HoloLens"
+  scanResolution: varchar("scan_resolution"), // "low", "medium", "high", "ultra"
+  pointCloudSize: integer("point_cloud_size"), // Number of points captured
+  
+  // 3D Model Files (URLs to cloud storage)
+  pointCloudUrl: varchar("point_cloud_url"), // Raw scan data
+  meshModelUrl: varchar("mesh_model_url"), // 3D mesh file
+  texturedModelUrl: varchar("textured_model_url"), // With textures/colors
+  floorPlanUrl: varchar("floor_plan_url"), // 2D floor plan extracted
+  
+  // Room-by-Room Breakdown
+  roomData: jsonb("room_data"), // Detailed measurements for each room
+  totalRooms: integer("total_rooms"),
+  
+  // Measurements & Calculations
+  totalSquareFootage: decimal("total_square_footage", { precision: 8, scale: 2 }),
+  ceilingHeights: jsonb("ceiling_heights"), // Per room
+  wallDimensions: jsonb("wall_dimensions"), // Length, height per wall
+  windowDimensions: jsonb("window_dimensions"),
+  doorDimensions: jsonb("door_dimensions"),
+  
+  // Quality Metrics
+  accuracyScore: decimal("accuracy_score", { precision: 3, scale: 2 }), // 0-100%
+  completenessScore: decimal("completeness_score", { precision: 3, scale: 2 }), // 0-100%
+  visualQuality: decimal("visual_quality", { precision: 3, scale: 2 }), // 0-100%
+  
+  // Processing Status
+  processingStatus: varchar("processing_status").default("processing"), // "processing", "complete", "failed"
+  processingProgress: integer("processing_progress").default(0), // 0-100%
+  errorMessage: text("error_message"),
+  
+  scanDuration: integer("scan_duration"), // Minutes taken to scan
+  fileSize: decimal("file_size", { precision: 8, scale: 2 }), // MB
+  createdAt: timestamp("created_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+});
+
+// Virtual Tour Sessions
+export const virtualTours = pgTable("virtual_tours", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  propertyId: varchar("property_id").notNull().references(() => properties.id),
+  viewerId: varchar("viewer_id").references(() => users.id), // Potential buyer
+  
+  // Tour Details
+  tourType: varchar("tour_type").notNull(), // "ar_glasses", "mobile_app", "web_browser", "vr_headset"
+  deviceInfo: jsonb("device_info"), // Device specifications
+  sessionDuration: integer("session_duration"), // Minutes
+  
+  // Interaction Tracking
+  roomsVisited: jsonb("rooms_visited"), // Which rooms they explored
+  measurementsTaken: jsonb("measurements_taken"), // What they measured
+  photosCapture: jsonb("photos_captured"), // Screenshots they took
+  notesAdded: jsonb("notes_added"), // Their comments/observations
+  
+  // Interest Level Indicators
+  viewingTime: integer("viewing_time"), // Total seconds spent
+  returnVisits: integer("return_visits").default(1),
+  sharedWith: jsonb("shared_with"), // Who they shared the tour with
+  inquiryGenerated: boolean("inquiry_generated").default(false),
+  
+  // Location & Context
+  viewerLocation: jsonb("viewer_location"), // Where they took the virtual tour
+  realVisitScheduled: boolean("real_visit_scheduled").default(false),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Property Inquiries & Offers
+export const propertyInquiries = pgTable("property_inquiries", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  propertyId: varchar("property_id").notNull().references(() => properties.id),
+  inquirerId: varchar("inquirer_id").notNull().references(() => users.id),
+  
+  // Inquiry Type
+  inquiryType: varchar("inquiry_type").notNull(), // "viewing_request", "price_question", "offer", "general"
+  message: text("message"),
+  
+  // Offer Details (if applicable)
+  offerAmount: decimal("offer_amount", { precision: 12, scale: 2 }),
+  financing: jsonb("financing"), // Financing details
+  contingencies: jsonb("contingencies"), // Conditions
+  closingDate: timestamp("closing_date"),
+  
+  // Response Tracking
+  status: varchar("status").default("pending"), // "pending", "responded", "accepted", "rejected", "countered"
+  ownerResponse: text("owner_response"),
+  responseTime: integer("response_time"), // Hours to respond
+  
+  // AI-Assisted Matching
+  aiMatchScore: decimal("ai_match_score", { precision: 3, scale: 2 }), // How well buyer matches property
+  aiRecommendations: jsonb("ai_recommendations"), // AI suggestions for negotiation
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  respondedAt: timestamp("responded_at"),
+});
+
+// AR Scanning Equipment & Certification
+export const arScanners = pgTable("ar_scanners", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  
+  // Scanner Profile
+  name: varchar("name").notNull(),
+  phone: varchar("phone").notNull(),
+  email: varchar("email").notNull(),
+  serviceArea: jsonb("service_area"), // Areas they cover
+  
+  // Equipment & Certification
+  equipment: jsonb("equipment"), // List of devices they use
+  certificationLevel: varchar("certification_level").default("basic"), // "basic", "advanced", "professional"
+  certificationDate: timestamp("certification_date"),
+  scanAccuracy: decimal("scan_accuracy", { precision: 3, scale: 2 }).default("95.0"), // %
+  
+  // Performance Metrics
+  totalScans: integer("total_scans").default(0),
+  averageRating: decimal("average_rating", { precision: 3, scale: 2 }).default("5.0"),
+  completionRate: decimal("completion_rate", { precision: 3, scale: 2 }).default("100.0"), // %
+  averageTurnaround: decimal("average_turnaround", { precision: 4, scale: 1 }), // Hours
+  
+  // Pricing
+  basicScanPrice: decimal("basic_scan_price", { precision: 8, scale: 2 }), // KWD
+  premiumScanPrice: decimal("premium_scan_price", { precision: 8, scale: 2 }), // KWD
+  rushJobMultiplier: decimal("rush_job_multiplier", { precision: 3, scale: 2 }).default("1.5"),
+  
+  // Availability
+  isActive: boolean("is_active").default(true),
+  availableHours: jsonb("available_hours"),
+  currentBookings: integer("current_bookings").default(0),
+  maxBookingsPerDay: integer("max_bookings_per_day").default(3),
+  
+  joinedAt: timestamp("joined_at").defaultNow(),
+  lastActiveAt: timestamp("last_active_at").defaultNow(),
+});
+
+// Real Estate Market Disruption Analytics
+export const marketDisruption = pgTable("market_disruption", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  period: varchar("period").notNull(), // "daily", "weekly", "monthly"
+  periodDate: date("period_date").notNull(),
+  
+  // Traditional vs YardFlex Comparison
+  traditionalAgentFees: decimal("traditional_agent_fees", { precision: 12, scale: 2 }).default("0"), // 6% commission
+  yardflexFees: decimal("yardflex_fees", { precision: 12, scale: 2 }).default("0"), // 2% commission
+  customerSavings: decimal("customer_savings", { precision: 12, scale: 2 }).default("0"),
+  
+  // Market Activity
+  propertiesListed: integer("properties_listed").default(0),
+  propertiesSold: integer("properties_sold").default(0),
+  averageDaysOnMarket: decimal("average_days_on_market", { precision: 5, scale: 1 }),
+  averageSalePrice: decimal("average_sale_price", { precision: 12, scale: 2 }),
+  
+  // Virtual Tour Impact
+  totalVirtualTours: integer("total_virtual_tours").default(0),
+  virtualToPhysicalRatio: decimal("virtual_to_physical_ratio", { precision: 3, scale: 2 }), // How many virtual tours per physical visit
+  virtualTourConversionRate: decimal("virtual_tour_conversion_rate", { precision: 3, scale: 2 }), // % that lead to offers
+  
+  // Disruption Metrics
+  traditionalAgentsDisplaced: integer("traditional_agents_displaced").default(0),
+  marketShareCapture: decimal("market_share_capture", { precision: 5, scale: 2 }).default("0"), // % of local market
+  customerSatisfactionScore: decimal("customer_satisfaction_score", { precision: 3, scale: 2 }).default("5.0"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// ===================== RELATIONS =====================
+
+export const propertiesRelations = relations(properties, ({ one, many }) => ({
+  owner: one(users, {
+    fields: [properties.ownerId],
+    references: [users.id],
+  }),
+  buyer: one(users, {
+    fields: [properties.buyerId], 
+    references: [users.id],
+  }),
+  scanner: one(users, {
+    fields: [properties.scannerUserId],
+    references: [users.id],
+  }),
+  arScans: many(arScans),
+  virtualTours: many(virtualTours),
+  inquiries: many(propertyInquiries),
+}));
+
+export const arScansRelations = relations(arScans, ({ one }) => ({
+  property: one(properties, {
+    fields: [arScans.propertyId],
+    references: [properties.id],
+  }),
+  scanner: one(users, {
+    fields: [arScans.scannerUserId],
+    references: [users.id],
+  }),
+}));
+
+export const virtualToursRelations = relations(virtualTours, ({ one }) => ({
+  property: one(properties, {
+    fields: [virtualTours.propertyId],
+    references: [properties.id],
+  }),
+  viewer: one(users, {
+    fields: [virtualTours.viewerId],
+    references: [users.id],
+  }),
+}));
+
+export const propertyInquiriesRelations = relations(propertyInquiries, ({ one }) => ({
+  property: one(properties, {
+    fields: [propertyInquiries.propertyId],
+    references: [properties.id],
+  }),
+  inquirer: one(users, {
+    fields: [propertyInquiries.inquirerId],
+    references: [users.id],
+  }),
+}));
+
+export const arScannersRelations = relations(arScanners, ({ one }) => ({
+  user: one(users, {
+    fields: [arScanners.userId],
+    references: [users.id],
+  }),
+}));
+
+// ===================== INSERT SCHEMAS =====================
+
+export const insertPropertySchema = createInsertSchema(properties);
+export const insertArScanSchema = createInsertSchema(arScans);
+export const insertVirtualTourSchema = createInsertSchema(virtualTours);
+export const insertPropertyInquirySchema = createInsertSchema(propertyInquiries);
+export const insertArScannerSchema = createInsertSchema(arScanners);
+export const insertMarketDisruptionSchema = createInsertSchema(marketDisruption);
+
+// ===================== TYPES =====================
+
+export type Property = typeof properties.$inferSelect;
+export type InsertProperty = typeof properties.$inferInsert;
+export type ArScan = typeof arScans.$inferSelect;
+export type InsertArScan = typeof arScans.$inferInsert;
+export type VirtualTour = typeof virtualTours.$inferSelect;
+export type InsertVirtualTour = typeof virtualTours.$inferInsert;
+export type PropertyInquiry = typeof propertyInquiries.$inferSelect;
+export type InsertPropertyInquiry = typeof propertyInquiries.$inferInsert;
+export type ArScanner = typeof arScanners.$inferSelect;
+export type InsertArScanner = typeof arScanners.$inferInsert;
+export type MarketDisruption = typeof marketDisruption.$inferSelect;
+export type InsertMarketDisruption = typeof marketDisruption.$inferInsert;
+
+// ===================== AR RENOVATION VISUALIZATION SYSTEM =====================
+
+// Renovation Planning & Visualization
+export const renovationPlans = pgTable("renovation_plans", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  propertyId: varchar("property_id").notNull().references(() => properties.id),
+  plannerId: varchar("planner_id").notNull().references(() => users.id), // Who created the plan
+  
+  // Plan Details
+  planName: varchar("plan_name").notNull(),
+  description: text("description"),
+  renovationType: varchar("renovation_type").notNull(), // "cosmetic", "structural", "addition", "complete_remodel"
+  difficultyLevel: varchar("difficulty_level").default("medium"), // "easy", "medium", "hard", "professional"
+  
+  // Before & After Visualization
+  beforeScanId: varchar("before_scan_id").references(() => arScans.id),
+  afterVisualizationUrl: varchar("after_visualization_url"), // 3D model of renovated space
+  beforeAfterComparisonUrl: varchar("before_after_comparison_url"), // Side-by-side view
+  
+  // Cost Analysis
+  estimatedCost: decimal("estimated_cost", { precision: 10, scale: 2 }), // Total in KWD
+  materialsCost: decimal("materials_cost", { precision: 10, scale: 2 }),
+  laborCost: decimal("labor_cost", { precision: 10, scale: 2 }),
+  permitsCost: decimal("permits_cost", { precision: 8, scale: 2 }),
+  contingencyCost: decimal("contingency_cost", { precision: 8, scale: 2 }), // 10-20% buffer
+  
+  // Timeline
+  estimatedDuration: integer("estimated_duration"), // Days
+  phases: jsonb("phases"), // Breakdown of renovation phases
+  
+  // Value Addition
+  currentPropertyValue: decimal("current_property_value", { precision: 12, scale: 2 }),
+  projectedValueAfter: decimal("projected_value_after", { precision: 12, scale: 2 }),
+  expectedRoi: decimal("expected_roi", { precision: 5, scale: 2 }), // Return on investment %
+  
+  // AI Confidence & Recommendations
+  aiConfidenceScore: decimal("ai_confidence_score", { precision: 3, scale: 2 }), // 0-100%
+  aiRecommendations: jsonb("ai_recommendations"),
+  alternativePlans: jsonb("alternative_plans"), // Other suggested approaches
+  
+  // Status
+  status: varchar("status").default("draft"), // "draft", "shared", "approved", "in_progress", "completed"
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Room-by-Room Renovation Breakdown
+export const roomRenovations = pgTable("room_renovations", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  renovationPlanId: varchar("renovation_plan_id").notNull().references(() => renovationPlans.id),
+  
+  // Room Identification
+  roomName: varchar("room_name").notNull(), // "Living Room", "Kitchen", "Master Bedroom"
+  roomType: varchar("room_type").notNull(), // "bedroom", "bathroom", "kitchen", "living", "dining"
+  currentDimensions: jsonb("current_dimensions"), // {"length": 12, "width": 10, "height": 9}
+  proposedDimensions: jsonb("proposed_dimensions"), // After renovation
+  
+  // What's Being Changed
+  wallsToRemove: jsonb("walls_to_remove"), // Which walls are being torn down
+  wallsToAdd: jsonb("walls_to_add"), // New walls being built
+  windowChanges: jsonb("window_changes"), // Add/remove/resize windows
+  doorChanges: jsonb("door_changes"), // Door modifications
+  ceilingChanges: jsonb("ceiling_changes"), // Height changes, coffers, etc.
+  
+  // Materials & Finishes
+  flooringPlan: jsonb("flooring_plan"), // Type, cost, installation
+  wallFinishes: jsonb("wall_finishes"), // Paint, wallpaper, tile, etc.
+  ceilingFinishes: jsonb("ceiling_finishes"),
+  lightingPlan: jsonb("lighting_plan"), // New fixtures, switches
+  
+  // Room-Specific Features
+  kitchenUpgrades: jsonb("kitchen_upgrades"), // Cabinets, appliances, countertops
+  bathroomUpgrades: jsonb("bathroom_upgrades"), // Fixtures, tile, vanity
+  builtInFeatures: jsonb("built_in_features"), // Closets, shelving, entertainment centers
+  
+  // Costs & Timeline
+  roomCost: decimal("room_cost", { precision: 10, scale: 2 }),
+  roomDuration: integer("room_duration"), // Days
+  priority: integer("priority").default(1), // Order of renovation
+  
+  // Before/After Images
+  beforeImageUrls: jsonb("before_image_urls"),
+  afterVisualizationUrls: jsonb("after_visualization_urls"),
+  progressImageUrls: jsonb("progress_image_urls"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Material Detection & Replacement Suggestions
+export const materialAnalysis = pgTable("material_analysis", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  arScanId: varchar("ar_scan_id").notNull().references(() => arScans.id),
+  
+  // Detected Materials
+  materialType: varchar("material_type").notNull(), // "flooring", "wall", "ceiling", "fixture"
+  currentMaterial: varchar("current_material"), // "hardwood", "carpet", "tile", "drywall"
+  materialCondition: varchar("material_condition"), // "excellent", "good", "fair", "poor", "replace"
+  
+  // Location in Property
+  roomLocation: varchar("room_location"),
+  specificArea: varchar("specific_area"), // "north_wall", "center_floor", "around_window"
+  coordinates: jsonb("coordinates"), // 3D position in scan
+  
+  // Replacement Suggestions
+  suggestedMaterials: jsonb("suggested_materials"), // Array of alternatives with costs
+  upgradeOptions: jsonb("upgrade_options"), // Premium alternatives
+  budgetOptions: jsonb("budget_options"), // Economical alternatives
+  
+  // Cost Analysis
+  currentValue: decimal("current_value", { precision: 8, scale: 2 }),
+  replacementCost: decimal("replacement_cost", { precision: 8, scale: 2 }),
+  upgradeValue: decimal("upgrade_value", { precision: 8, scale: 2 }), // Added property value
+  
+  // AI Analysis
+  aiConfidence: decimal("ai_confidence", { precision: 3, scale: 2 }), // Accuracy of detection
+  priorityScore: integer("priority_score"), // 1-10, urgency of replacement
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Structural Analysis & Safety Checks
+export const structuralAnalysis = pgTable("structural_analysis", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  arScanId: varchar("ar_scan_id").notNull().references(() => arScans.id),
+  
+  // Wall Analysis
+  loadBearingWalls: jsonb("load_bearing_walls"), // Which walls can't be removed
+  removableWalls: jsonb("removable_walls"), // Safe to remove
+  wallCondition: jsonb("wall_condition"), // Structural integrity per wall
+  
+  // Foundation & Support
+  foundationVisible: boolean("foundation_visible").default(false),
+  foundationCondition: varchar("foundation_condition"), // If visible
+  supportBeams: jsonb("support_beams"), // Locations and conditions
+  
+  // Safety Concerns
+  safetyIssues: jsonb("safety_issues"), // Electrical, plumbing, structural
+  permitsRequired: jsonb("permits_required"), // What permits needed for changes
+  professionalRequired: jsonb("professional_required"), // Architect, engineer, contractor
+  
+  // Modification Possibilities
+  wallRemovalPossible: jsonb("wall_removal_possible"),
+  additionPossible: jsonb("addition_possible"), // Where additions can be made
+  secondFloorPossible: boolean("second_floor_possible").default(false),
+  
+  // Code Compliance
+  buildingCodeIssues: jsonb("building_code_issues"),
+  zoneRestrictions: jsonb("zone_restrictions"),
+  hoa_restrictions: jsonb("hoa_restrictions"), // If applicable
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Design Style Suggestions
+export const designSuggestions = pgTable("design_suggestions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  renovationPlanId: varchar("renovation_plan_id").notNull().references(() => renovationPlans.id),
+  
+  // Style Analysis
+  currentStyle: varchar("current_style"), // "traditional", "modern", "colonial", "contemporary"
+  suggestedStyles: jsonb("suggested_styles"), // Compatible styles for the space
+  trendingStyles: jsonb("trending_styles"), // What's popular now
+  
+  // Color Palettes
+  currentColors: jsonb("current_colors"),
+  suggestedPalettes: jsonb("suggested_palettes"), // Multiple color scheme options
+  seasonalOptions: jsonb("seasonal_options"),
+  
+  // Furniture & Layout
+  currentLayout: jsonb("current_layout"),
+  optimizedLayouts: jsonb("optimized_layouts"), // Better space utilization
+  furnitureSuggestions: jsonb("furniture_suggestions"),
+  
+  // Lighting Design
+  naturalLightAnalysis: jsonb("natural_light_analysis"),
+  artificialLightingPlan: jsonb("artificial_lighting_plan"),
+  ambientLightingSuggestions: jsonb("ambient_lighting_suggestions"),
+  
+  // Market Appeal
+  marketAppealScore: decimal("market_appeal_score", { precision: 3, scale: 2 }), // 0-100
+  targetDemographic: jsonb("target_demographic"), // Who would love this style
+  resaleValueImpact: decimal("resale_value_impact", { precision: 8, scale: 2 }),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Contractor & Service Provider Matching
+export const renovationContractors = pgTable("renovation_contractors", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  
+  // Contractor Details
+  companyName: varchar("company_name").notNull(),
+  licenseNumber: varchar("license_number"),
+  insuranceInfo: jsonb("insurance_info"),
+  bonded: boolean("bonded").default(false),
+  
+  // Specializations
+  specialties: jsonb("specialties"), // ["kitchen", "bathroom", "electrical", "plumbing"]
+  experienceYears: integer("experience_years"),
+  portfolioUrls: jsonb("portfolio_urls"), // Links to completed projects
+  
+  // Service Area & Availability
+  serviceArea: jsonb("service_area"),
+  currentCapacity: integer("current_capacity"), // How many jobs they can take
+  averageProjectDuration: integer("average_project_duration"), // Days
+  
+  // Performance Metrics
+  totalProjectsCompleted: integer("total_projects_completed").default(0),
+  averageRating: decimal("average_rating", { precision: 3, scale: 2 }).default("5.0"),
+  onTimePercentage: decimal("on_time_percentage", { precision: 5, scale: 2 }).default("100.0"),
+  budgetAccuracy: decimal("budget_accuracy", { precision: 5, scale: 2 }), // % within original estimate
+  
+  // Pricing
+  hourlyRate: decimal("hourly_rate", { precision: 8, scale: 2 }),
+  minimumJobSize: decimal("minimum_job_size", { precision: 8, scale: 2 }),
+  yardflexCommissionRate: decimal("yardflex_commission_rate", { precision: 5, scale: 4 }).default("0.15"), // 15%
+  
+  joinedAt: timestamp("joined_at").defaultNow(),
+  lastActiveAt: timestamp("last_active_at").defaultNow(),
+});
+
+// ===================== RELATIONS =====================
+
+export const renovationPlansRelations = relations(renovationPlans, ({ one, many }) => ({
+  property: one(properties, {
+    fields: [renovationPlans.propertyId],
+    references: [properties.id],
+  }),
+  planner: one(users, {
+    fields: [renovationPlans.plannerId],
+    references: [users.id],
+  }),
+  beforeScan: one(arScans, {
+    fields: [renovationPlans.beforeScanId],
+    references: [arScans.id],
+  }),
+  roomRenovations: many(roomRenovations),
+  designSuggestions: many(designSuggestions),
+}));
+
+export const roomRenovationsRelations = relations(roomRenovations, ({ one }) => ({
+  renovationPlan: one(renovationPlans, {
+    fields: [roomRenovations.renovationPlanId],
+    references: [renovationPlans.id],
+  }),
+}));
+
+export const materialAnalysisRelations = relations(materialAnalysis, ({ one }) => ({
+  arScan: one(arScans, {
+    fields: [materialAnalysis.arScanId],
+    references: [arScans.id],
+  }),
+}));
+
+export const structuralAnalysisRelations = relations(structuralAnalysis, ({ one }) => ({
+  arScan: one(arScans, {
+    fields: [structuralAnalysis.arScanId],
+    references: [arScans.id],
+  }),
+}));
+
+export const designSuggestionsRelations = relations(designSuggestions, ({ one }) => ({
+  renovationPlan: one(renovationPlans, {
+    fields: [designSuggestions.renovationPlanId],
+    references: [renovationPlans.id],
+  }),
+}));
+
+export const renovationContractorsRelations = relations(renovationContractors, ({ one }) => ({
+  user: one(users, {
+    fields: [renovationContractors.userId],
+    references: [users.id],
+  }),
+}));
+
+// ===================== INSERT SCHEMAS =====================
+
+export const insertRenovationPlanSchema = createInsertSchema(renovationPlans);
+export const insertRoomRenovationSchema = createInsertSchema(roomRenovations);
+export const insertMaterialAnalysisSchema = createInsertSchema(materialAnalysis);
+export const insertStructuralAnalysisSchema = createInsertSchema(structuralAnalysis);
+export const insertDesignSuggestionSchema = createInsertSchema(designSuggestions);
+export const insertRenovationContractorSchema = createInsertSchema(renovationContractors);
+
+// ===================== TYPES =====================
+
+export type RenovationPlan = typeof renovationPlans.$inferSelect;
+export type InsertRenovationPlan = typeof renovationPlans.$inferInsert;
+export type RoomRenovation = typeof roomRenovations.$inferSelect;
+export type InsertRoomRenovation = typeof roomRenovations.$inferInsert;
+export type MaterialAnalysis = typeof materialAnalysis.$inferSelect;
+export type InsertMaterialAnalysis = typeof materialAnalysis.$inferInsert;
+export type StructuralAnalysis = typeof structuralAnalysis.$inferSelect;
+export type InsertStructuralAnalysis = typeof structuralAnalysis.$inferInsert;
+export type DesignSuggestion = typeof designSuggestions.$inferSelect;
+export type InsertDesignSuggestion = typeof designSuggestions.$inferInsert;
+export type RenovationContractor = typeof renovationContractors.$inferSelect;
+export type InsertRenovationContractor = typeof renovationContractors.$inferInsert;
+
 export const insertTransactionSchema = createInsertSchema(transactions).omit({
   id: true,
   createdAt: true,
