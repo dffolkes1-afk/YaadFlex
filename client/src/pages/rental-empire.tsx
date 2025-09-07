@@ -219,6 +219,41 @@ export default function RentalEmpire() {
                 House empty? Store vacant? Car available? Pool ready? It's all here in one place!
               </p>
               
+              {/* FLEXIBLE CAR PRICING SYSTEM */}
+              <div className="bg-gradient-to-r from-purple-600/40 to-pink-600/40 border-2 border-purple-400/70 rounded-xl p-6 mb-6">
+                <h4 className="text-2xl font-black text-purple-300 mb-4">💰 FLEXIBLE PRICING SYSTEM! 💰</h4>
+                <div className="space-y-3 text-white">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="bg-blue-600/40 rounded-lg p-3 text-center">
+                      <div className="text-2xl mb-1">🚗</div>
+                      <div className="font-bold text-sm">STANDARD</div>
+                      <div className="text-xs">Regular cars</div>
+                    </div>
+                    <div className="bg-green-600/40 rounded-lg p-3 text-center">
+                      <div className="text-2xl mb-1">✈️</div>
+                      <div className="font-bold text-sm">HOLIDAY</div>
+                      <div className="text-xs">Special rates</div>
+                    </div>
+                    <div className="bg-purple-600/40 rounded-lg p-3 text-center">
+                      <div className="text-2xl mb-1">🌟</div>
+                      <div className="font-bold text-sm">GLAMOR</div>
+                      <div className="text-xs">Luxury level</div>
+                    </div>
+                    <div className="bg-yellow-600/40 rounded-lg p-3 text-center">
+                      <div className="text-2xl mb-1">👑</div>
+                      <div className="font-bold text-sm">ANGEL</div>
+                      <div className="text-xs">Premium tier</div>
+                    </div>
+                  </div>
+                  <div className="bg-green-600/40 rounded-lg p-3 mt-4">
+                    <div className="text-sm font-bold text-green-200">
+                      💰 <strong>Set your own prices OR use our standard rates!</strong><br/>
+                      YardFlex shows you the perfect pricing for maximum profit!
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* SMART CAR CONTROL SECTION */}
               <div className="bg-gradient-to-r from-red-600/40 to-orange-600/40 border-2 border-red-400/70 rounded-xl p-6 mb-6">
                 <h4 className="text-2xl font-black text-red-300 mb-4">🚗⚡ SMART CAR CONTROL! ⚡🚗</h4>
