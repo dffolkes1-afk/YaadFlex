@@ -688,6 +688,29 @@
   animation: slow-spin 8s linear infinite;
 }
 
+/* Massive text sizing for maximum impact */
+.text-12xl {
+  font-size: 12rem;
+  line-height: 1;
+}
+
+/* Super explosive animations */
+@keyframes mega-bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  40% {
+    transform: translateY(-30px) scale(1.1);
+  }
+  60% {
+    transform: translateY(-15px) scale(1.05);
+  }
+}
+
+.mega-bounce {
+  animation: mega-bounce 2s infinite;
+}
+
 /* Custom animations for rental empire */
 @keyframes slow-spin {
   from {

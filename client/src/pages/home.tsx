@@ -515,19 +515,19 @@ export default function Home() {
             
             <CardHeader className="relative z-10 pb-8">
               <CardTitle className="text-center space-y-8">
-                <div className="text-9xl font-black text-pink-300 animate-pulse leading-tight">
+                <div className="text-5xl md:text-9xl font-black text-pink-300 animate-pulse leading-tight">
                   🔥💥 YARDFLEX SOCIAL COMMERCE 💥🔥
                 </div>
-                <div className="text-7xl font-black text-yellow-400 animate-bounce leading-tight">
+                <div className="text-3xl md:text-7xl font-black text-yellow-400 animate-bounce leading-tight">
                   GET YOUR BUSINESS EVERYWHERE!
                 </div>
-                <div className="text-6xl font-black text-white animate-pulse">
+                <div className="text-2xl md:text-6xl font-black text-white animate-pulse">
                   FACEBOOK • INSTAGRAM • TIKTOK • TELEGRAM!
                 </div>
-                <div className="text-5xl font-black text-red-400 animate-bounce">
+                <div className="text-xl md:text-5xl font-black text-red-400 animate-bounce">
                   ALL OVER THE PLACE TELLING EVERYONE ABOUT YOU!
                 </div>
-                <div className="text-4xl font-black text-green-400 animate-pulse">
+                <div className="text-lg md:text-4xl font-black text-green-400 animate-pulse">
                   🗣️ YOUR BUSINESS TALKING TO THE WHOLE WORLD! 🗣️
                 </div>
               </CardTitle>
@@ -537,41 +537,41 @@ export default function Home() {
               
               {/* MASSIVE MAIN ATTRACTION SECTION */}
               <div className="bg-gradient-to-r from-red-600/50 to-pink-600/50 border-2 border-red-400/70 rounded-2xl p-12 text-center mb-8 shadow-2xl shadow-red-500/30">
-                <h3 className="text-7xl font-black text-red-300 mb-8 animate-pulse leading-tight">
+                <h3 className="text-3xl md:text-7xl font-black text-red-300 mb-6 md:mb-8 animate-pulse leading-tight">
                   🌍 TELL THE WORLD ABOUT YOURSELF! 🌍
                 </h3>
-                <p className="text-white text-3xl mb-10 leading-relaxed font-bold">
+                <p className="text-white text-lg md:text-3xl mb-8 md:mb-10 leading-relaxed font-bold">
                   <strong>CREATE YOUR BUSINESS PROFILE AND YARDFLEX AUTOMATICALLY POSTS EVERYWHERE!</strong><br/>
                   <strong>FACEBOOK! INSTAGRAM! TIKTOK! TELEGRAM! ALL PLATFORMS!</strong><br/>
                   <strong>YOUR BUSINESS WILL BE ALL OVER THE PLACE TELLING EVERYONE ABOUT ITSELF!</strong><br/>
-                  <strong className="text-yellow-400 text-4xl animate-bounce">🗣️ YOUR BUSINESS TALKING TO THE WORLD! 🗣️</strong>
+                  <strong className="text-yellow-400 text-xl md:text-4xl animate-bounce">🗣️ YOUR BUSINESS TALKING TO THE WORLD! 🗣️</strong>
                 </p>
                 
                 {/* EXPLOSIVE Social Media Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-                  <div className="bg-blue-600/60 rounded-2xl p-8 text-center transform hover:scale-125 transition-all shadow-2xl shadow-blue-500/50 border-2 border-blue-400/70">
-                    <div className="text-8xl mb-4 animate-bounce">📘</div>
-                    <div className="text-3xl font-black text-blue-300">FACEBOOK</div>
-                    <div className="text-lg text-white font-bold">TELLING EVERYONE!</div>
-                    <div className="text-sm text-blue-200">Auto-Post Daily</div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mb-8 md:mb-12">
+                  <div className="bg-blue-600/60 rounded-xl md:rounded-2xl p-4 md:p-8 text-center transform hover:scale-110 md:hover:scale-125 transition-all shadow-2xl shadow-blue-500/50 border-2 border-blue-400/70">
+                    <div className="text-4xl md:text-8xl mb-2 md:mb-4 animate-bounce">📘</div>
+                    <div className="text-lg md:text-3xl font-black text-blue-300">FACEBOOK</div>
+                    <div className="text-sm md:text-lg text-white font-bold">TELLING EVERYONE!</div>
+                    <div className="text-xs md:text-sm text-blue-200">Auto-Post Daily</div>
                   </div>
-                  <div className="bg-purple-600/60 rounded-2xl p-8 text-center transform hover:scale-125 transition-all shadow-2xl shadow-purple-500/50 border-2 border-purple-400/70">
-                    <div className="text-8xl mb-4 animate-pulse">📸</div>
-                    <div className="text-3xl font-black text-purple-300">INSTAGRAM</div>
-                    <div className="text-lg text-white font-bold">SHOWING YOUR WORK!</div>
-                    <div className="text-sm text-purple-200">Stories & Posts</div>
+                  <div className="bg-purple-600/60 rounded-xl md:rounded-2xl p-4 md:p-8 text-center transform hover:scale-110 md:hover:scale-125 transition-all shadow-2xl shadow-purple-500/50 border-2 border-purple-400/70">
+                    <div className="text-4xl md:text-8xl mb-2 md:mb-4 animate-pulse">📸</div>
+                    <div className="text-lg md:text-3xl font-black text-purple-300">INSTAGRAM</div>
+                    <div className="text-sm md:text-lg text-white font-bold">SHOWING YOUR WORK!</div>
+                    <div className="text-xs md:text-sm text-purple-200">Stories & Posts</div>
                   </div>
-                  <div className="bg-pink-600/60 rounded-2xl p-8 text-center transform hover:scale-125 transition-all shadow-2xl shadow-pink-500/50 border-2 border-pink-400/70">
-                    <div className="text-8xl mb-4 animate-bounce delay-200">🎵</div>
-                    <div className="text-3xl font-black text-pink-300">TIKTOK</div>
-                    <div className="text-lg text-white font-bold">MAKING YOU FAMOUS!</div>
-                    <div className="text-sm text-pink-200">Viral Videos</div>
+                  <div className="bg-pink-600/60 rounded-xl md:rounded-2xl p-4 md:p-8 text-center transform hover:scale-110 md:hover:scale-125 transition-all shadow-2xl shadow-pink-500/50 border-2 border-pink-400/70">
+                    <div className="text-4xl md:text-8xl mb-2 md:mb-4 animate-bounce delay-200">🎵</div>
+                    <div className="text-lg md:text-3xl font-black text-pink-300">TIKTOK</div>
+                    <div className="text-sm md:text-lg text-white font-bold">MAKING YOU FAMOUS!</div>
+                    <div className="text-xs md:text-sm text-pink-200">Viral Videos</div>
                   </div>
-                  <div className="bg-cyan-600/60 rounded-2xl p-8 text-center transform hover:scale-125 transition-all shadow-2xl shadow-cyan-500/50 border-2 border-cyan-400/70">
-                    <div className="text-8xl mb-4 animate-pulse delay-300">📧</div>
-                    <div className="text-3xl font-black text-cyan-300">TELEGRAM</div>
-                    <div className="text-lg text-white font-bold">BRINGING CUSTOMERS!</div>
-                    <div className="text-sm text-cyan-200">Instant Messages</div>
+                  <div className="bg-cyan-600/60 rounded-xl md:rounded-2xl p-4 md:p-8 text-center transform hover:scale-110 md:hover:scale-125 transition-all shadow-2xl shadow-cyan-500/50 border-2 border-cyan-400/70">
+                    <div className="text-4xl md:text-8xl mb-2 md:mb-4 animate-pulse delay-300">📧</div>
+                    <div className="text-lg md:text-3xl font-black text-cyan-300">TELEGRAM</div>
+                    <div className="text-sm md:text-lg text-white font-bold">BRINGING CUSTOMERS!</div>
+                    <div className="text-xs md:text-sm text-cyan-200">Instant Messages</div>
                   </div>
                 </div>
                 
@@ -678,12 +678,12 @@ export default function Home() {
               <div className="space-y-8">
                 <Button 
                   onClick={() => setLocation('/social-commerce')}
-                  className="w-full bg-gradient-to-r from-pink-600 via-red-600 via-orange-600 to-yellow-600 hover:from-pink-700 hover:via-red-700 hover:via-orange-700 hover:to-yellow-700 text-white font-black text-5xl py-16 px-16 animate-pulse transform hover:scale-110 transition-all shadow-2xl shadow-pink-500/50 border-4 border-yellow-400/60 rounded-3xl"
+                  className="w-full bg-gradient-to-r from-pink-600 via-red-600 via-orange-600 to-yellow-600 hover:from-pink-700 hover:via-red-700 hover:via-orange-700 hover:to-yellow-700 text-white font-black text-2xl md:text-5xl py-8 md:py-16 px-8 md:px-16 animate-pulse transform hover:scale-110 transition-all shadow-2xl shadow-pink-500/50 border-4 border-yellow-400/60 rounded-2xl md:rounded-3xl"
                   data-testid="button-access-mega-social-commerce"
                 >
                   🚀💥 CREATE MY VIRAL BUSINESS NOW! 💥🚀
                   <br />
-                  <span className="text-3xl">TELL THE WHOLE WORLD ABOUT YOURSELF!</span>
+                  <span className="text-lg md:text-3xl">TELL THE WHOLE WORLD ABOUT YOURSELF!</span>
                 </Button>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
