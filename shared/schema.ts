@@ -564,6 +564,119 @@ export type InsertPriceCalculation = typeof priceCalculations.$inferInsert;
 export type LocationZone = typeof locationZones.$inferSelect;
 export type InsertLocationZone = typeof locationZones.$inferInsert;
 
+// Precision Measurement System
+export const precisionMeasurements = pgTable("precision_measurements", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  requestId: varchar("request_id").references(() => serviceRequests.id),
+  measurementType: varchar("measurement_type").notNull(), // "room", "wall", "material"
+  dimensions: jsonb("dimensions").notNull(), // {"length": 12.5, "width": 10.2, "height": 9.1}
+  weight: decimal("weight", { precision: 8, scale: 3 }), // In kg, precise to grams
+  volume: decimal("volume", { precision: 10, scale: 4 }), // In cubic meters
+  surfaceArea: decimal("surface_area", { precision: 10, scale: 4 }), // In square meters
+  materialType: varchar("material_type"), // "drywall", "paint", "tiles"
+  difficulty: varchar("difficulty").default("standard"), // "easy", "standard", "complex"
+  accessConditions: jsonb("access_conditions"), // stairs, tight spaces, etc.
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Loyalty & Cashback System
+export const loyaltyProgram = pgTable("loyalty_program", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  customerId: varchar("customer_id").notNull().references(() => users.id),
+  totalSpent: decimal("total_spent", { precision: 12, scale: 2 }).default("0"),
+  totalJobs: integer("total_jobs").default(0),
+  loyaltyLevel: varchar("loyalty_level").default("bronze"), // "bronze", "silver", "gold", "platinum"
+  cashbackEarned: decimal("cashback_earned", { precision: 10, scale: 2 }).default("0"),
+  cashbackSpent: decimal("cashback_spent", { precision: 10, scale: 2 }).default("0"),
+  currentCashback: decimal("current_cashback", { precision: 10, scale: 2 }).default("0"),
+  nextLevelSpendRequired: decimal("next_level_spend_required", { precision: 10, scale: 2 }),
+  joinedAt: timestamp("joined_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const platformCommissions = pgTable("platform_commissions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  requestId: varchar("request_id").notNull().references(() => serviceRequests.id),
+  providerId: varchar("provider_id").notNull().references(() => serviceProviders.id),
+  customerId: varchar("customer_id").notNull().references(() => users.id),
+  jobTotal: decimal("job_total", { precision: 10, scale: 2 }).notNull(),
+  commissionRate: decimal("commission_rate", { precision: 5, scale: 4 }).default("0.15"), // 15%
+  commissionAmount: decimal("commission_amount", { precision: 10, scale: 2 }).notNull(),
+  workerEarnings: decimal("worker_earnings", { precision: 10, scale: 2 }).notNull(),
+  customerCashbackRate: decimal("customer_cashback_rate", { precision: 5, scale: 4 }).default("0.05"), // 5%
+  customerCashback: decimal("customer_cashback", { precision: 8, scale: 2 }).notNull(),
+  paymentStatus: varchar("payment_status").default("pending"), // "pending", "paid", "failed"
+  processedAt: timestamp("processed_at").defaultNow(),
+});
+
+export const cashbackTransactions = pgTable("cashback_transactions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  customerId: varchar("customer_id").notNull().references(() => users.id),
+  transactionType: varchar("transaction_type").notNull(), // "earned", "spent", "expired"
+  amount: decimal("amount", { precision: 8, scale: 2 }).notNull(),
+  description: text("description"),
+  relatedJobId: varchar("related_job_id").references(() => serviceRequests.id),
+  expiresAt: timestamp("expires_at"), // Cashback expires after 1 year
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Relations for Precision & Loyalty
+export const precisionMeasurementsRelations = relations(precisionMeasurements, ({ one }) => ({
+  request: one(serviceRequests, {
+    fields: [precisionMeasurements.requestId],
+    references: [serviceRequests.id],
+  }),
+}));
+
+export const loyaltyProgramRelations = relations(loyaltyProgram, ({ one }) => ({
+  customer: one(users, {
+    fields: [loyaltyProgram.customerId],
+    references: [users.id],
+  }),
+}));
+
+export const platformCommissionsRelations = relations(platformCommissions, ({ one }) => ({
+  request: one(serviceRequests, {
+    fields: [platformCommissions.requestId],
+    references: [serviceRequests.id],
+  }),
+  provider: one(serviceProviders, {
+    fields: [platformCommissions.providerId],
+    references: [serviceProviders.id],
+  }),
+  customer: one(users, {
+    fields: [platformCommissions.customerId],
+    references: [users.id],
+  }),
+}));
+
+export const cashbackTransactionsRelations = relations(cashbackTransactions, ({ one }) => ({
+  customer: one(users, {
+    fields: [cashbackTransactions.customerId],
+    references: [users.id],
+  }),
+  relatedJob: one(serviceRequests, {
+    fields: [cashbackTransactions.relatedJobId],
+    references: [serviceRequests.id],
+  }),
+}));
+
+// Insert schemas
+export const insertPrecisionMeasurementSchema = createInsertSchema(precisionMeasurements);
+export const insertLoyaltyProgramSchema = createInsertSchema(loyaltyProgram);
+export const insertPlatformCommissionSchema = createInsertSchema(platformCommissions);
+export const insertCashbackTransactionSchema = createInsertSchema(cashbackTransactions);
+
+// Types
+export type PrecisionMeasurement = typeof precisionMeasurements.$inferSelect;
+export type InsertPrecisionMeasurement = typeof precisionMeasurements.$inferInsert;
+export type LoyaltyProgram = typeof loyaltyProgram.$inferSelect;
+export type InsertLoyaltyProgram = typeof loyaltyProgram.$inferInsert;
+export type PlatformCommission = typeof platformCommissions.$inferSelect;
+export type InsertPlatformCommission = typeof platformCommissions.$inferInsert;
+export type CashbackTransaction = typeof cashbackTransactions.$inferSelect;
+export type InsertCashbackTransaction = typeof cashbackTransactions.$inferInsert;
+
 export const insertTransactionSchema = createInsertSchema(transactions).omit({
   id: true,
   createdAt: true,
