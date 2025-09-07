@@ -9,6 +9,7 @@ import {
   decimal,
   boolean,
   integer,
+  date,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -676,6 +677,508 @@ export type PlatformCommission = typeof platformCommissions.$inferSelect;
 export type InsertPlatformCommission = typeof platformCommissions.$inferInsert;
 export type CashbackTransaction = typeof cashbackTransactions.$inferSelect;
 export type InsertCashbackTransaction = typeof cashbackTransactions.$inferInsert;
+
+// ===================== E-COMMERCE INVENTORY SYSTEM =====================
+
+// Suppliers/Vendors Management
+export const suppliers = pgTable("suppliers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name").notNull(),
+  contactPerson: varchar("contact_person"),
+  phone: varchar("phone"),
+  email: varchar("email"),
+  address: text("address"),
+  country: varchar("country").default("Jamaica"),
+  reliability: decimal("reliability", { precision: 3, scale: 2 }).default("5.0"), // Out of 5
+  averageDeliveryTime: integer("average_delivery_time"), // Days
+  paymentTerms: varchar("payment_terms").default("net_30"),
+  isActive: boolean("is_active").default(true),
+  totalOrders: integer("total_orders").default(0),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Product Categories  
+export const productCategories: any = pgTable("product_categories", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name").notNull(),
+  description: text("description"),
+  parentId: varchar("parent_id").references(() => productCategories.id),
+  isActive: boolean("is_active").default(true),
+  displayOrder: integer("display_order").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Products/Inventory Items
+export const products = pgTable("products", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  sku: varchar("sku").unique().notNull(),
+  name: varchar("name").notNull(),
+  description: text("description"),
+  categoryId: varchar("category_id").references(() => productCategories.id),
+  primarySupplierId: varchar("primary_supplier_id").references(() => suppliers.id),
+  unitOfMeasure: varchar("unit_of_measure").default("each"), // "each", "kg", "liter", "meter"
+  costPrice: decimal("cost_price", { precision: 10, scale: 2 }).notNull(),
+  sellingPrice: decimal("selling_price", { precision: 10, scale: 2 }).notNull(),
+  markup: decimal("markup", { precision: 5, scale: 2 }), // Percentage
+  barcode: varchar("barcode"),
+  weight: decimal("weight", { precision: 8, scale: 3 }), // In kg
+  dimensions: jsonb("dimensions"), // {"length": 10, "width": 5, "height": 2}
+  isActive: boolean("is_active").default(true),
+  isTracked: boolean("is_tracked").default(true), // Whether to track inventory
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Stock Levels & Inventory
+export const inventory = pgTable("inventory", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  productId: varchar("product_id").notNull().references(() => products.id),
+  locationId: varchar("location_id"), // Store/warehouse location
+  currentStock: decimal("current_stock", { precision: 10, scale: 3 }).default("0"),
+  minimumStock: decimal("minimum_stock", { precision: 10, scale: 3 }).default("5"),
+  maximumStock: decimal("maximum_stock", { precision: 10, scale: 3 }).default("100"),
+  reorderPoint: decimal("reorder_point", { precision: 10, scale: 3 }).default("10"),
+  reorderQuantity: decimal("reorder_quantity", { precision: 10, scale: 3 }).default("50"),
+  reservedStock: decimal("reserved_stock", { precision: 10, scale: 3 }).default("0"), // Pending orders
+  availableStock: decimal("available_stock", { precision: 10, scale: 3 }).default("0"), // Current - Reserved
+  lastStockCheck: timestamp("last_stock_check"),
+  stockStatus: varchar("stock_status").default("in_stock"), // "in_stock", "low_stock", "out_of_stock", "discontinued"
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Price History Tracking
+export const priceHistory = pgTable("price_history", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  productId: varchar("product_id").notNull().references(() => products.id),
+  supplierId: varchar("supplier_id").references(() => suppliers.id),
+  oldPrice: decimal("old_price", { precision: 10, scale: 2 }),
+  newPrice: decimal("new_price", { precision: 10, scale: 2 }).notNull(),
+  priceType: varchar("price_type").notNull(), // "cost", "selling", "supplier"
+  changeReason: varchar("change_reason"), // "supplier_increase", "market_demand", "promotion"
+  changePercentage: decimal("change_percentage", { precision: 5, scale: 2 }),
+  effectiveDate: timestamp("effective_date").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Stock Movements (IN/OUT transactions)
+export const stockMovements = pgTable("stock_movements", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  productId: varchar("product_id").notNull().references(() => products.id),
+  movementType: varchar("movement_type").notNull(), // "purchase", "sale", "adjustment", "transfer", "waste"
+  quantity: decimal("quantity", { precision: 10, scale: 3 }).notNull(),
+  unitCost: decimal("unit_cost", { precision: 10, scale: 2 }),
+  totalValue: decimal("total_value", { precision: 10, scale: 2 }),
+  referenceNumber: varchar("reference_number"), // PO#, Invoice#, etc.
+  supplierId: varchar("supplier_id").references(() => suppliers.id),
+  userId: varchar("user_id").references(() => users.id),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Automatic Reorder System
+export const reorderRequests = pgTable("reorder_requests", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  productId: varchar("product_id").notNull().references(() => products.id),
+  supplierId: varchar("supplier_id").notNull().references(() => suppliers.id),
+  requestedQuantity: decimal("requested_quantity", { precision: 10, scale: 3 }).notNull(),
+  estimatedCost: decimal("estimated_cost", { precision: 10, scale: 2 }),
+  priority: varchar("priority").default("normal"), // "urgent", "normal", "low"
+  status: varchar("status").default("pending"), // "pending", "approved", "ordered", "received", "cancelled"
+  autoGenerated: boolean("auto_generated").default(false),
+  expectedDelivery: timestamp("expected_delivery"),
+  approvedBy: varchar("approved_by").references(() => users.id),
+  approvedAt: timestamp("approved_at"),
+  orderNumber: varchar("order_number"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Stock Alerts & Notifications
+export const stockAlerts = pgTable("stock_alerts", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  productId: varchar("product_id").notNull().references(() => products.id),
+  alertType: varchar("alert_type").notNull(), // "low_stock", "out_of_stock", "price_change", "expired_soon"
+  alertLevel: varchar("alert_level").default("warning"), // "info", "warning", "critical"
+  message: text("message").notNull(),
+  isRead: boolean("is_read").default(false),
+  isResolved: boolean("is_resolved").default(false),
+  triggeredAt: timestamp("triggered_at").defaultNow(),
+  resolvedAt: timestamp("resolved_at"),
+  resolvedBy: varchar("resolved_by").references(() => users.id),
+});
+
+// Business Intelligence - Sales Analytics
+export const salesAnalytics = pgTable("sales_analytics", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  productId: varchar("product_id").references(() => products.id),
+  categoryId: varchar("category_id").references(() => productCategories.id),
+  period: varchar("period").notNull(), // "daily", "weekly", "monthly", "yearly"
+  periodDate: date("period_date").notNull(),
+  unitsSold: decimal("units_sold", { precision: 10, scale: 3 }).default("0"),
+  totalRevenue: decimal("total_revenue", { precision: 10, scale: 2 }).default("0"),
+  totalCost: decimal("total_cost", { precision: 10, scale: 2 }).default("0"),
+  totalProfit: decimal("total_profit", { precision: 10, scale: 2 }).default("0"),
+  profitMargin: decimal("profit_margin", { precision: 5, scale: 2 }).default("0"),
+  averageOrderValue: decimal("average_order_value", { precision: 10, scale: 2 }),
+  topCustomer: varchar("top_customer").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// ===================== RELATIONS =====================
+
+export const suppliersRelations = relations(suppliers, ({ many }) => ({
+  products: many(products),
+  reorderRequests: many(reorderRequests),
+  stockMovements: many(stockMovements),
+  priceHistory: many(priceHistory),
+}));
+
+export const productCategoriesRelations = relations(productCategories, ({ many, one }) => ({
+  products: many(products),
+  parent: one(productCategories, {
+    fields: [productCategories.parentId],
+    references: [productCategories.id],
+  }),
+  children: many(productCategories),
+}));
+
+export const productsRelations = relations(products, ({ one, many }) => ({
+  category: one(productCategories, {
+    fields: [products.categoryId],
+    references: [productCategories.id],
+  }),
+  primarySupplier: one(suppliers, {
+    fields: [products.primarySupplierId],
+    references: [suppliers.id],
+  }),
+  inventory: many(inventory),
+  priceHistory: many(priceHistory),
+  stockMovements: many(stockMovements),
+  reorderRequests: many(reorderRequests),
+  stockAlerts: many(stockAlerts),
+}));
+
+export const inventoryRelations = relations(inventory, ({ one }) => ({
+  product: one(products, {
+    fields: [inventory.productId],
+    references: [products.id],
+  }),
+}));
+
+export const stockMovementsRelations = relations(stockMovements, ({ one }) => ({
+  product: one(products, {
+    fields: [stockMovements.productId],
+    references: [products.id],
+  }),
+  supplier: one(suppliers, {
+    fields: [stockMovements.supplierId],
+    references: [suppliers.id],
+  }),
+  user: one(users, {
+    fields: [stockMovements.userId],
+    references: [users.id],
+  }),
+}));
+
+export const reorderRequestsRelations = relations(reorderRequests, ({ one }) => ({
+  product: one(products, {
+    fields: [reorderRequests.productId],
+    references: [products.id],
+  }),
+  supplier: one(suppliers, {
+    fields: [reorderRequests.supplierId],
+    references: [suppliers.id],
+  }),
+  approvedByUser: one(users, {
+    fields: [reorderRequests.approvedBy],
+    references: [users.id],
+  }),
+}));
+
+export const stockAlertsRelations = relations(stockAlerts, ({ one }) => ({
+  product: one(products, {
+    fields: [stockAlerts.productId],
+    references: [products.id],
+  }),
+  resolvedByUser: one(users, {
+    fields: [stockAlerts.resolvedBy],
+    references: [users.id],
+  }),
+}));
+
+// ===================== INSERT SCHEMAS =====================
+
+export const insertSupplierSchema = createInsertSchema(suppliers);
+export const insertProductCategorySchema = createInsertSchema(productCategories);
+export const insertProductSchema = createInsertSchema(products);
+export const insertInventorySchema = createInsertSchema(inventory);
+export const insertPriceHistorySchema = createInsertSchema(priceHistory);
+export const insertStockMovementSchema = createInsertSchema(stockMovements);
+export const insertReorderRequestSchema = createInsertSchema(reorderRequests);
+export const insertStockAlertSchema = createInsertSchema(stockAlerts);
+export const insertSalesAnalyticsSchema = createInsertSchema(salesAnalytics);
+
+// ===================== TYPES =====================
+
+export type Supplier = typeof suppliers.$inferSelect;
+export type InsertSupplier = typeof suppliers.$inferInsert;
+export type ProductCategory = typeof productCategories.$inferSelect;
+export type InsertProductCategory = typeof productCategories.$inferInsert;
+export type Product = typeof products.$inferSelect;
+export type InsertProduct = typeof products.$inferInsert;
+export type Inventory = typeof inventory.$inferSelect;
+export type InsertInventory = typeof inventory.$inferInsert;
+export type PriceHistory = typeof priceHistory.$inferSelect;
+export type InsertPriceHistory = typeof priceHistory.$inferInsert;
+export type StockMovement = typeof stockMovements.$inferSelect;
+export type InsertStockMovement = typeof stockMovements.$inferInsert;
+export type ReorderRequest = typeof reorderRequests.$inferSelect;
+export type InsertReorderRequest = typeof reorderRequests.$inferInsert;
+export type StockAlert = typeof stockAlerts.$inferSelect;
+export type InsertStockAlert = typeof stockAlerts.$inferInsert;
+export type SalesAnalytics = typeof salesAnalytics.$inferSelect;
+export type InsertSalesAnalytics = typeof salesAnalytics.$inferInsert;
+
+// ===================== PERSONAL SHIPPING & LOGISTICS WITH AI =====================
+
+// Shipping Partners & Local Drivers
+export const shippingPartners = pgTable("shipping_partners", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name").notNull(),
+  contactPerson: varchar("contact_person").notNull(),
+  phone: varchar("phone").notNull(),
+  whatsappNumber: varchar("whatsapp_number"),
+  email: varchar("email"),
+  preferredContactMethod: varchar("preferred_contact_method").default("phone"), // "phone", "whatsapp", "email"
+  serviceArea: jsonb("service_area"), // Geographic areas they cover
+  vehicleTypes: jsonb("vehicle_types"), // ["motorcycle", "car", "van", "truck"]
+  baseRatePerKm: decimal("base_rate_per_km", { precision: 8, scale: 2 }),
+  expressRatePerKm: decimal("express_rate_per_km", { precision: 8, scale: 2 }),
+  maxWeightCapacity: decimal("max_weight_capacity", { precision: 8, scale: 2 }), // In kg
+  maxVolumeCapacity: decimal("max_volume_capacity", { precision: 8, scale: 3 }), // In cubic meters
+  rating: decimal("rating", { precision: 3, scale: 2 }).default("5.0"),
+  totalDeliveries: integer("total_deliveries").default(0),
+  onTimePercentage: decimal("on_time_percentage", { precision: 5, scale: 2 }).default("100.0"),
+  isActive: boolean("is_active").default(true),
+  availableHours: jsonb("available_hours"), // {"monday": "8:00-18:00", "tuesday": "8:00-18:00"}
+  specialServices: jsonb("special_services"), // ["fragile", "refrigerated", "same_day", "express"]
+  notes: text("notes"),
+  joinedAt: timestamp("joined_at").defaultNow(),
+  lastActiveAt: timestamp("last_active_at").defaultNow(),
+});
+
+// Shipment Orders
+export const shipments = pgTable("shipments", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  trackingNumber: varchar("tracking_number").unique().notNull(),
+  senderId: varchar("sender_id").notNull().references(() => users.id),
+  recipientId: varchar("recipient_id").references(() => users.id),
+  shippingPartnerId: varchar("shipping_partner_id").references(() => shippingPartners.id),
+  
+  // Pickup Details
+  pickupAddress: text("pickup_address").notNull(),
+  pickupCoordinates: jsonb("pickup_coordinates"), // {"lat": 18.0, "lng": -77.0}
+  pickupContactName: varchar("pickup_contact_name").notNull(),
+  pickupContactPhone: varchar("pickup_contact_phone").notNull(),
+  pickupDate: timestamp("pickup_date"),
+  pickupTimeSlot: varchar("pickup_time_slot"), // "9:00-12:00", "12:00-15:00", etc.
+  
+  // Delivery Details
+  deliveryAddress: text("delivery_address").notNull(),
+  deliveryCoordinates: jsonb("delivery_coordinates"),
+  recipientName: varchar("recipient_name").notNull(),
+  recipientPhone: varchar("recipient_phone").notNull(),
+  deliveryDate: timestamp("delivery_date"),
+  deliveryTimeSlot: varchar("delivery_time_slot"),
+  deliveryInstructions: text("delivery_instructions"),
+  
+  // Package Details
+  packageDescription: text("package_description").notNull(),
+  packageWeight: decimal("package_weight", { precision: 8, scale: 3 }).notNull(), // kg
+  packageDimensions: jsonb("package_dimensions"), // {"length": 30, "width": 20, "height": 10}
+  packageValue: decimal("package_value", { precision: 10, scale: 2 }), // For insurance
+  isFragile: boolean("is_fragile").default(false),
+  requiresSignature: boolean("requires_signature").default(false),
+  
+  // Service Type & Pricing
+  serviceType: varchar("service_type").default("standard"), // "standard", "express", "same_day", "next_day"
+  priority: varchar("priority").default("normal"), // "low", "normal", "high", "urgent"
+  shippingCost: decimal("shipping_cost", { precision: 10, scale: 2 }).notNull(),
+  insuranceCost: decimal("insurance_cost", { precision: 8, scale: 2 }).default("0"),
+  totalCost: decimal("total_cost", { precision: 10, scale: 2 }).notNull(),
+  
+  // Status & Tracking
+  status: varchar("status").default("pending"), // "pending", "confirmed", "pickup_scheduled", "picked_up", "in_transit", "out_for_delivery", "delivered", "failed", "cancelled"
+  currentLocation: text("current_location"),
+  estimatedDeliveryTime: timestamp("estimated_delivery_time"),
+  actualPickupTime: timestamp("actual_pickup_time"),
+  actualDeliveryTime: timestamp("actual_delivery_time"),
+  
+  // AI Communication Log
+  aiCommunicationEnabled: boolean("ai_communication_enabled").default(true),
+  lastAiUpdate: timestamp("last_ai_update"),
+  aiSummary: text("ai_summary"), // AI-generated status summary for human operators
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// AI Communication & Human Oversight
+export const communicationLogs = pgTable("communication_logs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  shipmentId: varchar("shipment_id").notNull().references(() => shipments.id),
+  communicationType: varchar("communication_type").notNull(), // "ai_automated", "human_initiated", "ai_escalated", "customer_inquiry"
+  participantType: varchar("participant_type").notNull(), // "customer", "driver", "ai_assistant", "human_operator"
+  participantId: varchar("participant_id"), // User ID or system identifier
+  participantName: varchar("participant_name"),
+  contactMethod: varchar("contact_method"), // "phone", "whatsapp", "sms", "email", "in_app"
+  messageContent: text("message_content").notNull(),
+  aiGenerated: boolean("ai_generated").default(false),
+  humanReviewed: boolean("human_reviewed").default(false),
+  escalatedToHuman: boolean("escalated_to_human").default(false),
+  escalationReason: varchar("escalation_reason"), // "complex_issue", "customer_request", "ai_confidence_low"
+  responseRequired: boolean("response_required").default(false),
+  responseDeadline: timestamp("response_deadline"),
+  responseProvided: boolean("response_provided").default(false),
+  sentiment: varchar("sentiment"), // "positive", "neutral", "negative", "frustrated"
+  urgency: varchar("urgency").default("normal"), // "low", "normal", "high", "critical"
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Human Operators (YardFlex Staff)
+export const humanOperators = pgTable("human_operators", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id),
+  name: varchar("name").notNull(),
+  phone: varchar("phone").notNull(),
+  whatsappNumber: varchar("whatsapp_number"),
+  email: varchar("email").notNull(),
+  role: varchar("role").default("operator"), // "operator", "supervisor", "manager"
+  specialties: jsonb("specialties"), // ["customer_service", "logistics", "technical_support"]
+  languages: jsonb("languages").default('["English"]'), // Supported languages
+  workingHours: jsonb("working_hours"), // Schedule availability
+  isActive: boolean("is_active").default(true),
+  isOnline: boolean("is_online").default(false),
+  currentLoad: integer("current_load").default(0), // Number of active conversations
+  maxLoad: integer("max_load").default(10), // Maximum concurrent conversations
+  rating: decimal("rating", { precision: 3, scale: 2 }).default("5.0"),
+  totalConversations: integer("total_conversations").default(0),
+  averageResponseTime: integer("average_response_time"), // In minutes
+  lastActiveAt: timestamp("last_active_at").defaultNow(),
+  joinedAt: timestamp("joined_at").defaultNow(),
+});
+
+// Real-time Location Tracking
+export const shipmentTracking = pgTable("shipment_tracking", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  shipmentId: varchar("shipment_id").notNull().references(() => shipments.id),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }).notNull(),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }).notNull(),
+  accuracy: decimal("accuracy", { precision: 5, scale: 2 }), // GPS accuracy in meters
+  altitude: decimal("altitude", { precision: 6, scale: 2 }), // Height above sea level
+  speed: decimal("speed", { precision: 5, scale: 2 }), // km/h
+  heading: decimal("heading", { precision: 5, scale: 2 }), // Direction in degrees
+  driverNotes: text("driver_notes"),
+  photoUrl: varchar("photo_url"), // Proof of delivery photo
+  batteryLevel: integer("battery_level"), // Driver's device battery
+  signalStrength: integer("signal_strength"), // Network signal strength
+  timestamp: timestamp("timestamp").defaultNow(),
+});
+
+// Cost Reduction Analytics
+export const costAnalytics = pgTable("cost_analytics", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  period: varchar("period").notNull(), // "daily", "weekly", "monthly"
+  periodDate: date("period_date").notNull(),
+  
+  // Traditional vs YardFlex Costs
+  traditionalShippingCost: decimal("traditional_shipping_cost", { precision: 10, scale: 2 }).default("0"),
+  yardflexShippingCost: decimal("yardflex_shipping_cost", { precision: 10, scale: 2 }).default("0"),
+  costSavings: decimal("cost_savings", { precision: 10, scale: 2 }).default("0"),
+  savingsPercentage: decimal("savings_percentage", { precision: 5, scale: 2 }).default("0"),
+  
+  // Efficiency Metrics
+  totalShipments: integer("total_shipments").default(0),
+  averageDeliveryTime: decimal("average_delivery_time", { precision: 5, scale: 2 }), // Hours
+  onTimeDeliveries: integer("on_time_deliveries").default(0),
+  customerSatisfactionScore: decimal("customer_satisfaction_score", { precision: 3, scale: 2 }).default("5.0"),
+  
+  // Environmental Impact
+  totalDistanceSaved: decimal("total_distance_saved", { precision: 10, scale: 2 }).default("0"), // km
+  fuelSaved: decimal("fuel_saved", { precision: 8, scale: 2 }).default("0"), // Liters
+  co2Reduced: decimal("co2_reduced", { precision: 8, scale: 2 }).default("0"), // kg
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// ===================== RELATIONS =====================
+
+export const shippingPartnersRelations = relations(shippingPartners, ({ many }) => ({
+  shipments: many(shipments),
+}));
+
+export const shipmentsRelations = relations(shipments, ({ one, many }) => ({
+  sender: one(users, {
+    fields: [shipments.senderId],
+    references: [users.id],
+  }),
+  recipient: one(users, {
+    fields: [shipments.recipientId],
+    references: [users.id],
+  }),
+  shippingPartner: one(shippingPartners, {
+    fields: [shipments.shippingPartnerId],
+    references: [shippingPartners.id],
+  }),
+  communicationLogs: many(communicationLogs),
+  trackingData: many(shipmentTracking),
+}));
+
+export const communicationLogsRelations = relations(communicationLogs, ({ one }) => ({
+  shipment: one(shipments, {
+    fields: [communicationLogs.shipmentId],
+    references: [shipments.id],
+  }),
+}));
+
+export const humanOperatorsRelations = relations(humanOperators, ({ one }) => ({
+  user: one(users, {
+    fields: [humanOperators.userId],
+    references: [users.id],
+  }),
+}));
+
+export const shipmentTrackingRelations = relations(shipmentTracking, ({ one }) => ({
+  shipment: one(shipments, {
+    fields: [shipmentTracking.shipmentId],
+    references: [shipments.id],
+  }),
+}));
+
+// ===================== INSERT SCHEMAS =====================
+
+export const insertShippingPartnerSchema = createInsertSchema(shippingPartners);
+export const insertShipmentSchema = createInsertSchema(shipments);
+export const insertCommunicationLogSchema = createInsertSchema(communicationLogs);
+export const insertHumanOperatorSchema = createInsertSchema(humanOperators);
+export const insertShipmentTrackingSchema = createInsertSchema(shipmentTracking);
+export const insertCostAnalyticsSchema = createInsertSchema(costAnalytics);
+
+// ===================== TYPES =====================
+
+export type ShippingPartner = typeof shippingPartners.$inferSelect;
+export type InsertShippingPartner = typeof shippingPartners.$inferInsert;
+export type Shipment = typeof shipments.$inferSelect;
+export type InsertShipment = typeof shipments.$inferInsert;
+export type CommunicationLog = typeof communicationLogs.$inferSelect;
+export type InsertCommunicationLog = typeof communicationLogs.$inferInsert;
+export type HumanOperator = typeof humanOperators.$inferSelect;
+export type InsertHumanOperator = typeof humanOperators.$inferInsert;
+export type ShipmentTracking = typeof shipmentTracking.$inferSelect;
+export type InsertShipmentTracking = typeof shipmentTracking.$inferInsert;
+export type CostAnalytics = typeof costAnalytics.$inferSelect;
+export type InsertCostAnalytics = typeof costAnalytics.$inferInsert;
 
 export const insertTransactionSchema = createInsertSchema(transactions).omit({
   id: true,
