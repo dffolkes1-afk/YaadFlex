@@ -495,7 +495,7 @@ export default function Home() {
 
         {/* ========== ABSOLUTELY EXPLOSIVE SOCIAL COMMERCE - TAKING OVER THE ENTIRE PAGE! ========== */}
         <div className="mb-20">
-          <Card className="bg-gradient-to-br from-pink-900/80 via-purple-900/80 via-red-900/80 to-orange-900/80 border-4 border-pink-400/90 relative overflow-hidden min-h-[1400px] shadow-2xl shadow-pink-500/40" data-testid="mega-social-commerce-explosion">
+          <Card className="bg-gradient-to-br from-pink-900/90 via-purple-900/90 via-red-900/90 to-orange-900/90 border-8 border-pink-400/95 relative overflow-hidden min-h-[1600px] shadow-2xl shadow-pink-500/60" data-testid="mega-social-commerce-explosion">
             {/* ABSOLUTELY EXPLOSIVE Animated Background - EVERYWHERE! */}
             <div className="absolute inset-0 opacity-40">
               <div className="absolute top-4 left-4 text-9xl animate-bounce">🔥</div>
