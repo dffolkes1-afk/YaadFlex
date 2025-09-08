@@ -997,7 +997,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Demo transaction history
+  // Demo transaction history  
   app.get('/api/demo/wallet/transactions', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
@@ -1011,6 +1011,129 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching demo transactions:", error);
       res.status(500).json({ message: "Failed to fetch transactions" });
+    }
+  });
+
+  // ChatGPT's Beta Testing System 🔐
+  
+  // Generate beta invite codes (admin only)
+  app.post('/api/demo/generate-invite', async (req: any, res) => {
+    try {
+      const { adminKey, count = 1 } = req.body;
+      
+      // Simple admin protection
+      if (adminKey !== 'YardFlex-Beta-2025') {
+        return res.status(403).json({ message: "Unauthorized" });
+      }
+
+      const invites = [];
+      for (let i = 0; i < count; i++) {
+        const inviteCode = Math.random().toString(36).substring(2, 10).toUpperCase();
+        invites.push(inviteCode);
+        
+        // Store invite code in feature flags table
+        await db.insert(demoFeatureFlags).values({
+          userId: 'SYSTEM',
+          flagName: `BETA_INVITE_${inviteCode}`,
+          isEnabled: true
+        });
+      }
+
+      res.json({ 
+        success: true,
+        invites,
+        message: `Generated ${count} beta invite codes`,
+        note: "Share these with trusted testers only"
+      });
+    } catch (error) {
+      console.error("Error generating invites:", error);
+      res.status(500).json({ message: "Failed to generate invites" });
+    }
+  });
+
+  // Validate beta invite and grant access
+  app.post('/api/demo/validate-invite', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { inviteCode } = req.body;
+      
+      if (!inviteCode) {
+        return res.status(400).json({ message: "Invite code required" });
+      }
+
+      // Check if invite code is valid
+      const [validInvite] = await db.select()
+        .from(demoFeatureFlags)
+        .where(and(
+          eq(demoFeatureFlags.flagName, `BETA_INVITE_${inviteCode.toUpperCase()}`),
+          eq(demoFeatureFlags.isEnabled, true)
+        ));
+
+      if (!validInvite) {
+        return res.status(400).json({ message: "Invalid or expired invite code" });
+      }
+
+      // Grant beta access to user
+      await db.insert(demoFeatureFlags).values({
+        userId,
+        flagName: 'BETA_ACCESS',
+        isEnabled: true
+      }).onConflictDoUpdate({
+        target: [demoFeatureFlags.userId, demoFeatureFlags.flagName],
+        set: { isEnabled: true, updatedAt: new Date() }
+      });
+
+      // Auto-allocate 5.0 YFX demo funds (ChatGPT's design)
+      let [wallet] = await db.select().from(demoWallets).where(eq(demoWallets.userId, userId));
+      if (!wallet) {
+        [wallet] = await db.insert(demoWallets)
+          .values({ userId, balanceYfx: '5.000000' })
+          .returning();
+
+        // Record the welcome bonus
+        await db.insert(demoTransactions).values({
+          userId,
+          type: 'welcome_bonus',
+          amountYfx: '5.000000',
+          note: 'Welcome to YardFlex Beta! 🇯🇲🚀',
+          status: 'completed'
+        });
+      }
+
+      res.json({
+        success: true,
+        message: "Welcome to YardFlex Beta! 🇯🇲",
+        betaAccess: true,
+        welcomeBonus: '5.0 YFX',
+        note: "TEST MODE - Taking Jamaica to the Moon!"
+      });
+    } catch (error) {
+      console.error("Error validating invite:", error);
+      res.status(500).json({ message: "Failed to validate invite" });
+    }
+  });
+
+  // Check beta access status
+  app.get('/api/demo/beta-status', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      
+      const [betaAccess] = await db.select()
+        .from(demoFeatureFlags)
+        .where(and(
+          eq(demoFeatureFlags.userId, userId),
+          eq(demoFeatureFlags.flagName, 'BETA_ACCESS'),
+          eq(demoFeatureFlags.isEnabled, true)
+        ));
+
+      res.json({
+        hasBetaAccess: !!betaAccess,
+        testMode: true,
+        message: betaAccess ? "Beta access granted 🔥" : "Beta access required"
+      });
+    } catch (error) {
+      console.error("Error checking beta status:", error);
+      res.status(500).json({ message: "Failed to check beta status" });
     }
   });
 

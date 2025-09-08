@@ -1,120 +1,332 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Wallet, DollarSign, ArrowDownToLine, ArrowUpFromLine } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Wallet, Send, Plus, QrCode, TrendingUp, Clock, DollarSign, ArrowUpRight, ArrowDownRight, Key, Gift, AlertTriangle } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
+import { Separator } from "@/components/ui/separator";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function WalletScreen() {
-  return (
-    <div className="p-6 max-w-md mx-auto space-y-6 min-h-screen bg-black text-white">
-      {/* Wallet Balance - USD Base */}
-      <Card className="rounded-2xl shadow-lg bg-gradient-to-br from-green-900 to-black text-white border-green-700">
-        <CardContent className="p-6 text-center space-y-4">
-          <Wallet className="mx-auto w-12 h-12 text-yellow-400" />
-          <h1 className="text-4xl font-bold">$162.00</h1>
-          <p className="text-lg text-green-400 font-semibold">USD Balance</p>
+  const [inviteCode, setInviteCode] = useState("");
+  const [showInviteForm, setShowInviteForm] = useState(false);
+  const [topupAmount, setTopupAmount] = useState("");
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
-          <div className="space-y-2 text-sm opacity-80">
-            <p>≈ $25,000 JMD</p>
-            <p>≈ $220 CAD</p>
+  // Check beta access status
+  const { data: betaStatus, isLoading: betaLoading } = useQuery({
+    queryKey: ['/api/demo/beta-status'],
+    retry: false,
+  });
+
+  // Get demo wallet
+  const { data: wallet, isLoading: walletLoading } = useQuery({
+    queryKey: ['/api/demo/wallet'],
+    enabled: betaStatus?.hasBetaAccess,
+    retry: false,
+  });
+
+  // Get transactions
+  const { data: transactions, isLoading: txLoading } = useQuery({
+    queryKey: ['/api/demo/wallet/transactions'],
+    enabled: betaStatus?.hasBetaAccess,
+    retry: false,
+  });
+
+  // Validate invite code
+  const inviteMutation = useMutation({
+    mutationFn: async (code: string) => {
+      return apiRequest("POST", "/api/demo/validate-invite", { inviteCode: code });
+    },
+    onSuccess: (data: any) => {
+      toast({
+        title: "Welcome to YardFlex Beta! 🇯🇲🚀",
+        description: `${data.welcomeBonus} added to your demo wallet`,
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/demo/beta-status'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/demo/wallet'] });
+      setShowInviteForm(false);
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Invalid Invite Code",
+        description: "Please check your code and try again",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Demo sandbox top-up
+  const topupMutation = useMutation({
+    mutationFn: async (amount: string) => {
+      return apiRequest("POST", "/api/demo/wallet/topup-sandbox", { amount_yfx: amount });
+    },
+    onSuccess: (data: any) => {
+      toast({
+        title: "Demo Funds Added! 💰",
+        description: `${data.message} (TEST MODE)`,
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/demo/wallet'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/demo/wallet/transactions'] });
+      setTopupAmount("");
+    },
+    onError: () => {
+      toast({
+        title: "Top-up Failed",
+        description: "Please try again",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Currency conversion helpers (YFX pegged to Kuwaiti Dinar)
+  const convertYfxToUsd = (yfx: string) => {
+    return (parseFloat(yfx) * 3.25).toFixed(2); // 1 KWD ≈ $3.25 USD
+  };
+
+  const convertYfxToJmd = (yfx: string) => {
+    return (parseFloat(yfx) * 500).toFixed(0); // 1 KWD ≈ $500 JMD
+  };
+
+  // Loading state
+  if (betaLoading || walletLoading) {
+    return (
+      <div className="p-6 max-w-md mx-auto min-h-screen bg-gradient-to-b from-gray-900 to-black text-white flex items-center justify-center">
+        <div className="animate-spin w-8 h-8 border-4 border-yellow-400 border-t-transparent rounded-full"></div>
+      </div>
+    );
+  }
+
+  // Beta access required
+  if (!betaStatus?.hasBetaAccess) {
+    return (
+      <div className="p-6 max-w-md mx-auto min-h-screen bg-gradient-to-b from-gray-900 to-black text-white space-y-6">
+        {/* YardFlex Header */}
+        <div className="text-center space-y-2">
+          <h1 className="text-2xl font-bold text-yellow-400">YardFlex Wallet</h1>
+          <p className="text-green-400">Taking Jamaica to the Moon 🇯🇲🚀</p>
+        </div>
+
+        {/* Beta Access Required */}
+        <Card className="bg-yellow-900/20 border-yellow-600">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-yellow-400">
+              <Key className="w-5 h-5" />
+              Beta Access Required
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-gray-300">
+              YardFlex is currently in private beta. Enter your invite code to access the demo wallet.
+            </p>
+            
+            {!showInviteForm ? (
+              <Button 
+                onClick={() => setShowInviteForm(true)}
+                className="w-full bg-yellow-600 hover:bg-yellow-700"
+                data-testid="button-enter-invite"
+              >
+                <Key className="w-4 h-4 mr-2" />
+                Enter Invite Code
+              </Button>
+            ) : (
+              <div className="space-y-3">
+                <Label htmlFor="invite-code">Invite Code</Label>
+                <Input
+                  id="invite-code"
+                  value={inviteCode}
+                  onChange={(e) => setInviteCode(e.target.value)}
+                  placeholder="Enter your invite code"
+                  className="bg-gray-800 border-gray-600"
+                  data-testid="input-invite-code"
+                />
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => inviteMutation.mutate(inviteCode)}
+                    disabled={!inviteCode || inviteMutation.isPending}
+                    className="flex-1 bg-green-600 hover:bg-green-700"
+                    data-testid="button-validate-invite"
+                  >
+                    {inviteMutation.isPending ? "Validating..." : "Join Beta"}
+                  </Button>
+                  <Button
+                    onClick={() => setShowInviteForm(false)}
+                    variant="outline"
+                    className="border-gray-600"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Contact Info */}
+        <div className="text-center text-sm text-gray-400">
+          <p>Need an invite code?</p>
+          <p>Contact the YardFlex team</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-6 max-w-md mx-auto space-y-6 min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
+      {/* TEST MODE Banner */}
+      <Alert className="bg-red-900/20 border-red-600">
+        <AlertTriangle className="h-4 w-4" />
+        <AlertDescription className="text-red-200">
+          <strong>TEST MODE</strong> - Demo funds only, no real money
+        </AlertDescription>
+      </Alert>
+
+      {/* YFX Wallet Balance */}
+      <Card className="rounded-2xl shadow-lg bg-gradient-to-br from-yellow-900/30 to-black text-white border-yellow-600">
+        <CardContent className="p-6 text-center space-y-4">
+          <div className="flex items-center justify-center gap-2">
+            <Wallet className="w-8 h-8 text-yellow-400" />
+            <Badge variant="secondary" className="bg-yellow-600 text-black">DEMO</Badge>
+          </div>
+          
+          <div>
+            <h1 className="text-4xl font-bold text-yellow-400">
+              {parseFloat(wallet?.balanceYfx || '0').toFixed(3)} YFX
+            </h1>
+            <p className="text-lg text-yellow-300 font-semibold">YardFlex Coin</p>
+          </div>
+
+          <div className="space-y-1 text-sm opacity-80">
+            <p>≈ ${convertYfxToUsd(wallet?.balanceYfx || '0')} USD</p>
+            <p>≈ ${convertYfxToJmd(wallet?.balanceYfx || '0')} JMD</p>
+            <p className="text-xs text-gray-400">(Pegged to Kuwaiti Dinar)</p>
           </div>
 
           <div className="grid grid-cols-2 gap-3 mt-6">
-            <Button className="bg-green-600 hover:bg-green-700 flex items-center gap-2" data-testid="button-withdraw">
-              <ArrowDownToLine className="w-4 h-4" />
-              Cash Out
+            <Button 
+              className="bg-green-600 hover:bg-green-700 flex items-center gap-2" 
+              data-testid="button-send-yfx"
+            >
+              <Send className="w-4 h-4" />
+              Send YFX
             </Button>
-            <Button variant="outline" className="border-green-600 text-green-400 hover:bg-green-900/50 flex items-center gap-2" data-testid="button-add-funds">
-              <ArrowUpFromLine className="w-4 h-4" />
-              Add Funds
+            <Button 
+              variant="outline" 
+              className="border-yellow-600 text-yellow-400 hover:bg-yellow-900/50 flex items-center gap-2" 
+              data-testid="button-request-yfx"
+            >
+              <ArrowDownRight className="w-4 h-4" />
+              Request
             </Button>
           </div>
         </CardContent>
       </Card>
 
-      {/* Tabs for Transactions */}
-      <Tabs defaultValue="history" className="w-full">
-        <TabsList className="grid grid-cols-2 w-full bg-gray-800 border-green-700">
-          <TabsTrigger value="history" className="text-white data-[state=active]:bg-green-700 data-[state=active]:text-white">History</TabsTrigger>
-          <TabsTrigger value="settings" className="text-white data-[state=active]:bg-green-700 data-[state=active]:text-white">Settings</TabsTrigger>
-        </TabsList>
+      {/* Demo Top-up */}
+      <Card className="bg-blue-900/20 border-blue-600">
+        <CardHeader>
+          <CardTitle className="text-blue-400 flex items-center gap-2">
+            <Gift className="w-5 h-5" />
+            Demo Sandbox
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          <p className="text-sm text-gray-300">Add fake YFX for testing</p>
+          <div className="flex gap-2">
+            <Input
+              value={topupAmount}
+              onChange={(e) => setTopupAmount(e.target.value)}
+              placeholder="Amount"
+              type="number"
+              step="0.001"
+              className="bg-gray-800 border-gray-600"
+              data-testid="input-topup-amount"
+            />
+            <Button
+              onClick={() => topupMutation.mutate(topupAmount)}
+              disabled={!topupAmount || topupMutation.isPending}
+              className="bg-blue-600 hover:bg-blue-700"
+              data-testid="button-topup-sandbox"
+            >
+              {topupMutation.isPending ? "Adding..." : "Add"}
+            </Button>
+          </div>
+          <div className="flex gap-2">
+            <Button size="sm" variant="outline" onClick={() => setTopupAmount("1.0")}>+1.0</Button>
+            <Button size="sm" variant="outline" onClick={() => setTopupAmount("5.0")}>+5.0</Button>
+            <Button size="sm" variant="outline" onClick={() => setTopupAmount("10.0")}>+10.0</Button>
+          </div>
+        </CardContent>
+      </Card>
 
-        <TabsContent value="history">
-          <Card className="mt-4 p-4 bg-gray-900 border-green-700 text-white">
-            <h3 className="text-lg font-semibold mb-4 text-green-400">Recent Transactions</h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
-                <div>
-                  <p className="font-medium">🚗 Trip Earned</p>
-                  <p className="text-sm text-gray-400">Kingston to Spanish Town</p>
-                </div>
-                <span className="text-green-400 font-bold">+$6.80</span>
-              </div>
-              
-              <div className="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
-                <div>
-                  <p className="font-medium">🔧 Tool Rental</p>
-                  <p className="text-sm text-gray-400">Power Drill - 3 days</p>
-                </div>
-                <span className="text-green-400 font-bold">+$45.00</span>
-              </div>
-
-              <div className="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
-                <div>
-                  <p className="font-medium">🛍️ Marketplace Sale</p>
-                  <p className="text-sm text-gray-400">Bluetooth Speaker</p>
-                </div>
-                <span className="text-green-400 font-bold">+$85.00</span>
-              </div>
-
-              <div className="flex justify-between items-center p-3 bg-red-900/30 rounded-lg">
-                <div>
-                  <p className="font-medium">⚡ Platform Fee</p>
-                  <p className="text-sm text-gray-400">15% commission</p>
-                </div>
-                <span className="text-red-400 font-bold">-$1.20</span>
-              </div>
+      {/* Transaction History */}
+      <Card className="bg-gray-900 border-gray-700">
+        <CardHeader>
+          <CardTitle className="text-green-400 flex items-center gap-2">
+            <Clock className="w-5 h-5" />
+            Transaction History
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {txLoading ? (
+            <div className="animate-pulse space-y-2">
+              <div className="h-4 bg-gray-700 rounded"></div>
+              <div className="h-4 bg-gray-700 rounded"></div>
             </div>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="settings">
-          <Card className="mt-4 p-4 space-y-4 bg-gray-900 border-green-700 text-white">
-            <h2 className="text-lg font-semibold text-green-400">Wallet Settings</h2>
-            
+          ) : transactions && transactions.length > 0 ? (
             <div className="space-y-3">
-              <Button variant="outline" className="w-full flex items-center gap-2 border-green-600 text-green-400 hover:bg-green-900/50" data-testid="button-currency-toggle">
-                <DollarSign className="w-4 h-4" /> 
-                Switch Display Currency
-              </Button>
-              
-              <Button variant="outline" className="w-full flex items-center gap-2 border-green-600 text-green-400 hover:bg-green-900/50" data-testid="button-payment-methods">
-                <Wallet className="w-4 h-4" /> 
-                Payment Methods
-              </Button>
-
-              <div className="bg-gray-800 p-3 rounded-lg">
-                <p className="text-sm font-medium text-green-400">💡 YardFlex Advantage</p>
-                <p className="text-xs text-gray-400 mt-1">
-                  Drivers keep 85% • Platform takes only 15% • Best rates in Jamaica!
-                </p>
-              </div>
+              {transactions.slice(0, 10).map((tx: any, idx: number) => (
+                <div key={idx} className="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
+                  <div>
+                    <p className="font-medium">
+                      {tx.type === 'welcome_bonus' && '🎁 Welcome Bonus'}
+                      {tx.type === 'topup_sandbox' && '💰 Sandbox Top-up'}
+                      {tx.type === 'send' && '📤 Sent YFX'}
+                      {tx.type === 'receive' && '📥 Received YFX'}
+                    </p>
+                    <p className="text-sm text-gray-400">{tx.note}</p>
+                    <p className="text-xs text-gray-500">
+                      {new Date(tx.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <span className={`font-bold ${
+                      tx.type === 'send' ? 'text-red-400' : 'text-green-400'
+                    }`}>
+                      {tx.type === 'send' ? '-' : '+'}{parseFloat(tx.amountYfx).toFixed(3)} YFX
+                    </span>
+                    <p className="text-xs text-gray-400">
+                      ≈ ${convertYfxToUsd(tx.amountYfx)} USD
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
-          </Card>
-        </TabsContent>
-      </Tabs>
+          ) : (
+            <p className="text-gray-400 text-center py-4">No transactions yet</p>
+          )}
+        </CardContent>
+      </Card>
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-2 gap-4">
-        <Button variant="outline" className="border-green-600 text-green-400 hover:bg-green-900/50 p-4 h-auto flex-col gap-2" data-testid="button-earn-more">
-          <span className="text-2xl">🚗</span>
-          <span className="text-sm">Drive & Earn</span>
-        </Button>
-        
-        <Button variant="outline" className="border-green-600 text-green-400 hover:bg-green-900/50 p-4 h-auto flex-col gap-2" data-testid="button-rent-tools">
-          <span className="text-2xl">🔧</span>
-          <span className="text-sm">Rent Tools</span>
-        </Button>
-      </div>
+      {/* YardFlex Advantage */}
+      <Card className="bg-green-900/20 border-green-600">
+        <CardContent className="p-4">
+          <div className="text-center space-y-2">
+            <p className="text-sm font-medium text-green-400">💡 YardFlex Advantage</p>
+            <p className="text-xs text-gray-300">
+              Workers keep <strong>85%</strong> • Platform takes only <strong>15%</strong>
+            </p>
+            <p className="text-xs text-green-400">
+              Best rates in the Caribbean! 🇯🇲
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
