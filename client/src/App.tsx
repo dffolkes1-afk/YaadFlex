@@ -21,6 +21,7 @@ import RealEstatePage from "@/pages/real-estate";
 import CarMarketplacePage from "@/pages/car-marketplace";
 import PremiumStorefrontPage from "@/pages/premium-storefront";
 import SimpleLinksPage from "@/pages/simple-links";
+import ContactlessSystemPage from "@/pages/contactless-system";
 import { TranslatorDemoPage } from "@/pages/translator-demo";
 import { TimelessDashboardPage } from "@/pages/timeless-dashboard";
 import WorldEmblemPage from "@/pages/world-emblem";
@@ -38,6 +39,7 @@ function Router() {
       <Route path="/car-marketplace" component={CarMarketplacePage} />
       <Route path="/premium-storefront" component={PremiumStorefrontPage} />
       <Route path="/links" component={SimpleLinksPage} />
+      <Route path="/contactless" component={ContactlessSystemPage} />
       <Route path="/ride-booking" component={RideBooking} />
       <Route path="/business-registration" component={BusinessRegistration} />
       <Route path="/driver-registration" component={DriverRegistration} />

@@ -50,6 +50,13 @@ export default function SimpleLinksPage() {
           🏪 Register Your Business
         </a>
         
+        <a 
+          href="/contactless" 
+          className="block w-full p-4 bg-gradient-to-r from-yellow-500 to-red-500 text-white text-center font-bold text-xl rounded hover:from-yellow-600 hover:to-red-600 transition-colors"
+        >
+          📧 100% Contactless System
+        </a>
+        
       </div>
       
       <p className="text-center text-gray-400 mt-8">
