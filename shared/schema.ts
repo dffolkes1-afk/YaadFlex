@@ -289,23 +289,6 @@ export type DriverCbProfile = typeof driverCbProfiles.$inferSelect;
 export type InsertCbChannelSubscription = typeof cbChannelSubscriptions.$inferInsert;
 export type CbChannelSubscription = typeof cbChannelSubscriptions.$inferSelect;
 
-// YaadFlex Ultimate Translator Types
-export const insertChatMessageSchema = createInsertSchema(chatMessages).omit({ id: true, createdAt: true, updatedAt: true });
-export type InsertChatMessage = z.infer<typeof insertChatMessageSchema>;
-export type ChatMessage = typeof chatMessages.$inferSelect;
-
-export const insertMessageTranslationSchema = createInsertSchema(messageTranslations).omit({ id: true, createdAt: true });
-export type InsertMessageTranslation = z.infer<typeof insertMessageTranslationSchema>;
-export type MessageTranslation = typeof messageTranslations.$inferSelect;
-
-export const insertChatParticipantSchema = createInsertSchema(chatParticipants).omit({ id: true, joinedAt: true });
-export type InsertChatParticipant = z.infer<typeof insertChatParticipantSchema>;
-export type ChatParticipant = typeof chatParticipants.$inferSelect;
-
-export const insertTranslationReportSchema = createInsertSchema(translationReports).omit({ id: true, createdAt: true });
-export type InsertTranslationReport = z.infer<typeof insertTranslationReportSchema>;
-export type TranslationReport = typeof translationReports.$inferSelect;
-
 // DEMO YFX WALLET SYSTEM - For Private Pilot Testing
 export const demoWallets = pgTable("demo_wallets", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -3636,6 +3619,23 @@ export type AvailabilityAlert = typeof availabilityAlerts.$inferSelect;
 export type InsertAvailabilityAlert = typeof availabilityAlerts.$inferInsert;
 export type PropertyMaintenance = typeof propertyMaintenance.$inferSelect;
 export type InsertPropertyMaintenance = typeof propertyMaintenance.$inferInsert;
+
+// YaadFlex Ultimate Translator Types
+export const insertChatMessageSchema = createInsertSchema(chatMessages).omit({ id: true, createdAt: true, updatedAt: true });
+export type InsertChatMessage = z.infer<typeof insertChatMessageSchema>;
+export type ChatMessage = typeof chatMessages.$inferSelect;
+
+export const insertMessageTranslationSchema = createInsertSchema(messageTranslations).omit({ id: true, createdAt: true });
+export type InsertMessageTranslation = z.infer<typeof insertMessageTranslationSchema>;
+export type MessageTranslation = typeof messageTranslations.$inferSelect;
+
+export const insertChatParticipantSchema = createInsertSchema(chatParticipants).omit({ id: true, joinedAt: true });
+export type InsertChatParticipant = z.infer<typeof insertChatParticipantSchema>;
+export type ChatParticipant = typeof chatParticipants.$inferSelect;
+
+export const insertTranslationReportSchema = createInsertSchema(translationReports).omit({ id: true, createdAt: true });
+export type InsertTranslationReport = z.infer<typeof insertTranslationReportSchema>;
+export type TranslationReport = typeof translationReports.$inferSelect;
 
 export const insertTransactionSchema = createInsertSchema(transactions).omit({
   id: true,

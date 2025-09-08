@@ -19,7 +19,12 @@ import {
   insertServiceRequestSchema,
   insertServiceQuoteSchema,
   insertToolEquipmentSchema,
-  insertServiceReviewSchema
+  insertServiceReviewSchema,
+  // YaadFlex Ultimate Translator
+  insertChatMessageSchema,
+  insertMessageTranslationSchema,
+  insertChatParticipantSchema,
+  insertTranslationReportSchema
 } from "@shared/schema";
 import { z } from "zod";
 import { desc, eq, and, sql, lte, gte } from "drizzle-orm";
@@ -546,6 +551,185 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching online drivers:", error);
       res.status(500).json({ message: "Failed to fetch online drivers" });
+    }
+  });
+
+  // ===================== YaadFlex Ultimate Translator API Endpoints =====================
+
+  // Create chat message (with auto language detection)
+  app.post('/api/messages', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const messageData = insertChatMessageSchema.parse({
+        ...req.body,
+        senderId: userId,
+        // Auto-detect language (placeholder - will integrate with translation service)
+        originalLang: req.body.originalLang || 'en-JM',
+        langConfidence: req.body.langConfidence || 0.95
+      });
+
+      const message = await storage.createChatMessage(messageData);
+      
+      // Auto-translate for other participants (will implement translation service)
+      // For now, just return the message
+      res.json(message);
+    } catch (error) {
+      console.error("Error creating message:", error);
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "Invalid message data", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "Failed to create message" });
+      }
+    }
+  });
+
+  // Get messages for a chat with translations
+  app.get('/api/chats/:chatId/messages', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { chatId } = req.params;
+      const viewerLang = req.query.viewer_lang as string || 'en-JM';
+      const limit = parseInt(req.query.limit as string) || 50;
+
+      // Get messages with translations for the user's preferred language
+      const messages = await storage.getChatMessages(chatId, viewerLang, limit);
+      res.json(messages);
+    } catch (error) {
+      console.error("Error fetching chat messages:", error);
+      res.status(500).json({ message: "Failed to fetch messages" });
+    }
+  });
+
+  // Translate specific message to target language
+  app.post('/api/messages/:messageId/translate', isAuthenticated, async (req: any, res) => {
+    try {
+      const { messageId } = req.params;
+      const { targetLang } = req.body;
+
+      if (!targetLang) {
+        return res.status(400).json({ message: "Target language is required" });
+      }
+
+      // Check if translation already exists in cache
+      let translation = await storage.getMessageTranslation(messageId, targetLang);
+      
+      if (!translation) {
+        // Get original message
+        const message = await storage.getChatMessageById(messageId);
+        if (!message) {
+          return res.status(404).json({ message: "Message not found" });
+        }
+
+        // Placeholder translation (will integrate with actual translation service)
+        const translatedText = `[TRANSLATED to ${targetLang}] ${message.originalText}`;
+        
+        // Save translation to cache
+        translation = await storage.createMessageTranslation({
+          messageId,
+          targetLang,
+          translatedText,
+          translationQuality: 0.94,
+          translationModel: 'v-placeholder',
+          translationTime: 150
+        });
+      }
+
+      res.json(translation);
+    } catch (error) {
+      console.error("Error translating message:", error);
+      res.status(500).json({ message: "Failed to translate message" });
+    }
+  });
+
+  // Update user language preferences
+  app.patch('/api/user/language-preferences', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { preferredLang, fallbackLang, showAlwaysEnglishToggle, captionVoiceMessages, autoTranslateEnabled } = req.body;
+
+      const updatedUser = await storage.updateUserLanguagePreferences(userId, {
+        preferredLang,
+        fallbackLang,
+        showAlwaysEnglishToggle,
+        captionVoiceMessages,
+        autoTranslateEnabled
+      });
+
+      res.json(updatedUser);
+    } catch (error) {
+      console.error("Error updating language preferences:", error);
+      res.status(500).json({ message: "Failed to update language preferences" });
+    }
+  });
+
+  // Get user language preferences
+  app.get('/api/user/language-preferences', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      res.json({
+        preferredLang: user?.preferredLang || 'en-JM',
+        fallbackLang: user?.fallbackLang || 'en-US',
+        showAlwaysEnglishToggle: user?.showAlwaysEnglishToggle ?? true,
+        captionVoiceMessages: user?.captionVoiceMessages ?? true,
+        autoTranslateEnabled: user?.autoTranslateEnabled ?? true
+      });
+    } catch (error) {
+      console.error("Error fetching language preferences:", error);
+      res.status(500).json({ message: "Failed to fetch language preferences" });
+    }
+  });
+
+  // Join or create chat
+  app.post('/api/chats', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { chatId, participantIds } = req.body;
+
+      // Create chat participant record
+      const participant = await storage.createChatParticipant({
+        chatId,
+        userId,
+        role: 'participant',
+        isActive: true
+      });
+
+      res.json(participant);
+    } catch (error) {
+      console.error("Error joining chat:", error);
+      res.status(500).json({ message: "Failed to join chat" });
+    }
+  });
+
+  // Report translation issue
+  app.post('/api/messages/:messageId/report-translation', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { messageId } = req.params;
+      const { translationId, issueType, incorrectTranslation, suggestedTranslation, reportDescription } = req.body;
+
+      const message = await storage.getChatMessageById(messageId);
+      if (!message) {
+        return res.status(404).json({ message: "Message not found" });
+      }
+
+      const report = await storage.createTranslationReport({
+        messageId,
+        translationId,
+        reporterId: userId,
+        issueType,
+        originalText: message.originalText,
+        incorrectTranslation,
+        suggestedTranslation,
+        reportDescription,
+        status: 'pending'
+      });
+
+      res.json(report);
+    } catch (error) {
+      console.error("Error reporting translation:", error);
+      res.status(500).json({ message: "Failed to report translation issue" });
     }
   });
 
