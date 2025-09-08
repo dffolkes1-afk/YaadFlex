@@ -327,7 +327,7 @@ export default function YaadFlexBankingPage() {
                   
                   <Card className="text-center">
                     <CardContent className="p-6">
-                      <Calendar className="h-8 w-8 mx-auto text-blue-600 mb-2" />
+                      <Clock className="h-8 w-8 mx-auto text-blue-600 mb-2" />
                       <div className="text-2xl font-bold">{formatCurrency(yaadflexAccount.totalEarnings.thisWeek, 'JMD')}</div>
                       <div className="text-sm text-muted-foreground">This Week</div>
                     </CardContent>
