@@ -652,12 +652,18 @@ export class DatabaseStorage implements IStorage {
     if (userId) conditions.push(eq(serviceRequests.customerId, userId));
     if (status) conditions.push(eq(serviceRequests.status, status));
     
-    let query = db.select().from(serviceRequests);
     if (conditions.length > 0) {
-      query = query.where(and(...conditions));
+      return await db
+        .select()
+        .from(serviceRequests)
+        .where(and(...conditions))
+        .orderBy(desc(serviceRequests.createdAt));
     }
     
-    return await query.orderBy(desc(serviceRequests.createdAt));
+    return await db
+      .select()
+      .from(serviceRequests)
+      .orderBy(desc(serviceRequests.createdAt));
   }
 
   async createServiceRequest(requestData: InsertServiceRequest): Promise<ServiceRequest> {
@@ -799,7 +805,7 @@ export class DatabaseStorage implements IStorage {
       .from(locationZones)
       .where(eq(locationZones.name, location || 'Kingston Urban'));
     
-    const locationMultiplier = locationZone ? parseFloat(locationZone.priceMultiplier) : 1.0;
+    const locationMultiplier = locationZone ? parseFloat(locationZone.priceMultiplier || "1.0") : 1.0;
     const locationAdjustment = (baseWorkCost + cleanupCost) * (locationMultiplier - 1.0);
 
     // Apply complexity factor
