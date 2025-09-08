@@ -297,7 +297,44 @@
         </p>
     </footer>
     
+    <!-- Voice Control Button -->
+    <div id="voice-control" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+        <button onclick="toggleVoice()" style="background: #FFD700; color: black; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 24px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">🎤</button>
+    </div>
+
     <script>
+        // Voice Control System
+        let isVoiceOn = false;
+        let speechSynthesis = window.speechSynthesis;
+        
+        function toggleVoice() {
+            isVoiceOn = !isVoiceOn;
+            if (isVoiceOn) {
+                speakText("Voice control ON. Welcome to YaadFlex!");
+                document.getElementById('voice-control').innerHTML = '<button onclick="toggleVoice()" style="background: #32CD32; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 24px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">🔊</button>';
+            } else {
+                document.getElementById('voice-control').innerHTML = '<button onclick="toggleVoice()" style="background: #FFD700; color: black; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 24px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">🎤</button>';
+            }
+        }
+        
+        function speakText(text) {
+            if (isVoiceOn && speechSynthesis) {
+                let utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.9;
+                utterance.pitch = 1;
+                speechSynthesis.speak(utterance);
+            }
+        }
+        
+        // Auto-read important text when voice is on
+        document.querySelectorAll('.highlight-box, .tagline').forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                if (isVoiceOn) {
+                    speakText(this.innerText);
+                }
+            });
+        });
+        
         // Simple tracking for user engagement
         let pageVisitTime = Date.now();
         let scrollDepth = 0;
