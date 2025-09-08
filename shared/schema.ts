@@ -462,6 +462,494 @@ export type InsertDemoFeatureFlag = typeof demoFeatureFlags.$inferInsert;
 export type PilotTester = typeof pilotTesters.$inferSelect;
 export type InsertPilotTester = typeof pilotTesters.$inferInsert;
 
+// WORKFORCE MANAGEMENT TYPES
+export type Company = typeof companies.$inferSelect;
+export type InsertCompany = typeof companies.$inferInsert;
+export type Job = typeof jobs.$inferSelect;
+export type InsertJob = typeof jobs.$inferInsert;
+export type Worker = typeof workers.$inferSelect;
+export type InsertWorker = typeof workers.$inferInsert;
+export type Supervisor = typeof supervisors.$inferSelect;
+export type InsertSupervisor = typeof supervisors.$inferInsert;
+export type Equipment = typeof equipment.$inferSelect;
+export type InsertEquipment = typeof equipment.$inferInsert;
+export type EquipmentHub = typeof equipmentHubs.$inferSelect;
+export type InsertEquipmentHub = typeof equipmentHubs.$inferInsert;
+export type EquipmentHubInventory = typeof equipmentHubInventory.$inferSelect;
+export type InsertEquipmentHubInventory = typeof equipmentHubInventory.$inferInsert;
+export type EquipmentCheckout = typeof equipmentCheckouts.$inferSelect;
+export type InsertEquipmentCheckout = typeof equipmentCheckouts.$inferInsert;
+export type JobApplication = typeof jobApplications.$inferSelect;
+export type InsertJobApplication = typeof jobApplications.$inferInsert;
+export type JobAssignment = typeof jobAssignments.$inferSelect;
+export type InsertJobAssignment = typeof jobAssignments.$inferInsert;
+export type VehicleListing = typeof vehicleListings.$inferSelect;
+export type InsertVehicleListing = typeof vehicleListings.$inferInsert;
+export type EmailCommunication = typeof emailCommunications.$inferSelect;
+export type InsertEmailCommunication = typeof emailCommunications.$inferInsert;
+
+// WORKFORCE MANAGEMENT SYSTEM - YaadFlex Job Creation Platform
+
+// Companies that post jobs and hire workers
+export const companies = pgTable("companies", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  ownerId: varchar("owner_id").references(() => users.id).notNull(),
+  name: varchar("name").notNull(),
+  industry: varchar("industry").notNull(), // 'maintenance', 'cleaning', 'construction', 'automotive', etc.
+  description: text("description"),
+  email: varchar("email"),
+  phone: varchar("phone"),
+  address: text("address"),
+  city: varchar("city"),
+  country: varchar("country").default('JM'),
+  logoUrl: varchar("logo_url"),
+  isVerified: boolean("is_verified").default(false),
+  rating: decimal("rating", { precision: 3, scale: 2 }).default('5.00'),
+  totalJobs: integer("total_jobs").default(0),
+  activeJobs: integer("active_jobs").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Job postings for maintenance, cleanup, and any work
+export const jobs = pgTable("jobs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  companyId: varchar("company_id").references(() => companies.id).notNull(),
+  title: varchar("title").notNull(),
+  description: text("description").notNull(),
+  jobType: varchar("job_type").notNull(), // 'maintenance', 'cleanup', 'construction', 'delivery', 'automotive'
+  skillLevel: varchar("skill_level").notNull().default('entry'), // 'entry', 'intermediate', 'expert', 'supervisor'
+  
+  // Location and scheduling
+  address: text("address").notNull(),
+  city: varchar("city").notNull(),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }),
+  startDate: date("start_date").notNull(),
+  endDate: date("end_date"),
+  isFlexibleSchedule: boolean("is_flexible_schedule").default(false),
+  workingHours: varchar("working_hours"), // '9am-5pm', 'flexible', 'night_shift'
+  
+  // Compensation
+  payRate: decimal("pay_rate", { precision: 10, scale: 2 }).notNull(),
+  payType: varchar("pay_type").notNull().default('hourly'), // 'hourly', 'daily', 'project', 'commission'
+  currency: varchar("currency", { length: 3 }).notNull().default('JMD'),
+  estimatedDuration: integer("estimated_duration"), // hours for project completion
+  
+  // Requirements
+  workersNeeded: integer("workers_needed").notNull().default(1),
+  supervisorsNeeded: integer("supervisors_needed").default(0),
+  equipmentProvided: boolean("equipment_provided").default(false),
+  equipmentRequired: jsonb("equipment_required"), // Array of equipment IDs needed
+  skillsRequired: jsonb("skills_required"), // Array of required skills
+  
+  // Status and visibility
+  status: varchar("status").notNull().default('open'), // 'open', 'in_progress', 'completed', 'cancelled', 'paused'
+  isUrgent: boolean("is_urgent").default(false),
+  isPublic: boolean("is_public").default(true),
+  applicationDeadline: date("application_deadline"),
+  
+  // Meta
+  totalApplicants: integer("total_applicants").default(0),
+  hiredWorkers: integer("hired_workers").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("idx_jobs_type_status").on(table.jobType, table.status),
+  index("idx_jobs_location").on(table.city, table.latitude, table.longitude),
+  index("idx_jobs_company").on(table.companyId),
+]);
+
+// Worker profiles (separate from regular users - these are job workers)
+export const workers = pgTable("workers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull().unique(),
+  
+  // Worker details
+  firstName: varchar("first_name").notNull(),
+  lastName: varchar("last_name").notNull(),
+  phone: varchar("phone").notNull(),
+  email: varchar("email").notNull(),
+  dateOfBirth: date("date_of_birth"),
+  
+  // Location and availability
+  address: text("address"),
+  city: varchar("city").notNull(),
+  country: varchar("country").default('JM'),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }),
+  maxTravelDistance: integer("max_travel_distance").default(25), // kilometers
+  
+  // Skills and experience
+  skills: jsonb("skills"), // Array of skills: ['plumbing', 'electrical', 'cleaning', etc.]
+  experienceLevel: varchar("experience_level").notNull().default('entry'), // 'entry', 'intermediate', 'expert'
+  yearsExperience: integer("years_experience").default(0),
+  specializations: jsonb("specializations"), // Specific areas of expertise
+  
+  // Work preferences
+  preferredJobTypes: jsonb("preferred_job_types"), // Array of preferred job types
+  availableDays: jsonb("available_days"), // Array: ['monday', 'tuesday', etc.]
+  preferredHours: varchar("preferred_hours"), // 'morning', 'afternoon', 'evening', 'night', 'flexible'
+  hourlyRate: decimal("hourly_rate", { precision: 10, scale: 2 }),
+  currency: varchar("currency", { length: 3 }).default('JMD'),
+  
+  // Status and performance
+  isAvailable: boolean("is_available").default(true),
+  isVerified: boolean("is_verified").default(false),
+  backgroundCheckPassed: boolean("background_check_passed").default(false),
+  rating: decimal("rating", { precision: 3, scale: 2 }).default('5.00'),
+  totalJobsCompleted: integer("total_jobs_completed").default(0),
+  
+  // Documents and verification
+  profileImageUrl: varchar("profile_image_url"),
+  resumeUrl: varchar("resume_url"),
+  certifications: jsonb("certifications"), // Array of certification objects
+  references: jsonb("references"), // Array of reference contacts
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("idx_workers_location").on(table.city, table.latitude, table.longitude),
+  index("idx_workers_skills").on(table.skills),
+  index("idx_workers_available").on(table.isAvailable),
+]);
+
+// Supervisor profiles for managing workers
+export const supervisors = pgTable("supervisors", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull().unique(),
+  workerId: varchar("worker_id").references(() => workers.id), // Can also be a worker
+  
+  // Supervisor details
+  firstName: varchar("first_name").notNull(),
+  lastName: varchar("last_name").notNull(),
+  phone: varchar("phone").notNull(),
+  email: varchar("email").notNull(),
+  
+  // Management experience
+  managementExperience: integer("management_experience").default(0), // years
+  maxTeamSize: integer("max_team_size").default(5), // max workers they can supervise
+  industries: jsonb("industries"), // Array of industries they can supervise
+  
+  // Location and availability
+  city: varchar("city").notNull(),
+  country: varchar("country").default('JM'),
+  maxTravelDistance: integer("max_travel_distance").default(50), // kilometers
+  
+  // Performance and rates
+  supervisoryRate: decimal("supervisory_rate", { precision: 10, scale: 2 }),
+  currency: varchar("currency", { length: 3 }).default('JMD'),
+  rating: decimal("rating", { precision: 3, scale: 2 }).default('5.00'),
+  totalProjectsSupervised: integer("total_projects_supervised").default(0),
+  
+  // Status
+  isAvailable: boolean("is_available").default(true),
+  isVerified: boolean("is_verified").default(false),
+  canHireWorkers: boolean("can_hire_workers").default(false),
+  canFireWorkers: boolean("can_fire_workers").default(false),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Equipment available for rent/use
+export const equipment = pgTable("equipment", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  companyId: varchar("company_id").references(() => companies.id),
+  
+  // Equipment details
+  name: varchar("name").notNull(),
+  description: text("description"),
+  category: varchar("category").notNull(), // 'tools', 'machinery', 'vehicles', 'safety', 'cleaning'
+  subcategory: varchar("subcategory"), // 'power_tools', 'hand_tools', 'heavy_machinery', etc.
+  brand: varchar("brand"),
+  model: varchar("model"),
+  serialNumber: varchar("serial_number"),
+  
+  // Availability and condition
+  condition: varchar("condition").notNull().default('good'), // 'excellent', 'good', 'fair', 'poor'
+  isAvailable: boolean("is_available").default(true),
+  requiresTraining: boolean("requires_training").default(false),
+  safetyRequirements: jsonb("safety_requirements"), // Array of safety gear needed
+  
+  // Rental information
+  dailyRate: decimal("daily_rate", { precision: 10, scale: 2 }),
+  weeklyRate: decimal("weekly_rate", { precision: 10, scale: 2 }),
+  monthlyRate: decimal("monthly_rate", { precision: 10, scale: 2 }),
+  currency: varchar("currency", { length: 3 }).default('JMD'),
+  securityDeposit: decimal("security_deposit", { precision: 10, scale: 2 }),
+  
+  // Images and documentation
+  imageUrls: jsonb("image_urls"), // Array of image URLs
+  manualUrl: varchar("manual_url"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("idx_equipment_category").on(table.category, table.subcategory),
+  index("idx_equipment_available").on(table.isAvailable),
+]);
+
+// Equipment hub locations for pickup/return
+export const equipmentHubs = pgTable("equipment_hubs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  companyId: varchar("company_id").references(() => companies.id),
+  managerId: varchar("manager_id").references(() => users.id),
+  
+  // Hub details
+  name: varchar("name").notNull(),
+  description: text("description"),
+  address: text("address").notNull(),
+  city: varchar("city").notNull(),
+  country: varchar("country").default('JM'),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }),
+  
+  // Operating hours
+  operatingHours: jsonb("operating_hours"), // Object with days and hours
+  is24Hours: boolean("is_24_hours").default(false),
+  
+  // Capacity and features
+  storageCapacity: integer("storage_capacity"), // total equipment slots
+  currentOccupancy: integer("current_occupancy").default(0),
+  hasSecuritySystem: boolean("has_security_system").default(false),
+  hasClimateControl: boolean("has_climate_control").default(false),
+  
+  // Contact and access
+  phone: varchar("phone"),
+  email: varchar("email"),
+  accessCode: varchar("access_code"), // For 24-hour access
+  specialInstructions: text("special_instructions"),
+  
+  // Status
+  isActive: boolean("is_active").default(true),
+  lastInventoryCheck: timestamp("last_inventory_check"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("idx_hubs_location").on(table.city, table.latitude, table.longitude),
+  index("idx_hubs_active").on(table.isActive),
+]);
+
+// Equipment assignments to hubs
+export const equipmentHubInventory = pgTable("equipment_hub_inventory", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  equipmentId: varchar("equipment_id").references(() => equipment.id).notNull(),
+  hubId: varchar("hub_id").references(() => equipmentHubs.id).notNull(),
+  quantity: integer("quantity").notNull().default(1),
+  storageLocation: varchar("storage_location"), // Rack/zone within hub
+  lastChecked: timestamp("last_checked").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("idx_hub_inventory_equipment").on(table.equipmentId),
+  index("idx_hub_inventory_hub").on(table.hubId),
+]);
+
+// Equipment checkout/return tracking
+export const equipmentCheckouts = pgTable("equipment_checkouts", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  equipmentId: varchar("equipment_id").references(() => equipment.id).notNull(),
+  workerId: varchar("worker_id").references(() => workers.id).notNull(),
+  hubId: varchar("hub_id").references(() => equipmentHubs.id).notNull(),
+  jobId: varchar("job_id").references(() => jobs.id), // Optional job association
+  
+  // Checkout details
+  checkedOutAt: timestamp("checked_out_at").defaultNow(),
+  plannedReturnDate: date("planned_return_date").notNull(),
+  actualReturnDate: timestamp("actual_return_date"),
+  
+  // Condition tracking
+  checkoutCondition: varchar("checkout_condition").notNull(), // 'excellent', 'good', 'fair'
+  returnCondition: varchar("return_condition"), // Set when returned
+  damageNotes: text("damage_notes"),
+  
+  // Financial
+  rentalRate: decimal("rental_rate", { precision: 10, scale: 2 }).notNull(),
+  totalCost: decimal("total_cost", { precision: 10, scale: 2 }),
+  securityDeposit: decimal("security_deposit", { precision: 10, scale: 2 }),
+  depositReturned: boolean("deposit_returned").default(false),
+  
+  // Status
+  status: varchar("status").notNull().default('checked_out'), // 'checked_out', 'overdue', 'returned', 'damaged', 'lost'
+  isOverdue: boolean("is_overdue").default(false),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("idx_checkouts_worker").on(table.workerId),
+  index("idx_checkouts_equipment").on(table.equipmentId),
+  index("idx_checkouts_status").on(table.status),
+  index("idx_checkouts_overdue").on(table.isOverdue),
+]);
+
+// Job applications from workers
+export const jobApplications = pgTable("job_applications", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  jobId: varchar("job_id").references(() => jobs.id).notNull(),
+  workerId: varchar("worker_id").references(() => workers.id).notNull(),
+  
+  // Application details
+  coverLetter: text("cover_letter"),
+  proposedRate: decimal("proposed_rate", { precision: 10, scale: 2 }),
+  availability: varchar("availability"), // 'immediate', 'within_week', 'flexible'
+  estimatedCompletionTime: integer("estimated_completion_time"), // hours
+  
+  // Status tracking
+  status: varchar("status").notNull().default('pending'), // 'pending', 'reviewed', 'interviewed', 'hired', 'rejected'
+  appliedAt: timestamp("applied_at").defaultNow(),
+  reviewedAt: timestamp("reviewed_at"),
+  interviewedAt: timestamp("interviewed_at"),
+  hiredAt: timestamp("hired_at"),
+  rejectedAt: timestamp("rejected_at"),
+  
+  // Feedback
+  companyNotes: text("company_notes"),
+  rejectionReason: text("rejection_reason"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("idx_applications_job").on(table.jobId),
+  index("idx_applications_worker").on(table.workerId),
+  index("idx_applications_status").on(table.status),
+]);
+
+// Job assignments (hired workers)
+export const jobAssignments = pgTable("job_assignments", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  jobId: varchar("job_id").references(() => jobs.id).notNull(),
+  workerId: varchar("worker_id").references(() => workers.id).notNull(),
+  supervisorId: varchar("supervisor_id").references(() => supervisors.id),
+  
+  // Assignment details
+  role: varchar("role").notNull().default('worker'), // 'worker', 'team_lead', 'specialist'
+  assignedRate: decimal("assigned_rate", { precision: 10, scale: 2 }).notNull(),
+  assignedAt: timestamp("assigned_at").defaultNow(),
+  startDate: date("start_date").notNull(),
+  expectedEndDate: date("expected_end_date"),
+  actualEndDate: timestamp("actual_end_date"),
+  
+  // Status and performance
+  status: varchar("status").notNull().default('assigned'), // 'assigned', 'started', 'in_progress', 'completed', 'terminated'
+  hoursWorked: decimal("hours_worked", { precision: 8, scale: 2 }).default('0.00'),
+  performanceRating: decimal("performance_rating", { precision: 3, scale: 2 }),
+  companyFeedback: text("company_feedback"),
+  workerFeedback: text("worker_feedback"),
+  
+  // Termination details (for hire/fire functionality)
+  canBeTerminated: boolean("can_be_terminated").default(true),
+  terminatedAt: timestamp("terminated_at"),
+  terminationReason: text("termination_reason"),
+  terminatedBy: varchar("terminated_by").references(() => users.id), // supervisor or company owner
+  severancePaid: decimal("severance_paid", { precision: 10, scale: 2 }),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("idx_assignments_job").on(table.jobId),
+  index("idx_assignments_worker").on(table.workerId),
+  index("idx_assignments_supervisor").on(table.supervisorId),
+  index("idx_assignments_status").on(table.status),
+]);
+
+// Vehicle marketplace for cars and dealerships
+export const vehicleListings = pgTable("vehicle_listings", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  sellerId: varchar("seller_id").references(() => users.id).notNull(),
+  companyId: varchar("company_id").references(() => companies.id), // For dealerships
+  
+  // Vehicle details
+  make: varchar("make").notNull(),
+  model: varchar("model").notNull(),
+  year: integer("year").notNull(),
+  mileage: integer("mileage"),
+  vin: varchar("vin"),
+  licensePlate: varchar("license_plate"),
+  
+  // Specifications
+  bodyType: varchar("body_type"), // 'sedan', 'suv', 'truck', 'motorcycle', 'bus'
+  transmission: varchar("transmission"), // 'manual', 'automatic', 'cvt'
+  fuelType: varchar("fuel_type"), // 'gasoline', 'diesel', 'electric', 'hybrid'
+  engineSize: varchar("engine_size"),
+  color: varchar("color"),
+  
+  // Pricing and availability
+  price: decimal("price", { precision: 12, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).default('JMD'),
+  isNegotiable: boolean("is_negotiable").default(true),
+  financingAvailable: boolean("financing_available").default(false),
+  tradeInAccepted: boolean("trade_in_accepted").default(false),
+  
+  // Condition and history
+  condition: varchar("condition").notNull(), // 'excellent', 'good', 'fair', 'poor', 'salvage'
+  accidentHistory: boolean("accident_history").default(false),
+  serviceHistory: jsonb("service_history"), // Array of service records
+  
+  // Location
+  city: varchar("city").notNull(),
+  country: varchar("country").default('JM'),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }),
+  
+  // Media and documentation
+  imageUrls: jsonb("image_urls"), // Array of image URLs
+  videoUrl: varchar("video_url"),
+  documentsUrls: jsonb("documents_urls"), // Registration, inspection, etc.
+  
+  // Listing status
+  status: varchar("status").notNull().default('active'), // 'active', 'sold', 'pending', 'withdrawn'
+  isPromoted: boolean("is_promoted").default(false),
+  promotionExpiresAt: timestamp("promotion_expires_at"),
+  
+  // Analytics
+  viewCount: integer("view_count").default(0),
+  inquiryCount: integer("inquiry_count").default(0),
+  favoriteCount: integer("favorite_count").default(0),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("idx_vehicles_make_model").on(table.make, table.model),
+  index("idx_vehicles_price").on(table.price),
+  index("idx_vehicles_location").on(table.city, table.latitude, table.longitude),
+  index("idx_vehicles_status").on(table.status),
+]);
+
+// Email communication system for job coordination
+export const emailCommunications = pgTable("email_communications", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  fromUserId: varchar("from_user_id").references(() => users.id).notNull(),
+  toUserId: varchar("to_user_id").references(() => users.id).notNull(),
+  
+  // Related entities
+  jobId: varchar("job_id").references(() => jobs.id),
+  applicationId: varchar("application_id").references(() => jobApplications.id),
+  assignmentId: varchar("assignment_id").references(() => jobAssignments.id),
+  
+  // Email content
+  subject: varchar("subject").notNull(),
+  body: text("body").notNull(),
+  emailType: varchar("email_type").notNull(), // 'job_notification', 'application_status', 'assignment_update', 'general'
+  
+  // Delivery status
+  status: varchar("status").notNull().default('pending'), // 'pending', 'sent', 'delivered', 'failed'
+  sentAt: timestamp("sent_at"),
+  deliveredAt: timestamp("delivered_at"),
+  readAt: timestamp("read_at"),
+  
+  // External email service tracking
+  externalEmailId: varchar("external_email_id"), // ID from email service provider
+  failureReason: text("failure_reason"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("idx_emails_from_user").on(table.fromUserId),
+  index("idx_emails_to_user").on(table.toUserId),
+  index("idx_emails_job").on(table.jobId),
+  index("idx_emails_status").on(table.status),
+]);
+
 // Services Marketplace Tables (Construction, Cleaning, Trade Work)
 export const serviceCategories = pgTable("service_categories", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
