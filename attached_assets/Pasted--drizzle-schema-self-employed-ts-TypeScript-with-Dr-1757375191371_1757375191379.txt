@@ -1,0 +1,160 @@
+// ========================================== // drizzle/schema.self_employed.ts (TypeScript with Drizzle ORM) // ========================================== import { pgTable, varchar, text, boolean, timestamp, decimal, integer } from "drizzle-orm/pg-core";
+
+export const freelancers = pgTable("freelancers", { id: varchar("id", { length: 36 }).primaryKey(), userId: varchar("userId", { length: 36 }).notNull(), displayName: text("displayName").notNull(), skills: text("skills").array(), bio: text("bio"), hourlyRate: decimal("hourlyRate"), isAvailable: boolean("isAvailable").default(true), rating: decimal("rating"), createdAt: timestamp("createdAt").defaultNow(), updatedAt: timestamp("updatedAt").defaultNow() });
+
+export const services = pgTable("services", { id: varchar("id", { length: 36 }).primaryKey(), freelancerId: varchar("freelancerId", { length: 36 }).notNull(), title: text("title").notNull(), description: text("description"), price: decimal("price"), deliveryTimeDays: integer("deliveryTimeDays"), isActive: boolean("isActive").default(true), createdAt: timestamp("createdAt").defaultNow() });
+
+export const serviceOrders = pgTable("service_orders", { id: varchar("id", { length: 36 }).primaryKey(), serviceId: varchar("serviceId", { length: 36 }).notNull(), buyerId: varchar("buyerId", { length: 36 }).notNull(), status: varchar("status", { length: 32 }).default("pending"), amount: decimal("amount"), createdAt: timestamp("createdAt").defaultNow(), updatedAt: timestamp("updatedAt").defaultNow() });
+
+export const transactions = pgTable("transactions", { id: varchar("id", { length: 36 }).primaryKey(), userId: varchar("userId", { length: 36 }).notNull(), type: varchar("type", { length: 32 }).notNull(), referenceId: varchar("referenceId", { length: 36 }), amount: decimal("amount").notNull(), currency: varchar("currency", { length: 8 }).default("USD"), status: varchar("status", { length: 32 }).default("success"), createdAt: timestamp("createdAt").defaultNow() });
+
+// ========================================== // server/routes.self_employed.ts // ========================================== import express from "express"; import { db } from "../drizzle/db"; import { freelancers, services, serviceOrders, transactions } from "../drizzle/schema.self_employed"; import { eq } from "drizzle-orm"; import crypto from "node:crypto";
+
+const router = express.Router();
+
+router.post("/api/freelancers", async (req, res) => { const [row] = await db.insert(freelancers).values({ id: crypto.randomUUID(), userId: req.body.userId, displayName: req.body.displayName, skills: req.body.skills, bio: req.body.bio, hourlyRate: req.body.hourlyRate }).returning(); res.json(row); });
+
+router.get("/api/freelancers", async (_req, res) => { const rows = await db.select().from(freelancers); res.json(rows); });
+
+router.get("/api/freelancers/:id", async (req, res) => { const rows = await db.select().from(freelancers).where(eq(freelancers.id, req.params.id)); res.json(rows[0] || null); });
+
+router.post("/api/services", async (req, res) => { const [row] = await db.insert(services).values({ id: crypto.randomUUID(), freelancerId: req.body.freelancerId, title: req.body.title, description: req.body.description, price: req.body.price, deliveryTimeDays: req.body.deliveryTimeDays }).returning(); res.json(row); });
+
+router.get("/api/services", async (_req, res) => { const rows = await db.select().from(services); res.json(rows); });
+
+router.get("/api/services/:id", async (req, res) => { const rows = await db.select().from(services).where(eq(services.id, req.params.id)); res.json(rows[0] || null); });
+
+router.post("/api/service-orders", async (req, res) => { const [row] = await db.insert(serviceOrders).values({ id: crypto.randomUUID(), serviceId: req.body.serviceId, buyerId: req.body.buyerId, amount: req.body.amount, status: "pending" }).returning(); res.json(row); });
+
+router.get("/api/service-orders", async (_req, res) => { const rows = await db.select().from(serviceOrders); res.json(rows); });
+
+router.get("/api/service-orders/:id", async (req, res) => { const rows = await db.select().from(serviceOrders).where(eq(serviceOrders.id, req.params.id)); res.json(rows[0] || null); });
+
+router.post("/api/transactions", async (req, res) => { const [row] = await db.insert(transactions).values({ id: crypto.randomUUID(), userId: req.body.userId, type: req.body.type, referenceId: req.body.referenceId, amount: req.body.amount, currency: req.body.currency || "USD" }).returning(); res.json(row); });
+
+router.get("/api/transactions", async (_req, res) => { const rows = await db.select().from(transactions); res.json(rows); });
+
+export default router;
+
+// ========================================== // server/index.ts // ========================================== import express from "express"; import selfEmployedRoutes from "./routes.self_employed";
+
+const app = express(); app.use(express.json()); app.use(selfEmployedRoutes);
+
+const port = process.env.PORT || 4000; app.listen(port, () => { console.log(API server running on http://localhost:${port}); });
+
+// ========================================== // scripts/seed.ts (Seed initial test data) // ========================================== import { db } from "../drizzle/db"; import { freelancers, services, serviceOrders, transactions } from "../drizzle/schema.self_employed"; import crypto from "node:crypto";
+
+async function seed() { const freelancerId = crypto.randomUUID(); const serviceId = crypto.randomUUID(); const orderId = crypto.randomUUID();
+
+const [freelancer] = await db.insert(freelancers).values({ id: freelancerId, userId: "user-001", displayName: "Stanton Electrician", skills: ["wiring", "AC repair"], bio: "Experienced electrician with 10 years of work in Kingston.", hourlyRate: "30" }).returning();
+
+const [service] = await db.insert(services).values({ id: serviceId, freelancerId: freelancerId, title: "Install Split AC", description: "Supply and fit split AC unit for home/office.", price: "120", deliveryTimeDays: 2 }).returning();
+
+const [order] = await db.insert(serviceOrders).values({ id: orderId, serviceId: serviceId, buyerId: "buyer-001", amount: "120", status: "pending" }).returning();
+
+const [txn] = await db.insert(transactions).values({ id: crypto.randomUUID(), userId: "buyer-001", type: "order", referenceId: orderId, amount: "120", currency: "USD" }).returning();
+
+console.log("Seed complete:", { freelancer, service, order, txn }); process.exit(0); }
+
+seed().catch((e) => { console.error(e); process.exit(1); });
+
+// ========================================== // scripts/resetSeed.ts (Clear & reseed demo data) // ========================================== import { db } from "../drizzle/db"; import { freelancers, services, serviceOrders, transactions } from "../drizzle/schema.self_employed"; import seed from "./seed";
+
+async function reset() { try { console.log("Clearing existing data..."); await db.delete(transactions); await db.delete(serviceOrders); await db.delete(services); await db.delete(freelancers); console.log("Tables cleared. Reseeding..."); await seed(); } catch (e) { console.error(e); process.exit(1); } }
+
+reset();
+
+// ========================================== // drizzle/schema.fuel.ts (Fuel Rewards Module) // ========================================== import { pgTable, varchar, text, boolean, timestamp, decimal, integer, jsonb } from "drizzle-orm/pg-core";
+
+export const fuelPartners = pgTable("fuel_partners", { id: varchar("id", { length: 36 }).primaryKey(), name: varchar("name", { length: 120 }).notNull(), brandCode: varchar("brandCode", { length: 32 }).notNull(), // e.g. RUBIS, TOTAL, PETROJAM contactEmail: varchar("contactEmail", { length: 160 }), contactPhone: varchar("contactPhone", { length: 40 }), isActive: boolean("isActive").default(true), createdAt: timestamp("createdAt").defaultNow() });
+
+export const fuelStations = pgTable("fuel_stations", { id: varchar("id", { length: 36 }).primaryKey(), partnerId: varchar("partnerId", { length: 36 }).notNull(), name: varchar("name", { length: 160 }).notNull(), address: text("address"), lat: decimal("lat", { precision: 10, scale: 6 }), lng: decimal("lng", { precision: 10, scale: 6 }), isActive: boolean("isActive").default(true), createdAt: timestamp("createdAt").defaultNow() });
+
+export const fuelOffers = pgTable("fuel_offers", { id: varchar("id", { length: 36 }).primaryKey(), partnerId: varchar("partnerId", { length: 36 }).notNull(), title: varchar("title", { length: 200 }).notNull(), // rewardType: points | cashback rewardType: varchar("rewardType", { length: 16 }).default("points"), // e.g. 1 point per JMD$100 or 2% cashback pointsPerCurrency: decimal("pointsPerCurrency", { precision: 10, scale: 4 }).default("0.0100"), cashbackRate: decimal("cashbackRate", { precision: 6, scale: 4 }).default("0.0000"), minSpend: decimal("minSpend", { precision: 12, scale: 2 }).default("0.00"), stationScope: jsonb("stationScope"), // null = all partner stations, or [stationId] startsAt: timestamp("startsAt").notNull(), endsAt: timestamp("endsAt").notNull(), isActive: boolean("isActive").default(true) });
+
+export const driverFuelAccounts = pgTable("driver_fuel_accounts", { id: varchar("id", { length: 36 }).primaryKey(), driverId: varchar("driverId", { length: 36 }).notNull(), partnerId: varchar("partnerId", { length: 36 }).notNull(), pointsBalance: decimal("pointsBalance", { precision: 14, scale: 2 }).default("0"), cashbackBalance: decimal("cashbackBalance", { precision: 14, scale: 2 }).default("0.00"), isActive: boolean("isActive").default(true), createdAt: timestamp("createdAt").defaultNow(), updatedAt: timestamp("updatedAt").defaultNow() });
+
+export const fuelTransactions = pgTable("fuel_transactions", { id: varchar("id", { length: 36 }).primaryKey(), driverId: varchar("driverId", { length: 36 }).notNull(), partnerId: varchar("partnerId", { length: 36 }).notNull(), stationId: varchar("stationId", { length: 36 }), currency: varchar("currency", { length: 8 }).default("JMD"), amount: decimal("amount", { precision: 12, scale: 2 }).notNull(), liters: decimal("liters", { precision: 10, scale: 3 }), offerAppliedId: varchar("offerAppliedId", { length: 36 }), pointsEarned: decimal("pointsEarned", { precision: 14, scale: 2 }).default("0"), cashbackEarned: decimal("cashbackEarned", { precision: 12, scale: 2 }).default("0.00"), receiptRef: varchar("receiptRef", { length: 80 }), meta: jsonb("meta"), createdAt: timestamp("createdAt").defaultNow() });
+
+export const fuelRedemptions = pgTable("fuel_redemptions", { id: varchar("id", { length: 36 }).primaryKey(), driverId: varchar("driverId", { length: 36 }).notNull(), partnerId: varchar("partnerId", { length: 36 }).notNull(), type: varchar("type", { length: 16 }).notNull(), // points | cashback amount: decimal("amount", { precision: 12, scale: 2 }).notNull(), status: varchar("status", { length: 16 }).default("pending"), // pending|approved|rejected createdAt: timestamp("createdAt").defaultNow(), approvedAt: timestamp("approvedAt") });
+
+export const fuelSettlements = pgTable("fuel_settlements", { id: varchar("id", { length: 36 }).primaryKey(), partnerId: varchar("partnerId", { length: 36 }).notNull(), period: varchar("period", { length: 16 }).notNull(), // e.g. 2025-09-week36 totalCashback: decimal("totalCashback", { precision: 14, scale: 2 }).default("0.00"), totalPoints: decimal("totalPoints", { precision: 14, scale: 2 }).default("0"), status: varchar("status", { length: 16 }).default("open"), // open|invoiced|paid createdAt: timestamp("createdAt").defaultNow() });
+
+// ========================================== // server/routes.fuel.ts (Fuel Rewards API) // ========================================== import express from "express"; import crypto from "node:crypto"; import { db } from "../drizzle/db"; import { fuelPartners, fuelStations, fuelOffers, driverFuelAccounts, fuelTransactions, fuelRedemptions, fuelSettlements } from "../drizzle/schema.fuel"; import { and, eq, inArray, gte, lte } from "drizzle-orm";
+
+const r = express.Router(); const uuid = () => crypto.randomUUID?.() || ${Date.now()};
+
+// --- Admin: partners + stations + offers --- r.post("/api/fuel/partners", async (req, res) => { const [row] = await db.insert(fuelPartners).values({ id: uuid(), ...req.body }).returning(); res.json(row); });
+
+r.post("/api/fuel/stations", async (req, res) => { const [row] = await db.insert(fuelStations).values({ id: uuid(), ...req.body }).returning(); res.json(row); });
+
+r.post("/api/fuel/offers", async (req, res) => { const [row] = await db.insert(fuelOffers).values({ id: uuid(), ...req.body }).returning(); res.json(row); });
+
+r.get("/api/fuel/offers/active", async (req, res) => { const now = new Date(); const rows = await db.select().from(fuelOffers).where(and(eq(fuelOffers.isActive, true), gte(fuelOffers.endsAt, now), lte(fuelOffers.startsAt, now))); res.json(rows); });
+
+// --- Driver: enroll & balance --- r.post("/api/fuel/enroll", async (req, res) => { const { driverId, partnerId } = req.body; const [row] = await db.insert(driverFuelAccounts).values({ id: uuid(), driverId, partnerId, pointsBalance: "0", cashbackBalance: "0.00" }).returning(); res.json(row); });
+
+r.get("/api/fuel/balance/:driverId", async (req, res) => { const rows = await db.select().from(driverFuelAccounts).where(eq(driverFuelAccounts.driverId, req.params.driverId)); res.json(rows); });
+
+// --- Driver: record a purchase (from receipt or gateway callback) --- r.post("/api/fuel/purchase", async (req, res) => { const { driverId, partnerId, stationId, currency = "JMD", amount, liters, receiptRef } = req.body; const now = new Date(); const activeOffers = await db.select().from(fuelOffers).where(and(eq(fuelOffers.partnerId, partnerId), eq(fuelOffers.isActive, true), gte(fuelOffers.endsAt, now), lte(fuelOffers.startsAt, now)));
+
+// pick best offer by highest reward value let best = activeOffers[0] || null; if (activeOffers.length > 1 && stationId) { best = activeOffers.find(o => !o.stationScope || (Array.isArray(o.stationScope) && o.stationScope.includes(stationId))) || activeOffers[0]; }
+
+let points = "0" as any; let cashback = "0.00" as any; let offerId: string | null = null; if (best && Number(amount) >= Number(best.minSpend || 0)) { offerId = best.id; if (best.rewardType === "points" && best.pointsPerCurrency) { points = (Number(amount) * Number(best.pointsPerCurrency)).toFixed(2); } if (best.rewardType === "cashback" && best.cashbackRate) { cashback = (Number(amount) * Number(best.cashbackRate)).toFixed(2); } }
+
+const [tx] = await db.insert(fuelTransactions).values({ id: uuid(), driverId, partnerId, stationId, currency, amount, liters, offerAppliedId: offerId || undefined, pointsEarned: points, cashbackEarned: cashback, receiptRef }).returning();
+
+// update balances const accts = await db.select().from(driverFuelAccounts).where(and(eq(driverFuelAccounts.driverId, driverId), eq(driverFuelAccounts.partnerId, partnerId))); if (accts[0]) { const p = (Number(accts[0].pointsBalance) + Number(points)).toFixed(2); const c = (Number(accts[0].cashbackBalance) + Number(cashback)).toFixed(2); await db.update(driverFuelAccounts).set({ pointsBalance: p, cashbackBalance: c, updatedAt: new Date() }).where(eq(driverFuelAccounts.id, accts[0].id)); }
+
+res.json({ tx, reward: { points, cashback, offerId } }); });
+
+// --- Driver: redeem --- r.post("/api/fuel/redeem", async (req, res) => { const { driverId, partnerId, type, amount } = req.body; // type: points|cashback const [row] = await db.insert(fuelRedemptions).values({ id: uuid(), driverId, partnerId, type, amount, status: "pending" }).returning(); res.json(row); });
+
+// --- Admin: approve redemption & run settlement --- r.post("/api/fuel/redemptions/:id/approve", async (req, res) => { const id = req.params.id; const now = new Date(); await db.update(fuelRedemptions).set({ status: "approved", approvedAt: now }).where(eq(fuelRedemptions.id, id)); res.json({ ok: true }); });
+
+r.post("/api/fuel/settlements/run", async (req, res) => { const { partnerId, period } = req.body; // e.g. 2025-09-week36 // Sum approved cashback + issued points in period // (For simplicity, we sum from fuelTransactions over timeframe in real impl.) const [settlement] = await db.insert(fuelSettlements).values({ id: uuid(), partnerId, period, totalCashback: "0.00", totalPoints: "0", status: "open" }).returning(); res.json(settlement); });
+
+export default r;
+
+// ========================================== // server/index.ts (mount Fuel routes) // ========================================== // import fuelRoutes from "./routes.fuel"; // app.use(fuelRoutes);
+
+// ========================================== // scripts/seed.fuel.ts (Quick demo data) // ========================================== import { db } from "../drizzle/db"; import { fuelPartners, fuelStations, fuelOffers } from "../drizzle/schema.fuel"; import crypto from "node:crypto";
+
+async function seedFuel() { const pid = crypto.randomUUID(); await db.insert(fuelPartners).values({ id: pid, name: "Rubis Jamaica", brandCode: "RUBIS", contactEmail: "partner@rubis.jm" }); const sid = crypto.randomUUID(); await db.insert(fuelStations).values({ id: sid, partnerId: pid, name: "Rubis Half Way Tree", address: "Half Way Tree Rd, Kingston" }); const now = new Date(); const ends = new Date(Date.now() + 30243600*1000); await db.insert(fuelOffers).values({ id: crypto.randomUUID(), partnerId: pid, title: "1 point per $100 JMD", rewardType: "points", pointsPerCurrency: "0.0100", minSpend: "1000", stationScope: [sid] as any, startsAt: now as any, endsAt: ends as any, isActive: true }); console.log("Fuel seed complete"); }
+
+seedFuel().then(()=>process.exit(0)).catch(e=>{console.error(e);process.exit(1)});
+
+// ========================================== // src/pages/SocialHub.tsx  (React – world‑class social links hub) // ========================================== import React from "react";
+
+export default function SocialHub() { const links = [ { name: "Instagram", href: "https://instagram.com/yaadflex", icon: ( <svg viewBox="0 0 24 24" width={22} height={22} aria-hidden> <path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.9.3 2.4.5.6.2 1 .5 1.5 1s.8.9 1 1.5c.2.5.4 1.2.5 2.4.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.9-.5 2.4-.2.6-.5 1-1 1.5s-.9.8-1.5 1c-.5.2-1.2.4-2.4.5-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.9-.3-2.4-.5a3.9 3.9 0 0 1-1.5-1c-.5-.5-.8-.9-1-1.5-.2-.5-.4-1.2-.5-2.4C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.9.5-2.4.2-.6.5-1 1-1.5s.9-.8 1.5-1c.5-.2 1.2-.4 2.4-.5C8.4 2.2 8.8 2.2 12 2.2m0-2.2C8.7 0 8.3 0 7 .1 5.7.2 4.8.4 4 .7 3.1 1 2.4 1.5 1.7 2.2A6 6 0 0 0 .7 4c-.3.8-.5 1.7-.6 3C0 8.3 0 8.7 0 12s0 3.7.1 5c.1 1.3.3 2.2.6 3 .3.8.8 1.5 1.5 2.2.7.7 1.4 1.2 2.3 1.5.8.3 1.7.5 3 .6 1.3.1 1.7.1 5 .1s3.7 0 5-.1c1.3-.1 2.2-.3 3-.6a6 6 0 0 0 2.3-1.5 6 6 0 0 0 1.5-2.3c.3-.8.5-1.7.6-3 .1-1.3.1-1.7.1-5s0-3.7-.1-5c-.1-1.3-.3-2.2-.6-3a6 6 0 0 0-1.5-2.3A6 6 0 0 0 20 .7c-.8-.3-1.7-.5-3-.6C15.7 0 15.3 0 12 0Z"/> <path fill="currentColor" d="M12 5.8A6.2 6.2 0 1 0 18.2 12 6.2 6.2 0 0 0 12 5.8m0 10.2A4 4 0 1 1 16 12a4 4 0 0 1-4 4Z"/> <circle cx="18.4" cy="5.6" r="1.4" fill="currentColor"/> </svg> ) }, { name: "Facebook", href: "https://facebook.com/yaadflex", icon: ( <svg viewBox="0 0 24 24" width={22} height={22} aria-hidden> <path fill="currentColor" d="M22 12a10 10 0 1 0-11.6 9.9v-7h-2.6V12h2.6V9.7c0-2.6 1.5-4.1 3.9-4.1 1.1 0 2.3.2 2.3.2v2.5h-1.3c-1.3 0-1.8.8-1.8 1.7V12h3l-.5 2.9h-2.5v7A10 10 0 0 0 22 12Z"/> </svg> ) }, { name: "TikTok", href: "https://tiktok.com/@yaadflex", icon: ( <svg viewBox="0 0 24 24" width={22} height={22} aria-hidden> <path fill="currentColor" d="M16.8 2c.4 2 1.8 3.7 3.6 4.6v3.1c-1.4-.1-2.8-.6-4-1.3v6.3a6.8 6.8 0 1 1-6.8-6.8c.4 0 .7 0 1 .1v3.2c-.3-.1-.6-.2-1-.2a3.6 3.6 0 1 0 3.6 3.6V2h3.6Z"/> </svg> ) }, { name: "Twitter/X", href: "https://twitter.com/yaadflex", icon: ( <svg viewBox="0 0 24 24" width={22} height={22} aria-hidden> <path fill="currentColor" d="M18.2 1.8h3.3L14.6 11l7.6 11.2h-6.2l-4.1-5.9-4.7 5.9H4l7.4-9.2L4.1 1.8h6.4l3.7 5.4 4-5.4Z"/> </svg> ) }, { name: "YouTube", href: "https://youtube.com/@yaadflex", icon: ( <svg viewBox="0 0 24 24" width={22} height={22} aria-hidden> <path fill="currentColor" d="M23.5 6.2a3.6 3.6 0 0 0-2.5-2.6C19.2 3 12 3 12 3s-7.2 0-9 .6A3.6 3.6 0 0 0 .5 6.2C0 8 0 12 0 12s0 4 .5 5.8a3.6 3.6 0 0 0 2.5 2.6c1.8.6 9 .6 9 .6s7.2 0 9-.6a3.6 3.6 0 0 0 2.5-2.6C24 16 24 12 24 12s0-4-.5-5.8ZM9.6 15.5V8.5L16 12l-6.4 3.5Z"/> </svg> ) }, { name: "Telegram", href: "https://t.me/yaadflex", icon: ( <svg viewBox="0 0 24 24" width={22} height={22} aria-hidden> <path fill="currentColor" d="M23.9 4.6 20.3 20c-.3 1.2-1 1.5-2 1l-5.6-4.1-2.7 2.6c-.3.3-.5.5-1 .5l.4-5.7L19 6.5c.4-.3-.1-.5-.6-.2L6.6 13.6.9 11.8c-1.2-.4-1.3-1.2.3-1.8L22.2 3.3c1-.4 1.9.2 1.7 1.3Z"/> </svg> ) } ];
+
+return ( <div style={{minHeight:"100vh",background:"#0a0c10",color:"#eaf2f8",display:"grid",placeItems:"center",padding:"28px"}}> <div style={{width:"100%",maxWidth:720}}> <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:18}}> <div style={{width:36,height:36,borderRadius:12,background: "radial-gradient(60% 60% at 30% 30%, #19ffa1 0%, transparent 60%),radial-gradient(60% 60% at 70% 70%, #0ecf76 0%, transparent 60%),linear-gradient(145deg,#0b5 0%, #083 60%, #062 100%)", boxShadow:"0 10px 30px rgba(16,208,122,.25)"}} /> <h1 style={{margin:0,fontSize:20,letterSpacing:.3}}>YaadFlex Global Vybz — Official Links</h1> </div>
+
+<p style={{color:"#a9bac9",marginTop:0,marginBottom:16}}>Follow our verified channels. Same handle everywhere for trust and easy discovery.</p>
+
+    <div style={{display:"grid",gap:12}}>
+      {links.map((l)=> (
+        <a key={l.name} href={l.href} target="_blank" rel="noopener" style={{
+          display:"flex",alignItems:"center",gap:12,padding:"14px 16px",borderRadius:14,
+          background:"linear-gradient(180deg,#0c1117,#0b1118)",border:"1px solid rgba(255,255,255,.08)",
+          color:"#eaf2f8"
+        }}>
+          <span style={{display:"grid",placeItems:"center",width:28,height:28,color:"#10d07a"}}>{l.icon}</span>
+          <span style={{fontWeight:600}}>{l.name}</span>
+          <span style={{marginLeft:"auto",opacity:.7,fontSize:14}}>{new URL(l.href).hostname}</span>
+        </a>
+      ))}
+    </div>
+
+    <div style={{marginTop:18,color:"#8fa3b5",fontSize:12}}>
+      Tip: Share <b>yaadflex.com/social</b> in your bios so people find the official links.
+    </div>
+  </div>
+</div>
+
+); }
+
+// ========================================== // src/App.tsx (or your router file) – add route // ========================================== // Example for Wouter/React Router. Adjust to your router. // import { Route } from "wouter";  // if using Wouter // import SocialHub from "./pages/SocialHub"; // <Route path="/social" component={SocialHub} />
+
+// ========================================== // server route (optional): redirect /links → /social // ========================================== // app.get("/links", (_req, res) => res.redirect("/social"));
+
