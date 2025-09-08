@@ -384,6 +384,14 @@ export default function Home() {
               <span className="text-sm text-muted-foreground" data-testid="user-welcome">
                 Welcome to the Global Economy
               </span>
+              <Button 
+                variant="outline" 
+                onClick={() => setLocation("/wallet")} 
+                className="bg-green-900/50 border-green-600 text-green-400 hover:bg-green-800/50"
+                data-testid="button-wallet"
+              >
+                💰 Wallet
+              </Button>
               <Button variant="outline" onClick={handleLogout} data-testid="button-logout">
                 Logout
               </Button>
