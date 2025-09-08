@@ -26,6 +26,7 @@ import CBRadioPage from "@/pages/cb-radio";
 import YaadFlexBankingPage from "@/pages/yaadflex-banking";
 import GalacticPortalPage from "@/pages/galactic-portal";
 import ProfessionalLanding from "@/pages/professional-landing";
+import ContactForm from "@/pages/contact-form";
 import { TranslatorDemoPage } from "@/pages/translator-demo";
 import { TimelessDashboardPage } from "@/pages/timeless-dashboard";
 import WorldEmblemPage from "@/pages/world-emblem";
@@ -52,18 +53,19 @@ function Router() {
       <Route path="/driver-registration" component={DriverRegistration} />
       <Route path="/sponsorship" component={SponsorshipPage} />
       <Route path="/emblem" component={WorldEmblemPage} />
-      
-      {/* Main landing page - always accessible */}
-      <Route path="/" component={ProfessionalLanding} />
+      <Route path="/contact" component={ContactForm} />
+      <Route path="/signup" component={ContactForm} />
       
       {/* Authentication-based routes */}
       {isLoading || !isAuthenticated ? (
         <>
+          <Route path="/" component={ProfessionalLanding} />
           <Route path="/old-landing" component={Landing} />
         </>
       ) : (
         <>
-          <Route path="/" component={Home} />
+          <Route path="/" component={ProfessionalLanding} />
+          <Route path="/home" component={Home} />
           <Route path="/tracking" component={RealTimeTracking} />
           <Route path="/cb-radio" component={CBRadio} />
           <Route path="/secure-browser" component={SecureBrowser} />

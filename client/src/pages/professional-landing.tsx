@@ -8,6 +8,65 @@ export default function ProfessionalLanding() {
     if (yearElement) {
       yearElement.textContent = new Date().getFullYear().toString();
     }
+
+    // Set meta tags for SEO and social sharing
+    document.title = "YaadFlex Global Vybz — One App. One World.";
+    
+    // Add meta description
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.name = 'description';
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.content = "YaadFlex Global Vybz — delivery, jobs, rides, and services. Built in Jamaica for the world. Workers keep up to 85%.";
+
+    // Add Open Graph tags
+    const ogTags = [
+      { property: 'og:title', content: 'YaadFlex Global Vybz' },
+      { property: 'og:description', content: 'One app. One world. Workers keep up to 85%.' },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' }
+    ];
+
+    ogTags.forEach(tag => {
+      let existingTag = document.querySelector(`meta[${tag.property ? 'property' : 'name'}="${tag.property || tag.name}"]`);
+      if (!existingTag) {
+        existingTag = document.createElement('meta');
+        if (tag.property) {
+          existingTag.property = tag.property;
+        } else {
+          existingTag.name = tag.name;
+        }
+        document.head.appendChild(existingTag);
+      }
+      existingTag.content = tag.content;
+    });
+
+    // Add PWA manifest link
+    let manifestLink = document.querySelector('link[rel="manifest"]');
+    if (!manifestLink) {
+      manifestLink = document.createElement('link');
+      manifestLink.rel = 'manifest';
+      manifestLink.href = '/manifest.webmanifest';
+      document.head.appendChild(manifestLink);
+    }
+
+    // Add theme color
+    let themeColor = document.querySelector('meta[name="theme-color"]');
+    if (!themeColor) {
+      themeColor = document.createElement('meta');
+      themeColor.name = 'theme-color';
+      themeColor.content = '#10d07a';
+      document.head.appendChild(themeColor);
+    }
+
+    // Register service worker for PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
   }, []);
 
   return (
@@ -95,6 +154,7 @@ export default function ProfessionalLanding() {
             <p className="sub">
               Launching delivery-first to get riders earning now — then expanding into the full
               YaadFlex super-app: rides, services, marketplace, payments, and instant AI translation.
+              Send money instantly. Pilot integrations with major JA banks (NCB, JN, Scotia) rolling out.
             </p>
             <div className="cta-row">
               <Link href="/links">
@@ -162,16 +222,27 @@ export default function ProfessionalLanding() {
             <p className="sub" style={{margin:'0 0 12px'}}>
               Get early access invites, rider onboarding, and partner perks.
             </p>
-            <form action="/signup" method="post" style={{display:'flex',gap:'10px',flexWrap:'wrap'}}>
-              <input name="email" type="email" placeholder="you@example.com" required
-                     style={{flex:'1',minWidth:'240px',background:'#0c1117',border:'1px solid rgba(255,255,255,.08)',color:'#fff',borderRadius:'12px',padding:'12px 14px',outline:'2px solid transparent',outlineOffset:'2px'}}
-                     data-testid="input-email" />
-              <button className="btn btn-primary" type="submit" data-testid="button-notify">Notify Me</button>
-            </form>
+            <div style={{display:'flex',gap:'10px',flexWrap:'wrap',marginBottom:'12px'}}>
+              <Link href="/signup">
+                <button className="btn btn-primary" data-testid="button-notify">Notify Me</button>
+              </Link>
+              <Link href="/contact">
+                <button className="btn" data-testid="button-contact-form">Contact Form</button>
+              </Link>
+            </div>
+            <p className="note">
+              📧 <a href="mailto:info@yaadflex.com" style={{color:'#10d07a'}}>info@yaadflex.com</a> | 
+              📞 1-800-YAADFLEX
+            </p>
           </div>
           <div className="feature">
             <h3>Partner spotlight</h3>
             <p className="note">Restaurants, stores, hotels & fleets — talk to us about pilots and city launches.</p>
+            <Link href="/contact">
+              <button className="btn" style={{marginTop:'8px',fontSize:'12px',padding:'8px 12px'}} data-testid="button-partner-contact">
+                Partner with Us
+              </button>
+            </Link>
           </div>
         </section>
       </main>
