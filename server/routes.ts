@@ -21,7 +21,19 @@ import {
   jobApplications,
   jobAssignments,
   vehicleListings,
-  emailCommunications
+  emailCommunications,
+  // Mobility & Immigration Suite Tables
+  hotels,
+  hotelRoles,
+  hotelShifts,
+  immigrationPrograms,
+  immigrationApplications,
+  legalProviders,
+  legalCases,
+  kycProfiles,
+  documentsVault,
+  travelItineraries,
+  escrowAccounts
 } from "@shared/schema";
 import { 
   insertTransactionSchema, 
@@ -1844,6 +1856,288 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching emails:", error);
       res.status(500).json({ message: "Failed to fetch emails" });
+    }
+  });
+
+  // =================================================================
+  // MOBILITY & IMMIGRATION SUITE - YaadFlex Global Workforce APIs
+  // =================================================================
+
+  // Hotel Workforce Management
+  app.post("/api/hotels", isAuthenticated, async (req, res) => {
+    try {
+      const [hotel] = await db.insert(hotels).values(req.body).returning();
+      res.json(hotel);
+    } catch (error) {
+      console.error("Error creating hotel:", error);
+      res.status(500).json({ error: "Failed to create hotel" });
+    }
+  });
+
+  app.get("/api/hotels", async (req, res) => {
+    try {
+      const { country, q } = req.query;
+      let conditions = [eq(hotels.isActive, true)];
+      
+      if (country) conditions.push(eq(hotels.country, country as string));
+      if (q) conditions.push(sql`${hotels.name} ILIKE ${'%' + q + '%'}`);
+      
+      const result = await db.select().from(hotels).where(and(...conditions));
+      res.json(result);
+    } catch (error) {
+      console.error("Error fetching hotels:", error);
+      res.status(500).json({ error: "Failed to fetch hotels" });
+    }
+  });
+
+  app.post("/api/hotels/:id/roles", isAuthenticated, async (req, res) => {
+    try {
+      const [role] = await db.insert(hotelRoles).values({
+        ...req.body,
+        hotelId: req.params.id
+      }).returning();
+      res.json(role);
+    } catch (error) {
+      console.error("Error creating hotel role:", error);
+      res.status(500).json({ error: "Failed to create hotel role" });
+    }
+  });
+
+  app.get("/api/hotels/:id/roles", async (req, res) => {
+    try {
+      const roles = await db.select().from(hotelRoles)
+        .where(and(eq(hotelRoles.hotelId, req.params.id), eq(hotelRoles.isActive, true)));
+      res.json(roles);
+    } catch (error) {
+      console.error("Error fetching hotel roles:", error);
+      res.status(500).json({ error: "Failed to fetch hotel roles" });
+    }
+  });
+
+  app.post("/api/hotels/:id/shifts", isAuthenticated, async (req, res) => {
+    try {
+      const [shift] = await db.insert(hotelShifts).values({
+        ...req.body,
+        hotelId: req.params.id
+      }).returning();
+      res.json(shift);
+    } catch (error) {
+      console.error("Error creating hotel shift:", error);
+      res.status(500).json({ error: "Failed to create hotel shift" });
+    }
+  });
+
+  app.get("/api/hotels/:id/shifts", async (req, res) => {
+    try {
+      const { status, from, to } = req.query;
+      let conditions = [eq(hotelShifts.hotelId, req.params.id)];
+      
+      if (status) conditions.push(eq(hotelShifts.status, status as string));
+      
+      const shifts = await db.select().from(hotelShifts)
+        .where(and(...conditions))
+        .orderBy(hotelShifts.start);
+      res.json(shifts);
+    } catch (error) {
+      console.error("Error fetching hotel shifts:", error);
+      res.status(500).json({ error: "Failed to fetch hotel shifts" });
+    }
+  });
+
+  // Immigration Programs & Applications
+  app.get("/api/immigration/programs", async (req, res) => {
+    try {
+      const { country, visaType } = req.query;
+      let conditions = [eq(immigrationPrograms.status, "active")];
+      
+      if (country) conditions.push(eq(immigrationPrograms.country, country as string));
+      if (visaType) conditions.push(eq(immigrationPrograms.visaType, visaType as string));
+      
+      const programs = await db.select().from(immigrationPrograms).where(and(...conditions));
+      res.json(programs);
+    } catch (error) {
+      console.error("Error fetching immigration programs:", error);
+      res.status(500).json({ error: "Failed to fetch immigration programs" });
+    }
+  });
+
+  app.post("/api/immigration/applications", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const [application] = await db.insert(immigrationApplications).values({
+        ...req.body,
+        workerId: userId
+      }).returning();
+      res.json(application);
+    } catch (error) {
+      console.error("Error creating immigration application:", error);
+      res.status(500).json({ error: "Failed to create immigration application" });
+    }
+  });
+
+  app.get("/api/immigration/applications/:id", isAuthenticated, async (req, res) => {
+    try {
+      const [application] = await db.select().from(immigrationApplications)
+        .where(eq(immigrationApplications.id, req.params.id));
+      
+      if (!application) return res.status(404).json({ error: "Application not found" });
+      res.json(application);
+    } catch (error) {
+      console.error("Error fetching immigration application:", error);
+      res.status(500).json({ error: "Failed to fetch immigration application" });
+    }
+  });
+
+  // Legal Services
+  app.get("/api/legal/providers", async (req, res) => {
+    try {
+      const { country, specialty } = req.query;
+      let conditions = [eq(legalProviders.isActive, true)];
+      
+      if (country) conditions.push(eq(legalProviders.country, country as string));
+      
+      const providers = await db.select().from(legalProviders)
+        .where(and(...conditions))
+        .orderBy(desc(legalProviders.rating));
+      res.json(providers);
+    } catch (error) {
+      console.error("Error fetching legal providers:", error);
+      res.status(500).json({ error: "Failed to fetch legal providers" });
+    }
+  });
+
+  app.post("/api/legal/cases", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const [legalCase] = await db.insert(legalCases).values({
+        ...req.body,
+        userId
+      }).returning();
+      res.json(legalCase);
+    } catch (error) {
+      console.error("Error creating legal case:", error);
+      res.status(500).json({ error: "Failed to create legal case" });
+    }
+  });
+
+  app.get("/api/legal/cases/:id", isAuthenticated, async (req, res) => {
+    try {
+      const [legalCase] = await db.select().from(legalCases)
+        .where(eq(legalCases.id, req.params.id));
+      
+      if (!legalCase) return res.status(404).json({ error: "Case not found" });
+      res.json(legalCase);
+    } catch (error) {
+      console.error("Error fetching legal case:", error);
+      res.status(500).json({ error: "Failed to fetch legal case" });
+    }
+  });
+
+  // Travel Booking
+  app.post("/api/travel/search", async (req, res) => {
+    try {
+      const { from, to, depart, return: returnDate, pax, cabin } = req.body;
+      
+      // Mock travel search results
+      const mockResults = {
+        offers: [
+          {
+            offerId: `offer_${Date.now()}`,
+            from,
+            to,
+            depart,
+            return: returnDate,
+            price: Math.floor(Math.random() * 500) + 200,
+            currency: "USD",
+            airline: "YaadFlex Airways",
+            cabin: cabin || "ECONOMY",
+            duration: "3h 45m"
+          }
+        ]
+      };
+      
+      res.json(mockResults);
+    } catch (error) {
+      console.error("Error searching travel:", error);
+      res.status(500).json({ error: "Failed to search travel options" });
+    }
+  });
+
+  app.post("/api/travel/book", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const [itinerary] = await db.insert(travelItineraries).values({
+        ...req.body,
+        userId,
+        pnr: `YF${Date.now()}`,
+        status: "booked"
+      }).returning();
+      res.json(itinerary);
+    } catch (error) {
+      console.error("Error booking travel:", error);
+      res.status(500).json({ error: "Failed to book travel" });
+    }
+  });
+
+  app.get("/api/travel/itineraries", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const itineraries = await db.select().from(travelItineraries)
+        .where(eq(travelItineraries.userId, userId))
+        .orderBy(desc(travelItineraries.ticketedAt));
+      res.json(itineraries);
+    } catch (error) {
+      console.error("Error fetching itineraries:", error);
+      res.status(500).json({ error: "Failed to fetch itineraries" });
+    }
+  });
+
+  // Document & KYC Management
+  app.post("/api/docs/upload", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const [document] = await db.insert(documentsVault).values({
+        ...req.body,
+        ownerId: userId
+      }).returning();
+      res.json(document);
+    } catch (error) {
+      console.error("Error uploading document:", error);
+      res.status(500).json({ error: "Failed to upload document" });
+    }
+  });
+
+  app.get("/api/kyc/profile", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const [profile] = await db.select().from(kycProfiles)
+        .where(eq(kycProfiles.userId, userId));
+      
+      if (!profile) {
+        // Create default KYC profile
+        const [newProfile] = await db.insert(kycProfiles).values({
+          userId,
+          tier: "tier1",
+          status: "pending"
+        }).returning();
+        return res.json(newProfile);
+      }
+      
+      res.json(profile);
+    } catch (error) {
+      console.error("Error fetching KYC profile:", error);
+      res.status(500).json({ error: "Failed to fetch KYC profile" });
+    }
+  });
+
+  // Escrow Management
+  app.post("/api/escrow/open", isAuthenticated, async (req, res) => {
+    try {
+      const [escrow] = await db.insert(escrowAccounts).values(req.body).returning();
+      res.json(escrow);
+    } catch (error) {
+      console.error("Error opening escrow:", error);
+      res.status(500).json({ error: "Failed to open escrow" });
     }
   });
 

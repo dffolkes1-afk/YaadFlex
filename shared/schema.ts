@@ -10,6 +10,8 @@ import {
   boolean,
   integer,
   date,
+  uuid,
+  numeric,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -487,6 +489,172 @@ export type VehicleListing = typeof vehicleListings.$inferSelect;
 export type InsertVehicleListing = typeof vehicleListings.$inferInsert;
 export type EmailCommunication = typeof emailCommunications.$inferSelect;
 export type InsertEmailCommunication = typeof emailCommunications.$inferInsert;
+
+// =================================================================
+// MOBILITY & IMMIGRATION SUITE - YaadFlex Global Workforce Platform
+// =================================================================
+
+// Hotels for workforce management
+export const hotels = pgTable("hotels", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name", { length: 200 }).notNull(),
+  email: varchar("email", { length: 200 }).notNull(),
+  phone: varchar("phone", { length: 50 }),
+  address: varchar("address", { length: 300 }),
+  country: varchar("country", { length: 2 }).notNull(),
+  starRating: integer("star_rating").default(3),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Hotel roles and positions
+export const hotelRoles = pgTable("hotel_roles", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  hotelId: varchar("hotel_id").notNull().references(() => hotels.id),
+  title: varchar("title", { length: 120 }).notNull(),
+  dept: varchar("dept", { length: 120 }),
+  minSkill: varchar("min_skill", { length: 40 }),
+  payRate: decimal("pay_rate", { precision: 10, scale: 2 }),
+  payType: varchar("pay_type", { length: 20 }),
+  notes: varchar("notes", { length: 500 }),
+  isActive: boolean("is_active").default(true),
+});
+
+// Hotel shifts scheduling
+export const hotelShifts = pgTable("hotel_shifts", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  hotelId: varchar("hotel_id").notNull().references(() => hotels.id),
+  roleId: varchar("role_id").notNull().references(() => hotelRoles.id),
+  start: timestamp("start").notNull(),
+  end: timestamp("end").notNull(),
+  slots: integer("slots").default(1),
+  notes: varchar("notes", { length: 500 }),
+  status: varchar("status", { length: 20 }).default("open"),
+});
+
+// Immigration programs (visas, work permits)
+export const immigrationPrograms = pgTable("immigration_programs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name", { length: 200 }).notNull(),
+  country: varchar("country", { length: 2 }).notNull(),
+  visaType: varchar("visa_type", { length: 60 }).notNull(),
+  seasonal: boolean("seasonal").default(false),
+  requirements: jsonb("requirements"), // string[]
+  documentsRequired: jsonb("documents_required"), // string[]
+  feeUsd: decimal("fee_usd", { precision: 10, scale: 2 }),
+  status: varchar("status", { length: 20 }).default("active"),
+});
+
+// Immigration applications
+export const immigrationApplications = pgTable("immigration_applications", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  programId: varchar("program_id").notNull().references(() => immigrationPrograms.id),
+  workerId: varchar("worker_id").notNull(),
+  status: varchar("status", { length: 20 }).default("pending"),
+  submittedAt: timestamp("submitted_at").defaultNow(),
+  decisionAt: timestamp("decision_at"),
+  assignedLawyerId: varchar("assigned_lawyer_id"),
+  notes: varchar("notes", { length: 500 }),
+});
+
+// Legal service providers
+export const legalProviders = pgTable("legal_providers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  firmName: varchar("firm_name", { length: 200 }).notNull(),
+  contactEmail: varchar("contact_email", { length: 200 }).notNull(),
+  barId: varchar("bar_id", { length: 120 }),
+  country: varchar("country", { length: 2 }).notNull(),
+  specialties: jsonb("specialties"), // string[]
+  rating: decimal("rating", { precision: 2, scale: 1 }).default("0"),
+  isActive: boolean("is_active").default(true),
+});
+
+// Legal cases
+export const legalCases = pgTable("legal_cases", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull(),
+  lawyerId: varchar("lawyer_id").notNull().references(() => legalProviders.id),
+  type: varchar("type", { length: 60 }).notNull(),
+  status: varchar("status", { length: 20 }).default("open"),
+  openedAt: timestamp("opened_at").defaultNow(),
+  closedAt: timestamp("closed_at"),
+  documents: jsonb("documents"), // string[] of doc IDs
+  messagesThreadId: varchar("messages_thread_id"),
+});
+
+// KYC profiles for compliance
+export const kycProfiles = pgTable("kyc_profiles", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().unique(),
+  tier: varchar("tier", { length: 20 }).default("tier1"),
+  status: varchar("status", { length: 20 }).default("pending"),
+  pepScreen: boolean("pep_screen").default(false),
+  sanctionsHit: boolean("sanctions_hit").default(false),
+  lastReviewedAt: timestamp("last_reviewed_at"),
+});
+
+// Document vault
+export const documentsVault = pgTable("documents_vault", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  ownerId: varchar("owner_id").notNull(),
+  type: varchar("type", { length: 60 }).notNull(),
+  path: varchar("path", { length: 400 }).notNull(),
+  hash: varchar("hash", { length: 128 }),
+  issuedBy: varchar("issued_by", { length: 200 }),
+  expiresAt: timestamp("expires_at"),
+  verified: boolean("verified").default(false),
+  notes: varchar("notes", { length: 500 }),
+});
+
+// Travel itineraries
+export const travelItineraries = pgTable("travel_itineraries", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull(),
+  pnr: varchar("pnr", { length: 12 }),
+  segments: jsonb("segments"),
+  price: decimal("price", { precision: 12, scale: 2 }),
+  currency: varchar("currency", { length: 3 }).default("USD"),
+  status: varchar("status", { length: 20 }).default("hold"),
+  provider: varchar("provider", { length: 60 }),
+  ticketedAt: timestamp("ticketed_at"),
+});
+
+// Escrow accounts for secure payments
+export const escrowAccounts = pgTable("escrow_accounts", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  orderId: varchar("order_id").notNull(),
+  type: varchar("type", { length: 40 }).notNull(),
+  amount: decimal("amount", { precision: 12, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).default("USD"),
+  status: varchar("status", { length: 20 }).default("open"),
+  releasedAt: timestamp("released_at"),
+  refundedAt: timestamp("refunded_at"),
+});
+
+// Mobility & Immigration Suite Types
+export type Hotel = typeof hotels.$inferSelect;
+export type InsertHotel = typeof hotels.$inferInsert;
+export type HotelRole = typeof hotelRoles.$inferSelect;
+export type InsertHotelRole = typeof hotelRoles.$inferInsert;
+export type HotelShift = typeof hotelShifts.$inferSelect;
+export type InsertHotelShift = typeof hotelShifts.$inferInsert;
+export type ImmigrationProgram = typeof immigrationPrograms.$inferSelect;
+export type InsertImmigrationProgram = typeof immigrationPrograms.$inferInsert;
+export type ImmigrationApplication = typeof immigrationApplications.$inferSelect;
+export type InsertImmigrationApplication = typeof immigrationApplications.$inferInsert;
+export type LegalProvider = typeof legalProviders.$inferSelect;
+export type InsertLegalProvider = typeof legalProviders.$inferInsert;
+export type LegalCase = typeof legalCases.$inferSelect;
+export type InsertLegalCase = typeof legalCases.$inferInsert;
+export type KycProfile = typeof kycProfiles.$inferSelect;
+export type InsertKycProfile = typeof kycProfiles.$inferInsert;
+export type DocumentVault = typeof documentsVault.$inferSelect;
+export type InsertDocumentVault = typeof documentsVault.$inferInsert;
+export type TravelItinerary = typeof travelItineraries.$inferSelect;
+export type InsertTravelItinerary = typeof travelItineraries.$inferInsert;
+export type EscrowAccount = typeof escrowAccounts.$inferSelect;
+export type InsertEscrowAccount = typeof escrowAccounts.$inferInsert;
 
 // WORKFORCE MANAGEMENT SYSTEM - YaadFlex Job Creation Platform
 
