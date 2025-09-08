@@ -102,6 +102,11 @@ export default function ProfessionalLanding() {
               </Link>
               <a className="btn" href="mailto:info@yaadflex.com" data-testid="button-partner">Partner with Us</a>
             </div>
+            <div className="cta-row" style={{marginTop:'12px'}}>
+              <a className="btn btn-primary" href="/signup" data-testid="button-notify-me">Notify Me</a>
+              <a className="btn" href="https://t.me/yaadflex" target="_blank" rel="noopener" data-testid="button-join-telegram">Join Telegram</a>
+              <a className="btn" href="https://wa.me/1876XXXXXXX" target="_blank" rel="noopener" data-testid="button-whatsapp">WhatsApp Us</a>
+            </div>
             <p className="note" style={{marginTop:'14px'}}>Pilot features with major JA partners. Phased rollout by city.</p>
           </div>
 
