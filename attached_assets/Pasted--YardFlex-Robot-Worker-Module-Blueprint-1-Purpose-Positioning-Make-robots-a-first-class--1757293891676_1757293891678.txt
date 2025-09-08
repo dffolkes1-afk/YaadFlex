@@ -1,0 +1,247 @@
+🤖 YardFlex – Robot Worker Module (Blueprint)
+
+1) Purpose & Positioning
+
+Make robots a first-class “worker type” inside YardFlex, alongside drivers, couriers, and service pros. Robots can perform safe, routine tasks (carry, deliver, patrol-without-force, assist) and transact via YardFlex Coin (YFX, pegged 1:1 to KWD).
+
+Goals
+
+Extend YardFlex’s ride/control system to ground robots and drones.
+
+Focus on safety, privacy, and human-in-the-loop.
+
+Monetize robots via jobs paid in YFX, with local currency display.
+
+
+
+---
+
+2) Scope
+
+Robot Types (initial)
+
+Delivery bot (indoor/outdoor wheels)
+
+Drone (string-lowered parcel handoff; no landing required)
+
+Utility bot (warehouse/office porter)
+
+Patrol assistant (non-confrontational, lights/sound only)
+
+
+Task Families
+
+Pickup/Dropoff, Queue deliveries, Line-haul between hubs
+
+Escort/guide customers in buildings
+
+Inventory shuttle (warehouse aisles)
+
+Area sweep/check (anomaly alerts → human review)
+
+
+
+---
+
+3) Safety & Privacy Baseline (Non‑negotiable)
+
+Defensive-only behavior; no physical force, no weapons.
+
+Human-in-the-loop for any escalation (guard/dispatcher confirms).
+
+Edge processing for video/sensors; default no cloud video.
+
+No biometric identification (no face recognition or identity storage). Presence, count, and motion only.
+
+Anonymization overlays by default (blur faces/plates in any snapshots).
+
+Geofences & time windows; auto-disarm outside permitted zones.
+
+Fail-safe stops: E-stop, low-battery return-to-base, loss-of-link hover/stop.
+
+
+
+---
+
+4) UX Surfaces
+
+Home → “Robots” card (feature-flagged): shows nearby robot workers and status.
+
+Job Create (Robot)
+
+From, To, Payload (kg/litres), Urgency, Access notes
+
+Estimated cost: yfx_amount + local equivalent
+
+
+Live Mission View
+
+Map trail, ETA, battery %, payload state
+
+Actions: Pause, Return, Hand‑off call
+
+
+Guardian Mode (Patrol Assistant)
+
+Toggles: Zone awareness, Human review required, No face storage
+
+Sensitivity slider, Geofence presets
+
+Output: “3 movement events near Warehouse A (22:14–22:20), snapshot blurred; awaiting review.”
+
+
+Operator Console (internal)
+
+Fleet list, health, last heartbeat, firmware, battery
+
+Geofence editor, schedules, alert inbox
+
+
+
+---
+
+5) Economy & Pricing
+
+Ledger base: All robot jobs priced/settled in YFX (pegged to KWD); show JMD/USD equivalents.
+
+Split example: 85% to robot owner/operator, 15% YardFlex platform fee.
+
+Dynamic pricing: distance × payload × urgency × air/ground mode.
+
+Subscriptions (optional): business plans for volume.
+
+
+
+---
+
+6) Data Model (additive to existing)
+
+robots
+  id, owner_user_id, type("ground"|"drone"|"utility"|"patrol"),
+  make, model, serial, firmware_version,
+  status("idle"|"mission"|"charging"|"error"),
+  battery_pct, last_heartbeat_ts,
+  capabilities(jsonb: {max_payload_kg, range_km, indoor, outdoor}),
+  geofence_id, created_at
+
+robot_jobs
+  id, robot_id, customer_id, job_type("delivery"|"patrol"|"transfer"),
+  pickup_text, dropoff_text, payload_kg,
+  quote_yfx, fx_kwd_to_local, local_currency,
+  status("created"|"assigned"|"in_flight"|"arrived"|"completed"|"canceled"),
+  eta_seconds, battery_start_pct, battery_end_pct,
+  audit(jsonb: events, anomalies, human_actions),
+  created_at, completed_at
+
+robot_alerts
+  id, robot_id, kind("anomaly"|"geofence"|"link_lost"),
+  summary_text, snapshot_uri (blurred),
+  requires_human_review boolean, resolved boolean,
+  created_at, resolved_at, resolved_by
+
+
+---
+
+7) APIs
+
+POST /api/robots/register         {type, capabilities} -> {robot_id}
+GET  /api/robots/fleet            -> [{id, status, battery_pct, ...}]
+POST /api/robots/quote            {from, to, payload_kg, mode} -> {yfx, local, eta}
+POST /api/robots/job/create       {robot_id?, from, to, payload_kg} -> {job_id}
+POST /api/robots/job/assign       {job_id, robot_id}
+POST /api/robots/job/telemetry    {job_id, battery_pct, lat, lng, state}
+POST /api/robots/job/complete     {job_id}
+POST /api/robots/guardian/config  {robot_id, flags, sensitivity, geofence_id}
+GET  /api/robots/alerts           -> [{id, kind, summary, requires_human_review}]
+POST /api/robots/alerts/:id/resolve {decision, note}
+
+Rules
+
+All amounts stored in YFX, with FX snapshot per tx.
+
+Alerts must be ack’d by a human before any automated action.
+
+Telemetry rate-limited; store summaries + last-known path.
+
+
+
+---
+
+8) Feature Flags (seed)
+
+{"key":"robots","enabled":false,"label":"Robots","blurb":"Autonomous deliveries & patrol assistants"}
+{"key":"robots_patrol","enabled":false,"label":"Patrol Assistant","blurb":"Defensive-only, privacy-first"}
+{"key":"robots_delivery","enabled":false,"label":"Robot Delivery","blurb":"Ground & drone payloads"}
+
+
+---
+
+9) Compliance & Ethics
+
+Follow local aviation rules (JCAA) for drones; flight corridors, weight, VLOS/BVLOS.
+
+Workplace & public-space privacy: signage, consent, strong data governance.
+
+No biometric IDs; aggregate presence/motion only.
+
+Public transparency page: what sensors do, what’s stored, retention periods.
+
+
+
+---
+
+10) MVP Plan (4–6 weeks)
+
+1. Flags + UI stubs: Robots card, Quote flow, Live Mission, Guardian toggles.
+
+
+2. Ground bot simulator: mock telemetry path + battery drain.
+
+
+3. Quote engine: YFX pricing + FX display; split to operator/platform.
+
+
+4. Alert pipeline: anomaly events → operator inbox → human review.
+
+
+5. Drone screen: reuse existing Drone Delivery UI; hook to the same job model.
+
+
+
+Exit Criteria
+
+Create → Assign → Telemetry → Complete job works end-to-end in staging.
+
+Guardian Mode emits anonymized alerts; human review required.
+
+Wallet shows job earnings in YFX + local.
+
+
+
+---
+
+11) Future (post-MVP)
+
+Real hardware adapters (ROS, MAVLink, vendor SDKs)
+
+Charging/return-to-base orchestration
+
+Multi-robot dispatch (best robot selection)
+
+Business portals for bulk jobs & SLAs
+
+Insurance integration per mission
+
+
+
+---
+
+12) Visual Notes
+
+Keep the galactic Jamaican theme; robots appear as glowing icons on maps.
+
+Guardian Mode uses green (safe), amber (review), red (stop) signals.
+
+Animations: subtle pulses, radar rings, holographic buttons.
+
+
