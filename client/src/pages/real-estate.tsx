@@ -257,37 +257,69 @@ export default function RealEstatePage() {
                   </div>
                   <div>
                     <Label>Property Type</Label>
-                    <Select 
-                      value={searchFilters.propertyType}
-                      onValueChange={(value) => setSearchFilters(prev => ({...prev, propertyType: value}))}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Any Type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="">Any Type</SelectItem>
-                        {propertyTypes.map((type) => (
-                          <SelectItem key={type.id} value={type.id}>{type.name}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <div className="flex gap-2 flex-wrap">
+                      <Button 
+                        variant={searchFilters.propertyType === 'house' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSearchFilters(prev => ({...prev, propertyType: 'house'}))}
+                      >
+                        🏠 House
+                      </Button>
+                      <Button 
+                        variant={searchFilters.propertyType === 'apartment' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSearchFilters(prev => ({...prev, propertyType: 'apartment'}))}
+                      >
+                        🏢 Apartment
+                      </Button>
+                      <Button 
+                        variant={searchFilters.propertyType === 'condo' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSearchFilters(prev => ({...prev, propertyType: 'condo'}))}
+                      >
+                        🏘️ Condo
+                      </Button>
+                      <Button 
+                        variant={searchFilters.propertyType === '' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSearchFilters(prev => ({...prev, propertyType: ''}))}
+                      >
+                        All Types
+                      </Button>
+                    </div>
                   </div>
                   <div>
                     <Label>Parish</Label>
-                    <Select 
-                      value={searchFilters.parish}
-                      onValueChange={(value) => setSearchFilters(prev => ({...prev, parish: value}))}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="All Parishes" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="">All Parishes</SelectItem>
-                        {jamaicaParishes.map((parish) => (
-                          <SelectItem key={parish} value={parish}>{parish}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <div className="flex gap-2 flex-wrap">
+                      <Button 
+                        variant={searchFilters.parish === 'Kingston' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSearchFilters(prev => ({...prev, parish: 'Kingston'}))}
+                      >
+                        Kingston
+                      </Button>
+                      <Button 
+                        variant={searchFilters.parish === 'St. Andrew' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSearchFilters(prev => ({...prev, parish: 'St. Andrew'}))}
+                      >
+                        St. Andrew
+                      </Button>
+                      <Button 
+                        variant={searchFilters.parish === 'St. Catherine' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSearchFilters(prev => ({...prev, parish: 'St. Catherine'}))}
+                      >
+                        St. Catherine
+                      </Button>
+                      <Button 
+                        variant={searchFilters.parish === '' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSearchFilters(prev => ({...prev, parish: ''}))}
+                      >
+                        All Parishes
+                      </Button>
+                    </div>
                   </div>
                   <div>
                     <Label>Bedrooms</Label>

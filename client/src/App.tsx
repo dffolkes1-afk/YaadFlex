@@ -31,10 +31,19 @@ function Router() {
 
   return (
     <Switch>
+      {/* Public routes - accessible to everyone */}
+      <Route path="/real-estate" component={RealEstatePage} />
+      <Route path="/car-marketplace" component={CarMarketplacePage} />
+      <Route path="/ride-booking" component={RideBooking} />
+      <Route path="/business-registration" component={BusinessRegistration} />
+      <Route path="/driver-registration" component={DriverRegistration} />
+      <Route path="/sponsorship" component={SponsorshipPage} />
+      <Route path="/emblem" component={WorldEmblemPage} />
+      
+      {/* Authentication-based routes */}
       {isLoading || !isAuthenticated ? (
         <>
           <Route path="/" component={Landing} />
-          <Route path="/emblem" component={WorldEmblemPage} />
         </>
       ) : (
         <>
@@ -45,17 +54,10 @@ function Router() {
           <Route path="/social-commerce" component={SocialCommerce} />
           <Route path="/rental-empire" component={RentalEmpire} />
           <Route path="/wallet" component={Wallet} />
-          <Route path="/ride-booking" component={RideBooking} />
-          <Route path="/business-registration" component={BusinessRegistration} />
-          <Route path="/driver-registration" component={DriverRegistration} />
-          <Route path="/sponsorship" component={SponsorshipPage} />
-          <Route path="/real-estate" component={RealEstatePage} />
-          <Route path="/car-marketplace" component={CarMarketplacePage} />
           <Route path="/translator" component={TranslatorDemoPage} />
           <Route path="/timeless-core" component={TimelessDashboardPage} />
           <Route path="/workforce" component={WorkforceDashboard} />
           <Route path="/post-job" component={JobPosting} />
-          <Route path="/emblem" component={WorldEmblemPage} />
           <Route path="/duo-world" component={DuoWonTheWorld3D} />
         </>
       )}
