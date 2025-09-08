@@ -42,6 +42,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Timeless Upgrade System API
   const timelessApi = (await import('./timeless-api')).default;
   app.use('/api', timelessApi);
+  
+  // TimelessCore Advanced API
+  const { timelessCoreRouter } = await import('./timeless-core-api');
+  app.use('/api/timeless-core', timelessCoreRouter);
 
   // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {

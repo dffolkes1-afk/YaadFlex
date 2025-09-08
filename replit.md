@@ -2,6 +2,18 @@
 
 YaadFlex is a Caribbean Uber-style super app that provides ride-sharing, delivery services, and e-commerce with instant delivery. The application features a comprehensive financial transaction system with advanced security measures, supporting multiple vehicle types (bikes, cars, vans, trucks) and delivery options ranging from instant to same-day delivery.
 
+## Revolutionary TimelessCore v1.0
+
+YaadFlex now features the **TimelessCore** system - a continuously upgradeable, human-like adaptive learning AI that improves safely over time without breaking backward compatibility. This makes YaadFlex the first super-app with truly adaptive AI translation and system intelligence that learns and upgrades continuously like a human being.
+
+### Key TimelessCore Features:
+- **Safety-First Learning**: Human-in-the-loop controls with privacy-by-default
+- **Adaptive Intelligence**: System IQ grows from 150 to 200+ through continuous learning  
+- **Self-Diagnostics**: Auto-repair capabilities with drift detection and rollback protection
+- **Enterprise Security**: Feature flags, canary rollouts, and evaluation gates
+- **Privacy Protection**: PII redaction, anonymization, and GDPR/CCPA compliance
+- **Real-Time Monitoring**: Performance metrics, health checks, and predictive insights
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.

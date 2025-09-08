@@ -14,6 +14,7 @@ import SocialCommerce from "@/pages/social-commerce";
 import RentalEmpire from "@/pages/rental-empire";
 import Wallet from "@/pages/wallet";
 import { TranslatorDemoPage } from "@/pages/translator-demo";
+import { TimelessDashboardPage } from "@/pages/timeless-dashboard";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -32,6 +33,7 @@ function Router() {
           <Route path="/rental-empire" component={RentalEmpire} />
           <Route path="/wallet" component={Wallet} />
           <Route path="/translator" component={TranslatorDemoPage} />
+          <Route path="/timeless-core" component={TimelessDashboardPage} />
         </>
       )}
       <Route component={NotFound} />
