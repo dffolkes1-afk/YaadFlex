@@ -1258,13 +1258,13 @@ export default function Home() {
                   🏠 YARDFLEX RENTAL EMPIRE! 🚗
                 </div>
                 <div className="text-2xl md:text-6xl font-black text-green-300 animate-bounce leading-tight">
-                  CONTROLS EVERYTHING IN JAMAICA & CANADA!
+                  PEER-TO-PEER TOOL SHARING MARKETPLACE!
                 </div>
                 <div className="text-xl md:text-4xl font-black text-white animate-pulse">
-                  HOUSES • CARS • STORES • APARTMENTS • POOLS!
+                  TOOLS • EQUIPMENT • ANYTHING YOU'RE NOT USING!
                 </div>
                 <div className="text-lg md:text-3xl font-black text-blue-400 animate-bounce">
-                  ⚡ INSTANT AVAILABILITY - EMPTY = AVAILABLE NOW! ⚡
+                  🔧 IDLE TOOLS = INSTANT INCOME! 🔧
                 </div>
               </CardTitle>
             </CardHeader>
@@ -1272,14 +1272,14 @@ export default function Home() {
             <CardContent className="relative z-10 space-y-6">
               <div className="bg-gradient-to-r from-green-600/50 to-blue-600/50 border-2 border-green-400/70 rounded-2xl p-8 text-center shadow-2xl shadow-green-500/30">
                 <h3 className="text-2xl md:text-5xl font-black text-green-300 mb-6 animate-pulse leading-tight">
-                  🎯 THE MOMENT SOMETHING BECOMES EMPTY! 🎯
+                  🔧 TURN YOUR UNUSED TOOLS INTO MONEY! 🔧
                 </h3>
                 <p className="text-white text-lg md:text-2xl mb-8 font-bold leading-relaxed">
-                  <strong className="text-yellow-400">HOUSE EMPTY?</strong> → Instantly available on YardFlex!<br/>
-                  <strong className="text-blue-400">STORE VACANT?</strong> → Immediately listed for rental!<br/>
-                  <strong className="text-green-400">CAR AVAILABLE?</strong> → Right away on the platform!<br/>
-                  <strong className="text-purple-400">POOL READY?</strong> → Boom! Available to rent!<br/>
-                  <strong className="text-red-400 text-xl md:text-3xl animate-bounce">🏠 ALL RENTALS IN ONE PLACE! 🚗</strong>
+                  <strong className="text-yellow-400">POWER TOOLS SITTING IDLE?</strong> → List them for rent!<br/>
+                  <strong className="text-blue-400">EQUIPMENT COLLECTING DUST?</strong> → Let neighbors pay to use!<br/>
+                  <strong className="text-green-400">TOOLS YOU RARELY USE?</strong> → Turn into steady income!<br/>
+                  <strong className="text-purple-400">NEED TOOLS FOR PROJECT?</strong> → Rent from locals nearby!<br/>
+                  <strong className="text-red-400 text-xl md:text-3xl animate-bounce">🔧 COMMUNITY TOOL SHARING ECONOMY! 🔧</strong>
                 </p>
                 
                 {/* SMART CAR CONTROL HIGHLIGHT */}
@@ -1292,31 +1292,31 @@ export default function Home() {
                   </div>
                 </div>
                 
-                {/* Rental Categories Grid */}
+                {/* Tool & Equipment Categories Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-                  <div className="bg-yellow-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-yellow-400/70">
-                    <div className="text-4xl md:text-6xl mb-2 animate-bounce">🏠</div>
-                    <div className="text-lg md:text-xl font-black text-yellow-300">HOUSES</div>
+                  <div className="bg-orange-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-orange-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-bounce">🔨</div>
+                    <div className="text-lg md:text-xl font-black text-orange-300">POWER TOOLS</div>
                   </div>
                   <div className="bg-blue-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-blue-400/70">
-                    <div className="text-4xl md:text-6xl mb-2 animate-pulse">🚗</div>
-                    <div className="text-lg md:text-xl font-black text-blue-300">CARS</div>
-                  </div>
-                  <div className="bg-purple-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-purple-400/70">
-                    <div className="text-4xl md:text-6xl mb-2 animate-bounce delay-200">🏢</div>
-                    <div className="text-lg md:text-xl font-black text-purple-300">STORES</div>
+                    <div className="text-4xl md:text-6xl mb-2 animate-pulse">⚙️</div>
+                    <div className="text-lg md:text-xl font-black text-blue-300">EQUIPMENT</div>
                   </div>
                   <div className="bg-green-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-green-400/70">
-                    <div className="text-4xl md:text-6xl mb-2 animate-pulse delay-300">🏠</div>
-                    <div className="text-lg md:text-xl font-black text-green-300">APARTMENTS</div>
+                    <div className="text-4xl md:text-6xl mb-2 animate-bounce delay-200">🚗</div>
+                    <div className="text-lg md:text-xl font-black text-green-300">VEHICLES</div>
+                  </div>
+                  <div className="bg-purple-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-purple-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-pulse delay-300">🏡</div>
+                    <div className="text-lg md:text-xl font-black text-purple-300">HOME & GARDEN</div>
                   </div>
                   <div className="bg-cyan-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-cyan-400/70">
-                    <div className="text-4xl md:text-6xl mb-2 animate-bounce delay-400">🏊‍♀️</div>
-                    <div className="text-lg md:text-xl font-black text-cyan-300">POOLS</div>
+                    <div className="text-4xl md:text-6xl mb-2 animate-bounce delay-400">🎵</div>
+                    <div className="text-lg md:text-xl font-black text-cyan-300">SOUND SYSTEMS</div>
                   </div>
-                  <div className="bg-orange-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-orange-400/70">
+                  <div className="bg-yellow-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-yellow-400/70">
                     <div className="text-4xl md:text-6xl mb-2 animate-pulse delay-500">🔧</div>
-                    <div className="text-lg md:text-xl font-black text-orange-300">EVERYTHING</div>
+                    <div className="text-lg md:text-xl font-black text-yellow-300">ANYTHING!</div>
                   </div>
                 </div>
                 
