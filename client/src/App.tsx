@@ -24,6 +24,7 @@ import SimpleLinksPage from "@/pages/simple-links";
 import ContactlessSystemPage from "@/pages/contactless-system";
 import CBRadioPage from "@/pages/cb-radio";
 import YaadFlexBankingPage from "@/pages/yaadflex-banking";
+import GalacticPortalPage from "@/pages/galactic-portal";
 import { TranslatorDemoPage } from "@/pages/translator-demo";
 import { TimelessDashboardPage } from "@/pages/timeless-dashboard";
 import WorldEmblemPage from "@/pages/world-emblem";
@@ -37,6 +38,7 @@ function Router() {
   return (
     <Switch>
       {/* Public routes - accessible to everyone */}
+      <Route path="/portal" component={GalacticPortalPage} />
       <Route path="/real-estate" component={RealEstatePage} />
       <Route path="/car-marketplace" component={CarMarketplacePage} />
       <Route path="/premium-storefront" component={PremiumStorefrontPage} />
