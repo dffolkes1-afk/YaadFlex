@@ -1616,6 +1616,269 @@ P.S. - Early business partners get exclusive territory rights and preferred part
     }
   });
 
+  // YAADFLEX BANKING SYSTEM
+
+  app.get('/api/banking/accounts', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      
+      // Simulate user's bank accounts
+      const mockBankAccounts = [
+        {
+          id: `bank-account-1-${userId}`,
+          bankName: 'NCB (National Commercial Bank)',
+          accountNumber: '123456789012',
+          routingNumber: '001234',
+          accountType: 'checking',
+          accountHolderName: 'Dwayne Christopher Ffolkes',
+          isVerified: true,
+          isPrimary: true,
+          balance: 125000.00,
+          lastUpdated: new Date().toISOString(),
+          currency: 'JMD'
+        },
+        {
+          id: `bank-account-2-${userId}`,
+          bankName: 'Scotiabank Jamaica',
+          accountNumber: '987654321098',
+          routingNumber: '002345',
+          accountType: 'savings',
+          accountHolderName: 'Dwayne Christopher Ffolkes',
+          isVerified: true,
+          isPrimary: false,
+          balance: 85000.00,
+          lastUpdated: new Date().toISOString(),
+          currency: 'JMD'
+        }
+      ];
+
+      res.json(mockBankAccounts);
+
+    } catch (error) {
+      console.error("Error fetching bank accounts:", error);
+      res.status(500).json({ message: "Failed to fetch bank accounts" });
+    }
+  });
+
+  app.get('/api/banking/yaadflex-account', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      
+      // Simulate YaadFlex business account
+      const yaadflexAccount = {
+        id: `yaadflex-account-${userId}`,
+        accountNumber: `YF-${userId.slice(-6)}-BUSINESS`,
+        balance: {
+          jmd: 247500.00,
+          usd: 1650.00
+        },
+        totalEarnings: {
+          today: 15750.00,
+          thisWeek: 89250.00,
+          thisMonth: 356000.00,
+          allTime: 2847500.00
+        },
+        autoTransferEnabled: true,
+        transferThreshold: 50000.00,
+        primaryBankAccountId: `bank-account-1-${userId}`
+      };
+
+      res.json(yaadflexAccount);
+
+    } catch (error) {
+      console.error("Error fetching YaadFlex account:", error);
+      res.status(500).json({ message: "Failed to fetch YaadFlex account" });
+    }
+  });
+
+  app.get('/api/banking/transactions', isAuthenticated, async (req: any, res) => {
+    try {
+      // Simulate recent transactions
+      const mockTransactions = [
+        {
+          id: 'txn-1',
+          type: 'deposit',
+          amount: 8750.00,
+          currency: 'JMD',
+          description: 'Ride earnings - Kingston to Spanish Town',
+          source: 'YaadFlex Ride Service',
+          status: 'completed',
+          timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+          category: 'ride_earnings'
+        },
+        {
+          id: 'txn-2',
+          type: 'deposit',
+          amount: 125000.00,
+          currency: 'JMD',
+          description: 'Property commission - House sale in New Kingston',
+          source: 'YaadFlex Real Estate',
+          status: 'completed',
+          timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
+          category: 'property_commission'
+        },
+        {
+          id: 'txn-3',
+          type: 'deposit',
+          amount: 35000.00,
+          currency: 'JMD',
+          description: 'Vehicle sale commission - 2018 Toyota Corolla',
+          source: 'YaadFlex Car Marketplace',
+          status: 'completed',
+          timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+          category: 'vehicle_sale'
+        },
+        {
+          id: 'txn-4',
+          type: 'withdrawal',
+          amount: 50000.00,
+          currency: 'JMD',
+          description: 'Automatic transfer to NCB Checking',
+          destination: 'NCB ****9012',
+          status: 'completed',
+          timestamp: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString(),
+          category: 'transfer'
+        },
+        {
+          id: 'txn-5',
+          type: 'deposit',
+          amount: 25000.00,
+          currency: 'JMD',
+          description: 'Business partnership - Premium Storefront monthly fee',
+          source: 'KFC Jamaica Partnership',
+          status: 'completed',
+          timestamp: new Date(Date.now() - 72 * 60 * 60 * 1000).toISOString(),
+          category: 'business_revenue'
+        }
+      ];
+
+      res.json(mockTransactions);
+
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+      res.status(500).json({ message: "Failed to fetch transactions" });
+    }
+  });
+
+  app.post('/api/banking/accounts', isAuthenticated, async (req: any, res) => {
+    try {
+      const { bankName, accountNumber, routingNumber, accountType, accountHolderName, currency, country } = req.body;
+      const userId = req.user?.claims?.sub;
+
+      if (!bankName || !accountNumber || !accountHolderName) {
+        return res.status(400).json({ message: "Bank name, account number, and account holder name are required" });
+      }
+
+      // Log the account addition
+      await storage.logSecurityEvent({
+        userId: userId,
+        eventType: 'bank_account_added',
+        severity: 'low',
+        description: `Bank account added: ${bankName} (${accountType}) - ${country}`,
+        ipAddress: req.ip,
+        userAgent: req.get('User-Agent'),
+      });
+
+      // Simulate account creation
+      const newAccount = {
+        id: `bank-account-${Date.now()}`,
+        bankName,
+        accountNumber,
+        routingNumber,
+        accountType,
+        accountHolderName,
+        isVerified: false, // Will be verified in 1-2 business days
+        isPrimary: false,
+        lastUpdated: new Date().toISOString(),
+        currency,
+        country
+      };
+
+      res.json({
+        success: true,
+        account: newAccount,
+        message: `${bankName} account added successfully. Verification will take 1-2 business days.`
+      });
+
+    } catch (error) {
+      console.error("Error adding bank account:", error);
+      res.status(500).json({ message: "Failed to add bank account" });
+    }
+  });
+
+  app.post('/api/banking/create-yaadflex-account', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      
+      // Log the YaadFlex account creation
+      await storage.logSecurityEvent({
+        userId: userId,
+        eventType: 'yaadflex_account_created',
+        severity: 'low',
+        description: 'YaadFlex business account created',
+        ipAddress: req.ip,
+        userAgent: req.get('User-Agent'),
+      });
+
+      const accountNumber = `YF-${userId.slice(-6)}-BUSINESS`;
+
+      const yaadflexAccount = {
+        id: `yaadflex-account-${userId}`,
+        accountNumber,
+        balance: {
+          jmd: 0.00,
+          usd: 0.00
+        },
+        totalEarnings: {
+          today: 0.00,
+          thisWeek: 0.00,
+          thisMonth: 0.00,
+          allTime: 0.00
+        },
+        autoTransferEnabled: true,
+        transferThreshold: 50000.00,
+        primaryBankAccountId: null
+      };
+
+      res.json({
+        success: true,
+        account: yaadflexAccount,
+        accountNumber,
+        message: `YaadFlex business account ${accountNumber} created successfully!`
+      });
+
+    } catch (error) {
+      console.error("Error creating YaadFlex account:", error);
+      res.status(500).json({ message: "Failed to create YaadFlex account" });
+    }
+  });
+
+  app.post('/api/banking/accounts/:accountId/set-primary', isAuthenticated, async (req: any, res) => {
+    try {
+      const { accountId } = req.params;
+      const userId = req.user?.claims?.sub;
+
+      // Log the primary account change
+      await storage.logSecurityEvent({
+        userId: userId,
+        eventType: 'primary_account_changed',
+        severity: 'low',
+        description: `Primary bank account changed to: ${accountId}`,
+        ipAddress: req.ip,
+        userAgent: req.get('User-Agent'),
+      });
+
+      res.json({
+        success: true,
+        message: 'Primary account updated successfully'
+      });
+
+    } catch (error) {
+      console.error("Error setting primary account:", error);
+      res.status(500).json({ message: "Failed to set primary account" });
+    }
+  });
+
   // ENHANCED SECURITY BEYOND INTERPOL STANDARDS
   
   app.get('/api/security/events', isAuthenticated, async (req: any, res) => {

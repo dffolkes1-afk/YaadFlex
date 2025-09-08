@@ -23,6 +23,7 @@ import PremiumStorefrontPage from "@/pages/premium-storefront";
 import SimpleLinksPage from "@/pages/simple-links";
 import ContactlessSystemPage from "@/pages/contactless-system";
 import CBRadioPage from "@/pages/cb-radio";
+import YaadFlexBankingPage from "@/pages/yaadflex-banking";
 import { TranslatorDemoPage } from "@/pages/translator-demo";
 import { TimelessDashboardPage } from "@/pages/timeless-dashboard";
 import WorldEmblemPage from "@/pages/world-emblem";
@@ -42,6 +43,7 @@ function Router() {
       <Route path="/links" component={SimpleLinksPage} />
       <Route path="/contactless" component={ContactlessSystemPage} />
       <Route path="/cb-radio" component={CBRadioPage} />
+      <Route path="/banking" component={YaadFlexBankingPage} />
       <Route path="/ride-booking" component={RideBooking} />
       <Route path="/business-registration" component={BusinessRegistration} />
       <Route path="/driver-registration" component={DriverRegistration} />

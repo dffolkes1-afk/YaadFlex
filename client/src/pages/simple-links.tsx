@@ -64,6 +64,13 @@ export default function SimpleLinksPage() {
           📻 CB Radio - Talk to Drivers Online
         </a>
         
+        <a 
+          href="/banking" 
+          className="block w-full p-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white text-center font-bold text-xl rounded hover:from-green-700 hover:to-emerald-700 transition-colors"
+        >
+          🏦 YaadFlex Banking - Add Your Bank Account
+        </a>
+        
       </div>
       
       <p className="text-center text-gray-400 mt-8">
