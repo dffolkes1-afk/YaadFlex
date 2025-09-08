@@ -641,6 +641,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get user language preferences
+  app.get('/api/user/language-preferences', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUserById(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      res.json({
+        preferredLang: user.preferredLang || 'en-JM',
+        fallbackLang: user.fallbackLang || 'en-US', 
+        showAlwaysEnglishToggle: user.showAlwaysEnglishToggle ?? true,
+        captionVoiceMessages: user.captionVoiceMessages ?? true,
+        autoTranslateEnabled: user.autoTranslateEnabled ?? true
+      });
+    } catch (error) {
+      console.error("Error fetching language preferences:", error);
+      res.status(500).json({ message: "Failed to fetch language preferences" });
+    }
+  });
+
   // Update user language preferences
   app.patch('/api/user/language-preferences', isAuthenticated, async (req: any, res) => {
     try {
@@ -662,24 +685,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get user language preferences
-  app.get('/api/user/language-preferences', isAuthenticated, async (req: any, res) => {
+  // Download offline translation pack
+  app.post('/api/offline-packs/download', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
+      const { packId } = req.body;
       
-      res.json({
-        preferredLang: user?.preferredLang || 'en-JM',
-        fallbackLang: user?.fallbackLang || 'en-US',
-        showAlwaysEnglishToggle: user?.showAlwaysEnglishToggle ?? true,
-        captionVoiceMessages: user?.captionVoiceMessages ?? true,
-        autoTranslateEnabled: user?.autoTranslateEnabled ?? true
+      if (!packId) {
+        return res.status(400).json({ message: "Pack ID is required" });
+      }
+
+      // Placeholder for offline pack download logic
+      // In a real implementation, this would:
+      // 1. Validate pack exists
+      // 2. Check user storage quota
+      // 3. Download and cache language models
+      // 4. Update user's downloaded packs list
+      
+      res.json({ 
+        packId,
+        status: 'downloaded',
+        size: '45 MB',
+        downloadedAt: new Date().toISOString()
       });
     } catch (error) {
-      console.error("Error fetching language preferences:", error);
-      res.status(500).json({ message: "Failed to fetch language preferences" });
+      console.error("Error downloading offline pack:", error);
+      res.status(500).json({ message: "Failed to download offline pack" });
     }
   });
+
 
   // Join or create chat
   app.post('/api/chats', isAuthenticated, async (req: any, res) => {

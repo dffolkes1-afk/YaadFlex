@@ -132,7 +132,7 @@ export function ChatInterface({ chatId, chatTitle = "Global Chat", userPreferred
             <div className="animate-spin mr-2">🔄</div>
             Loading messages...
           </div>
-        ) : messages.length === 0 ? (
+        ) : (messages as any[]).length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
             <Globe className="h-12 w-12 mb-4 opacity-50" />
             <p className="text-center">
@@ -141,7 +141,7 @@ export function ChatInterface({ chatId, chatTitle = "Global Chat", userPreferred
             </p>
           </div>
         ) : (
-          messages.map((message: any) => (
+          (messages as any[]).map((message: any) => (
             <TranslatedMessage
               key={message.id}
               messageId={message.id}
