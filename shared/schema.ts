@@ -264,6 +264,81 @@ export const cbChannelSubscriptions = pgTable("cb_channel_subscriptions", {
 
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
+
+// =============================================================
+// YAADLEX ULTIMATE AI VEHICLE VALUATOR + OBD SYSTEM
+// Revolutionary honest pricing engine to prevent dealership lowballs
+// =============================================================
+
+// VIN Decoding Table - Stores decoded VIN information
+export const vinDecodes = pgTable("vin_decodes", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  vin: varchar("vin", { length: 24 }).notNull(),
+  make: varchar("make", { length: 64 }),
+  model: varchar("model", { length: 64 }),
+  year: integer("year"),
+  body: varchar("body", { length: 64 }),
+  engine: varchar("engine", { length: 64 }),
+  trim: varchar("trim", { length: 64 }),
+  raw: jsonb("raw"), // Raw VIN decode response
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Market Comparables - Regional pricing data
+export const marketComps = pgTable("market_comps", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  make: varchar("make", { length: 64 }),
+  model: varchar("model", { length: 64 }),
+  year: integer("year"),
+  region: varchar("region", { length: 64 }), // e.g., "JM-KIN", "US-FL"
+  sample: jsonb("sample"), // Array of {price, mileage, location, date}
+  medianPrice: decimal("median_price"),
+  medianMileage: integer("median_mileage"),
+  refreshedAt: timestamp("refreshed_at").defaultNow(),
+});
+
+// AI Vehicle Valuations - The heart of honest pricing
+export const valuations = pgTable("valuations", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  listingId: varchar("listing_id"), // Link to vehicle listing
+  vin: varchar("vin", { length: 24 }),
+  make: varchar("make", { length: 64 }),
+  model: varchar("model", { length: 64 }),
+  year: integer("year"),
+  mileage: integer("mileage"),
+  region: varchar("region", { length: 64 }),
+  conditionScore: integer("condition_score"), // 0–100 from visual assessment
+  obdHealthScore: integer("obd_health_score"), // 0–100 from OBD scan
+  estimateLow: decimal("estimate_low"),
+  estimateMid: decimal("estimate_mid"), 
+  estimateHigh: decimal("estimate_high"),
+  inputs: jsonb("inputs"), // All input data used for valuation
+  currency: varchar("currency", { length: 3 }).default("USD"),
+  method: varchar("method", { length: 32 }).default("hedonic_v1"), // Algorithm version
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// OBD Diagnostic Tests - Vehicle health scanning
+export const obdTests = pgTable("obd_tests", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  listingId: varchar("listing_id"),
+  vin: varchar("vin", { length: 24 }),
+  startedAt: timestamp("started_at").defaultNow(),
+  finishedAt: timestamp("finished_at"),
+  status: varchar("status", { length: 16 }).default("started"), // started|ok|warning|critical
+  dtcCount: integer("dtc_count").default(0), // Diagnostic Trouble Code count
+  summary: text("summary"), // Human-readable test summary
+});
+
+// OBD Sensor Readings - Real-time vehicle data
+export const obdReadings = pgTable("obd_readings", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  testId: varchar("test_id").notNull().references(() => obdTests.id),
+  pid: varchar("pid", { length: 24 }).notNull(), // Parameter ID (e.g., "010C" for RPM)
+  value: varchar("value", { length: 64 }).notNull(),
+  unit: varchar("unit", { length: 16 }), // rpm, °C, mph, etc.
+  recordedAt: timestamp("recorded_at").defaultNow(),
+});
 export type InsertTransaction = typeof transactions.$inferInsert;
 export type Transaction = typeof transactions.$inferSelect;
 export type InsertUserWallet = typeof userWallets.$inferInsert;
@@ -4513,3 +4588,42 @@ export type InsertSystemDiagnostics = z.infer<typeof insertSystemDiagnosticsSche
 
 export type AdaptiveLearningMetrics = typeof adaptiveLearningMetrics.$inferSelect;
 export type InsertAdaptiveLearningMetrics = z.infer<typeof insertAdaptiveLearningMetricsSchema>;
+
+// =============================================================
+// VEHICLE VALUATOR + OBD SYSTEM TYPES & SCHEMAS
+// =============================================================
+
+export const insertVinDecodeSchema = createInsertSchema(vinDecodes).omit({
+  id: true,
+  createdAt: true,
+});
+export type InsertVinDecode = z.infer<typeof insertVinDecodeSchema>;
+export type VinDecode = typeof vinDecodes.$inferSelect;
+
+export const insertMarketCompSchema = createInsertSchema(marketComps).omit({
+  id: true,
+  refreshedAt: true,
+});
+export type InsertMarketComp = z.infer<typeof insertMarketCompSchema>;
+export type MarketComp = typeof marketComps.$inferSelect;
+
+export const insertValuationSchema = createInsertSchema(valuations).omit({
+  id: true,
+  createdAt: true,
+});
+export type InsertValuation = z.infer<typeof insertValuationSchema>;
+export type Valuation = typeof valuations.$inferSelect;
+
+export const insertObdTestSchema = createInsertSchema(obdTests).omit({
+  id: true,
+  startedAt: true,
+});
+export type InsertObdTest = z.infer<typeof insertObdTestSchema>;
+export type ObdTest = typeof obdTests.$inferSelect;
+
+export const insertObdReadingSchema = createInsertSchema(obdReadings).omit({
+  id: true,
+  recordedAt: true,
+});
+export type InsertObdReading = z.infer<typeof insertObdReadingSchema>;
+export type ObdReading = typeof obdReadings.$inferSelect;
