@@ -23,22 +23,20 @@ const getOidcConfig = memoize(
 );
 
 export function getSession() {
-  const sessionTtl = 7 * 24 * 60 * 60 * 1000; // 1 week
-  const pgStore = connectPg(session);
-  const sessionStore = new pgStore({
-    conString: process.env.DATABASE_URL,
-    createTableIfMissing: false,
-    ttl: sessionTtl,
-    tableName: "sessions",
-  });
+  const sessionTtl = 7 * 24 * 60 * 60 * 1000; // 1 week in milliseconds
+  
+  // Use memory store for now to debug authentication
+  console.log("Setting up session with memory store");
+  console.log("NODE_ENV:", process.env.NODE_ENV);
+  console.log("SESSION_SECRET exists:", !!process.env.SESSION_SECRET);
+  
   return session({
-    secret: process.env.SESSION_SECRET!,
-    store: sessionStore,
+    secret: process.env.SESSION_SECRET || 'dev-secret-fallback-only-for-debugging',
     resave: false,
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       maxAge: sessionTtl,
     },
   });
@@ -72,7 +70,16 @@ export async function setupAuth(app: Express) {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  const config = await getOidcConfig();
+  console.log("Setting up OIDC config...");
+  
+  let config;
+  try {
+    config = await getOidcConfig();
+    console.log("OIDC config loaded successfully");
+  } catch (error) {
+    console.error("Failed to load OIDC config:", error);
+    throw error;
+  }
 
   const verify: VerifyFunction = async (
     tokens: client.TokenEndpointResponse & client.TokenEndpointResponseHelpers,
