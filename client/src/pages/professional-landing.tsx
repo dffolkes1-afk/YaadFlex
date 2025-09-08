@@ -13,7 +13,7 @@ export default function ProfessionalLanding() {
     document.title = "YaadFlex Global Vybz — One App. One World.";
     
     // Add meta description
-    let metaDescription = document.querySelector('meta[name="description"]');
+    let metaDescription = document.querySelector('meta[name="description"]') as HTMLMetaElement;
     if (!metaDescription) {
       metaDescription = document.createElement('meta');
       metaDescription.name = 'description';
@@ -30,12 +30,12 @@ export default function ProfessionalLanding() {
     ];
 
     ogTags.forEach(tag => {
-      let existingTag = document.querySelector(`meta[${tag.property ? 'property' : 'name'}="${tag.property || tag.name}"]`);
+      let existingTag = document.querySelector(`meta[${tag.property ? 'property' : 'name'}="${tag.property || tag.name}"]`) as HTMLMetaElement;
       if (!existingTag) {
         existingTag = document.createElement('meta');
         if (tag.property) {
-          existingTag.property = tag.property;
-        } else {
+          existingTag.setAttribute('property', tag.property);
+        } else if (tag.name) {
           existingTag.name = tag.name;
         }
         document.head.appendChild(existingTag);
@@ -44,7 +44,7 @@ export default function ProfessionalLanding() {
     });
 
     // Add PWA manifest link
-    let manifestLink = document.querySelector('link[rel="manifest"]');
+    let manifestLink = document.querySelector('link[rel="manifest"]') as HTMLLinkElement;
     if (!manifestLink) {
       manifestLink = document.createElement('link');
       manifestLink.rel = 'manifest';
@@ -53,7 +53,7 @@ export default function ProfessionalLanding() {
     }
 
     // Add theme color
-    let themeColor = document.querySelector('meta[name="theme-color"]');
+    let themeColor = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement;
     if (!themeColor) {
       themeColor = document.createElement('meta');
       themeColor.name = 'theme-color';
