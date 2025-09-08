@@ -57,6 +57,13 @@ export default function SimpleLinksPage() {
           📧 100% Contactless System
         </a>
         
+        <a 
+          href="/cb-radio" 
+          className="block w-full p-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-center font-bold text-xl rounded hover:from-blue-700 hover:to-purple-700 transition-colors"
+        >
+          📻 CB Radio - Talk to Drivers Online
+        </a>
+        
       </div>
       
       <p className="text-center text-gray-400 mt-8">
