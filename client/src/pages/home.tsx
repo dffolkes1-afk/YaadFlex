@@ -621,6 +621,135 @@ export default function Home() {
           </Card>
         </div>
 
+        {/* ========== YAADLEX WORKFORCE MANAGEMENT - ULTIMATE JOB PLATFORM! ========== */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-r from-blue-900/40 to-purple-900/40 border-blue-500/50 overflow-hidden relative" data-testid="workforce-management-card">
+            {/* Animated background */}
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-blue-600/10 animate-pulse" />
+            
+            <CardHeader className="relative z-10 pb-8">
+              <CardTitle className="text-center space-y-6">
+                <div className="text-4xl md:text-8xl font-black text-blue-400 animate-pulse leading-tight">
+                  💼 WORKFORCE EMPIRE! 💼
+                </div>
+                <div className="text-2xl md:text-6xl font-black text-yellow-300 animate-bounce leading-tight">
+                  CREATE JOBS • HIRE WORKERS • FIRE SUPERVISORS!
+                </div>
+                <div className="text-xl md:text-4xl font-black text-white animate-pulse">
+                  MAINTENANCE • CLEANUP • CONSTRUCTION • EVERYTHING!
+                </div>
+                <div className="text-lg md:text-3xl font-black text-orange-400 animate-bounce">
+                  🏗️ ULTIMATE CARIBBEAN WORKFORCE PLATFORM! 🏗️
+                </div>
+              </CardTitle>
+            </CardHeader>
+            
+            <CardContent className="relative z-10 space-y-6">
+              <div className="bg-gradient-to-r from-blue-600/50 to-purple-600/50 border-2 border-blue-400/70 rounded-2xl p-8 text-center shadow-2xl shadow-blue-500/30">
+                <h3 className="text-2xl md:text-5xl font-black text-blue-300 mb-6 animate-pulse leading-tight">
+                  🎯 COMPLETE JOB MANAGEMENT SYSTEM! 🎯
+                </h3>
+                <p className="text-white text-lg md:text-2xl mb-8 font-bold leading-relaxed">
+                  <strong className="text-yellow-400">POST JOBS?</strong> → Maintenance, cleanup, construction!<br/>
+                  <strong className="text-green-400">HIRE WORKERS?</strong> → Find incredible talent instantly!<br/>
+                  <strong className="text-purple-400">FIRE SUPERVISORS?</strong> → Full hire/fire control!<br/>
+                  <strong className="text-orange-400">EQUIPMENT HUBS?</strong> → Workers get tools and return them!<br/>
+                  <strong className="text-red-400 text-xl md:text-3xl animate-bounce">🏢 EMAIL COORDINATION BUILT-IN! 🏢</strong>
+                </p>
+                
+                {/* Workforce Features Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                  <div className="bg-blue-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-blue-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-bounce">💼</div>
+                    <div className="text-lg md:text-xl font-black text-blue-300">POST JOBS</div>
+                    <div className="text-sm text-blue-200">Any type of work</div>
+                  </div>
+                  <div className="bg-green-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-green-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-pulse">👷</div>
+                    <div className="text-lg md:text-xl font-black text-green-300">HIRE WORKERS</div>
+                    <div className="text-sm text-green-200">Find talent fast</div>
+                  </div>
+                  <div className="bg-orange-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-orange-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-bounce delay-200">🔧</div>
+                    <div className="text-lg md:text-xl font-black text-orange-300">EQUIPMENT</div>
+                    <div className="text-sm text-orange-200">Hub rental system</div>
+                  </div>
+                  <div className="bg-purple-600/60 rounded-xl p-4 text-center transform hover:scale-110 transition-all border-2 border-purple-400/70">
+                    <div className="text-4xl md:text-6xl mb-2 animate-pulse delay-300">🚗</div>
+                    <div className="text-lg md:text-xl font-black text-purple-300">VEHICLES</div>
+                    <div className="text-sm text-purple-200">Global marketplace</div>
+                  </div>
+                </div>
+
+                {/* Workforce System Features */}
+                <div className="bg-gradient-to-r from-green-600/50 to-blue-600/50 border-4 border-green-400/80 rounded-2xl p-6 mb-8 animate-pulse">
+                  <h4 className="text-2xl md:text-4xl font-black text-green-300 mb-4">🇯🇲 COMPLETE WORKFORCE CONTROL! 🇯🇲</h4>
+                  <div className="text-white text-lg md:text-xl font-bold">
+                    <strong>MAINTENANCE JOBS?</strong> ✅ Post instantly!<br/>
+                    <strong>CLEANUP WORK?</strong> ✅ Find workers now!<br/>
+                    <strong>CONSTRUCTION?</strong> ✅ Hire supervisors!<br/>
+                    <span className="text-yellow-400">🌟 EMAIL COORDINATION + EQUIPMENT HUBS! 🌟</span>
+                  </div>
+                </div>
+
+                {/* Worker Equipment System */}
+                <div className="bg-gradient-to-r from-orange-600/50 to-red-600/50 border-4 border-orange-400/80 rounded-2xl p-6 mb-8 animate-bounce">
+                  <h4 className="text-2xl md:text-4xl font-black text-orange-300 mb-4">🔧 EQUIPMENT HUB SYSTEM! 🔧</h4>
+                  <div className="space-y-4">
+                    <div className="text-white text-lg md:text-xl font-bold text-center">
+                      <strong>WORKERS GET TOOLS → WORK → RETURN TOOLS!</strong><br/>
+                      <strong className="text-yellow-400">RENTAL LOCATIONS EVERYWHERE!</strong>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="bg-orange-600/40 rounded-lg p-3 text-center">
+                        <div className="text-3xl mb-2">🏢</div>
+                        <div className="text-sm font-bold text-orange-200">EQUIPMENT HUBS</div>
+                      </div>
+                      <div className="bg-green-600/40 rounded-lg p-3 text-center">
+                        <div className="text-3xl mb-2">🔧</div>
+                        <div className="text-sm font-bold text-green-200">CHECKOUT TOOLS</div>
+                      </div>
+                      <div className="bg-blue-600/40 rounded-lg p-3 text-center">
+                        <div className="text-3xl mb-2">🏠</div>
+                        <div className="text-sm font-bold text-blue-200">RETURN TOOLS</div>
+                      </div>
+                    </div>
+                    <div className="bg-yellow-600/40 rounded-lg p-3 text-center">
+                      <div className="text-sm font-bold text-yellow-200">
+                        📧 <strong>EMAIL COORDINATION:</strong> Contact workers → Assign jobs → Track progress!<br/>
+                        🔧 <strong>SMALL RENTAL PLACES</strong> where workers get equipment and return it!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="text-center space-y-4">
+                  <div className="flex flex-wrap justify-center gap-4">
+                    <Button 
+                      onClick={() => setLocation('/workforce')}
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-2xl px-8 py-4 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-blue-400/80"
+                      data-testid="button-workforce-dashboard"
+                    >
+                      💼 WORKFORCE DASHBOARD
+                    </Button>
+                    <Button 
+                      onClick={() => setLocation('/post-job')}
+                      className="bg-gradient-to-r from-green-600 to-yellow-600 hover:from-green-700 hover:to-yellow-700 text-white text-2xl px-8 py-4 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-green-400/80"
+                      data-testid="button-post-job-now"
+                    >
+                      🚀 POST JOB NOW
+                    </Button>
+                  </div>
+                  <p className="text-sm text-gray-300 animate-pulse">
+                    🏗️ <strong>The Ultimate Caribbean Workforce Management Platform!</strong> 🏗️<br/>
+                    Create jobs, hire incredible workers, manage equipment hubs, coordinate via email!
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* ========== MASSIVE EMAIL CAMPAIGN - SHAKE UP JAMAICA! ========== */}
         <div className="mb-8">
           <Card className="bg-gradient-to-br from-red-900/95 via-orange-900/95 to-yellow-900/95 border-8 border-red-400/100 relative overflow-hidden min-h-[600px] shadow-2xl shadow-red-500/80" data-testid="massive-email-campaign-section">
