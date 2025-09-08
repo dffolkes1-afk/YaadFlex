@@ -33,8 +33,22 @@ import {
   kycProfiles,
   documentsVault,
   travelItineraries,
-  escrowAccounts
+  escrowAccounts,
+  // Vehicle Valuator + OBD System Tables
+  vinDecodes,
+  marketComps,
+  valuations,
+  obdTests,
+  obdReadings,
 } from "@shared/schema";
+import { 
+  estimateValue, 
+  scoreCondition, 
+  scoreObd, 
+  generateValuationExplanation,
+  defaultConditionForm,
+  defaultObdParams
+} from "./valuation/engine";
 import { 
   insertTransactionSchema, 
   insertUserWalletSchema,
@@ -2148,6 +2162,277 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error opening escrow:", error);
       res.status(500).json({ error: "Failed to open escrow" });
+    }
+  });
+
+  // =============================================================
+  // YAADLEX ULTIMATE AI VEHICLE VALUATOR + OBD SYSTEM API
+  // Revolutionary honest vehicle pricing to prevent dealership lowballs
+  // =============================================================
+
+  // Vehicle Valuation Routes
+  app.post("/api/valuations/estimate", async (req: any, res) => {
+    try {
+      const { make, model, year, mileage, region, conditionForm, obd, vin } = req.body || {};
+      
+      if (!make || !model || !year || !region) {
+        return res.status(400).json({ 
+          error: "Missing required fields: make, model, year, region" 
+        });
+      }
+
+      // Get market comparables for this vehicle
+      const [comp] = await db.select().from(marketComps)
+        .where(and(
+          eq(marketComps.make, make),
+          eq(marketComps.model, model), 
+          eq(marketComps.year, year),
+          eq(marketComps.region, region)
+        ));
+
+      // Use defaults if no market data available
+      const baseMedian = Number(comp?.medianPrice || 12000);
+      const medianMileage = Number(comp?.medianMileage || 90000);
+
+      // Calculate condition and OBD health scores
+      const conditionScore = scoreCondition(conditionForm || {
+        exterior: 70, interior: 70, tires: 70, brakes: 70, fluids: 70
+      });
+      
+      const obdHealthScore = scoreObd(
+        obd?.dtcCount || 0, 
+        obd?.monitorsOk || 6, 
+        obd?.monitorsTotal || 8
+      );
+
+      // Generate valuation using hedonic pricing engine
+      const valuation = estimateValue({
+        year,
+        mileage,
+        baseMedian,
+        medianMileage,
+        conditionScore,
+        obdHealthScore
+      });
+
+      // Store valuation in database
+      const [savedValuation] = await db.insert(valuations).values({
+        vin: vin || null,
+        make,
+        model,
+        year,
+        mileage,
+        region,
+        conditionScore,
+        obdHealthScore,
+        estimateLow: valuation.estimateLow.toString(),
+        estimateMid: valuation.estimateMid.toString(),
+        estimateHigh: valuation.estimateHigh.toString(),
+        inputs: req.body,
+        currency: "USD",
+        method: "hedonic_v1"
+      }).returning();
+
+      // Generate human-readable explanation
+      const explanation = generateValuationExplanation({
+        year, mileage, baseMedian, medianMileage, conditionScore, obdHealthScore
+      }, valuation);
+
+      res.json({
+        success: true,
+        valuation: savedValuation,
+        estimates: {
+          low: valuation.estimateLow,
+          mid: valuation.estimateMid,
+          high: valuation.estimateHigh
+        },
+        adjustments: valuation.adjustments,
+        explanation,
+        marketData: {
+          baseMedian,
+          medianMileage,
+          hasLocalData: !!comp
+        }
+      });
+    } catch (error) {
+      console.error("Error generating vehicle valuation:", error);
+      res.status(500).json({ error: "Failed to generate vehicle valuation" });
+    }
+  });
+
+  app.get("/api/valuations/:id", async (req: any, res) => {
+    try {
+      const [valuation] = await db.select().from(valuations)
+        .where(eq(valuations.id, req.params.id));
+        
+      if (!valuation) {
+        return res.status(404).json({ error: "Valuation not found" });
+      }
+      
+      res.json(valuation);
+    } catch (error) {
+      console.error("Error fetching valuation:", error);
+      res.status(500).json({ error: "Failed to fetch valuation" });
+    }
+  });
+
+  // OBD Diagnostic System Routes
+  app.post("/api/obd/start", async (req: any, res) => {
+    try {
+      const { listingId, vin } = req.body || {};
+      
+      if (!vin) {
+        return res.status(400).json({ error: "VIN is required to start OBD test" });
+      }
+
+      const [test] = await db.insert(obdTests).values({
+        listingId: listingId || null,
+        vin
+      }).returning();
+
+      res.json({
+        success: true,
+        test,
+        message: "OBD diagnostic test started. Connect your OBD-II scanner now."
+      });
+    } catch (error) {
+      console.error("Error starting OBD test:", error);
+      res.status(500).json({ error: "Failed to start OBD test" });
+    }
+  });
+
+  app.post("/api/obd/:testId/reading", async (req: any, res) => {
+    try {
+      const { pid, value, unit } = req.body || {};
+      
+      if (!pid || value === undefined) {
+        return res.status(400).json({ error: "PID and value are required" });
+      }
+
+      const [reading] = await db.insert(obdReadings).values({
+        testId: req.params.testId,
+        pid,
+        value: value.toString(),
+        unit: unit || null
+      }).returning();
+
+      res.json({
+        success: true,
+        reading,
+        message: `Recorded reading for PID ${pid}: ${value} ${unit || ''}`
+      });
+    } catch (error) {
+      console.error("Error recording OBD reading:", error);
+      res.status(500).json({ error: "Failed to record OBD reading" });
+    }
+  });
+
+  app.post("/api/obd/:testId/finish", async (req: any, res) => {
+    try {
+      const { status, dtcCount, summary } = req.body || {};
+      
+      const [test] = await db.update(obdTests).set({
+        finishedAt: new Date(),
+        status: status || "ok",
+        dtcCount: dtcCount || 0,
+        summary: summary || "OBD diagnostic test completed"
+      }).where(eq(obdTests.id, req.params.testId)).returning();
+
+      if (!test.length) {
+        return res.status(404).json({ error: "OBD test not found" });
+      }
+
+      res.json({
+        success: true,
+        test: test[0],
+        message: "OBD diagnostic test completed successfully"
+      });
+    } catch (error) {
+      console.error("Error finishing OBD test:", error);
+      res.status(500).json({ error: "Failed to finish OBD test" });
+    }
+  });
+
+  // Get OBD test results and readings
+  app.get("/api/obd/:testId", async (req: any, res) => {
+    try {
+      const [test] = await db.select().from(obdTests)
+        .where(eq(obdTests.id, req.params.testId));
+        
+      if (!test) {
+        return res.status(404).json({ error: "OBD test not found" });
+      }
+
+      const readings = await db.select().from(obdReadings)
+        .where(eq(obdReadings.testId, req.params.testId))
+        .orderBy(obdReadings.recordedAt);
+
+      res.json({
+        test,
+        readings,
+        totalReadings: readings.length
+      });
+    } catch (error) {
+      console.error("Error fetching OBD test:", error);
+      res.status(500).json({ error: "Failed to fetch OBD test" });
+    }
+  });
+
+  // Market Comparables Management
+  app.post("/api/market-comps", async (req: any, res) => {
+    try {
+      const { make, model, year, region, sample, medianPrice, medianMileage } = req.body || {};
+      
+      if (!make || !model || !year || !region) {
+        return res.status(400).json({ 
+          error: "Missing required fields: make, model, year, region" 
+        });
+      }
+
+      const [comp] = await db.insert(marketComps).values({
+        make,
+        model, 
+        year,
+        region,
+        sample: sample || null,
+        medianPrice: medianPrice?.toString() || "0",
+        medianMileage: medianMileage || 0
+      }).returning();
+
+      res.json({
+        success: true,
+        marketComp: comp,
+        message: "Market comparable data saved successfully"
+      });
+    } catch (error) {
+      console.error("Error saving market comp:", error);
+      res.status(500).json({ error: "Failed to save market comparable" });
+    }
+  });
+
+  app.get("/api/market-comps", async (req: any, res) => {
+    try {
+      const { make, model, year, region } = req.query;
+      let conditions = [];
+      
+      if (make) conditions.push(eq(marketComps.make, make as string));
+      if (model) conditions.push(eq(marketComps.model, model as string));
+      if (year) conditions.push(eq(marketComps.year, parseInt(year as string)));
+      if (region) conditions.push(eq(marketComps.region, region as string));
+
+      const comps = await db.select().from(marketComps)
+        .where(conditions.length > 0 ? and(...conditions) : undefined)
+        .orderBy(desc(marketComps.refreshedAt))
+        .limit(50);
+
+      res.json({
+        success: true,
+        marketComps: comps,
+        count: comps.length
+      });
+    } catch (error) {
+      console.error("Error fetching market comps:", error);
+      res.status(500).json({ error: "Failed to fetch market comparables" });
     }
   });
 
