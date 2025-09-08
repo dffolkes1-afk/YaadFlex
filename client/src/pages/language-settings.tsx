@@ -1,8 +1,13 @@
 import { LanguageSettings } from '@/components/LanguageSettings';
-import { useUser } from '@/hooks/useUser';
+import { useQuery } from '@tanstack/react-query';
 
 export function LanguageSettingsPage() {
-  const { user, isLoading } = useUser();
+  const { data: user, isLoading } = useQuery({
+    queryKey: ['/api/auth/user'],
+    retry: false
+  });
+  
+  const userId = (user as any)?.id;
 
   if (isLoading) {
     return (
@@ -18,7 +23,7 @@ export function LanguageSettingsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/10 py-8 px-4">
       <div className="container mx-auto">
-        <LanguageSettings userId={user?.id} />
+        <LanguageSettings userId={userId} />
       </div>
     </div>
   );

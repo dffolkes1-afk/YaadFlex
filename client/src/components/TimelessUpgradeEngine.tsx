@@ -159,7 +159,7 @@ export function TimelessUpgradeEngine({ userId, isVisible = true }: TimelessUpgr
                 data-testid={`optimization-${opt.status}`}
               >
                 <div className="flex items-center space-x-2">
-                  <div className="text-accent">{opt.icon}</div>
+                  <div className="text-accent">{opt.icon as React.ReactNode}</div>
                   <span className="text-xs font-medium">{opt.name}</span>
                 </div>
                 <div className="flex items-center space-x-2">
