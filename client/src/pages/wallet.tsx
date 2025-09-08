@@ -215,14 +215,14 @@ export default function WalletScreen() {
           
           <div>
             <h1 className="text-4xl font-bold text-yellow-400">
-              {parseFloat((wallet as any)?.balanceYfx || '0').toFixed(3)} YFX
+              {parseFloat(wallet?.balanceYfx || '0').toFixed(3)} YFX
             </h1>
             <p className="text-lg text-yellow-300 font-semibold">YaadFlex Coin</p>
           </div>
 
           <div className="space-y-1 text-sm opacity-80">
-            <p>≈ ${convertYfxToUsd((wallet as any)?.balanceYfx || '0')} USD</p>
-            <p>≈ ${convertYfxToJmd((wallet as any)?.balanceYfx || '0')} JMD</p>
+            <p>≈ ${convertYfxToUsd(wallet?.balanceYfx || '0')} USD</p>
+            <p>≈ ${convertYfxToJmd(wallet?.balanceYfx || '0')} JMD</p>
             <p className="text-xs text-gray-400">(Pegged to Kuwaiti Dinar)</p>
           </div>
 
@@ -297,9 +297,9 @@ export default function WalletScreen() {
               <div className="h-4 bg-gray-700 rounded"></div>
               <div className="h-4 bg-gray-700 rounded"></div>
             </div>
-          ) : (transactions as any[]) && (transactions as any[]).length > 0 ? (
+          ) : transactions && transactions.length > 0 ? (
             <div className="space-y-3">
-              {(transactions as any[]).slice(0, 10).map((tx: any, idx: number) => (
+              {transactions.slice(0, 10).map((tx, idx) => (
                 <div key={idx} className="flex justify-between items-center p-3 bg-gray-800 rounded-lg">
                   <div>
                     <p className="font-medium">
