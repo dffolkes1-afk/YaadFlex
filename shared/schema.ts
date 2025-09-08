@@ -3596,6 +3596,105 @@ export const propertyMaintenanceRelations = relations(propertyMaintenance, ({ on
   }),
 }));
 
+// ===================== TIMELESS UPGRADE SYSTEM TABLES =====================
+
+// TimelessCore Safety System Configuration
+export const timelessCoreConfig = pgTable('timeless_core_config', {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  version: varchar('version').notNull(), // e.g., "core-voice-2.1.0"
+  safetyMode: varchar('safety_mode').notNull().default('strict'), // strict, moderate, permissive
+  learningRateLimit: integer('learning_rate_limit').notNull().default(100), // max updates per hour
+  humanApprovalRequired: boolean('human_approval_required').notNull().default(true),
+  privacyMode: varchar('privacy_mode').notNull().default('maximum'), // maximum, balanced, minimal
+  driftThreshold: decimal('drift_threshold', { precision: 3, scale: 2 }).notNull().default('0.20'),
+  rollbackEnabled: boolean('rollback_enabled').notNull().default(true),
+  lastKnownGoodVersion: varchar('last_known_good_version'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull()
+});
+
+// Learning Signals for Continuous Improvement
+export const learningSignals = pgTable('learning_signals', {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar('user_id').references(() => users.id).notNull(),
+  signalType: varchar('signal_type').notNull(), // feedback_button, translation_report, voice_correction, etc.
+  originalText: text('original_text'), // PII redacted
+  targetLang: varchar('target_lang').notNull(),
+  translatedText: text('translated_text'), // PII redacted
+  feedbackScore: integer('feedback_score'), // 1-5 or -1/1 for good/bad
+  reportReason: text('report_reason'),
+  contextHash: varchar('context_hash'), // anonymized context identifier
+  sessionId: varchar('session_id'), // anonymized session
+  privacyConsent: boolean('privacy_consent').notNull().default(false),
+  processed: boolean('processed').notNull().default(false),
+  createdAt: timestamp('created_at').defaultNow().notNull()
+});
+
+// Model Versions and Deployment Tracking
+export const modelVersions = pgTable('model_versions', {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  version: varchar('version').notNull().unique(),
+  status: varchar('status').notNull(), // training, evaluating, canary, deployed, rollback, deprecated
+  accuracyScore: decimal('accuracy_score', { precision: 5, scale: 4 }),
+  latencyP95: integer('latency_p95'), // milliseconds
+  safetyScore: decimal('safety_score', { precision: 5, scale: 4 }),
+  evaluationPassed: boolean('evaluation_passed').notNull().default(false),
+  rolloutPercentage: integer('rollout_percentage').notNull().default(0),
+  deployer: varchar('deployer').notNull(),
+  approver: varchar('approver'),
+  safetyApprover: varchar('safety_approver'),
+  deployedAt: timestamp('deployed_at'),
+  createdAt: timestamp('created_at').defaultNow().notNull()
+});
+
+// Feature Flags for Controlled Rollouts
+export const featureFlags = pgTable('feature_flags', {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  flagName: varchar('flag_name').notNull().unique(),
+  enabled: boolean('enabled').notNull().default(false),
+  rolloutPercentage: integer('rollout_percentage').notNull().default(0),
+  targetUserGroups: jsonb('target_user_groups'), // ['beta', 'premium', 'all']
+  safetyCheck: boolean('safety_check').notNull().default(true),
+  createdBy: varchar('created_by').notNull(),
+  description: text('description'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull()
+});
+
+// System Diagnostics for Health Monitoring
+export const systemDiagnostics = pgTable('system_diagnostics', {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  component: varchar('component').notNull(), // translator, policy_engine, learning_loop
+  health: varchar('health').notNull(), // healthy, warning, critical, failure
+  errorRate: decimal('error_rate', { precision: 5, scale: 4 }),
+  latencyP95: integer('latency_p95'),
+  throughput: integer('throughput'),
+  memoryUsage: decimal('memory_usage', { precision: 5, scale: 2 }),
+  cpuUsage: decimal('cpu_usage', { precision: 5, scale: 2 }),
+  alertTriggered: boolean('alert_triggered').notNull().default(false),
+  autoRepairAttempted: boolean('auto_repair_attempted').notNull().default(false),
+  repairSuccessful: boolean('repair_successful'),
+  checkTimestamp: timestamp('check_timestamp').defaultNow().notNull()
+});
+
+// Adaptive Learning Progress Tracking  
+export const adaptiveLearningMetrics = pgTable('adaptive_learning_metrics', {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar('user_id').references(() => users.id),
+  systemIq: integer('system_iq').notNull().default(150), // Starts at 150, grows to 200+
+  adaptationLevel: decimal('adaptation_level', { precision: 5, scale: 2 }).notNull().default('0.00'), // 0-100%
+  learningProgress: decimal('learning_progress', { precision: 5, scale: 2 }).notNull().default('0.00'), // 0-100%
+  translationAccuracy: decimal('translation_accuracy', { precision: 5, scale: 4 }).default('0.9400'),
+  responseSpeed: integer('response_speed').default(800), // milliseconds
+  userSatisfactionScore: decimal('user_satisfaction_score', { precision: 3, scale: 2 }).default('4.50'),
+  totalInteractions: integer('total_interactions').default(0),
+  successfulPredictions: integer('successful_predictions').default(0),
+  modelVersion: varchar('model_version').default('v1.0.0'),
+  lastOptimizationAt: timestamp('last_optimization_at'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull()
+});
+
 // ===================== INSERT SCHEMAS =====================
 
 export const insertRentalPropertySchema = createInsertSchema(rentalProperties);
@@ -3705,3 +3804,56 @@ export const insertCbChannelSubscriptionSchema = createInsertSchema(cbChannelSub
   id: true,
   joinedAt: true,
 });
+
+// TimelessCore INSERT SCHEMAS
+export const insertTimelessCoreConfigSchema = createInsertSchema(timelessCoreConfig).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertLearningSignalSchema = createInsertSchema(learningSignals).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertModelVersionSchema = createInsertSchema(modelVersions).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertFeatureFlagSchema = createInsertSchema(featureFlags).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertSystemDiagnosticsSchema = createInsertSchema(systemDiagnostics).omit({
+  id: true,
+  checkTimestamp: true,
+});
+
+export const insertAdaptiveLearningMetricsSchema = createInsertSchema(adaptiveLearningMetrics).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// TimelessCore TYPES
+export type TimelessCoreConfig = typeof timelessCoreConfig.$inferSelect;
+export type InsertTimelessCoreConfig = z.infer<typeof insertTimelessCoreConfigSchema>;
+
+export type LearningSignal = typeof learningSignals.$inferSelect;
+export type InsertLearningSignal = z.infer<typeof insertLearningSignalSchema>;
+
+export type ModelVersion = typeof modelVersions.$inferSelect;
+export type InsertModelVersion = z.infer<typeof insertModelVersionSchema>;
+
+export type FeatureFlag = typeof featureFlags.$inferSelect;
+export type InsertFeatureFlag = z.infer<typeof insertFeatureFlagSchema>;
+
+export type SystemDiagnostics = typeof systemDiagnostics.$inferSelect;
+export type InsertSystemDiagnostics = z.infer<typeof insertSystemDiagnosticsSchema>;
+
+export type AdaptiveLearningMetrics = typeof adaptiveLearningMetrics.$inferSelect;
+export type InsertAdaptiveLearningMetrics = z.infer<typeof insertAdaptiveLearningMetricsSchema>;
