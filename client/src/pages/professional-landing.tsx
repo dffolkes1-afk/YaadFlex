@@ -9,8 +9,8 @@ export default function ProfessionalLanding() {
       yearElement.textContent = new Date().getFullYear().toString();
     }
 
-    // Set meta tags for SEO and social sharing
-    document.title = "YaadFlex Global Vybz — One App. One World.";
+    // Set meta tags for SEO and social sharing  
+    document.title = "YaadFlex Global Vybz";
     
     // Add meta description
     let metaDescription = document.querySelector('meta[name="description"]') as HTMLMetaElement;
