@@ -394,7 +394,7 @@ export default function DriverRegistration() {
                     <CardContent className="p-4">
                       <div className="flex items-center gap-2 mb-3">
                         <DollarSign className="h-5 w-5 text-green-600" />
-                        <span className="font-medium text-green-700 dark:text-green-300">Your Earning Potential</span>
+                        <span className="font-medium text-green-700 dark:text-green-300">Your Earning Potential + FREE 7 DAYS!</span>
                       </div>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                         <div className="text-center">
@@ -414,8 +414,13 @@ export default function DriverRegistration() {
                           <div className="text-muted-foreground">Your Share</div>
                         </div>
                       </div>
-                      <div className="mt-3 text-xs text-center text-muted-foreground">
-                        Estimates based on 8 trips per day. Actual earnings may vary.
+                      <div className="mt-3 p-2 bg-yellow-100 dark:bg-yellow-900/20 rounded-lg">
+                        <div className="text-sm font-bold text-center text-yellow-700 dark:text-yellow-300">
+                          🎉 SPECIAL LAUNCH OFFER: First 7 days FREE! No platform fees!
+                        </div>
+                        <div className="text-xs text-center text-yellow-600 dark:text-yellow-400 mt-1">
+                          Keep 100% of earnings for your first week to attract customers and build your reputation
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
