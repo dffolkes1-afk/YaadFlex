@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { CountryThemeSelector } from "@/components/CountryThemeSelector";
 
 export default function Landing() {
   const handleLogin = () => {
@@ -15,6 +16,8 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* Country Theme Selector */}
+      <CountryThemeSelector />
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-background/95 backdrop-blur-sm border-b border-border">
         <div className="container mx-auto px-6 py-4">

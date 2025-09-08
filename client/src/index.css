@@ -11,6 +11,11 @@
   --jamaica-green-light: hsl(153, 80%, 35%); /* Lighter Green */
   --jamaica-green-dark: hsl(153, 100%, 20%); /* Darker Green */
   
+  /* 🌍 DYNAMIC COUNTRY THEME SUPPORT 🌍 */
+  --cosmic-star-1: hsl(50, 100%, 50%);       /* Dynamic star color 1 */
+  --cosmic-star-2: hsl(153, 100%, 26%);      /* Dynamic star color 2 */
+  --galaxy-bg: linear-gradient(135deg, hsl(0, 0%, 8%) 0%, hsl(153, 50%, 10%) 50%, hsl(0, 0%, 8%) 100%); /* Dynamic galaxy background */
+  
   /* 🌍 GLOBAL PLANETARY THEME 🌍 */
   --earth-blue: hsl(210, 100%, 45%);         /* Ocean Blue */
   --earth-green: hsl(120, 60%, 40%);         /* Land Green */
