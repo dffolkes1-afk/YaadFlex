@@ -89,21 +89,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Serve YaadFlex Landing Page - Main Link for Facebook/Social Media
   app.get('/yaadflex', (req, res) => {
     try {
-      const htmlPath = path.join(process.cwd(), 'yardflex-landing.html');
+      const htmlPath = path.resolve('yardflex-landing.html');
+      console.log('Trying to serve YaadFlex from:', htmlPath);
+      console.log('File exists:', fs.existsSync(htmlPath));
+      
       if (fs.existsSync(htmlPath)) {
         res.sendFile(htmlPath);
       } else {
-        res.status(404).send('YaadFlex page not found');
+        res.status(404).send('YaadFlex page not found at: ' + htmlPath);
       }
     } catch (error) {
       console.error('Error serving YaadFlex page:', error);
-      res.status(500).send('Server error');
+      res.status(500).send('Server error: ' + error.message);
     }
   });
 
   // Main homepage - super simple!
   app.get('/', (req, res) => {
     res.redirect('/yaadflex');
+  });
+
+  // Test endpoint to check file
+  app.get('/test', (req, res) => {
+    const htmlPath = path.resolve('yardflex-landing.html');
+    res.json({
+      path: htmlPath,
+      exists: fs.existsSync(htmlPath),
+      cwd: process.cwd()
+    });
   });
   
   // Timeless Upgrade System API
