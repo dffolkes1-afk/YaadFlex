@@ -27,6 +27,7 @@ import YaadFlexBankingPage from "@/pages/yaadflex-banking";
 import GalacticPortalPage from "@/pages/galactic-portal";
 import ProfessionalLanding from "@/pages/professional-landing";
 import ContactForm from "@/pages/contact-form";
+import SocialHub from "./pages/SocialHub";
 import { TranslatorDemoPage } from "@/pages/translator-demo";
 import { TimelessDashboardPage } from "@/pages/timeless-dashboard";
 import WorldEmblemPage from "@/pages/world-emblem";
@@ -55,6 +56,7 @@ function Router() {
       <Route path="/emblem" component={WorldEmblemPage} />
       <Route path="/contact" component={ContactForm} />
       <Route path="/signup" component={ContactForm} />
+      <Route path="/social" component={SocialHub} />
       
       {/* Authentication-based routes */}
       {isLoading || !isAuthenticated ? (
