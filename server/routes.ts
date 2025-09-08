@@ -73,6 +73,8 @@ import {
 } from "@shared/schema";
 import { z } from "zod";
 import { desc, eq, and, sql, lte, gte, or } from "drizzle-orm";
+import path from "path";
+import fs from "fs";
 import { db } from "./db";
 import { 
   rentalProperties, 
@@ -83,6 +85,26 @@ import {
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
   await setupAuth(app);
+  
+  // Serve YaadFlex Landing Page
+  app.get('/yaadflex', (req, res) => {
+    try {
+      const htmlPath = path.join(process.cwd(), 'yardflex-landing.html');
+      if (fs.existsSync(htmlPath)) {
+        res.sendFile(htmlPath);
+      } else {
+        res.status(404).send('YaadFlex page not found');
+      }
+    } catch (error) {
+      console.error('Error serving YaadFlex page:', error);
+      res.status(500).send('Server error');
+    }
+  });
+  
+  // Also serve at root for easy access
+  app.get('/landing', (req, res) => {
+    res.redirect('/yaadflex');
+  });
   
   // Timeless Upgrade System API
   const timelessApi = (await import('./timeless-api')).default;
