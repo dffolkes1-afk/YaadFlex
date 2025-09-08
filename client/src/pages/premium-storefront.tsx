@@ -144,147 +144,108 @@ export default function PremiumStorefrontPage() {
   const selectedBusinessData = premiumBusinesses.find(b => b.id === selectedBusiness);
 
   const PremiumStorefront = ({ business }: { business: BusinessStorefront }) => (
-    <div className="relative overflow-hidden">
-      {/* Hero Section with Dynamic Gradient */}
+    <div className="relative overflow-hidden rounded-2xl shadow-xl">
+      {/* Clean Hero Section */}
       <div 
-        className="relative h-96 flex items-center justify-center text-white"
+        className="relative h-80 flex items-center justify-center text-white"
         style={{ 
-          background: `linear-gradient(135deg, ${business.primaryColor}DD, ${business.secondaryColor}DD), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="g"><stop offset="0%25" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="100%25" stop-color="%23000000" stop-opacity="0.1"/></radialGradient></defs><rect width="1000" height="1000" fill="url(%23g)"/></svg>')`,
-          backgroundSize: 'cover'
+          background: `linear-gradient(135deg, ${business.primaryColor}EE, ${business.secondaryColor}EE)`,
         }}
       >
         <div className="absolute inset-0 bg-black/20"></div>
-        
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-20 w-32 h-32 rounded-full bg-white/10 animate-pulse"></div>
-          <div className="absolute top-40 right-32 w-24 h-24 rounded-full bg-white/5 animate-bounce"></div>
-          <div className="absolute bottom-32 left-1/3 w-20 h-20 rounded-full bg-white/10 animate-pulse delay-1000"></div>
-        </div>
 
-        <div className="relative text-center z-10">
-          <div className="flex items-center justify-center mb-4">
-            <div 
-              className="p-4 rounded-full mr-4"
-              style={{ backgroundColor: business.primaryColor + '33' }}
-            >
+        <div className="relative text-center z-10 max-w-4xl mx-auto px-8">
+          <div className="flex items-center justify-center mb-6">
+            <div className="p-3 rounded-xl bg-white/10 backdrop-blur-sm mr-4">
               {getThemeIcon(business.theme)}
             </div>
-            {business.verified && (
-              <Badge className="bg-green-500 text-white">
-                <Award className="h-4 w-4 mr-1" />
-                YaadFlex Verified
-              </Badge>
-            )}
+            <Badge className="bg-green-500/90 backdrop-blur-sm text-white">
+              <Award className="h-4 w-4 mr-1" />
+              Verified
+            </Badge>
           </div>
           
-          <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-white to-yellow-200 bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white drop-shadow-lg">
             {business.businessName}
           </h1>
           
-          <p className="text-2xl mb-6 text-yellow-100">
+          <p className="text-xl mb-8 text-white/90">
             {business.tagline}
           </p>
           
-          <div className="flex items-center justify-center gap-6 mb-8">
+          <div className="flex flex-wrap items-center justify-center gap-6 mb-8 text-white/90">
             <div className="flex items-center gap-2">
               <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-              <span className="text-xl font-bold">{business.rating}</span>
-              <span className="text-lg opacity-75">({business.reviewCount.toLocaleString()} reviews)</span>
+              <span className="font-bold">{business.rating}</span>
+              <span>({business.reviewCount.toLocaleString()})</span>
             </div>
-            
             <div className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-blue-400" />
-              <span className="text-lg">Trusted by 2M+ Jamaicans</span>
+              <Users className="h-5 w-5" />
+              <span>2M+ Customers</span>
             </div>
           </div>
 
-          <div className="flex justify-center gap-4">
-            <Button size="lg" className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-bold px-8 py-4">
-              <ShoppingBag className="h-5 w-5 mr-2" />
+          <div className="flex flex-wrap justify-center gap-3">
+            <Button size="lg" className="bg-white text-black hover:bg-white/90 font-bold">
+              <ShoppingBag className="h-4 w-4 mr-2" />
               Shop Now
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-black px-8 py-4">
-              <Phone className="h-5 w-5 mr-2" />
+            <Button size="lg" variant="outline" className="border-white/50 text-white hover:bg-white/10">
+              <Phone className="h-4 w-4 mr-2" />
               Contact
-            </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-black">
-              <Heart className="h-5 w-5" />
-            </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-black">
-              <Share2 className="h-5 w-5" />
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Business Info Cards */}
-      <div className="p-8 bg-gradient-to-br from-background to-accent/10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      {/* Business Info */}
+      <div className="p-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           
-          {/* Business Details */}
-          <Card className="border-0 shadow-2xl bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <MapPin className="h-5 w-5 text-blue-600" />
-                Business Information
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <Label className="text-sm text-muted-foreground">Location</Label>
-                <p className="font-medium">{business.location}</p>
-              </div>
-              <div>
-                <Label className="text-sm text-muted-foreground">Phone</Label>
-                <p className="font-medium">{business.phone}</p>
-              </div>
-              <div>
-                <Label className="text-sm text-muted-foreground">Hours</Label>
-                <p className="font-medium flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-green-600" />
+          <Card className="">
+            <CardContent className="p-4">
+              <h3 className="font-semibold mb-3 flex items-center gap-2">
+                <MapPin className="h-4 w-4 text-blue-600" />
+                Contact Info
+              </h3>
+              <div className="space-y-2 text-sm">
+                <div>{business.location}</div>
+                <div>{business.phone}</div>
+                <div className="flex items-center gap-2">
+                  <Clock className="h-3 w-3 text-green-600" />
                   {business.hours}
-                </p>
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Premium Features */}
-          <Card className="border-0 shadow-2xl bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-950/20 dark:to-orange-950/20">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Gem className="h-5 w-5 text-purple-600" />
-                Premium Features
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {business.features.map((feature, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <Sparkles className="h-4 w-4 text-yellow-600" />
-                    <span className="font-medium">{feature}</span>
+          <Card className="bg-yellow-50 dark:bg-yellow-950/20">
+            <CardContent className="p-4">
+              <h3 className="font-semibold mb-3 flex items-center gap-2">
+                <Gem className="h-4 w-4 text-purple-600" />
+                Features
+              </h3>
+              <div className="space-y-2">
+                {business.features.slice(0, 3).map((feature, index) => (
+                  <div key={index} className="flex items-center gap-2 text-sm">
+                    <Sparkles className="h-3 w-3 text-yellow-600" />
+                    <span>{feature}</span>
                   </div>
                 ))}
               </div>
             </CardContent>
           </Card>
 
-          {/* Special Offers */}
-          <Card className="border-0 shadow-2xl bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Zap className="h-5 w-5 text-green-600" />
-                Exclusive YaadFlex Offers
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {business.specialOffers.map((offer, index) => (
-                  <div key={index} className="p-3 bg-green-100 dark:bg-green-900/20 rounded-lg">
-                    <div className="flex items-center gap-2">
-                      <Trophy className="h-4 w-4 text-green-600" />
-                      <span className="font-medium text-sm">{offer}</span>
-                    </div>
+          <Card className="bg-green-50 dark:bg-green-950/20">
+            <CardContent className="p-4">
+              <h3 className="font-semibold mb-3 flex items-center gap-2">
+                <Zap className="h-4 w-4 text-green-600" />
+                Special Offers
+              </h3>
+              <div className="space-y-2">
+                {business.specialOffers.slice(0, 2).map((offer, index) => (
+                  <div key={index} className="text-sm p-2 bg-green-100 dark:bg-green-900/20 rounded">
+                    {offer}
                   </div>
                 ))}
               </div>
@@ -292,50 +253,45 @@ export default function PremiumStorefrontPage() {
           </Card>
         </div>
 
-        {/* Business Description */}
-        <Card className="border-0 shadow-2xl bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 mb-8">
-          <CardContent className="p-8">
-            <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
-              <Eye className="h-6 w-6 text-blue-600" />
+        <Card className="mb-4">
+          <CardContent className="p-4">
+            <h3 className="font-semibold mb-3 flex items-center gap-2">
+              <Eye className="h-4 w-4 text-blue-600" />
               About {business.businessName}
             </h3>
-            <p className="text-lg leading-relaxed text-muted-foreground">
+            <p className="text-sm leading-relaxed text-muted-foreground">
               {business.description}
             </p>
           </CardContent>
         </Card>
 
-        {/* Performance Metrics */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          <Card className="text-center border-0 shadow-lg">
-            <CardContent className="p-6">
-              <TrendingUp className="h-8 w-8 mx-auto text-blue-600 mb-2" />
-              <div className="text-2xl font-bold">2M+</div>
-              <div className="text-sm text-muted-foreground">Customers Served</div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <Card className="text-center">
+            <CardContent className="p-3">
+              <TrendingUp className="h-5 w-5 mx-auto text-blue-600 mb-1" />
+              <div className="text-lg font-bold">2M+</div>
+              <div className="text-xs text-muted-foreground">Customers</div>
             </CardContent>
           </Card>
-          
-          <Card className="text-center border-0 shadow-lg">
-            <CardContent className="p-6">
-              <Star className="h-8 w-8 mx-auto text-yellow-600 mb-2" />
-              <div className="text-2xl font-bold">{business.rating}/5</div>
-              <div className="text-sm text-muted-foreground">Customer Rating</div>
+          <Card className="text-center">
+            <CardContent className="p-3">
+              <Star className="h-5 w-5 mx-auto text-yellow-600 mb-1" />
+              <div className="text-lg font-bold">{business.rating}/5</div>
+              <div className="text-xs text-muted-foreground">Rating</div>
             </CardContent>
           </Card>
-          
-          <Card className="text-center border-0 shadow-lg">
-            <CardContent className="p-6">
-              <Award className="h-8 w-8 mx-auto text-green-600 mb-2" />
-              <div className="text-2xl font-bold">15+</div>
-              <div className="text-sm text-muted-foreground">Years Experience</div>
+          <Card className="text-center">
+            <CardContent className="p-3">
+              <Award className="h-5 w-5 mx-auto text-green-600 mb-1" />
+              <div className="text-lg font-bold">15+</div>
+              <div className="text-xs text-muted-foreground">Years</div>
             </CardContent>
           </Card>
-          
-          <Card className="text-center border-0 shadow-lg">
-            <CardContent className="p-6">
-              <Diamond className="h-8 w-8 mx-auto text-purple-600 mb-2" />
-              <div className="text-2xl font-bold">Premium</div>
-              <div className="text-sm text-muted-foreground">YaadFlex Partner</div>
+          <Card className="text-center">
+            <CardContent className="p-3">
+              <Diamond className="h-5 w-5 mx-auto text-purple-600 mb-1" />
+              <div className="text-lg font-bold">Premium</div>
+              <div className="text-xs text-muted-foreground">Partner</div>
             </CardContent>
           </Card>
         </div>
