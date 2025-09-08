@@ -1,0 +1,74 @@
+{ "module": "teen_vybz_social_layer", "version": "1.0", "goal": "Engage teens and young adults with a safe, brand‑friendly social media layer: short videos, photos, chats, calls, challenges, and music‑driven creation integrated with accessibility and auto‑translate.", "principles": [ "safe_for_teens", "entertainment_first", "creative_expression", "cross_cultural_connection", "behavior_over_identity", "sponsor_friendly" ],
+
+"features": { "profiles": { "customizable": true, "display_fields": ["handle", "name", "bio", "age_bracket", "country", "flag_overlay"], "media_gallery": true, "themes": "country_flag_overlays", "badges": ["streaks", "challenges", "sponsor_rewards"], "privacy": { "private_by_default_for_13_17": true } },
+
+"short_videos": {
+  "max_length_seconds": 60,
+  "effects": ["filters", "stickers", "captions", "speed", "trim"],
+  "duet_remix": true,
+  "music_snippets": true,
+  "caption_auto_translate": true,
+  "copyright": {
+    "max_clip_seconds": 10,
+    "transform_required": true,
+    "mute_if_rights_unknown": true
+  }
+},
+
+"photos_flicks": {
+  "posts": true,
+  "tagged_locations": true,
+  "country_flag_frame": true
+},
+
+"social_chat": {
+  "dms": true,
+  "auto_translate": true,
+  "party_chat": { "ephemeral_hours": 24, "size_limit": 100 },
+  "voice_video_call": true
+},
+
+"engagement": {
+  "hashtags_challenges": true,
+  "trending_page": "YaadFlex Hot 20",
+  "reward_streaks": true,
+  "sponsor_challenges": true,
+  "duet_collab": true
+},
+
+"music_culture": {
+  "local_artist_snippets": true,
+  "vybz_mode_playlists": true,
+  "dance_offs": true
+}
+
+},
+
+"community_standards": { "content_labels": { "CLEAN": "No profanity, no explicit sexual content, no graphic violence", "MILD": "Soft language, non-sexual romance, dance/fashion; bleeped words ok", "SENSITIVE": "Bleeped/blurred strong profanity or implied adult themes; no nudity", "BLOCKED": "Hate/harassment, sexual minors, explicit sex, graphic violence, criminal instruction" }, "profanity": { "allow_bleeps": true, "max_density": 0.02, "auto_bleep": true, "teen_modes_force_bleep": true }, "sexual_content": { "no_nudity": true, "no_explicit": true, "romance_kissing_ok": true }, "violence": { "no_graphic": true, "no_threats": true }, "hateful_conduct": { "no_slurs": true, "no_harassment": true, "identity_expression_allowed": true } },
+
+"age_tiers": { "U13": { "allowed": false }, "13_17": { "modes": ["TeenClean", "TeenPlus"], "default_mode": "TeenClean" }, "18_plus": { "modes": ["Clean", "Standard"], "default_mode": "Clean" } },
+
+"ranking_rules": { "homefeed": { "prefer": ["CLEAN", "MILD"], "demote_edges": true }, "teen_trending": { "allow": ["CLEAN"], "review_required_for_sensitive": true }, "repeat_offender_shadow_demotion_days": 14 },
+
+"ml_filters": { "profanity_toxicity": { "threshold_block": 0.92, "threshold_review": 0.80 }, "nudity_explicit": { "threshold_block": 0.85, "threshold_blur": 0.70 }, "violence_graphic": { "threshold_block": 0.85 }, "hate_harass": { "threshold_block": 0.80, "threshold_review": 0.65 } },
+
+"creator_tools": { "safe_mode_default": true, "auto_bleep_toggle": true, "face_blur_toggle": true, "music_rights_checker": true, "caption_cleaner": true },
+
+"user_controls": { "content_preference": ["Clean_only", "Standard"], "hide_keywords": true, "report_buttons": ["Harassment", "Profanity", "Nudity", "Violence", "Spam"], "block_mute_users": true },
+
+"moderation_flow": { "steps": ["ml_prescreen", "auto_bleep_blur", "human_review_if_borderline", "post_or_block"], "sla_minutes": 30, "appeals": { "enabled": true, "deadline_days": 7, "turnaround_hours": 48 }, "enforcement_ladder": [ { "level": 1, "action": "remove_content", "notify": true }, { "level": 2, "action": "temp_post_restriction", "duration_hours": 24 }, { "level": 3, "action": "shadow_demotion", "duration_days": 14 }, { "level": 4, "action": "account_suspend", "duration_days": 7 } ] },
+
+"data_model": { "profile": { "id": "p_123", "user_id": "u_123", "handle": "@vybzqueen", "age_bracket": "13_17", "country": "JM", "flag_overlay": "🇯🇲", "badges": ["streak_7", "danceoff_winner"], "privacy": { "private": true } }, "post": { "id": "post_789", "author": "p_123", "type": "video|photo", "media_url": "https://...", "duration": 42, "caption": { "orig": { "lang": "en-JM", "text": "Link up!" }, "translations": { "sw-KE": "Tukutane!" } }, "labels": ["CLEAN"], "location_tag": "Papine Square", "music": { "snippet_id": "ms_55", "rights_verified": true }, "metrics": { "likes": 0, "shares": 0, "comments": 0 } }, "message": { "id": "m_987", "chat_id": "c_555", "sender": "p_123", "orig": { "lang": "es-HN", "text": "¿Listo para la fiesta?" }, "translations": { "en-JM": { "text": "Ready for the party?", "quality": 0.94 } } } },
+
+"api": { "POST /profiles": "create_profile", "GET /profiles/:id": "get_profile", "POST /posts": "create_post", "GET /feed": "get_feed", "POST /challenges": "create_challenge", "POST /messages": "send_message", "POST /calls/init": "start_voice_video_call", "POST /reports": "report_content" },
+
+"integration": { "translator": { "auto_translate_on_delivery": true, "per_user_language_preference": true, "toggles": ["Original", "English"] }, "accessibility": { "talkback_labels": true, "captions_everywhere": true, "big_button_simple_mode": true }, "country_themes": { "flag_overlay": true, "background_variant": ["primary", "classic", "minimal"] } },
+
+"notifications": { "types": ["new_follower", "comment", "duet", "challenge_invite", "message", "call"], "quiet_hours": { "enabled": true, "default_start": "22:00", "default_end": "07:00" } },
+
+"observability": { "metrics": ["daily_active_teens", "avg_watch_time", "challenge_participation", "moderation_hit_rate"], "logs": { "pii_scrubbed": true, "retention_days": 7 } },
+
+"rollout": { "phase_1": ["profiles", "short_videos", "CLEAN_feed", "auto_translate_captions"], "phase_2": ["duet_remix", "party_chat", "sponsor_challenges"], "phase_3": ["voice_video_calls", "dance_offs", "global_hot_20"] },
+
+"notes": "Copy/paste ready for Ripley/Reflect. Align thresholds with community_standards and DAC policies. Keep teen safety as the top priority." }
+
