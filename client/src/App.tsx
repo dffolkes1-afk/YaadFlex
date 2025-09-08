@@ -25,6 +25,7 @@ import ContactlessSystemPage from "@/pages/contactless-system";
 import CBRadioPage from "@/pages/cb-radio";
 import YaadFlexBankingPage from "@/pages/yaadflex-banking";
 import GalacticPortalPage from "@/pages/galactic-portal";
+import ProfessionalLanding from "@/pages/professional-landing";
 import { TranslatorDemoPage } from "@/pages/translator-demo";
 import { TimelessDashboardPage } from "@/pages/timeless-dashboard";
 import WorldEmblemPage from "@/pages/world-emblem";
@@ -52,10 +53,13 @@ function Router() {
       <Route path="/sponsorship" component={SponsorshipPage} />
       <Route path="/emblem" component={WorldEmblemPage} />
       
+      {/* Main landing page - always accessible */}
+      <Route path="/" component={ProfessionalLanding} />
+      
       {/* Authentication-based routes */}
       {isLoading || !isAuthenticated ? (
         <>
-          <Route path="/" component={Landing} />
+          <Route path="/old-landing" component={Landing} />
         </>
       ) : (
         <>
