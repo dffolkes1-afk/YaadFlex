@@ -101,18 +101,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Simple clean link for sharing
-  app.get('/jamaica', (req, res) => {
-    res.redirect('/yaadflex');
-  });
-
-  // Home page redirect to YaadFlex
-  app.get('/home', (req, res) => {
-    res.redirect('/yaadflex');
-  });
-  
-  // Landing page redirect
-  app.get('/landing', (req, res) => {
+  // Main homepage - super simple!
+  app.get('/', (req, res) => {
     res.redirect('/yaadflex');
   });
   
