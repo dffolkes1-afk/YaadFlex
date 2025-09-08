@@ -119,8 +119,12 @@ export interface IStorage {
   createTrip(trip: InsertTrip): Promise<Trip>;
   getTrip(id: string): Promise<Trip | undefined>;
   getUserTrips(userId: string): Promise<Trip[]>;
+  getCurrentTrips(userId: string): Promise<Trip[]>;
   getPublicTrips(): Promise<Trip[]>;
   updateTripStatus(tripId: string, status: string): Promise<Trip>;
+  
+  // Vehicle availability for ride booking (alias for getActiveVehicles)
+  getAvailableVehicles(): Promise<Vehicle[]>;
   
   // Location tracking operations
   addLocationUpdate(location: InsertLocationUpdate): Promise<LocationUpdate>;
@@ -474,6 +478,17 @@ export class DatabaseStorage implements IStorage {
       .limit(50);
   }
 
+  async getCurrentTrips(userId: string): Promise<Trip[]> {
+    return await db
+      .select()
+      .from(trips)
+      .where(and(
+        eq(trips.riderId, userId),
+        sql`${trips.status} IN ('requested', 'accepted', 'in_progress')`
+      ))
+      .orderBy(desc(trips.createdAt));
+  }
+
   async updateTripStatus(tripId: string, status: string): Promise<Trip> {
     const [trip] = await db
       .update(trips)
@@ -481,6 +496,11 @@ export class DatabaseStorage implements IStorage {
       .where(eq(trips.id, tripId))
       .returning();
     return trip;
+  }
+  
+  // Vehicle availability for ride booking (alias for getActiveVehicles) 
+  async getAvailableVehicles(): Promise<Vehicle[]> {
+    return this.getActiveVehicles();
   }
 
   // Location tracking operations
