@@ -86,7 +86,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
   await setupAuth(app);
   
-  // Serve YaadFlex Landing Page
+  // Serve YaadFlex Landing Page - Main Link for Facebook/Social Media
   app.get('/yaadflex', (req, res) => {
     try {
       const htmlPath = path.join(process.cwd(), 'yardflex-landing.html');
@@ -100,8 +100,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).send('Server error');
     }
   });
+
+  // Simple clean link for sharing
+  app.get('/jamaica', (req, res) => {
+    res.redirect('/yaadflex');
+  });
+
+  // Home page redirect to YaadFlex
+  app.get('/home', (req, res) => {
+    res.redirect('/yaadflex');
+  });
   
-  // Also serve at root for easy access
+  // Landing page redirect
   app.get('/landing', (req, res) => {
     res.redirect('/yaadflex');
   });
