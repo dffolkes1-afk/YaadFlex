@@ -739,6 +739,13 @@ export default function Home() {
                     >
                       🚀 POST JOB NOW
                     </Button>
+                    <Button 
+                      onClick={() => setLocation('/duo-world')}
+                      className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-xl px-6 py-3 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-purple-400/80"
+                      data-testid="button-3d-world-emblem"
+                    >
+                      🌍 3D WORLD EMBLEM
+                    </Button>
                   </div>
                   <p className="text-sm text-gray-300 animate-pulse">
                     🏗️ <strong>The Ultimate Caribbean Workforce Management Platform!</strong> 🏗️<br/>

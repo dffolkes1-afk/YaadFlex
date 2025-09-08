@@ -18,6 +18,7 @@ import { TimelessDashboardPage } from "@/pages/timeless-dashboard";
 import WorldEmblemPage from "@/pages/world-emblem";
 import WorkforceDashboard from "@/pages/WorkforceDashboard";
 import JobPosting from "@/pages/JobPosting";
+import DuoWonTheWorld3D from "@/components/DuoWonTheWorld3D";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -43,6 +44,7 @@ function Router() {
           <Route path="/workforce" component={WorkforceDashboard} />
           <Route path="/post-job" component={JobPosting} />
           <Route path="/emblem" component={WorldEmblemPage} />
+          <Route path="/duo-world" component={DuoWonTheWorld3D} />
         </>
       )}
       <Route component={NotFound} />
