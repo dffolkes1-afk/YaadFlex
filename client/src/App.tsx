@@ -17,6 +17,8 @@ import RideBooking from "@/pages/ride-booking";
 import BusinessRegistration from "@/pages/business-registration";
 import DriverRegistration from "@/pages/driver-registration";
 import SponsorshipPage from "@/pages/sponsorship";
+import RealEstatePage from "@/pages/real-estate";
+import CarMarketplacePage from "@/pages/car-marketplace";
 import { TranslatorDemoPage } from "@/pages/translator-demo";
 import { TimelessDashboardPage } from "@/pages/timeless-dashboard";
 import WorldEmblemPage from "@/pages/world-emblem";
@@ -47,6 +49,8 @@ function Router() {
           <Route path="/business-registration" component={BusinessRegistration} />
           <Route path="/driver-registration" component={DriverRegistration} />
           <Route path="/sponsorship" component={SponsorshipPage} />
+          <Route path="/real-estate" component={RealEstatePage} />
+          <Route path="/car-marketplace" component={CarMarketplacePage} />
           <Route path="/translator" component={TranslatorDemoPage} />
           <Route path="/timeless-core" component={TimelessDashboardPage} />
           <Route path="/workforce" component={WorkforceDashboard} />
