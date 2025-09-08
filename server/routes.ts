@@ -597,6 +597,145 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // YAADFLEX BUSINESS REGISTRATION SYSTEM
+  
+  // Register a new business to join YaadFlex platform
+  app.post('/api/businesses/register', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const {
+        businessName,
+        category,
+        description,
+        address,
+        phone,
+        email,
+        website,
+        services,
+        operatingHours,
+        parish
+      } = req.body;
+
+      // Validate required fields
+      if (!businessName || !category || !phone || !email) {
+        return res.status(400).json({ 
+          message: "Missing required fields: businessName, category, phone, email" 
+        });
+      }
+
+      // Create service provider using existing schema
+      const providerData = {
+        ownerId: userId,
+        businessName,
+        category,
+        description: description || '',
+        contactInfo: JSON.stringify({
+          phone,
+          email,
+          website: website || '',
+          address: address || '',
+          parish: parish || '',
+          operatingHours: operatingHours || ''
+        }),
+        serviceArea: parish || 'Jamaica',
+        isVerified: false, // Will be manually verified
+        isActive: true,
+        services: services || ''
+      };
+
+      const business = await storage.createServiceProvider({
+        ...providerData,
+        averageRating: '0',
+        totalReviews: 0,
+        profileImageUrl: null,
+        socialLinks: null,
+      });
+
+      // Log business registration for transparency
+      await storage.logSecurityEvent({
+        userId,
+        eventType: 'business_registration',
+        severity: 'medium',
+        description: `New business registered: ${businessName} (${category}) in ${parish}`,
+        ipAddress: req.ip,
+        userAgent: req.get('User-Agent'),
+      });
+
+      res.json({
+        success: true,
+        businessId: business.id,
+        businessName: business.businessName,
+        message: `Welcome to YaadFlex! ${businessName} has been registered and will be reviewed within 24 hours.`,
+        category: business.category,
+        status: 'pending_verification'
+      });
+
+    } catch (error) {
+      console.error("Error registering business:", error);
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "Invalid business data", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "Failed to register business" });
+      }
+    }
+  });
+
+  // Get registered businesses (for directory/marketplace)
+  app.get('/api/businesses', async (req, res) => {
+    try {
+      const { category, parish } = req.query;
+      const businesses = await storage.getServiceProviders(category as string);
+      
+      // Filter by parish if specified
+      let filteredBusinesses = businesses;
+      if (parish) {
+        filteredBusinesses = businesses.filter(business => {
+          try {
+            const contactInfo = JSON.parse(business.contactInfo || '{}');
+            return contactInfo.parish === parish;
+          } catch {
+            return false;
+          }
+        });
+      }
+
+      res.json({
+        success: true,
+        businesses: filteredBusinesses,
+        count: filteredBusinesses.length
+      });
+    } catch (error) {
+      console.error("Error fetching businesses:", error);
+      res.status(500).json({ message: "Failed to fetch businesses" });
+    }
+  });
+
+  // Get business categories for the registration form
+  app.get('/api/businesses/categories', async (req, res) => {
+    try {
+      const businessCategories = [
+        { id: 'travel', name: '✈️ Travel Agents', desc: 'Hotels, flights, tours, vacation packages' },
+        { id: 'restaurant', name: '🍽️ Restaurants & Food', desc: 'Dining, takeout, catering, food delivery' },
+        { id: 'transportation', name: '🚗 Transportation', desc: 'Taxi, rentals, tours, logistics' },
+        { id: 'accommodation', name: '🏨 Hotels & Lodging', desc: 'Hotels, guest houses, vacation rentals' },
+        { id: 'entertainment', name: '🎵 Entertainment', desc: 'DJs, bands, event planning, venues' },
+        { id: 'beauty', name: '💄 Beauty & Wellness', desc: 'Salons, spas, barbers, fitness' },
+        { id: 'services', name: '🔧 Professional Services', desc: 'Repair, maintenance, consulting' },
+        { id: 'photography', name: '📸 Photography & Media', desc: 'Photographers, videographers, designers' },
+        { id: 'education', name: '📚 Education & Training', desc: 'Tutoring, courses, workshops' },
+        { id: 'healthcare', name: '⚕️ Healthcare & Medical', desc: 'Clinics, practitioners, wellness' }
+      ];
+
+      res.json({
+        success: true,
+        categories: businessCategories
+      });
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      res.status(500).json({ message: "Failed to fetch categories" });
+    }
+  });
+
   // ENHANCED SECURITY BEYOND INTERPOL STANDARDS
   
   app.get('/api/security/events', isAuthenticated, async (req: any, res) => {
