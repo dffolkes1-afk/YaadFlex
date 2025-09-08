@@ -38,6 +38,10 @@ import {
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
   await setupAuth(app);
+  
+  // Timeless Upgrade System API
+  const timelessApi = (await import('./timeless-api')).default;
+  app.use('/api', timelessApi);
 
   // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {

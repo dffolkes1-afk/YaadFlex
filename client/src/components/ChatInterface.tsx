@@ -12,9 +12,10 @@ interface ChatInterfaceProps {
   chatId: string;
   chatTitle?: string;
   userPreferredLang?: string;
+  onInteraction?: (type: string, context: any) => void;
 }
 
-export function ChatInterface({ chatId, chatTitle = "Global Chat", userPreferredLang = 'en-JM' }: ChatInterfaceProps) {
+export function ChatInterface({ chatId, chatTitle = "Global Chat", userPreferredLang = 'en-JM', onInteraction }: ChatInterfaceProps) {
   const [messageText, setMessageText] = useState('');
   const [detectedLang, setDetectedLang] = useState('en-JM');
   const messagesEndRef = useRef<HTMLDivElement>(null);

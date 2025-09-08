@@ -13,6 +13,7 @@ import SecureBrowser from "@/pages/secure-browser";
 import SocialCommerce from "@/pages/social-commerce";
 import RentalEmpire from "@/pages/rental-empire";
 import Wallet from "@/pages/wallet";
+import TranslatorDemo from "@/pages/translator-demo";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -30,6 +31,7 @@ function Router() {
           <Route path="/social-commerce" component={SocialCommerce} />
           <Route path="/rental-empire" component={RentalEmpire} />
           <Route path="/wallet" component={Wallet} />
+          <Route path="/translator" component={TranslatorDemo} />
         </>
       )}
       <Route component={NotFound} />
