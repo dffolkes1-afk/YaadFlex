@@ -91,18 +91,28 @@ export async function setupAuth(app: Express) {
     verified(null, user);
   };
 
+  console.log("Registering strategies for domains:", process.env.REPLIT_DOMAINS);
+  
   for (const domain of process.env
     .REPLIT_DOMAINS!.split(",")) {
-    const strategy = new Strategy(
-      {
-        name: `replitauth:${domain}`,
-        config,
-        scope: "openid email profile offline_access",
-        callbackURL: `https://${domain}/api/callback`,
-      },
-      verify,
-    );
-    passport.use(strategy);
+    console.log(`Registering strategy for domain: ${domain}`);
+    
+    try {
+      const strategy = new Strategy(
+        {
+          name: `replitauth:${domain}`,
+          config,
+          scope: "openid email profile offline_access",
+          callbackURL: `https://${domain}/api/callback`,
+        },
+        verify,
+      );
+      passport.use(strategy);
+      console.log(`Strategy registered successfully for domain: ${domain}`);
+    } catch (error) {
+      console.error(`Failed to register strategy for domain ${domain}:`, error);
+      throw error;
+    }
   }
 
   passport.serializeUser((user: Express.User, cb) => cb(null, user));
