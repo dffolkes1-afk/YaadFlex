@@ -729,3 +729,114 @@
 .slow-spin {
   animation: slow-spin 8s linear infinite;
 }
+
+
+/* World Emblem Animations */
+.stars-field {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 3s infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.earth-globe {
+  animation: earthRotation 20s linear infinite;
+  box-shadow: 
+    0 0 30px rgba(59, 130, 246, 0.5),
+    inset -10px -10px 20px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes earthRotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.glow-ring {
+  animation: ringPulse 3s ease-in-out infinite;
+}
+
+@keyframes ringPulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.orbiting-people {
+  animation: orbitRotation 30s linear infinite;
+}
+
+@keyframes orbitRotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.person-silhouette {
+  animation: personGlow 2s ease-in-out infinite;
+}
+
+@keyframes personGlow {
+  0%, 100% { filter: drop-shadow(0 0 3px rgba(255, 212, 0, 0.3)); }
+  50% { filter: drop-shadow(0 0 8px rgba(255, 212, 0, 0.6)); }
+}
+
+.duo-container {
+  animation: duoDrop 2s ease-out;
+}
+
+@keyframes duoDrop {
+  0% { 
+    transform: translateY(-20px) scale(0.8) rotate(10deg); 
+    opacity: 0; 
+  }
+  100% { 
+    transform: translateY(0) scale(1) rotate(0deg); 
+    opacity: 1; 
+  }
+}
+
+.duo-character {
+  animation: duoFloat 4s ease-in-out infinite;
+}
+
+.brain-character {
+  animation-delay: 0s;
+}
+
+.pinky-character {
+  animation-delay: 2s;
+}
+
+@keyframes duoFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+.duo-glow {
+  animation: duoGlowPulse 3s ease-in-out infinite;
+}
+
+@keyframes duoGlowPulse {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.1); }
+}
+
+.bg-gradient-radial {
+  background: radial-gradient(circle at 30% 30%, 
+    #3b82f6 0%, 
+    #22c55e 35%, 
+    #1e40af 70%, 
+    #1e3a8a 100%);
+}
+

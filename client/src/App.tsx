@@ -15,6 +15,7 @@ import RentalEmpire from "@/pages/rental-empire";
 import Wallet from "@/pages/wallet";
 import { TranslatorDemoPage } from "@/pages/translator-demo";
 import { TimelessDashboardPage } from "@/pages/timeless-dashboard";
+import WorldEmblemPage from "@/pages/world-emblem";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -22,7 +23,10 @@ function Router() {
   return (
     <Switch>
       {isLoading || !isAuthenticated ? (
-        <Route path="/" component={Landing} />
+        <>
+          <Route path="/" component={Landing} />
+          <Route path="/emblem" component={WorldEmblemPage} />
+        </>
       ) : (
         <>
           <Route path="/" component={Home} />
@@ -34,6 +38,7 @@ function Router() {
           <Route path="/wallet" component={Wallet} />
           <Route path="/translator" component={TranslatorDemoPage} />
           <Route path="/timeless-core" component={TimelessDashboardPage} />
+          <Route path="/emblem" component={WorldEmblemPage} />
         </>
       )}
       <Route component={NotFound} />

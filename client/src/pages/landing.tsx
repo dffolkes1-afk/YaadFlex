@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CountryThemeSelector } from "@/components/CountryThemeSelector";
+import { Link } from "wouter";
 
 export default function Landing() {
   const handleLogin = () => {
@@ -58,6 +59,13 @@ export default function Landing() {
               >
                 Compliance
               </button>
+              <Link 
+                href="/emblem"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                data-testid="nav-emblem"
+              >
+                World Emblem
+              </Link>
             </div>
             <Button 
               onClick={handleLogin}
