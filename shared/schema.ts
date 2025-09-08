@@ -41,6 +41,13 @@ export const users = pgTable("users", {
   securityLevel: varchar("security_level").notNull().default('standard'), // 'standard', 'enhanced', 'fortress'
   lastSecurityCheck: timestamp("last_security_check"),
   trustedDevices: jsonb("trusted_devices"), // Array of trusted device IDs
+  
+  // YaadFlex Ultimate Translator - User Language Preferences
+  preferredLang: varchar("preferred_lang").default('en-JM'), // User's preferred language (e.g., en-JM, es-HN, sw-KE)
+  fallbackLang: varchar("fallback_lang").default('en-US'), // Fallback language
+  showAlwaysEnglishToggle: boolean("show_always_english_toggle").default(true),
+  captionVoiceMessages: boolean("caption_voice_messages").default(true),
+  autoTranslateEnabled: boolean("auto_translate_enabled").default(true),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -282,6 +289,23 @@ export type DriverCbProfile = typeof driverCbProfiles.$inferSelect;
 export type InsertCbChannelSubscription = typeof cbChannelSubscriptions.$inferInsert;
 export type CbChannelSubscription = typeof cbChannelSubscriptions.$inferSelect;
 
+// YaadFlex Ultimate Translator Types
+export const insertChatMessageSchema = createInsertSchema(chatMessages).omit({ id: true, createdAt: true, updatedAt: true });
+export type InsertChatMessage = z.infer<typeof insertChatMessageSchema>;
+export type ChatMessage = typeof chatMessages.$inferSelect;
+
+export const insertMessageTranslationSchema = createInsertSchema(messageTranslations).omit({ id: true, createdAt: true });
+export type InsertMessageTranslation = z.infer<typeof insertMessageTranslationSchema>;
+export type MessageTranslation = typeof messageTranslations.$inferSelect;
+
+export const insertChatParticipantSchema = createInsertSchema(chatParticipants).omit({ id: true, joinedAt: true });
+export type InsertChatParticipant = z.infer<typeof insertChatParticipantSchema>;
+export type ChatParticipant = typeof chatParticipants.$inferSelect;
+
+export const insertTranslationReportSchema = createInsertSchema(translationReports).omit({ id: true, createdAt: true });
+export type InsertTranslationReport = z.infer<typeof insertTranslationReportSchema>;
+export type TranslationReport = typeof translationReports.$inferSelect;
+
 // DEMO YFX WALLET SYSTEM - For Private Pilot Testing
 export const demoWallets = pgTable("demo_wallets", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -292,6 +316,92 @@ export const demoWallets = pgTable("demo_wallets", {
   updatedAt: timestamp("updated_at").defaultNow(),
 }, (table) => [
   index("idx_demo_wallet_user").on(table.userId),
+]);
+
+// YaadFlex Ultimate Translator - Chat Messages (separate from CB Radio for global users)
+export const chatMessages = pgTable("chat_messages", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  chatId: varchar("chat_id").notNull(), // Conversation/thread identifier
+  senderId: varchar("sender_id").references(() => users.id).notNull(),
+  messageType: varchar("message_type").notNull().default('text'), // 'text', 'voice', 'image', 'location'
+  
+  // Original message content
+  originalText: text("original_text"), // Original message text
+  originalLang: varchar("original_lang"), // Detected language (e.g., sw-KE, es-HN)
+  langConfidence: decimal("lang_confidence", { precision: 5, scale: 2 }).default('0.95'), // Detection confidence
+  
+  // Message metadata
+  voiceFileUrl: varchar("voice_file_url"), // For voice messages
+  voiceDuration: integer("voice_duration"), // Duration in seconds
+  imageUrl: varchar("image_url"), // For image messages
+  latitude: decimal("latitude", { precision: 10, scale: 8 }),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }),
+  
+  // Moderation and safety
+  toxicityScore: decimal("toxicity_score", { precision: 5, scale: 2 }).default('0.01'), // Safety score 0-1
+  isSafe: boolean("is_safe").default(true),
+  isReported: boolean("is_reported").default(false),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("idx_chat_messages_chat").on(table.chatId),
+  index("idx_chat_messages_sender").on(table.senderId),
+  index("idx_chat_messages_created").on(table.createdAt),
+]);
+
+// YaadFlex Ultimate Translator - Message Translations Cache
+export const messageTranslations = pgTable("message_translations", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  messageId: varchar("message_id").references(() => chatMessages.id).notNull(),
+  targetLang: varchar("target_lang").notNull(), // Target language (e.g., en-JM, es-HN)
+  translatedText: text("translated_text").notNull(),
+  translationQuality: decimal("translation_quality", { precision: 5, scale: 2 }).default('0.94'), // Quality score 0-1
+  translationModel: varchar("translation_model").default('v-best'), // Model version used
+  isHumanVerified: boolean("is_human_verified").default(false),
+  translationTime: integer("translation_time"), // Time taken in milliseconds
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("idx_translation_message_lang").on(table.messageId, table.targetLang),
+]);
+
+// YaadFlex Ultimate Translator - Chat Participants
+export const chatParticipants = pgTable("chat_participants", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  chatId: varchar("chat_id").notNull(),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  role: varchar("role").default('participant'), // 'participant', 'admin', 'moderator'
+  joinedAt: timestamp("joined_at").defaultNow(),
+  leftAt: timestamp("left_at"),
+  isActive: boolean("is_active").default(true),
+  
+  // Per-chat translation preferences
+  preferredLangOverride: varchar("preferred_lang_override"), // Override global preference for this chat
+  alwaysShowOriginal: boolean("always_show_original").default(false), // From specific users
+  alwaysShowEnglish: boolean("always_show_english").default(false),
+  
+  lastReadAt: timestamp("last_read_at").defaultNow(),
+}, (table) => [
+  index("idx_chat_participants_chat").on(table.chatId),
+  index("idx_chat_participants_user").on(table.userId),
+]);
+
+// YaadFlex Ultimate Translator - Translation Reports for Quality Improvement
+export const translationReports = pgTable("translation_reports", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  messageId: varchar("message_id").references(() => chatMessages.id).notNull(),
+  translationId: varchar("translation_id").references(() => messageTranslations.id).notNull(),
+  reporterId: varchar("reporter_id").references(() => users.id).notNull(),
+  issueType: varchar("issue_type").notNull(), // 'accuracy', 'context', 'offensive', 'technical'
+  originalText: text("original_text").notNull(), // Copy for analysis
+  incorrectTranslation: text("incorrect_translation").notNull(),
+  suggestedTranslation: text("suggested_translation"), // User's correction
+  reportDescription: text("report_description"),
+  status: varchar("status").default('pending'), // 'pending', 'reviewed', 'resolved', 'dismissed'
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("idx_translation_reports_message").on(table.messageId),
+  index("idx_translation_reports_status").on(table.status),
 ]);
 
 // DEMO TRANSACTIONS - Track all YFX movements

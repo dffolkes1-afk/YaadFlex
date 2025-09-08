@@ -1,0 +1,270 @@
+YaadFlex Ultimate Translator – Social Auto‑Translate (v1)
+
+Goal
+Enable any two users to chat in their own languages and see messages in their preferred language automatically, with instant toggles to view the original or English.
+
+
+---
+
+Core Rules
+
+1. Per‑user language preference (e.g., en-JM, es-HN, sw-KE).
+
+
+2. Auto‑translate on delivery: Sender writes in their language → Receiver views in their language.
+
+
+3. Always store original text + versioned translations.
+
+
+4. One‑tap toggles: View Original, View English, Report translation issue.
+
+
+5. Low latency: sub‑second streaming for voice; <1.5s target for text.
+
+
+6. Accessibility: captions for voice, screen‑reader friendly labels.
+
+
+7. Privacy: no retention beyond what the conversation already stores; redact PII before model calls when possible.
+
+
+
+
+---
+
+Data Model
+
+User Settings
+
+{
+  "user_id": "u_123",
+  "preferred_lang": "en-JM",
+  "fallback_lang": "en-US",
+  "show_always_english_toggle": true,
+  "caption_voice_messages": true
+}
+
+Message Record
+
+{
+  "msg_id": "m_987",
+  "chat_id": "c_555",
+  "sender_id": "u_kenya_42",
+  "timestamp": 1694100000,
+  "orig": { "lang": "sw-KE", "text": "Habari, uko wapi?" },
+  "translations": {
+    "en-JM": { "text": "Hey, where are you?", "quality": 0.94 },
+    "es-HN": { "text": "Hola, ¿dónde estás?", "quality": 0.93 }
+  },
+  "meta": { "model": "v-best", "toxicity": 0.01 }
+}
+
+
+---
+
+Delivery Logic (Text)
+
+1. Sender types in any language (auto‑detect with confidence score).
+
+
+2. Persist original text.
+
+
+3. For each recipient, translate to recipient.preferred_lang.
+
+
+4. Cache that translation on the message record under translations[lang].
+
+
+5. Render receiver view using that translation, with a toggle to Original/English.
+
+
+
+Pseudo‑code
+
+function handleInboundMessage(msg, recipients) {
+  const detected = detectLanguage(msg.text);
+  msg.orig = { lang: detected.lang, text: msg.text };
+  save(msg);
+  for (const r of recipients) {
+    const target = r.preferred_lang || r.fallback_lang || 'en-US';
+    const key = target;
+    if (!msg.translations[key]) {
+      msg.translations[key] = translate(msg.orig.text, msg.orig.lang, target);
+    }
+    deliver(r, renderFor(r, msg, target));
+  }
+  update(msg); // store translations map
+}
+
+
+---
+
+UI Behaviour (Chat)
+
+Message bubble shows translated text by default for each viewer.
+
+Under bubble: Translated from {lang}. Buttons: [Original] [English] [Report].
+
+Long‑press/ellipsis menu: Always show in English, Always show Original from this user.
+
+If translation quality < threshold, auto‑show double line: translated + faint original.
+
+
+Example (Jamaica user viewing Honduran friend)
+
+[🇭🇳 Carlos]
+Hola, ¿cómo estás?
+(Translated from es-HN)  [Original] [English]
+
+Tapping English forces the English variant even if preferred is elsewhere.
+
+
+---
+
+Voice Messages (Two‑Way)
+
+Live voice mode:
+
+Detect language in real‑time → show source captions.
+
+Stream target speech to the listener in their language.
+
+Also print translated captions for accessibility.
+
+
+
+Latency Targets
+
+STT partials in < 400 ms.
+
+Translation segments < 500 ms.
+
+TTS frames < 400 ms.
+
+Total perceived delay ≈ 1.0–1.3 s.
+
+
+
+---
+
+Group Chats
+
+Translate once per target language and fan‑out to all users sharing that language to save cost.
+
+For mixed languages, pre‑compute most common targets (e.g., en, es, fr, sw).
+
+Each user still has toggles to Original/English.
+
+
+
+---
+
+Moderation & Safety
+
+Before translation, run light safety filters (spam, abuse).
+
+Do not alter originals; mark unsafe content but keep toggles functional unless illegal.
+
+Provide Report translation → logs original + target pair for review and model fine‑tune.
+
+
+
+---
+
+Offline / Low‑Data Mode
+
+Local language packs for top pairs (en↔es, en↔fr, en↔sw) with compact models.
+
+Queue translations; display originals with a clock icon until translation arrives.
+
+For voice, fall back to push‑to‑translate (tap to process clip).
+
+
+
+---
+
+API Outline
+
+POST /messages → create message; returns msg_id + orig.lang.
+
+POST /messages/:id/translate?lang=en-JM → returns and caches translation.
+
+GET /messages/:id?viewer_lang=en-JM → server picks best translation and returns UI payload.
+
+POST /report/translation → user feedback with optional corrections.
+
+
+UI Payload Example
+
+{
+  "msg_id": "m_987",
+  "display_text": "Hey, where are you?",
+  "source_lang": "sw-KE",
+  "viewer_lang": "en-JM",
+  "toggles": { "original": true, "english": true }
+}
+
+
+---
+
+Settings (Per User)
+
+Preferred Language (picker with search).
+
+Always show English toggle.
+
+Auto‑translate ON/OFF per chat.
+
+Caption voice by default.
+
+Download offline packs.
+
+
+
+---
+
+QA Checklist
+
+[ ] Auto‑detect language > 97% on top 20 languages.
+
+[ ] Text translation < 1.5 s  p95.
+
+[ ] Voice round‑trip < 1.3 s p95.
+
+[ ] Accurate script handling (Latin, Cyrillic, Arabic).
+
+[ ] Right‑to‑left UI handling (Arabic/Hebrew).
+
+[ ] Screen‑reader labels for toggles.
+
+[ ] Full logs for Report translation.
+
+
+
+---
+
+Copy‑Paste Toggles (UI Strings)
+
+Translated from {lang}.
+
+Original · English · Report translation
+
+Always show English · Always show Original
+
+Waiting for translation…
+
+
+
+---
+
+Notes
+
+This module plugs into YaadFlex Accessibility Core and Global Vybz.
+
+Default fallback for everyone is English view, but users can change anytime.
+
+Works for social feed, DMs, support chat, driver–rider chat.
+
+
