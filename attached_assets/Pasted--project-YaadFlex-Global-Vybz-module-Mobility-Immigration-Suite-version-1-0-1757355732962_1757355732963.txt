@@ -1,0 +1,169 @@
+{
+  "project": "YaadFlex Global Vybz",
+  "module": "Mobility & Immigration Suite",
+  "version": "1.0",
+  "goal": "Single entry point for hotel workforce hiring, immigration programs, travel tickets/itineraries, and legal services in one secure flow.",
+
+  "capabilities": [
+    "Hotel workforce onboarding & rostering",
+    "Immigration program applications (farm work, hospitality visas)",
+    "Document vault + KYC/AML + e-sign",
+    "Travel search & ticketing (air, bus, ferry)",
+    "Legal marketplace (immigration lawyers, paralegals)",
+    "Secure messaging + email sync",
+    "Payments, escrow, refunds"
+  ],
+
+  "entities": {
+    "hotels": ["id","name","email","phone","address","country","starRating","isActive","createdAt","updatedAt"],
+    "hotelRoles": ["id","hotelId","title","dept","minSkill","payRate","payType","notes","isActive"],
+    "hotelShifts": ["id","hotelId","roleId","start","end","slots","notes","status"],
+    "immigrationPrograms": ["id","name","country","visaType","seasonal","requirements[]","documentsRequired[]","feeUsd","status"],
+    "immigrationApplications": ["id","programId","workerId","status","submittedAt","decisionAt","assignedLawyerId","notes"],
+    "travelItineraries": ["id","userId","pnr","segments[]","price","currency","status","provider","ticketedAt"],
+    "legalProviders": ["id","firmName","contactEmail","barId","country","specialties[]","rating","isActive"],
+    "cases": ["id","userId","lawyerId","type","status","openedAt","closedAt","documents[]","messagesThreadId"],
+    "kycProfiles": ["id","userId","tier","status","pepScreen","sanctionsHit","lastReviewedAt"],
+    "documents": ["id","ownerId","type","path","hash","issuedBy","expiresAt","verified","notes"],
+    "escrowAccounts": ["id","orderId","type","amount","currency","status","releasedAt","refundedAt"]
+  },
+
+  "db": {
+    "tables": {
+      "hotels": { "pk": "id", "idx": ["country","isActive"] },
+      "hotel_roles": { "pk": "id", "fk": {"hotelId":"hotels.id"} },
+      "hotel_shifts": { "pk": "id", "fk": {"hotelId":"hotels.id","roleId":"hotel_roles.id"}, "idx": ["status","start","end"] },
+      "immigration_programs": { "pk": "id", "idx": ["country","visaType","status"] },
+      "immigration_applications": { "pk": "id", "fk": {"programId":"immigration_programs.id"}, "idx": ["workerId","status"] },
+      "legal_providers": { "pk": "id", "idx": ["country","isActive"] },
+      "cases": { "pk": "id", "fk": {"lawyerId":"legal_providers.id"}, "idx": ["userId","status","type"] },
+      "kyc_profiles": { "pk": "id", "unique": ["userId"] },
+      "documents": { "pk": "id", "idx": ["ownerId","type","verified","expiresAt"] },
+      "travel_itineraries": { "pk": "id", "idx": ["userId","status","provider"] },
+      "escrow_accounts": { "pk": "id", "idx": ["orderId","status"] }
+    }
+  },
+
+  "api": {
+    "hotel_workforce": {
+      "POST /api/hotels": "create hotel",
+      "GET /api/hotels?country=&q=": "list hotels",
+      "POST /api/hotels/:id/roles": "create role",
+      "GET /api/hotels/:id/roles": "list roles",
+      "POST /api/hotels/:id/shifts": "create shift",
+      "GET /api/hotels/:id/shifts?status=&from=&to=": "list shifts",
+      "POST /api/shifts/:id/assign": "{ workerId } assign to shift",
+      "POST /api/shifts/:id/checkin": "{ workerId, time }",
+      "POST /api/shifts/:id/checkout": "{ workerId, time }"
+    },
+    "immigration": {
+      "GET /api/immigration/programs?country=&visaType=": "browse programs",
+      "POST /api/immigration/applications": "{ programId, workerId, docs[] }",
+      "GET /api/immigration/applications/:id": "track status",
+      "POST /api/immigration/applications/:id/assign-lawyer": "{ lawyerId }",
+      "POST /api/immigration/applications/:id/decision": "{ status, note } (staff)"
+    },
+    "legal": {
+      "GET /api/legal/providers?country=&specialty=": "browse lawyers",
+      "POST /api/legal/cases": "{ userId, lawyerId, type }",
+      "POST /api/legal/cases/:id/message": "{ text|fileId }",
+      "GET /api/legal/cases/:id": "case status"
+    },
+    "travel": {
+      "POST /api/travel/search": "{ from, to, depart, return?, pax, cabin }",
+      "POST /api/travel/book": "{ offerId, paymentMethod }",
+      "GET /api/travel/itineraries": "list my trips",
+      "GET /api/travel/itineraries/:id": "trip detail"
+    },
+    "documents_kyc": {
+      "POST /api/docs/upload": "{ type, file } -> id",
+      "POST /api/docs/:id/verify": "admin/partner verification",
+      "GET /api/kyc/profile": "current tier + status",
+      "POST /api/kyc/upgrade": "{ tier }"
+    },
+    "payments_escrow": {
+      "POST /api/escrow/open": "{ orderId, amount, currency, type }",
+      "POST /api/escrow/release": "{ escrowId }",
+      "POST /api/escrow/refund": "{ escrowId, reason }"
+    },
+    "comms": {
+      "POST /api/notify/email": "{ to, subject, body, threadKey? }",
+      "POST /api/notify/sms": "{ to, body }",
+      "POST /api/notify/inapp": "{ userId, title, body }"
+    }
+  },
+
+  "workflows": {
+    "hotel_hire_flow": [
+      "Hotel creates role + shifts",
+      "Workers apply or are matched",
+      "Supervisor assigns shift",
+      "Check-in/out with GPS stamp",
+      "Payout via wallet or payroll export"
+    ],
+    "immigration_application_flow": [
+      "User selects program",
+      "KYC tier-1 check",
+      "Uploads passport, police record, references",
+      "Optional: assign lawyer; chat & e-sign",
+      "Decision + travel booking handoff",
+      "Escrow releases on milestone"
+    ],
+    "travel_booking_flow": [
+      "Search → holds offer → pay",
+      "Issue ticket (PNR) → itinerary in app",
+      "Changes/refunds via same thread"
+    ],
+    "legal_case_flow": [
+      "Pick lawyer → open case",
+      "Secure doc share (vault)",
+      "Milestones & invoices via escrow",
+      "Close case, rate provider"
+    ]
+  },
+
+  "security_compliance": {
+    "auth": "OIDC + MFA optional",
+    "pii": "Row-level encryption for passport/ID; redact logs",
+    "kyc": "Tiered KYC (basic → enhanced); PEP/sanctions screening",
+    "audit": "Write-once audit trail for status changes",
+    "consent": "Explicit e-sign for data sharing with hotels/embassies/lawyers",
+    "storage": "S3-compatible encrypted buckets, signed URLs, expiry <= 24h"
+  },
+
+  "ui": {
+    "routes": [
+      "/workforce/hotels",
+      "/immigration/programs",
+      "/immigration/applications/:id",
+      "/legal/providers",
+      "/legal/cases/:id",
+      "/travel/search",
+      "/travel/itineraries/:id",
+      "/vault"
+    ],
+    "a11y": ["voice_commands", "live_captions", "prefers_reduced_motion_fallback"]
+  },
+
+  "observability": {
+    "metrics": [
+      "immigration_apps_submitted",
+      "kyc_pass_rate",
+      "hotel_shifts_filled",
+      "case_resolution_time_days",
+      "ticket_issue_success_rate",
+      "escrow_release_time_hours"
+    ],
+    "alerts": [
+      "kyc_backlog_over_24h",
+      "ticket_issue_fail_rate_over_2pct",
+      "escrow_pending_over_72h"
+    ]
+  },
+
+  "sample_calls": [
+    { "curl": "POST /api/immigration/applications", "body": { "programId": "prog_farm_us", "workerId": "u_101", "docs": ["doc_passport_1","doc_police_1"] } },
+    { "curl": "POST /api/travel/search", "body": { "from": "KIN", "to": "MIA", "depart": "2025-10-12", "pax": 1, "cabin": "ECONOMY" } },
+    { "curl": "POST /api/legal/cases", "body": { "userId": "u_101", "lawyerId": "law_22", "type": "immigration" } }
+  ]
+}
