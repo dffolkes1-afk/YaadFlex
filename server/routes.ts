@@ -628,7 +628,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           messageId,
           targetLang,
           translatedText,
-          translationQuality: 0.94,
+          translationQuality: '0.94',
           translationModel: 'v-placeholder',
           translationTime: 150
         });
@@ -719,7 +719,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         translationId,
         reporterId: userId,
         issueType,
-        originalText: message.originalText,
+        originalText: message.originalText || '',
         incorrectTranslation,
         suggestedTranslation,
         reportDescription,

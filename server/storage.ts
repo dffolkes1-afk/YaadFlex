@@ -65,6 +65,19 @@ import {
   type InsertPriceCalculation,
   type LocationZone,
   type InsertLocationZone,
+  // YaadFlex Ultimate Translator types
+  chatMessages,
+  messageTranslations,
+  chatParticipants,
+  translationReports,
+  type ChatMessage,
+  type InsertChatMessage,
+  type MessageTranslation,
+  type InsertMessageTranslation,
+  type ChatParticipant,
+  type InsertChatParticipant,
+  type TranslationReport,
+  type InsertTranslationReport,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql } from "drizzle-orm";
@@ -157,6 +170,22 @@ export interface IStorage {
   getLocationZones(): Promise<LocationZone[]>;
   createLocationZone(zone: InsertLocationZone): Promise<LocationZone>;
   getPriceCalculation(id: string): Promise<PriceCalculation | undefined>;
+
+  // YaadFlex Ultimate Translator operations
+  createChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
+  getChatMessageById(messageId: string): Promise<ChatMessage | undefined>;
+  getChatMessages(chatId: string, viewerLang: string, limit?: number): Promise<ChatMessage[]>;
+  createMessageTranslation(translation: InsertMessageTranslation): Promise<MessageTranslation>;
+  getMessageTranslation(messageId: string, targetLang: string): Promise<MessageTranslation | undefined>;
+  createChatParticipant(participant: InsertChatParticipant): Promise<ChatParticipant>;
+  createTranslationReport(report: InsertTranslationReport): Promise<TranslationReport>;
+  updateUserLanguagePreferences(userId: string, preferences: {
+    preferredLang?: string;
+    fallbackLang?: string;
+    showAlwaysEnglishToggle?: boolean;
+    captionVoiceMessages?: boolean;
+    autoTranslateEnabled?: boolean;
+  }): Promise<User>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -964,6 +993,91 @@ export class DatabaseStorage implements IStorage {
       .from(priceCalculations)
       .where(eq(priceCalculations.id, id));
     return calculation;
+  }
+
+  // ===================== YaadFlex Ultimate Translator operations =====================
+
+  async createChatMessage(messageData: InsertChatMessage): Promise<ChatMessage> {
+    const [message] = await db
+      .insert(chatMessages)
+      .values(messageData)
+      .returning();
+    return message;
+  }
+
+  async getChatMessageById(messageId: string): Promise<ChatMessage | undefined> {
+    const [message] = await db
+      .select()
+      .from(chatMessages)
+      .where(eq(chatMessages.id, messageId));
+    return message;
+  }
+
+  async getChatMessages(chatId: string, viewerLang: string, limit: number = 50): Promise<ChatMessage[]> {
+    // Get messages for the chat
+    const messages = await db
+      .select()
+      .from(chatMessages)
+      .where(eq(chatMessages.chatId, chatId))
+      .orderBy(desc(chatMessages.createdAt))
+      .limit(limit);
+
+    // TODO: Join with translations for the viewer's language
+    // For now, return the raw messages
+    return messages;
+  }
+
+  async createMessageTranslation(translationData: InsertMessageTranslation): Promise<MessageTranslation> {
+    const [translation] = await db
+      .insert(messageTranslations)
+      .values(translationData)
+      .returning();
+    return translation;
+  }
+
+  async getMessageTranslation(messageId: string, targetLang: string): Promise<MessageTranslation | undefined> {
+    const [translation] = await db
+      .select()
+      .from(messageTranslations)
+      .where(and(
+        eq(messageTranslations.messageId, messageId),
+        eq(messageTranslations.targetLang, targetLang)
+      ));
+    return translation;
+  }
+
+  async createChatParticipant(participantData: InsertChatParticipant): Promise<ChatParticipant> {
+    const [participant] = await db
+      .insert(chatParticipants)
+      .values(participantData)
+      .returning();
+    return participant;
+  }
+
+  async createTranslationReport(reportData: InsertTranslationReport): Promise<TranslationReport> {
+    const [report] = await db
+      .insert(translationReports)
+      .values(reportData)
+      .returning();
+    return report;
+  }
+
+  async updateUserLanguagePreferences(userId: string, preferences: {
+    preferredLang?: string;
+    fallbackLang?: string;
+    showAlwaysEnglishToggle?: boolean;
+    captionVoiceMessages?: boolean;
+    autoTranslateEnabled?: boolean;
+  }): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set({
+        ...preferences,
+        updatedAt: new Date()
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    return user;
   }
 }
 
