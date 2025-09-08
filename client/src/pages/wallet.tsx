@@ -11,6 +11,25 @@ import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
+// API Response Types
+interface BetaStatusResponse {
+  hasBetaAccess: boolean;
+  testMode: boolean;
+  message: string;
+}
+
+interface DemoWalletResponse {
+  balanceYfx: string;
+}
+
+interface DemoTransactionResponse {
+  id: string;
+  type: string;
+  amountYfx: string;
+  note: string;
+  createdAt: string;
+}
+
 export default function WalletScreen() {
   const [inviteCode, setInviteCode] = useState("");
   const [showInviteForm, setShowInviteForm] = useState(false);
@@ -19,20 +38,20 @@ export default function WalletScreen() {
   const queryClient = useQueryClient();
 
   // Check beta access status
-  const { data: betaStatus, isLoading: betaLoading } = useQuery({
+  const { data: betaStatus, isLoading: betaLoading } = useQuery<BetaStatusResponse>({
     queryKey: ['/api/demo/beta-status'],
     retry: false,
   });
 
   // Get demo wallet
-  const { data: wallet, isLoading: walletLoading } = useQuery({
+  const { data: wallet, isLoading: walletLoading } = useQuery<DemoWalletResponse>({
     queryKey: ['/api/demo/wallet'],
     enabled: betaStatus?.hasBetaAccess === true,
     retry: false,
   });
 
   // Get transactions
-  const { data: transactions, isLoading: txLoading } = useQuery({
+  const { data: transactions, isLoading: txLoading } = useQuery<DemoTransactionResponse[]>({
     queryKey: ['/api/demo/wallet/transactions'],
     enabled: betaStatus?.hasBetaAccess === true,
     retry: false,

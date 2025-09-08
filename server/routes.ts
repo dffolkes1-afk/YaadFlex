@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { CBRadioWebSocketServer } from "./cbRadioWebSocket";
-import { demoWallets, demoTransactions, demoOrders, demoFeatureFlags } from "@shared/schema";
+import { demoWallets, demoTransactions, demoOrders, demoFeatureFlags, pilotTesters } from "@shared/schema";
 import { 
   insertTransactionSchema, 
   insertUserWalletSchema,
@@ -1033,9 +1033,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         // Store invite code in feature flags table
         await db.insert(demoFeatureFlags).values({
-          userId: 'SYSTEM',
-          flagName: `BETA_INVITE_${inviteCode}`,
-          isEnabled: true
+          key: `BETA_INVITE_${inviteCode}`,
+          enabled: true,
+          audience: 'beta_tester',
+          rollout: 100,
+          meta: { createdBy: 'SYSTEM' }
         });
       }
 
@@ -1065,22 +1067,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const [validInvite] = await db.select()
         .from(demoFeatureFlags)
         .where(and(
-          eq(demoFeatureFlags.flagName, `BETA_INVITE_${inviteCode.toUpperCase()}`),
-          eq(demoFeatureFlags.isEnabled, true)
+          eq(demoFeatureFlags.key, `BETA_INVITE_${inviteCode.toUpperCase()}`),
+          eq(demoFeatureFlags.enabled, true)
         ));
 
       if (!validInvite) {
         return res.status(400).json({ message: "Invalid or expired invite code" });
       }
 
-      // Grant beta access to user
-      await db.insert(demoFeatureFlags).values({
-        userId,
-        flagName: 'BETA_ACCESS',
-        isEnabled: true
+      // Grant beta access to user (store in pilotTesters table instead)
+      await db.insert(pilotTesters).values({
+        email: req.user.email || '',
+        role: 'beta_tester',
+        isActive: true,
+        consentAt: new Date()
       }).onConflictDoUpdate({
-        target: [demoFeatureFlags.userId, demoFeatureFlags.flagName],
-        set: { isEnabled: true, updatedAt: new Date() }
+        target: pilotTesters.email,
+        set: { role: 'beta_tester', isActive: true }
       });
 
       // Auto-allocate 5.0 YFX demo funds (ChatGPT's design)
@@ -1119,11 +1122,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = req.user.claims.sub;
       
       const [betaAccess] = await db.select()
-        .from(demoFeatureFlags)
+        .from(pilotTesters)
         .where(and(
-          eq(demoFeatureFlags.userId, userId),
-          eq(demoFeatureFlags.flagName, 'BETA_ACCESS'),
-          eq(demoFeatureFlags.isEnabled, true)
+          eq(pilotTesters.email, req.user.email || ''),
+          eq(pilotTesters.role, 'beta_tester'),
+          eq(pilotTesters.isActive, true)
         ));
 
       res.json({
