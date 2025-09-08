@@ -3,7 +3,26 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { CBRadioWebSocketServer } from "./cbRadioWebSocket";
-import { demoWallets, demoTransactions, demoOrders, demoFeatureFlags, pilotTesters } from "@shared/schema";
+import { 
+  demoWallets, 
+  demoTransactions, 
+  demoOrders, 
+  demoFeatureFlags, 
+  pilotTesters,
+  // Workforce Management Tables
+  companies,
+  jobs,
+  workers,
+  supervisors,
+  equipment,
+  equipmentHubs,
+  equipmentHubInventory,
+  equipmentCheckouts,
+  jobApplications,
+  jobAssignments,
+  vehicleListings,
+  emailCommunications
+} from "@shared/schema";
 import { 
   insertTransactionSchema, 
   insertUserWalletSchema,
@@ -27,7 +46,7 @@ import {
   insertTranslationReportSchema
 } from "@shared/schema";
 import { z } from "zod";
-import { desc, eq, and, sql, lte, gte } from "drizzle-orm";
+import { desc, eq, and, sql, lte, gte, or } from "drizzle-orm";
 import { db } from "./db";
 import { 
   rentalProperties, 
@@ -653,7 +672,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/user/language-preferences', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
-      const user = await storage.getUserById(userId);
+      const user = await storage.getUser(userId);
       
       if (!user) {
         return res.status(404).json({ message: "User not found" });
@@ -1362,6 +1381,469 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error checking beta status:", error);
       res.status(500).json({ message: "Failed to check beta status" });
+    }
+  });
+
+  // WORKFORCE MANAGEMENT SYSTEM - JOB CREATION & WORKER PLATFORM
+
+  // Company Management Routes
+  app.post('/api/companies', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const companyData = {
+        ...req.body,
+        ownerId: userId
+      };
+      
+      const [company] = await db.insert(companies).values(companyData).returning();
+      res.json(company);
+    } catch (error) {
+      console.error("Error creating company:", error);
+      res.status(500).json({ message: "Failed to create company" });
+    }
+  });
+
+  app.get('/api/companies', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const userCompanies = await db.select().from(companies).where(eq(companies.ownerId, userId));
+      res.json(userCompanies);
+    } catch (error) {
+      console.error("Error fetching companies:", error);
+      res.status(500).json({ message: "Failed to fetch companies" });
+    }
+  });
+
+  // Job Management Routes - Create, Post, Manage Jobs
+  app.post('/api/jobs', isAuthenticated, async (req: any, res) => {
+    try {
+      const jobData = req.body;
+      const [job] = await db.insert(jobs).values(jobData).returning();
+      
+      // Update company active jobs count
+      await db.update(companies)
+        .set({ 
+          activeJobs: sql`${companies.activeJobs} + 1`,
+          totalJobs: sql`${companies.totalJobs} + 1`
+        })
+        .where(eq(companies.id, jobData.companyId));
+      
+      res.json(job);
+    } catch (error) {
+      console.error("Error creating job:", error);
+      res.status(500).json({ message: "Failed to create job" });
+    }
+  });
+
+  app.get('/api/jobs', async (req: any, res) => {
+    try {
+      const { city, jobType, status = 'open', limit = 50 } = req.query;
+      let query = db.select().from(jobs).where(eq(jobs.isPublic, true));
+      
+      if (city) query = query.where(eq(jobs.city, city));
+      if (jobType) query = query.where(eq(jobs.jobType, jobType));
+      if (status) query = query.where(eq(jobs.status, status));
+      
+      const jobsList = await query.limit(parseInt(limit)).orderBy(desc(jobs.createdAt));
+      res.json(jobsList);
+    } catch (error) {
+      console.error("Error fetching jobs:", error);
+      res.status(500).json({ message: "Failed to fetch jobs" });
+    }
+  });
+
+  app.get('/api/jobs/:id', async (req: any, res) => {
+    try {
+      const [job] = await db.select().from(jobs).where(eq(jobs.id, req.params.id));
+      if (!job) {
+        return res.status(404).json({ message: "Job not found" });
+      }
+      res.json(job);
+    } catch (error) {
+      console.error("Error fetching job:", error);
+      res.status(500).json({ message: "Failed to fetch job" });
+    }
+  });
+
+  // Worker Management Routes - Registration, Profiles, Hiring/Firing
+  app.post('/api/workers', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const workerData = {
+        ...req.body,
+        userId
+      };
+      
+      const [worker] = await db.insert(workers).values(workerData).returning();
+      res.json(worker);
+    } catch (error) {
+      console.error("Error creating worker profile:", error);
+      res.status(500).json({ message: "Failed to create worker profile" });
+    }
+  });
+
+  app.get('/api/workers', async (req: any, res) => {
+    try {
+      const { city, skills, experienceLevel, available = 'true' } = req.query;
+      let query = db.select().from(workers);
+      
+      if (available === 'true') query = query.where(eq(workers.isAvailable, true));
+      if (city) query = query.where(eq(workers.city, city));
+      if (experienceLevel) query = query.where(eq(workers.experienceLevel, experienceLevel));
+      
+      const workersList = await query.orderBy(desc(workers.rating), desc(workers.totalJobsCompleted));
+      res.json(workersList);
+    } catch (error) {
+      console.error("Error fetching workers:", error);
+      res.status(500).json({ message: "Failed to fetch workers" });
+    }
+  });
+
+  app.get('/api/workers/profile', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const [worker] = await db.select().from(workers).where(eq(workers.userId, userId));
+      res.json(worker || null);
+    } catch (error) {
+      console.error("Error fetching worker profile:", error);
+      res.status(500).json({ message: "Failed to fetch worker profile" });
+    }
+  });
+
+  // Supervisor Management Routes - Hire/Fire Workers
+  app.post('/api/supervisors', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const supervisorData = {
+        ...req.body,
+        userId
+      };
+      
+      const [supervisor] = await db.insert(supervisors).values(supervisorData).returning();
+      res.json(supervisor);
+    } catch (error) {
+      console.error("Error creating supervisor profile:", error);
+      res.status(500).json({ message: "Failed to create supervisor profile" });
+    }
+  });
+
+  // Job Applications - Workers Apply for Jobs
+  app.post('/api/job-applications', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      
+      // Get worker profile
+      const [worker] = await db.select().from(workers).where(eq(workers.userId, userId));
+      if (!worker) {
+        return res.status(400).json({ message: "Worker profile required to apply" });
+      }
+      
+      const applicationData = {
+        ...req.body,
+        workerId: worker.id
+      };
+      
+      const [application] = await db.insert(jobApplications).values(applicationData).returning();
+      
+      // Update job applicants count
+      await db.update(jobs)
+        .set({ totalApplicants: sql`${jobs.totalApplicants} + 1` })
+        .where(eq(jobs.id, applicationData.jobId));
+      
+      res.json(application);
+    } catch (error) {
+      console.error("Error submitting application:", error);
+      res.status(500).json({ message: "Failed to submit application" });
+    }
+  });
+
+  app.get('/api/job-applications/my-applications', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const [worker] = await db.select().from(workers).where(eq(workers.userId, userId));
+      
+      if (!worker) {
+        return res.json([]);
+      }
+      
+      const applications = await db.select().from(jobApplications)
+        .where(eq(jobApplications.workerId, worker.id))
+        .orderBy(desc(jobApplications.appliedAt));
+      
+      res.json(applications);
+    } catch (error) {
+      console.error("Error fetching applications:", error);
+      res.status(500).json({ message: "Failed to fetch applications" });
+    }
+  });
+
+  // Job Assignments - Hire Workers (Accept Applications)
+  app.post('/api/job-assignments', isAuthenticated, async (req: any, res) => {
+    try {
+      const assignmentData = req.body;
+      const [assignment] = await db.insert(jobAssignments).values(assignmentData).returning();
+      
+      // Update application status to hired
+      await db.update(jobApplications)
+        .set({ 
+          status: 'hired',
+          hiredAt: new Date()
+        })
+        .where(eq(jobApplications.id, assignmentData.applicationId));
+      
+      // Update job hired workers count
+      await db.update(jobs)
+        .set({ hiredWorkers: sql`${jobs.hiredWorkers} + 1` })
+        .where(eq(jobs.id, assignmentData.jobId));
+      
+      res.json(assignment);
+    } catch (error) {
+      console.error("Error creating job assignment:", error);
+      res.status(500).json({ message: "Failed to hire worker" });
+    }
+  });
+
+  // Fire Worker (Terminate Assignment)
+  app.put('/api/job-assignments/:id/terminate', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { terminationReason, severancePaid } = req.body;
+      
+      const [assignment] = await db.update(jobAssignments)
+        .set({
+          status: 'terminated',
+          terminatedAt: new Date(),
+          terminationReason,
+          terminatedBy: userId,
+          severancePaid: severancePaid || '0.00'
+        })
+        .where(eq(jobAssignments.id, req.params.id))
+        .returning();
+      
+      res.json(assignment);
+    } catch (error) {
+      console.error("Error terminating assignment:", error);
+      res.status(500).json({ message: "Failed to terminate worker" });
+    }
+  });
+
+  // Equipment Management Routes
+  app.post('/api/equipment', isAuthenticated, async (req: any, res) => {
+    try {
+      const equipmentData = req.body;
+      const [equipmentItem] = await db.insert(equipment).values(equipmentData).returning();
+      res.json(equipmentItem);
+    } catch (error) {
+      console.error("Error adding equipment:", error);
+      res.status(500).json({ message: "Failed to add equipment" });
+    }
+  });
+
+  app.get('/api/equipment', async (req: any, res) => {
+    try {
+      const { category, available = 'true' } = req.query;
+      let query = db.select().from(equipment);
+      
+      if (available === 'true') query = query.where(eq(equipment.isAvailable, true));
+      if (category) query = query.where(eq(equipment.category, category));
+      
+      const equipmentList = await query.orderBy(equipment.name);
+      res.json(equipmentList);
+    } catch (error) {
+      console.error("Error fetching equipment:", error);
+      res.status(500).json({ message: "Failed to fetch equipment" });
+    }
+  });
+
+  // Equipment Hub Management Routes
+  app.post('/api/equipment-hubs', isAuthenticated, async (req: any, res) => {
+    try {
+      const hubData = req.body;
+      const [hub] = await db.insert(equipmentHubs).values(hubData).returning();
+      res.json(hub);
+    } catch (error) {
+      console.error("Error creating equipment hub:", error);
+      res.status(500).json({ message: "Failed to create equipment hub" });
+    }
+  });
+
+  app.get('/api/equipment-hubs', async (req: any, res) => {
+    try {
+      const { city } = req.query;
+      let query = db.select().from(equipmentHubs).where(eq(equipmentHubs.isActive, true));
+      
+      if (city) query = query.where(eq(equipmentHubs.city, city));
+      
+      const hubs = await query.orderBy(equipmentHubs.name);
+      res.json(hubs);
+    } catch (error) {
+      console.error("Error fetching equipment hubs:", error);
+      res.status(500).json({ message: "Failed to fetch equipment hubs" });
+    }
+  });
+
+  // Equipment Checkout System
+  app.post('/api/equipment-checkouts', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const [worker] = await db.select().from(workers).where(eq(workers.userId, userId));
+      
+      if (!worker) {
+        return res.status(400).json({ message: "Worker profile required to checkout equipment" });
+      }
+      
+      const checkoutData = {
+        ...req.body,
+        workerId: worker.id
+      };
+      
+      const [checkout] = await db.insert(equipmentCheckouts).values(checkoutData).returning();
+      
+      // Mark equipment as unavailable
+      await db.update(equipment)
+        .set({ isAvailable: false })
+        .where(eq(equipment.id, checkoutData.equipmentId));
+      
+      res.json(checkout);
+    } catch (error) {
+      console.error("Error checking out equipment:", error);
+      res.status(500).json({ message: "Failed to checkout equipment" });
+    }
+  });
+
+  // Equipment Return
+  app.put('/api/equipment-checkouts/:id/return', isAuthenticated, async (req: any, res) => {
+    try {
+      const { returnCondition, damageNotes } = req.body;
+      
+      const [checkout] = await db.update(equipmentCheckouts)
+        .set({
+          status: 'returned',
+          actualReturnDate: new Date(),
+          returnCondition,
+          damageNotes,
+          depositReturned: returnCondition === 'excellent' || returnCondition === 'good'
+        })
+        .where(eq(equipmentCheckouts.id, req.params.id))
+        .returning();
+      
+      // Mark equipment as available again
+      await db.update(equipment)
+        .set({ isAvailable: true })
+        .where(eq(equipment.id, checkout.equipmentId));
+      
+      res.json(checkout);
+    } catch (error) {
+      console.error("Error returning equipment:", error);
+      res.status(500).json({ message: "Failed to return equipment" });
+    }
+  });
+
+  // Vehicle Marketplace Routes
+  app.post('/api/vehicle-listings', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const listingData = {
+        ...req.body,
+        sellerId: userId
+      };
+      
+      const [listing] = await db.insert(vehicleListings).values(listingData).returning();
+      res.json(listing);
+    } catch (error) {
+      console.error("Error creating vehicle listing:", error);
+      res.status(500).json({ message: "Failed to create vehicle listing" });
+    }
+  });
+
+  app.get('/api/vehicle-listings', async (req: any, res) => {
+    try {
+      const { make, model, city, minPrice, maxPrice, condition } = req.query;
+      let query = db.select().from(vehicleListings).where(eq(vehicleListings.status, 'active'));
+      
+      if (make) query = query.where(eq(vehicleListings.make, make));
+      if (model) query = query.where(eq(vehicleListings.model, model));
+      if (city) query = query.where(eq(vehicleListings.city, city));
+      if (condition) query = query.where(eq(vehicleListings.condition, condition));
+      if (minPrice) query = query.where(gte(vehicleListings.price, minPrice));
+      if (maxPrice) query = query.where(lte(vehicleListings.price, maxPrice));
+      
+      const listings = await query
+        .orderBy(desc(vehicleListings.isPromoted), desc(vehicleListings.createdAt))
+        .limit(100);
+      
+      res.json(listings);
+    } catch (error) {
+      console.error("Error fetching vehicle listings:", error);
+      res.status(500).json({ message: "Failed to fetch vehicle listings" });
+    }
+  });
+
+  app.get('/api/vehicle-listings/:id', async (req: any, res) => {
+    try {
+      const [listing] = await db.select().from(vehicleListings).where(eq(vehicleListings.id, req.params.id));
+      
+      if (!listing) {
+        return res.status(404).json({ message: "Vehicle listing not found" });
+      }
+      
+      // Increment view count
+      await db.update(vehicleListings)
+        .set({ viewCount: sql`${vehicleListings.viewCount} + 1` })
+        .where(eq(vehicleListings.id, req.params.id));
+      
+      res.json(listing);
+    } catch (error) {
+      console.error("Error fetching vehicle listing:", error);
+      res.status(500).json({ message: "Failed to fetch vehicle listing" });
+    }
+  });
+
+  // Email Communication System for Job Coordination
+  app.post('/api/email-communications', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const emailData = {
+        ...req.body,
+        fromUserId: userId
+      };
+      
+      const [email] = await db.insert(emailCommunications).values(emailData).returning();
+      
+      // Here you would integrate with SendGrid or another email service
+      // For now, we'll just mark it as sent
+      await db.update(emailCommunications)
+        .set({ 
+          status: 'sent',
+          sentAt: new Date()
+        })
+        .where(eq(emailCommunications.id, email.id));
+      
+      res.json(email);
+    } catch (error) {
+      console.error("Error sending email:", error);
+      res.status(500).json({ message: "Failed to send email" });
+    }
+  });
+
+  // Get user's email communications
+  app.get('/api/email-communications', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      
+      const emails = await db.select().from(emailCommunications)
+        .where(
+          or(
+            eq(emailCommunications.fromUserId, userId),
+            eq(emailCommunications.toUserId, userId)
+          )
+        )
+        .orderBy(desc(emailCommunications.createdAt));
+      
+      res.json(emails);
+    } catch (error) {
+      console.error("Error fetching emails:", error);
+      res.status(500).json({ message: "Failed to fetch emails" });
     }
   });
 
