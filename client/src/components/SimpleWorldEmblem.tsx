@@ -2,14 +2,16 @@ import React, { useRef, useState, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import * as THREE from "three";
+import DuoWonTheWorld from "./DuoWonTheWorld";
 
-// Simple rotating globe component
-function RotatingGlobe() {
+
+// Globe component for simple orbit
+function Globe({ speed }: { speed: number }) {
   const meshRef = useRef<THREE.Mesh>(null);
   
   useFrame((state, delta) => {
     if (meshRef.current) {
-      meshRef.current.rotation.y += delta * 0.5;
+      meshRef.current.rotation.y += delta * speed;
     }
   });
 
@@ -27,13 +29,13 @@ function RotatingGlobe() {
   );
 }
 
-// Simple orbiting elements
-function OrbitingElements() {
+// People orbit component
+function PeopleOrbit({ speed }: { speed: number }) {
   const groupRef = useRef<THREE.Group>(null);
   
   useFrame((state, delta) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.3;
+      groupRef.current.rotation.y += delta * speed;
     }
   });
 
@@ -60,53 +62,8 @@ function OrbitingElements() {
   );
 }
 
-// Duo characters above
-function DuoCharacters() {
-  const groupRef = useRef<THREE.Group>(null);
-  
-  useFrame((state) => {
-    if (groupRef.current) {
-      groupRef.current.position.y = 3.5 + Math.sin(state.clock.elapsedTime) * 0.1;
-    }
-  });
-
-  return (
-    <group ref={groupRef} position={[0, 3.5, 0]}>
-      {/* Character 1 - Brain style */}
-      <group position={[-0.8, 0, 0]} scale={0.5}>
-        <mesh>
-          <capsuleGeometry args={[0.3, 0.8, 8, 16]} />
-          <meshStandardMaterial color="#1a1a1a" />
-        </mesh>
-        <mesh position={[0, 0.6, 0]}>
-          <sphereGeometry args={[0.3, 16, 16]} />
-          <meshStandardMaterial color="#1a1a1a" />
-        </mesh>
-      </group>
-      
-      {/* Character 2 - Pinky style */}
-      <group position={[0.8, 0, 0]} scale={0.6}>
-        <mesh>
-          <capsuleGeometry args={[0.25, 1.0, 8, 16]} />
-          <meshStandardMaterial color="#2a2a2a" />
-        </mesh>
-        <mesh position={[0, 0.7, 0]}>
-          <sphereGeometry args={[0.25, 16, 16]} />
-          <meshStandardMaterial color="#2a2a2a" />
-        </mesh>
-      </group>
-      
-      {/* Glow effect */}
-      <mesh position={[0, -0.3, 0]}>
-        <ringGeometry args={[1.2, 1.5, 32]} />
-        <meshBasicMaterial color="#e83e8c" transparent opacity={0.3} />
-      </mesh>
-    </group>
-  );
-}
-
 // Main scene component
-function EmblemScene() {
+function EmblemScene({ globeSpeed = 0.4, orbitSpeed = 0.6 }: { globeSpeed?: number; orbitSpeed?: number }) {
   return (
     <Suspense fallback={null}>
       <ambientLight intensity={0.4} />
@@ -115,19 +72,13 @@ function EmblemScene() {
       
       <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
       
-      <RotatingGlobe />
-      <OrbitingElements />
-      <DuoCharacters />
+      <Globe speed={globeSpeed} />
+      <PeopleOrbit speed={orbitSpeed} />
       
-      <OrbitControls
-        enablePan={false}
-        enableZoom={true}
-        enableRotate={true}
-        minDistance={4}
-        maxDistance={15}
-        minPolarAngle={Math.PI / 6}
-        maxPolarAngle={Math.PI - Math.PI / 6}
-      />
+      {/* New "won the world" duo */}
+      <DuoWonTheWorld height={3.9} accentColor="#e83e8c" />
+      
+      <OrbitControls enablePan={false} />
     </Suspense>
   );
 }
@@ -141,6 +92,9 @@ export default function SimpleWorldEmblem({
   className = "", 
   height = "600px" 
 }: SimpleWorldEmblemProps) {
+  const [globeSpeed, setGlobeSpeed] = useState(0.4);
+  const [orbitSpeed, setOrbitSpeed] = useState(0.6);
+
   return (
     <div 
       className={`w-full bg-gradient-to-b from-black to-blue-900 ${className}`}
@@ -154,7 +108,7 @@ export default function SimpleWorldEmblem({
           gl.toneMappingExposure = 1.2;
         }}
       >
-        <EmblemScene />
+        <EmblemScene globeSpeed={globeSpeed} orbitSpeed={orbitSpeed} />
       </Canvas>
     </div>
   );

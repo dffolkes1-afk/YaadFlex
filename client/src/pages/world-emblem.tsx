@@ -1,4 +1,4 @@
-import CSSWorldEmblem from "@/components/CSSWorldEmblem";
+import SimpleWorldEmblem from "@/components/SimpleWorldEmblem";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
@@ -36,10 +36,10 @@ export default function WorldEmblemPage() {
 
           {/* Interactive Emblem */}
           <div className="mb-12 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
-            <CSSWorldEmblem height="600px" />
+            <SimpleWorldEmblem height="600px" />
             <div className="bg-white/5 backdrop-blur-sm p-4 text-center">
               <p className="text-white/70 text-sm">
-                ✨ Watch the global unity in motion ✨
+                ✨ Drag to orbit • Scroll to zoom • Watch the enhanced duo animation ✨
               </p>
             </div>
           </div>
