@@ -1,6 +1,6 @@
 {
-  "name": "YardFlex - Taking Jamaica to the Moon",
-  "short_name": "YardFlex",
+  "name": "YaadFlex - Taking Jamaica to the Moon",
+  "short_name": "YaadFlex",
   "description": "The world's first total economy super-app. Ride sharing, P2P wallet, marketplace, and more. Born in Jamaica, built for the world.",
   "start_url": "/",
   "display": "standalone",
@@ -65,14 +65,14 @@
       "sizes": "390x844",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "YardFlex home screen showing ride sharing, wallet, and marketplace"
+      "label": "YaadFlex home screen showing ride sharing, wallet, and marketplace"
     },
     {
       "src": "/screenshots/wallet-mobile.png",
       "sizes": "390x844",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "YardFlex P2P wallet with YFX coin and multi-currency support"
+      "label": "YaadFlex P2P wallet with YFX coin and multi-currency support"
     }
   ],
   "shortcuts": [

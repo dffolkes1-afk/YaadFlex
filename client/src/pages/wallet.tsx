@@ -45,7 +45,7 @@ export default function WalletScreen() {
     },
     onSuccess: (data: any) => {
       toast({
-        title: "Welcome to YardFlex Beta! 🇯🇲🚀",
+        title: "Welcome to YaadFlex Beta! 🇯🇲🚀",
         description: `${data.welcomeBonus} added to your demo wallet`,
       });
       queryClient.invalidateQueries({ queryKey: ['/api/demo/beta-status'] });
@@ -106,9 +106,9 @@ export default function WalletScreen() {
   if (!betaStatus?.hasBetaAccess) {
     return (
       <div className="p-6 max-w-md mx-auto min-h-screen bg-gradient-to-b from-gray-900 to-black text-white space-y-6">
-        {/* YardFlex Header */}
+        {/* YaadFlex Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-2xl font-bold text-yellow-400">YardFlex Wallet</h1>
+          <h1 className="text-2xl font-bold text-yellow-400">YaadFlex Wallet</h1>
           <p className="text-green-400">Taking Jamaica to the Moon 🇯🇲🚀</p>
         </div>
 
@@ -122,7 +122,7 @@ export default function WalletScreen() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-gray-300">
-              YardFlex is currently in private beta. Enter your invite code to access the demo wallet.
+              YaadFlex is currently in private beta. Enter your invite code to access the demo wallet.
             </p>
             
             {!showInviteForm ? (
@@ -170,7 +170,7 @@ export default function WalletScreen() {
         {/* Contact Info */}
         <div className="text-center text-sm text-gray-400">
           <p>Need an invite code?</p>
-          <p>Contact the YardFlex team</p>
+          <p>Contact the YaadFlex team</p>
         </div>
       </div>
     );
@@ -198,7 +198,7 @@ export default function WalletScreen() {
             <h1 className="text-4xl font-bold text-yellow-400">
               {parseFloat((wallet as any)?.balanceYfx || '0').toFixed(3)} YFX
             </h1>
-            <p className="text-lg text-yellow-300 font-semibold">YardFlex Coin</p>
+            <p className="text-lg text-yellow-300 font-semibold">YaadFlex Coin</p>
           </div>
 
           <div className="space-y-1 text-sm opacity-80">
@@ -313,11 +313,11 @@ export default function WalletScreen() {
         </CardContent>
       </Card>
 
-      {/* YardFlex Advantage */}
+      {/* YaadFlex Advantage */}
       <Card className="bg-green-900/20 border-green-600">
         <CardContent className="p-4">
           <div className="text-center space-y-2">
-            <p className="text-sm font-medium text-green-400">💡 YardFlex Advantage</p>
+            <p className="text-sm font-medium text-green-400">💡 YaadFlex Advantage</p>
             <p className="text-xs text-gray-300">
               Workers keep <strong>85%</strong> • Platform takes only <strong>15%</strong>
             </p>

@@ -135,7 +135,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         userId,
         eventType: 'transfer',
         severity: 'medium',
-        description: `User added ${amount} KWD to YardFlex wallet`,
+        description: `User added ${amount} KWD to YaadFlex wallet`,
         ipAddress: req.ip,
         userAgent: req.get('User-Agent'),
       });
@@ -244,7 +244,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Global statistics endpoint
   app.get('/api/stats/global', async (req, res) => {
     try {
-      // Return global YardFlex statistics
+      // Return global YaadFlex statistics
       res.json({
         countries: 195,
         uptime: "99.99%",
@@ -1022,7 +1022,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { adminKey, count = 1 } = req.body;
       
       // Simple admin protection
-      if (adminKey !== 'YardFlex-Beta-2025') {
+      if (adminKey !== 'YaadFlex-Beta-2025') {
         return res.status(403).json({ message: "Unauthorized" });
       }
 
@@ -1095,14 +1095,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
           userId,
           type: 'welcome_bonus',
           amountYfx: '5.000000',
-          note: 'Welcome to YardFlex Beta! 🇯🇲🚀',
+          note: 'Welcome to YaadFlex Beta! 🇯🇲🚀',
           status: 'completed'
         });
       }
 
       res.json({
         success: true,
-        message: "Welcome to YardFlex Beta! 🇯🇲",
+        message: "Welcome to YaadFlex Beta! 🇯🇲",
         betaAccess: true,
         welcomeBonus: '5.0 YFX',
         note: "TEST MODE - Taking Jamaica to the Moon!"

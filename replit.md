@@ -1,6 +1,6 @@
 # Overview
 
-YardFlex is a Caribbean Uber-style super app that provides ride-sharing, delivery services, and e-commerce with instant delivery. The application features a comprehensive financial transaction system with advanced security measures, supporting multiple vehicle types (bikes, cars, vans, trucks) and delivery options ranging from instant to same-day delivery.
+YaadFlex is a Caribbean Uber-style super app that provides ride-sharing, delivery services, and e-commerce with instant delivery. The application features a comprehensive financial transaction system with advanced security measures, supporting multiple vehicle types (bikes, cars, vans, trucks) and delivery options ranging from instant to same-day delivery.
 
 # User Preferences
 

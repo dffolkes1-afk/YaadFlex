@@ -67,7 +67,7 @@ function KWDWalletSection() {
     onSuccess: () => {
       toast({
         title: "Success!",
-        description: `Successfully added ${kwdAmount} KWD to your YardFlex wallet!`,
+        description: `Successfully added ${kwdAmount} KWD to your YaadFlex wallet!`,
       });
       setKwdAmount('');
       queryClient.invalidateQueries({ queryKey: ['/api/wallets'] });
@@ -115,7 +115,7 @@ function KWDWalletSection() {
       <CardHeader>
         <CardTitle className="flex items-center space-x-2">
           <span className="text-xl floating">💎</span>
-          <span className="text-premium">YardFlex Currency (KWD/YFD)</span>
+          <span className="text-premium">YaadFlex Currency (KWD/YFD)</span>
           <div className="text-sm text-muted-foreground ml-4 shimmer">1 KWD = 1 YFD</div>
         </CardTitle>
       </CardHeader>
@@ -140,7 +140,7 @@ function KWDWalletSection() {
         {/* Add KWD Funds */}
         <form onSubmit={handleAddKWD} className="space-y-4">
           <div>
-            <Label htmlFor="kwd-amount">Add KWD to YardFlex Wallet</Label>
+            <Label htmlFor="kwd-amount">Add KWD to YaadFlex Wallet</Label>
             <div className="flex space-x-2">
               <Input
                 id="kwd-amount"
@@ -186,7 +186,7 @@ function KWDWalletSection() {
         </form>
 
         <div className="text-sm text-muted-foreground glass-card p-3 rounded-lg shimmer">
-          <strong>How it works:</strong> KWD is YardFlex's ultimate currency. 1 KWD equals 1 YFD (YardFlex Dollar). 
+          <strong>How it works:</strong> KWD is YaadFlex's ultimate currency. 1 KWD equals 1 YFD (YaadFlex Dollar). 
           Start with $1 KWD to test the system, then scale to $100 KWD as your yard cash reference.
         </div>
       </CardContent>
@@ -332,7 +332,7 @@ export default function Home() {
         <div className="relative">
           <img 
             src={globalHeroImage} 
-            alt="YardFlex Global Vision - Connecting Jamaica to the World" 
+            alt="YaadFlex Global Vision - Connecting Jamaica to the World" 
             className="w-full h-64 md:h-96 object-cover opacity-90"
             data-testid="img-global-hero"
           />
@@ -366,11 +366,11 @@ export default function Home() {
             <div className="flex items-center space-x-3">
               <img 
                 src={yardFlexLogo} 
-                alt="YardFlex Logo" 
+                alt="YaadFlex Logo" 
                 className="w-10 h-10 rounded-full"
                 data-testid="img-yardflex-logo"
               />
-              <span className="text-2xl font-bold text-premium" data-testid="brand-name">YardFlex</span>
+              <span className="text-2xl font-bold text-premium" data-testid="brand-name">YaadFlex</span>
               <span className="text-xs bg-green-600 text-white px-2 py-1 rounded-full font-medium" data-testid="global-indicator">
                 GLOBAL
               </span>
@@ -429,7 +429,7 @@ export default function Home() {
                   🇯🇲🇨🇦 LAUNCH SEQUENCE INITIATED 🇯🇲🇨🇦
                 </h3>
                 <p className="text-white mb-4 text-lg">
-                  <strong>YardFlex isn't just reaching for the stars - we're taking JAMAICA & CANADA TO THE MOON!</strong><br/>
+                  <strong>YaadFlex isn't just reaching for the stars - we're taking JAMAICA & CANADA TO THE MOON!</strong><br/>
                   Every connection, every opportunity, every success launches us higher into the universe of possibilities.
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -495,10 +495,10 @@ export default function Home() {
                   🎯 EVERYONE JUMPS ON BOARD! 🎯
                 </h3>
                 <p className="text-white text-lg md:text-2xl mb-8 font-bold leading-relaxed">
-                  <strong className="text-yellow-400">INSURANCE COMPANIES?</strong> → Want YardFlex!<br/>
-                  <strong className="text-blue-400">REAL ESTATE?</strong> → Love YardFlex!<br/>
-                  <strong className="text-green-400">LOAN SHARKS?</strong> → Need YardFlex!<br/>
-                  <strong className="text-purple-400">ALL BUSINESSES?</strong> → Jump on YardFlex!<br/>
+                  <strong className="text-yellow-400">INSURANCE COMPANIES?</strong> → Want YaadFlex!<br/>
+                  <strong className="text-blue-400">REAL ESTATE?</strong> → Love YaadFlex!<br/>
+                  <strong className="text-green-400">LOAN SHARKS?</strong> → Need YaadFlex!<br/>
+                  <strong className="text-purple-400">ALL BUSINESSES?</strong> → Jump on YaadFlex!<br/>
                   <strong className="text-red-400 text-xl md:text-3xl animate-bounce">🏢 EVERYONE LOVES WHAT THEY GET! 🏢</strong>
                 </p>
                 
@@ -560,7 +560,7 @@ export default function Home() {
                     <div className="bg-yellow-600/40 rounded-lg p-3 text-center">
                       <div className="text-sm font-bold text-yellow-200">
                         📧 <strong>SIMPLE SETUP:</strong> Send email → Get contact → Add to system → START EARNING!<br/>
-                        ⛽ <strong>ALL GAS STATIONS can join YardFlex payment system!</strong>
+                        ⛽ <strong>ALL GAS STATIONS can join YaadFlex payment system!</strong>
                       </div>
                     </div>
                   </div>
@@ -656,10 +656,10 @@ export default function Home() {
                   🎯 MASS EMAIL INVITATION CAMPAIGN! 🎯
                 </h3>
                 <p className="text-white text-lg md:text-2xl mb-8 font-bold leading-relaxed">
-                  <strong className="text-yellow-400">EVERY EMAIL IN JAMAICA?</strong> → Gets YardFlex invitation!<br/>
-                  <strong className="text-blue-400">EVERY BUSINESS OWNER?</strong> → Knows about YardFlex!<br/>
-                  <strong className="text-green-400">EVERY PERSON?</strong> → Excited about YardFlex!<br/>
-                  <strong className="text-purple-400">WHOLE ISLAND?</strong> → Talking about YardFlex!<br/>
+                  <strong className="text-yellow-400">EVERY EMAIL IN JAMAICA?</strong> → Gets YaadFlex invitation!<br/>
+                  <strong className="text-blue-400">EVERY BUSINESS OWNER?</strong> → Knows about YaadFlex!<br/>
+                  <strong className="text-green-400">EVERY PERSON?</strong> → Excited about YaadFlex!<br/>
+                  <strong className="text-purple-400">WHOLE ISLAND?</strong> → Talking about YaadFlex!<br/>
                   <strong className="text-red-400 text-xl md:text-3xl animate-bounce">📧 SHAKE UP EVERYONE! 📧</strong>
                 </p>
                 
@@ -691,7 +691,7 @@ export default function Home() {
                   <h4 className="text-2xl md:text-4xl font-black text-purple-300 mb-4">🇯🇲 EVERYONE ON THE ISLAND! 🇯🇲</h4>
                   <div className="text-white text-lg md:text-xl font-bold">
                     <strong>MASSIVE EMAIL BLAST TO ALL JAMAICA!</strong><br/>
-                    Every person gets excited! Everyone downloads YardFlex!<br/>
+                    Every person gets excited! Everyone downloads YaadFlex!<br/>
                     <span className="text-yellow-400">💥 SHAKE UP THE WHOLE ISLAND! 💥</span>
                   </div>
                 </div>
@@ -965,7 +965,7 @@ export default function Home() {
                   <h4 className="text-2xl md:text-4xl font-black text-yellow-300 mb-4">🤖 YOUR PERSONAL AI ASSISTANT! 🤖</h4>
                   <div className="text-white text-lg md:text-xl font-bold">
                     <strong>WHATEVER YOU WANT!</strong><br/>
-                    Just tell YardFlex and it happens instantly!<br/>
+                    Just tell YaadFlex and it happens instantly!<br/>
                     <span className="text-cyan-400">🧠 NO STRESS - EVERYTHING AUTOMATIC! 🧠</span>
                   </div>
                 </div>
@@ -1194,7 +1194,7 @@ export default function Home() {
                   🎯 WANT TO BOOK SOMETHING? IT'S HERE! 🎯
                 </h3>
                 <p className="text-white text-lg md:text-2xl mb-8 font-bold leading-relaxed">
-                  <strong className="text-yellow-400">NEED ENTERTAINER?</strong> → Book on YardFlex!<br/>
+                  <strong className="text-yellow-400">NEED ENTERTAINER?</strong> → Book on YaadFlex!<br/>
                   <strong className="text-blue-400">WANT HOTEL ROOM?</strong> → Book here!<br/>
                   <strong className="text-green-400">NEED PLANE TICKET?</strong> → Book right here!<br/>
                   <strong className="text-purple-400">PLANNING PARTY?</strong> → Book everything here!<br/>
@@ -1635,7 +1635,7 @@ export default function Home() {
                     ⚡ INSTANT RENTAL SYSTEM ⚡
                   </h3>
                   <p className="text-white text-lg">
-                    <strong>Store gets empty? It's INSTANTLY on YardFlex for rent!</strong><br/>
+                    <strong>Store gets empty? It's INSTANTLY on YaadFlex for rent!</strong><br/>
                     <strong>House available? Boom - listed immediately!</strong><br/>
                     <strong>Car free? Up for rental in seconds!</strong>
                   </p>
