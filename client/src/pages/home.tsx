@@ -976,6 +976,179 @@ export default function Home() {
           </Card>
         </div>
 
+        {/* ========== FAIR TAXI PRICING - JUSTICE FOR ALL! ========== */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-br from-green-900/95 via-yellow-900/95 to-orange-900/95 border-8 border-green-400/100 relative overflow-hidden min-h-[800px] shadow-2xl shadow-green-500/80" data-testid="fair-taxi-pricing-section">
+            {/* FAIR PRICING Animated Background */}
+            <div className="absolute inset-0 opacity-30">
+              <div className="absolute top-4 left-4 text-8xl animate-bounce">🚖</div>
+              <div className="absolute top-4 right-4 text-8xl animate-pulse">⚖️</div>
+              <div className="absolute bottom-4 left-4 text-8xl animate-bounce delay-300">💰</div>
+              <div className="absolute bottom-4 right-4 text-8xl animate-pulse delay-500">🤝</div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-12xl animate-pulse delay-200">💚</div>
+            </div>
+            
+            <CardHeader className="relative z-10 pb-8">
+              <CardTitle className="text-center space-y-6">
+                <div className="text-4xl md:text-8xl font-black text-green-400 animate-pulse leading-tight">
+                  ⚖️ FAIR TAXI PRICING! ⚖️
+                </div>
+                <div className="text-2xl md:text-6xl font-black text-yellow-300 animate-bounce leading-tight">
+                  JUSTICE FOR DRIVERS & PASSENGERS!
+                </div>
+                <div className="text-xl md:text-4xl font-black text-white animate-pulse">
+                  COMPETITIVE PRICES + MORE MONEY FOR DRIVERS!
+                </div>
+                <div className="text-lg md:text-3xl font-black text-orange-400 animate-bounce">
+                  💚 FAIR FOR EVERYONE - NO GREED! 💚
+                </div>
+              </CardTitle>
+            </CardHeader>
+            
+            <CardContent className="relative z-10 space-y-6">
+              <div className="bg-gradient-to-r from-green-600/50 to-yellow-600/50 border-2 border-green-400/70 rounded-2xl p-8 text-center shadow-2xl shadow-green-500/30">
+                <h3 className="text-2xl md:text-5xl font-black text-green-300 mb-6 animate-pulse leading-tight">
+                  🚖 YARDFLEX TAXI PRICING SYSTEM! 🚖
+                </h3>
+
+                {/* PRICING COMPARISON */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  <div className="bg-red-600/70 border-4 border-red-400/80 rounded-2xl p-6 text-center">
+                    <div className="text-4xl mb-4">😞</div>
+                    <div className="text-2xl font-black text-red-300 mb-2">OTHER APPS</div>
+                    <div className="text-white font-bold">
+                      ❌ High prices for passengers<br/>
+                      ❌ Low pay for drivers<br/>
+                      ❌ Company takes 25-30%<br/>
+                      ❌ No transparency
+                    </div>
+                  </div>
+                  <div className="bg-green-600/70 border-4 border-green-400/80 rounded-2xl p-6 text-center transform scale-110">
+                    <div className="text-4xl mb-4 animate-bounce">🎯</div>
+                    <div className="text-2xl font-black text-green-300 mb-2">YARDFLEX</div>
+                    <div className="text-white font-bold">
+                      ✅ Competitive prices<br/>
+                      ✅ Drivers keep 85%!<br/>
+                      ✅ Only 15% platform fee<br/>
+                      ✅ 100% transparent
+                    </div>
+                  </div>
+                  <div className="bg-blue-600/70 border-4 border-blue-400/80 rounded-2xl p-6 text-center">
+                    <div className="text-4xl mb-4">🤔</div>
+                    <div className="text-2xl font-black text-blue-300 mb-2">TRADITIONAL TAXI</div>
+                    <div className="text-white font-bold">
+                      ⚠️ Fixed high prices<br/>
+                      ⚠️ No tracking<br/>
+                      ⚠️ Cash only<br/>
+                      ⚠️ No safety features
+                    </div>
+                  </div>
+                </div>
+
+                {/* DRIVER BENEFITS */}
+                <div className="bg-gradient-to-r from-blue-600/50 to-green-600/50 border-4 border-blue-400/80 rounded-2xl p-6 mb-8">
+                  <h4 className="text-2xl md:text-4xl font-black text-blue-300 mb-6">🚗 DRIVER BENEFITS - MORE MONEY! 🚗</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-white font-bold">
+                    <div className="bg-green-700/60 rounded-xl p-4">
+                      <div className="text-3xl mb-2">💰</div>
+                      <div className="text-xl font-black text-green-200 mb-2">KEEP 85% OF FARE!</div>
+                      <div className="text-sm">Other apps take 25-30%, we only take 15%!</div>
+                    </div>
+                    <div className="bg-blue-700/60 rounded-xl p-4">
+                      <div className="text-3xl mb-2">🛡️</div>
+                      <div className="text-xl font-black text-blue-200 mb-2">SMART CAR PROTECTION</div>
+                      <div className="text-sm">Vehicle monitoring keeps your car safe!</div>
+                    </div>
+                    <div className="bg-purple-700/60 rounded-xl p-4">
+                      <div className="text-3xl mb-2">📱</div>
+                      <div className="text-xl font-black text-purple-200 mb-2">INSTANT PAYMENTS</div>
+                      <div className="text-sm">Get paid immediately after each ride!</div>
+                    </div>
+                    <div className="bg-orange-700/60 rounded-xl p-4">
+                      <div className="text-3xl mb-2">🎯</div>
+                      <div className="text-xl font-black text-orange-200 mb-2">MORE RIDES</div>
+                      <div className="text-sm">AI system gets you more customers!</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* PASSENGER BENEFITS */}
+                <div className="bg-gradient-to-r from-purple-600/50 to-pink-600/50 border-4 border-purple-400/80 rounded-2xl p-6 mb-8">
+                  <h4 className="text-2xl md:text-4xl font-black text-purple-300 mb-6">👥 PASSENGER BENEFITS - FAIR PRICES! 👥</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-white font-bold">
+                    <div className="bg-green-700/60 rounded-xl p-4">
+                      <div className="text-3xl mb-2">💵</div>
+                      <div className="text-xl font-black text-green-200 mb-2">COMPETITIVE PRICING</div>
+                      <div className="text-sm">Same as Uber prices but better service!</div>
+                    </div>
+                    <div className="bg-blue-700/60 rounded-xl p-4">
+                      <div className="text-3xl mb-2">⚖️</div>
+                      <div className="text-xl font-black text-blue-200 mb-2">100% TRANSPARENT</div>
+                      <div className="text-sm">See exactly how your fare is calculated!</div>
+                    </div>
+                    <div className="bg-purple-700/60 rounded-xl p-4">
+                      <div className="text-3xl mb-2">🛡️</div>
+                      <div className="text-xl font-black text-purple-200 mb-2">SAFER RIDES</div>
+                      <div className="text-sm">Smart car control monitors your safety!</div>
+                    </div>
+                    <div className="bg-orange-700/60 rounded-xl p-4">
+                      <div className="text-3xl mb-2">🚀</div>
+                      <div className="text-xl font-black text-orange-200 mb-2">BETTER DRIVERS</div>
+                      <div className="text-sm">Happy drivers = better service for you!</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* PRICING EXPLANATION */}
+                <div className="bg-gradient-to-r from-yellow-600/50 to-orange-600/50 border-4 border-yellow-400/80 rounded-2xl p-6 mb-8 animate-pulse">
+                  <h4 className="text-2xl md:text-4xl font-black text-yellow-300 mb-4">🤝 WHY YARDFLEX IS BETTER! 🤝</h4>
+                  <div className="text-white text-lg md:text-xl font-bold text-left">
+                    <div className="mb-4"><strong className="text-green-400">FOR DRIVERS:</strong> We only take 15% instead of 25-30% like other apps. You make more money from every ride!</div>
+                    <div className="mb-4"><strong className="text-blue-400">FOR PASSENGERS:</strong> Same competitive prices as Uber, but your money supports local drivers better!</div>
+                    <div className="mb-4"><strong className="text-purple-400">FOR JAMAICA:</strong> Money stays in Jamaica! Drivers earn more, economy grows stronger!</div>
+                    <div className="text-center"><span className="text-yellow-400 text-2xl animate-bounce">💚 EVERYONE WINS! 💚</span></div>
+                  </div>
+                </div>
+
+                {/* SAMPLE PRICING */}
+                <div className="bg-gradient-to-r from-cyan-600/50 to-blue-600/50 border-4 border-cyan-400/80 rounded-2xl p-6 mb-8">
+                  <h4 className="text-2xl md:text-4xl font-black text-cyan-300 mb-4">💰 SAMPLE JAMAICA TAXI PRICING! 💰</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-white font-bold">
+                    <div className="bg-cyan-700/60 rounded-xl p-4 text-center">
+                      <div className="text-2xl font-black text-cyan-200 mb-2">SHORT RIDE</div>
+                      <div className="text-3xl text-green-400">$500 JMD</div>
+                      <div className="text-sm">Driver keeps: $425 JMD</div>
+                      <div className="text-xs text-cyan-300">Platform: $75 JMD</div>
+                    </div>
+                    <div className="bg-blue-700/60 rounded-xl p-4 text-center">
+                      <div className="text-2xl font-black text-blue-200 mb-2">MEDIUM RIDE</div>
+                      <div className="text-3xl text-green-400">$1,200 JMD</div>
+                      <div className="text-sm">Driver keeps: $1,020 JMD</div>
+                      <div className="text-xs text-blue-300">Platform: $180 JMD</div>
+                    </div>
+                    <div className="bg-purple-700/60 rounded-xl p-4 text-center">
+                      <div className="text-2xl font-black text-purple-200 mb-2">LONG RIDE</div>
+                      <div className="text-3xl text-green-400">$2,500 JMD</div>
+                      <div className="text-sm">Driver keeps: $2,125 JMD</div>
+                      <div className="text-xs text-purple-300">Platform: $375 JMD</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="text-center">
+                  <Button 
+                    onClick={() => setLocation('/taxi-pricing')}
+                    className="bg-gradient-to-r from-green-600 to-yellow-600 hover:from-green-700 hover:to-yellow-700 text-white text-3xl px-12 py-6 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-green-400/80"
+                    data-testid="button-fair-taxi-pricing"
+                  >
+                    🚖 SEE FAIR PRICING! 🚖
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* ========== UNIVERSAL BOOKING PLATFORM - EVERYTHING! ========== */}
         <div className="mb-8">
           <Card className="bg-gradient-to-br from-purple-900/95 via-pink-900/95 to-red-900/95 border-8 border-purple-400/100 relative overflow-hidden min-h-[700px] shadow-2xl shadow-purple-500/80" data-testid="mega-booking-platform-section">
