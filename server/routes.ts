@@ -1450,13 +1450,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/jobs', async (req: any, res) => {
     try {
       const { city, jobType, status = 'open', limit = 50 } = req.query;
-      let query = db.select().from(jobs).where(eq(jobs.isPublic, true));
+      let conditions = [eq(jobs.isPublic, true)];
       
-      if (city) query = query.where(eq(jobs.city, city));
-      if (jobType) query = query.where(eq(jobs.jobType, jobType));
-      if (status) query = query.where(eq(jobs.status, status));
+      if (city) conditions.push(eq(jobs.city, city));
+      if (jobType) conditions.push(eq(jobs.jobType, jobType));
+      if (status) conditions.push(eq(jobs.status, status));
       
-      const jobsList = await query.limit(parseInt(limit)).orderBy(desc(jobs.createdAt));
+      const jobsList = await db.select().from(jobs)
+        .where(and(...conditions))
+        .limit(parseInt(limit))
+        .orderBy(desc(jobs.createdAt));
       res.json(jobsList);
     } catch (error) {
       console.error("Error fetching jobs:", error);
@@ -1497,13 +1500,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/workers', async (req: any, res) => {
     try {
       const { city, skills, experienceLevel, available = 'true' } = req.query;
-      let query = db.select().from(workers);
+      let conditions = [];
       
-      if (available === 'true') query = query.where(eq(workers.isAvailable, true));
-      if (city) query = query.where(eq(workers.city, city));
-      if (experienceLevel) query = query.where(eq(workers.experienceLevel, experienceLevel));
+      if (available === 'true') conditions.push(eq(workers.isAvailable, true));
+      if (city) conditions.push(eq(workers.city, city));
+      if (experienceLevel) conditions.push(eq(workers.experienceLevel, experienceLevel));
       
-      const workersList = await query.orderBy(desc(workers.rating), desc(workers.totalJobsCompleted));
+      const workersList = await db.select().from(workers)
+        .where(conditions.length > 0 ? and(...conditions) : undefined)
+        .orderBy(desc(workers.rating), desc(workers.totalJobsCompleted));
       res.json(workersList);
     } catch (error) {
       console.error("Error fetching workers:", error);
@@ -1654,12 +1659,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/equipment', async (req: any, res) => {
     try {
       const { category, available = 'true' } = req.query;
-      let query = db.select().from(equipment);
+      let conditions = [];
       
-      if (available === 'true') query = query.where(eq(equipment.isAvailable, true));
-      if (category) query = query.where(eq(equipment.category, category));
+      if (available === 'true') conditions.push(eq(equipment.isAvailable, true));
+      if (category) conditions.push(eq(equipment.category, category));
       
-      const equipmentList = await query.orderBy(equipment.name);
+      const equipmentList = await db.select().from(equipment)
+        .where(conditions.length > 0 ? and(...conditions) : undefined)
+        .orderBy(equipment.name);
       res.json(equipmentList);
     } catch (error) {
       console.error("Error fetching equipment:", error);
@@ -1682,11 +1689,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/equipment-hubs', async (req: any, res) => {
     try {
       const { city } = req.query;
-      let query = db.select().from(equipmentHubs).where(eq(equipmentHubs.isActive, true));
+      let conditions = [eq(equipmentHubs.isActive, true)];
       
-      if (city) query = query.where(eq(equipmentHubs.city, city));
+      if (city) conditions.push(eq(equipmentHubs.city, city));
       
-      const hubs = await query.orderBy(equipmentHubs.name);
+      const hubs = await db.select().from(equipmentHubs)
+        .where(and(...conditions))
+        .orderBy(equipmentHubs.name);
       res.json(hubs);
     } catch (error) {
       console.error("Error fetching equipment hubs:", error);
@@ -1771,16 +1780,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/vehicle-listings', async (req: any, res) => {
     try {
       const { make, model, city, minPrice, maxPrice, condition } = req.query;
-      let query = db.select().from(vehicleListings).where(eq(vehicleListings.status, 'active'));
+      let conditions = [eq(vehicleListings.status, 'active')];
       
-      if (make) query = query.where(eq(vehicleListings.make, make));
-      if (model) query = query.where(eq(vehicleListings.model, model));
-      if (city) query = query.where(eq(vehicleListings.city, city));
-      if (condition) query = query.where(eq(vehicleListings.condition, condition));
-      if (minPrice) query = query.where(gte(vehicleListings.price, minPrice));
-      if (maxPrice) query = query.where(lte(vehicleListings.price, maxPrice));
+      if (make) conditions.push(eq(vehicleListings.make, make));
+      if (model) conditions.push(eq(vehicleListings.model, model));
+      if (city) conditions.push(eq(vehicleListings.city, city));
+      if (condition) conditions.push(eq(vehicleListings.condition, condition));
+      if (minPrice) conditions.push(gte(vehicleListings.price, minPrice));
+      if (maxPrice) conditions.push(lte(vehicleListings.price, maxPrice));
       
-      const listings = await query
+      const listings = await db.select().from(vehicleListings)
+        .where(and(...conditions))
         .orderBy(desc(vehicleListings.isPromoted), desc(vehicleListings.createdAt))
         .limit(100);
       

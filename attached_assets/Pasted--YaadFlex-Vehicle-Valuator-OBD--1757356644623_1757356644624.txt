@@ -1,0 +1,76 @@
+// ============================================================= // YaadFlex Vehicle Valuator + OBD Scan — Starter Pack // Drizzle (PG) + Express (TypeScript) + Simple Pricing Engine // ------------------------------------------------------------- // How to use // 1) npm i express cors zod dotenv pg drizzle-orm // 2) Place files into your src/ project as shown below // 3) Add routes to server and run (ts-node src/server.ts) // -------------------------------------------------------------
+
+// =============================== // File: src/db/schema.vehicles.ts // =============================== import { pgTable, varchar, text, boolean, timestamp, decimal, integer, jsonb } from "drizzle-orm/pg-core";
+
+export const vehicleListings = pgTable("vehicle_listings", { id: varchar("id", { length: 36 }).primaryKey(), sellerId: varchar("sellerId", { length: 36 }), vin: varchar("vin", { length: 24 }), make: varchar("make", { length: 64 }), model: varchar("model", { length: 64 }), year: integer("year"), price: decimal("price"), mileage: integer("mileage"), condition: varchar("condition", { length: 16 }), // excellent|good|fair|poor fuelType: varchar("fuelType", { length: 16 }), transmission: varchar("transmission", { length: 16 }), location: varchar("location", { length: 120 }), images: text("images").array(), description: text("description"), isActive: boolean("isActive").default(true), createdAt: timestamp("createdAt").defaultNow(), updatedAt: timestamp("updatedAt").defaultNow() });
+
+export const vinDecodes = pgTable("vin_decodes", { id: varchar("id", { length: 36 }).primaryKey(), vin: varchar("vin", { length: 24 }).notNull(), make: varchar("make", { length: 64 }), model: varchar("model", { length: 64 }), year: integer("year"), body: varchar("body", { length: 64 }), engine: varchar("engine", { length: 64 }), trim: varchar("trim", { length: 64 }), raw: jsonb("raw"), createdAt: timestamp("createdAt").defaultNow() });
+
+export const marketComps = pgTable("market_comps", { id: varchar("id", { length: 36 }).primaryKey(), make: varchar("make", { length: 64 }), model: varchar("model", { length: 64 }), year: integer("year"), region: varchar("region", { length: 64 }), sample: jsonb("sample"), // array of {price, mileage, location, date} medianPrice: decimal("medianPrice"), medianMileage: integer("medianMileage"), refreshedAt: timestamp("refreshedAt").defaultNow() });
+
+export const valuations = pgTable("valuations", { id: varchar("id", { length: 36 }).primaryKey(), listingId: varchar("listingId", { length: 36 }), vin: varchar("vin", { length: 24 }), make: varchar("make", { length: 64 }), model: varchar("model", { length: 64 }), year: integer("year"), mileage: integer("mileage"), region: varchar("region", { length: 64 }), conditionScore: integer("conditionScore"), // 0–100 obdHealthScore: integer("obdHealthScore"), // 0–100 estimateLow: decimal("estimateLow"), estimateMid: decimal("estimateMid"), estimateHigh: decimal("estimateHigh"), currency: varchar("currency", { length: 8 }).default("USD"), method: varchar("method", { length: 24 }).default("hedonic_v1"), inputs: jsonb("inputs"), createdAt: timestamp("createdAt").defaultNow() });
+
+export const obdTests = pgTable("obd_tests", { id: varchar("id", { length: 36 }).primaryKey(), listingId: varchar("listingId", { length: 36 }), vin: varchar("vin", { length: 24 }), startedAt: timestamp("startedAt").defaultNow(), finishedAt: timestamp("finishedAt"), status: varchar("status", { length: 16 }).default("started"), // started|ok|warning|critical dtcCount: integer("dtcCount").default(0), summary: text("summary") });
+
+export const obdReadings = pgTable("obd_readings", { id: varchar("id", { length: 36 }).primaryKey(), testId: varchar("testId", { length: 36 }).notNull(), pid: varchar("pid", { length: 24 }).notNull(), // e.g., 010C RPM, 0105 coolant temp value: varchar("value", { length: 64 }).notNull(), unit: varchar("unit", { length: 16 }), recordedAt: timestamp("recordedAt").defaultNow() });
+
+// =============================== // File: src/valuation/engine.ts // =============================== export type ValuationInput = { year: number; mileage: number; baseMedian: number; // regional median price for make/model/year medianMileage: number; // regional median mileage conditionScore: number; // 0–100 obdHealthScore: number; // 0–100 };
+
+export function estimateValue(input: ValuationInput) { // Hedonic-style adjustments (simple, transparent, tunable) const agePenalty = Math.max(0, (new Date().getFullYear() - input.year)) * 0.015; // 1.5% per year const mileageAdj = (input.mileage - input.medianMileage) / 10000 * 0.02; // 2% per +10k over median const conditionAdj = (input.conditionScore - 70) / 100 * 0.10; // ±10% around score 70 baseline const obdAdj = (input.obdHealthScore - 80) / 100 * 0.08; // ±8% around 80 baseline
+
+const totalAdjPct = -agePenalty - mileageAdj + conditionAdj + obdAdj; // combine const mid = Math.max(500, input.baseMedian * (1 + totalAdjPct)); const spread = Math.max(300, mid * 0.08); // ±8% band return { estimateLow: Number((mid - spread).toFixed(0)), estimateMid: Number(mid.toFixed(0)), estimateHigh: Number((mid + spread).toFixed(0)), adjustments: { agePenalty, mileageAdj, conditionAdj, obdAdj, totalAdjPct } }; }
+
+export function scoreCondition(form: { exterior: number; interior: number; tires: number; brakes: number; fluids: number; }) { // Weighted checklist → 0–100 const { exterior, interior, tires, brakes, fluids } = form; const score = exterior0.25 + interior0.25 + tires0.2 + brakes0.2 + fluids*0.1; return Math.max(0, Math.min(100, Math.round(score))); }
+
+export function scoreObd(dtcCount: number, monitorsOk: number, monitorsTotal: number) { // Very simple OBD health → 0–100 const dtcPenalty = Math.min(40, dtcCount * 8); // each DTC -8 up to -40 const monitorRatio = monitorsTotal ? monitorsOk / monitorsTotal : 0.6; // default mid const monitorBonus = Math.round((monitorRatio - 0.5) * 40); // -20..+20 return Math.max(0, Math.min(100, 80 - dtcPenalty + monitorBonus)); }
+
+// =============================== // File: src/routes/valuation.ts // =============================== import { Router } from "express"; import { db } from "../db"; // your drizzle instance import { marketComps, valuations } from "../db/schema.vehicles"; import { eq, and } from "drizzle-orm"; import { estimateValue, scoreCondition, scoreObd } from "../valuation/engine";
+
+const r = Router();
+
+r.post("/valuations/estimate", async (req, res) => { const { make, model, year, mileage, region, conditionForm, obd } = req.body || {}; if (!make || !model || !year || !region) return res.status(400).json({ error: "make, model, year, region required" });
+
+const [comp] = await db.select().from(marketComps) .where(and(eq(marketComps.make, make), eq(marketComps.model, model), eq(marketComps.year, year), eq(marketComps.region, region)));
+
+const baseMedian = Number(comp?.medianPrice || 12000); const medianMileage = Number(comp?.medianMileage || 90000);
+
+const conditionScore = scoreCondition(conditionForm || { exterior: 70, interior: 70, tires: 70, brakes: 70, fluids: 70 }); const obdHealthScore = scoreObd(obd?.dtcCount || 0, obd?.monitorsOk || 6, obd?.monitorsTotal || 8);
+
+const est = estimateValue({ year, mileage, baseMedian, medianMileage, conditionScore, obdHealthScore });
+
+const [row] = await db.insert(valuations).values({ id: crypto.randomUUID?.() || Date.now().toString(), vin: req.body.vin, make, model, year, mileage, region, conditionScore, obdHealthScore, estimateLow: est.estimateLow.toString(), estimateMid: est.estimateMid.toString(), estimateHigh: est.estimateHigh.toString(), inputs: req.body, currency: "USD", method: "hedonic_v1" }).returning();
+
+res.json({ ok: true, valuation: row, adjustments: est.adjustments }); });
+
+r.get("/valuations/:id", async (req, res) => { const [row] = await db.select().from(valuations).where(eq(valuations.id, req.params.id)); if (!row) return res.status(404).json({ error: "not_found" }); res.json(row); });
+
+export default r;
+
+// =============================== // File: src/routes/obd.ts // =============================== import { Router } from "express"; import { db } from "../db"; import { obdTests, obdReadings } from "../db/schema.vehicles";
+
+const r2 = Router();
+
+r2.post("/obd/start", async (req, res) => { const id = crypto.randomUUID?.() || Date.now().toString(); const [row] = await db.insert(obdTests).values({ id, listingId: req.body.listingId, vin: req.body.vin }).returning(); res.json({ ok: true, test: row }); });
+
+r2.post("/obd/:testId/reading", async (req, res) => { const [row] = await db.insert(obdReadings).values({ id: crypto.randomUUID?.() || Date.now().toString(), testId: req.params.testId, pid: req.body.pid, value: req.body.value, unit: req.body.unit }).returning(); res.json({ ok: true, reading: row }); });
+
+r2.post("/obd/:testId/finish", async (req, res) => { const [row] = await db.update(obdTests).set({ finishedAt: new Date(), status: req.body.status || "ok", dtcCount: req.body.dtcCount || 0, summary: req.body.summary }).where(obdTests.id.eq(req.params.testId as any)).returning(); res.json({ ok: true, test: row?.[0] }); });
+
+export default r2;
+
+// =============================== // File: src/server.ts (mount the new routes) // =============================== import express from "express"; import cors from "cors"; import dotenv from "dotenv";
+
+dotenv.config(); const app = express(); app.use(cors()); app.use(express.json());
+
+// existing routers ... import vehicleValuation from "./routes/valuation"; import obd from "./routes/obd";
+
+app.use("/api", vehicleValuation); app.use("/api", obd);
+
+app.get("/health", (_req, res) => res.json({ ok: true }));
+
+const port = process.env.PORT || 4000; app.listen(port, () => console.log(YaadFlex API listening on :${port}));
+
+// =============================== // Notes on Bluetooth / OBD // =============================== // • Web Bluetooth is experimental and not reliable across iOS/Android browsers. // • Best path: mobile app (Capacitor/React Native) using native OBD-II Bluetooth libraries. // • Fallback: allow users to upload OBD scan CSV/JSON; parse and score via /valuations/estimate. // • For VIN decoding + comps: plug later into providers (e.g., NHTSA VIN API for free decode; private market data for comps).
+
+// =============================== // Sample requests // =============================== // POST /api/valuations/estimate // { "vin":"1HGCM82633A123456", "make":"Toyota", "model":"Corolla", "year":2018, //   "mileage":65000, "region":"JM-KIN", //   "conditionForm": {"exterior":75, "interior":70, "tires":65, "brakes":80, "fluids":70}, //   "obd": {"dtcCount":0, "monitorsOk":7, "monitorsTotal":8 } // } // → { estimateLow, estimateMid, estimateHigh, adjustments }
+
