@@ -1,0 +1,114 @@
+{
+  "name": "YardFlex - Taking Jamaica to the Moon",
+  "short_name": "YardFlex",
+  "description": "The world's first total economy super-app. Ride sharing, P2P wallet, marketplace, and more. Born in Jamaica, built for the world.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#0b3d2e",
+  "orientation": "portrait-primary",
+  "categories": ["business", "finance", "social", "travel", "utilities"],
+  "lang": "en-US",
+  "icons": [
+    {
+      "src": "/icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/home-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "YardFlex home screen showing ride sharing, wallet, and marketplace"
+    },
+    {
+      "src": "/screenshots/wallet-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "YardFlex P2P wallet with YFX coin and multi-currency support"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Book Ride",
+      "short_name": "Ride",
+      "description": "Book a ride with 85% driver earnings",
+      "url": "/ride",
+      "icons": [{ "src": "/icons/shortcut-ride.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Open Wallet",
+      "short_name": "Wallet",
+      "description": "Access your YFX wallet and send money",
+      "url": "/wallet",
+      "icons": [{ "src": "/icons/shortcut-wallet.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Shop",
+      "short_name": "Shop",
+      "description": "Browse marketplace and social commerce",
+      "url": "/shop",
+      "icons": [{ "src": "/icons/shortcut-shop.png", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.yardflex.app",
+      "id": "com.yardflex.app"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://apps.apple.com/app/yardflex/id123456789",
+      "id": "123456789"
+    }
+  ],
+  "prefer_related_applications": false
+}

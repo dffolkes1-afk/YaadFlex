@@ -282,6 +282,93 @@ export type DriverCbProfile = typeof driverCbProfiles.$inferSelect;
 export type InsertCbChannelSubscription = typeof cbChannelSubscriptions.$inferInsert;
 export type CbChannelSubscription = typeof cbChannelSubscriptions.$inferSelect;
 
+// DEMO YFX WALLET SYSTEM - For Private Pilot Testing
+export const demoWallets = pgTable("demo_wallets", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  balanceYfx: decimal("balance_yfx", { precision: 18, scale: 6 }).notNull().default('0.000000'),
+  isDemoMode: boolean("is_demo_mode").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("idx_demo_wallet_user").on(table.userId),
+]);
+
+// DEMO TRANSACTIONS - Track all YFX movements
+export const demoTransactions = pgTable("demo_transactions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  type: varchar("type").notNull(), // 'topup_sandbox', 'send', 'request', 'spend', 'earn', 'refund'
+  amountYfx: decimal("amount_yfx", { precision: 18, scale: 6 }).notNull(),
+  fxKwdToJmd: decimal("fx_kwd_to_jmd", { precision: 10, scale: 4 }).default('500.0000'), // 1 KWD = 500 JMD
+  fxKwdToUsd: decimal("fx_kwd_to_usd", { precision: 10, scale: 4 }).default('3.2500'), // 1 KWD = 3.25 USD
+  toUserId: varchar("to_user_id").references(() => users.id),
+  fromUserId: varchar("from_user_id").references(() => users.id),
+  orderId: varchar("order_id"),
+  note: text("note"),
+  status: varchar("status").notNull().default('completed'), // 'pending', 'completed', 'failed'
+  meta: jsonb("meta"), // Additional data
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("idx_demo_tx_user").on(table.userId, table.createdAt),
+  index("idx_demo_tx_type").on(table.type),
+]);
+
+// DEMO ORDERS - For testing marketplace
+export const demoOrders = pgTable("demo_orders", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  buyerId: varchar("buyer_id").references(() => users.id).notNull(),
+  sellerId: varchar("seller_id").references(() => users.id),
+  totalYfx: decimal("total_yfx", { precision: 18, scale: 6 }).notNull(),
+  platformFeeYfx: decimal("platform_fee_yfx", { precision: 18, scale: 6 }).notNull(),
+  sellerEarningsYfx: decimal("seller_earnings_yfx", { precision: 18, scale: 6 }).notNull(),
+  items: jsonb("items").notNull(), // Array of items
+  deliveryAddress: text("delivery_address"),
+  status: varchar("status").notNull().default('created'), // 'created', 'paid', 'preparing', 'en_route', 'delivered', 'completed'
+  driverEta: integer("driver_eta"), // minutes
+  isDemoMode: boolean("is_demo_mode").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// DEMO FEATURE FLAGS - Control what users see
+export const demoFeatureFlags = pgTable("demo_feature_flags", {
+  key: varchar("key").primaryKey(),
+  enabled: boolean("enabled").notNull().default(false),
+  audience: varchar("audience").notNull().default('all'), // 'all', 'beta_tester', 'partner_tester'
+  rollout: integer("rollout").notNull().default(0), // 0-100 percentage
+  meta: jsonb("meta"),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// PILOT TESTERS - For private access control
+export const pilotTesters = pgTable("pilot_testers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  email: varchar("email").unique(),
+  phone: varchar("phone"),
+  region: varchar("region"), // "JM", "US", etc
+  device: varchar("device"), // "Android", "iOS", "Web"
+  role: varchar("role").notNull().default('waitlist'), // 'waitlist', 'invited', 'beta_tester', 'partner_tester', 'admin'
+  orgCode: varchar("org_code"), // Partner org identifier
+  inviteToken: varchar("invite_token").unique(),
+  inviteExpiresAt: timestamp("invite_expires_at"),
+  inviteUsedAt: timestamp("invite_used_at"),
+  consentAt: timestamp("consent_at"), // When they agreed to NDA
+  isActive: boolean("is_active").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type DemoWallet = typeof demoWallets.$inferSelect;
+export type InsertDemoWallet = typeof demoWallets.$inferInsert;
+export type DemoTransaction = typeof demoTransactions.$inferSelect;
+export type InsertDemoTransaction = typeof demoTransactions.$inferInsert;
+export type DemoOrder = typeof demoOrders.$inferSelect;
+export type InsertDemoOrder = typeof demoOrders.$inferInsert;
+export type DemoFeatureFlag = typeof demoFeatureFlags.$inferSelect;
+export type InsertDemoFeatureFlag = typeof demoFeatureFlags.$inferInsert;
+export type PilotTester = typeof pilotTesters.$inferSelect;
+export type InsertPilotTester = typeof pilotTesters.$inferInsert;
+
 // Services Marketplace Tables (Construction, Cleaning, Trade Work)
 export const serviceCategories = pgTable("service_categories", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),

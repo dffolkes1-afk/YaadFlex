@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { CBRadioWebSocketServer } from "./cbRadioWebSocket";
+import { demoWallets, demoTransactions, demoOrders, demoFeatureFlags } from "@shared/schema";
 import { 
   insertTransactionSchema, 
   insertUserWalletSchema,
@@ -499,7 +500,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           preferredChannels: [],
           isOnline: false,
           totalMessages: 0,
-          reputation: 5.0
+          reputation: "5.0"
         });
       }
       
@@ -749,7 +750,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       if (maxBudget) {
-        conditions.push(lte(rentalProperties.dailyRate, parseFloat(maxBudget as string)));
+        conditions.push(lte(rentalProperties.dailyRate, maxBudget as string));
       }
       
       const properties = await db.select().from(rentalProperties)
@@ -925,6 +926,91 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error updating property availability:", error);
       res.status(500).json({ message: "Failed to update availability" });
+    }
+  });
+
+  // DEMO YFX WALLET SYSTEM - ChatGPT's Private Pilot Testing 💰
+  
+  // Create or get demo wallet
+  app.get('/api/demo/wallet', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      
+      let [wallet] = await db.select().from(demoWallets).where(eq(demoWallets.userId, userId));
+      
+      if (!wallet) {
+        // Create demo wallet with 0 balance
+        [wallet] = await db.insert(demoWallets)
+          .values({ userId, balanceYfx: '0.000000' })
+          .returning();
+      }
+      
+      res.json(wallet);
+    } catch (error) {
+      console.error("Error fetching demo wallet:", error);
+      res.status(500).json({ message: "Failed to fetch demo wallet" });
+    }
+  });
+
+  // Demo sandbox top-up (fake funds)
+  app.post('/api/demo/wallet/topup-sandbox', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { amount_yfx } = req.body;
+      
+      if (!amount_yfx || parseFloat(amount_yfx) <= 0) {
+        return res.status(400).json({ message: "Invalid amount. Must be greater than 0." });
+      }
+
+      // Get or create wallet
+      let [wallet] = await db.select().from(demoWallets).where(eq(demoWallets.userId, userId));
+      if (!wallet) {
+        [wallet] = await db.insert(demoWallets)
+          .values({ userId, balanceYfx: '0.000000' })
+          .returning();
+      }
+
+      // Update balance
+      const newBalance = parseFloat(wallet.balanceYfx) + parseFloat(amount_yfx);
+      await db.update(demoWallets)
+        .set({ balanceYfx: newBalance.toFixed(6), updatedAt: new Date() })
+        .where(eq(demoWallets.userId, userId));
+
+      // Record transaction
+      await db.insert(demoTransactions).values({
+        userId,
+        type: 'topup_sandbox',
+        amountYfx: parseFloat(amount_yfx).toFixed(6),
+        note: 'Demo sandbox funds - TEST ONLY',
+        status: 'completed'
+      });
+
+      res.json({ 
+        success: true,
+        message: `Added ${amount_yfx} YFX to demo wallet`,
+        newBalance: newBalance.toFixed(6),
+        note: "TEST MODE - No real money"
+      });
+    } catch (error) {
+      console.error("Error topping up demo wallet:", error);
+      res.status(500).json({ message: "Failed to top up demo wallet" });
+    }
+  });
+
+  // Demo transaction history
+  app.get('/api/demo/wallet/transactions', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const transactions = await db.select()
+        .from(demoTransactions)
+        .where(eq(demoTransactions.userId, userId))
+        .orderBy(desc(demoTransactions.createdAt))
+        .limit(50);
+
+      res.json(transactions);
+    } catch (error) {
+      console.error("Error fetching demo transactions:", error);
+      res.status(500).json({ message: "Failed to fetch transactions" });
     }
   });
 
