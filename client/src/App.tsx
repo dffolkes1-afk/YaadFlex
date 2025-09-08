@@ -15,6 +15,7 @@ import RentalEmpire from "@/pages/rental-empire";
 import Wallet from "@/pages/wallet";
 import RideBooking from "@/pages/ride-booking";
 import BusinessRegistration from "@/pages/business-registration";
+import DriverRegistration from "@/pages/driver-registration";
 import { TranslatorDemoPage } from "@/pages/translator-demo";
 import { TimelessDashboardPage } from "@/pages/timeless-dashboard";
 import WorldEmblemPage from "@/pages/world-emblem";
@@ -43,6 +44,7 @@ function Router() {
           <Route path="/wallet" component={Wallet} />
           <Route path="/ride-booking" component={RideBooking} />
           <Route path="/business-registration" component={BusinessRegistration} />
+          <Route path="/driver-registration" component={DriverRegistration} />
           <Route path="/translator" component={TranslatorDemoPage} />
           <Route path="/timeless-core" component={TimelessDashboardPage} />
           <Route path="/workforce" component={WorkforceDashboard} />
