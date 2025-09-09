@@ -35,6 +35,7 @@ import WorkforceDashboard from "@/pages/WorkforceDashboard";
 import JobPosting from "@/pages/JobPosting";
 import DuoWonTheWorld3D from "@/components/DuoWonTheWorld3D";
 import PricingCalculator from "@/pages/pricing-calculator";
+import CustomerBooking from "@/pages/customer-booking";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -59,6 +60,7 @@ function Router() {
       <Route path="/signup" component={ContactForm} />
       <Route path="/social" component={SocialHub} />
       <Route path="/pricing" component={PricingCalculator} />
+      <Route path="/book-ride" component={CustomerBooking} />
       
       {/* Authentication-based routes */}
       {isLoading || !isAuthenticated ? (
