@@ -254,6 +254,58 @@ export default function SocialHub() {
             </a>
           </div>
 
+          {/* Business Contact */}
+          <div style={{
+            background: 'linear-gradient(180deg,#0c1117,#0b1118)',
+            border: '1px solid rgba(255,255,255,.06)',
+            borderRadius: '16px',
+            padding: '24px',
+            gridColumn: '1 / -1'
+          }}>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '12px', 
+              marginBottom: '16px' 
+            }}>
+              <div style={{
+                width: '32px',
+                height: '32px',
+                background: '#10d07a',
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <span style={{ color: '#08140f', fontSize: '16px', fontWeight: 'bold' }}>✉️</span>
+              </div>
+              <h2 style={{ margin: 0, fontSize: '18px' }}>Business Contact</h2>
+            </div>
+            <p style={{ margin: '0 0 16px', color: '#9fb0c0', fontSize: '14px' }}>
+              For serious business discussions, partnerships, customer support, and important matters, contact directly:
+            </p>
+            <a 
+              href="mailto:dChris@yaadflexglobalvybz.com" 
+              style={{
+                display: 'inline-block',
+                background: '#10d07a',
+                color: '#08140f',
+                textDecoration: 'none',
+                padding: '12px 20px',
+                borderRadius: '8px',
+                fontSize: '16px',
+                fontWeight: 'bold',
+                marginBottom: '8px'
+              }}
+              data-testid="button-business-email"
+            >
+              📧 dChris@yaadflexglobalvybz.com
+            </a>
+            <p style={{ margin: '8px 0 0', color: '#9fb0c0', fontSize: '12px' }}>
+              Driver registrations and routine app functions are handled automatically, but business partnerships and support go directly to the owner.
+            </p>
+          </div>
+
           {/* Community Guidelines */}
           <div style={{
             background: 'linear-gradient(180deg,#0c1117,#0b1118)',

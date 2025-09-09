@@ -44,7 +44,7 @@ export default function ContactForm() {
       }}>
         <h3 style={{ margin: '0 0 12px', fontSize: '20px' }}>Message Sent! 🚀</h3>
         <p style={{ margin: '0', color: '#cbd6df' }}>
-          Thanks for reaching out! We'll get back to you within 24 hours.
+          Your message has been sent to our business team. For business partnerships and serious inquiries, we'll respond within 24 hours.
         </p>
       </div>
     );
@@ -184,10 +184,10 @@ export default function ContactForm() {
         fontSize: '12px',
         color: '#9fb0c0'
       }}>
-        <strong>Quick Contact:</strong><br/>
-        📧 info@yaadflex.com | 📞 1-800-YAADFLEX<br/>
+        <strong>Business Contact:</strong><br/>
+        📧 dChris@yaadflexglobalvybz.com - Direct contact for partnerships & business matters<br/>
         💬 <a href="https://t.me/yaadflex" target="_blank" style={{ color: '#10d07a' }}>Telegram</a> | 
-        📱 <a href="https://wa.me/1876XXXXXXX" target="_blank" style={{ color: '#10d07a' }}>WhatsApp</a>
+        📱 <a href="https://wa.me/1876XXXXXXX" target="_blank" style={{ color: '#10d07a' }}>WhatsApp Business</a>
       </div>
     </div>
   );
