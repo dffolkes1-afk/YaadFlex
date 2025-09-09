@@ -122,50 +122,87 @@ export default function ModernLanding() {
                 <p className="text-blue-100 font-semibold">We're here to make a REAL difference in Jamaica!</p>
               </div>
 
-              <p className="text-xl text-gray-300 leading-relaxed">
-                The Caribbean super-app with that <strong className="text-gray-300">dark gothic finish!</strong> 
-                Sharp edges, menacing design. <strong className="text-gray-200">Drivers keep 85%</strong> - dark, sharp, powerful.
-              </p>
+              <div className="space-y-4">
+                <p className="text-xl text-gray-300 leading-relaxed">
+                  The Caribbean super-app with that <strong className="text-gray-300">dark gothic finish!</strong> 
+                  Born in Jamaica 🇯🇲, spreading across Africa 🌍 and the Caribbean.
+                </p>
+                <div className="flex items-center gap-3 text-sm flex-wrap">
+                  <span className="bg-green-900/40 px-3 py-1 rounded-lg border border-green-500/40 text-green-300">🇯🇲 Jamaica</span>
+                  <span className="bg-orange-900/40 px-3 py-1 rounded-lg border border-orange-500/40 text-orange-300">🇳🇬 Nigeria</span>
+                  <span className="bg-red-900/40 px-3 py-1 rounded-lg border border-red-500/40 text-red-300">🇰🇪 Kenya</span>
+                  <span className="bg-purple-900/40 px-3 py-1 rounded-lg border border-purple-500/40 text-purple-300">🌍 Africa</span>
+                </div>
+              </div>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Button size="lg" className="bg-gradient-to-r from-gray-700 to-gray-800 text-white hover:shadow-xl hover:shadow-gray-700/25 border border-gray-600/30" asChild>
-                <Link href="/pricing" data-testid="button-see-pricing">
-                  <Calculator className="h-5 w-5 mr-2" />
-                  View Pricing
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-600 hover:text-white backdrop-blur-sm" asChild>
-                <Link href="/driver-registration" data-testid="button-start-driving">
-                  <Car className="h-5 w-5 mr-2" />
-                  Driver Access
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" className="border-gray-500 text-gray-300 hover:bg-gray-500 hover:text-white backdrop-blur-sm" asChild>
-                <Link href="/book-ride" data-testid="button-book-ride">
-                  <MapPin className="h-5 w-5 mr-2" />
-                  Book Ride
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-600 hover:text-white backdrop-blur-sm" asChild>
-                <Link href="/universal-remote" data-testid="button-remote-control">
-                  <Monitor className="h-5 w-5 mr-2" />
-                  IoT Control
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" className="border-gray-500 text-gray-300 hover:bg-gray-500 hover:text-white backdrop-blur-sm" asChild>
-                <Link href="/travel-booking" data-testid="button-travel-booking">
-                  <Plane className="h-5 w-5 mr-2" />
-                  Travel
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-600 hover:text-white backdrop-blur-sm" asChild>
-                <Link href="/trading-dashboard" data-testid="button-trading">
-                  <DollarSign className="h-5 w-5 mr-2" />
-                  Trading
-                </Link>
-              </Button>
+            {/* CLEAR PASSENGER VS DRIVER CHOICE */}
+            <div className="space-y-6">
+              <div className="bg-gradient-to-r from-orange-900/30 to-red-900/30 rounded-xl p-6 border border-orange-500/40">
+                <h3 className="text-2xl font-bold text-orange-300 mb-4 text-center">🌍 Choose Your Journey</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  
+                  {/* PASSENGER SIDE */}
+                  <div className="bg-gradient-to-br from-blue-900/40 to-purple-900/40 rounded-lg p-6 border border-blue-500/50 hover:border-blue-400/70 transition-all group">
+                    <div className="text-center space-y-4">
+                      <div className="w-16 h-16 mx-auto bg-blue-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <MapPin className="h-8 w-8 text-white" />
+                      </div>
+                      <h4 className="text-xl font-bold text-blue-300">🚖 I NEED A RIDE</h4>
+                      <p className="text-blue-200 text-sm">Book rides across Jamaica<br/>🌍 From Kingston to Montego Bay</p>
+                      <Button size="lg" className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500" asChild>
+                        <Link href="/book-ride" data-testid="button-passenger">
+                          Book My Ride Now
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* DRIVER SIDE */}
+                  <div className="bg-gradient-to-br from-green-900/40 to-yellow-900/40 rounded-lg p-6 border border-green-500/50 hover:border-green-400/70 transition-all group">
+                    <div className="text-center space-y-4">
+                      <div className="w-16 h-16 mx-auto bg-green-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Car className="h-8 w-8 text-white" />
+                      </div>
+                      <h4 className="text-xl font-bold text-green-300">🚗 I WANT TO DRIVE</h4>
+                      <p className="text-green-200 text-sm">Earn 85% of every fare<br/>🌍 Join drivers across the Caribbean</p>
+                      <Button size="lg" className="w-full bg-gradient-to-r from-green-600 to-yellow-600 hover:from-green-500 hover:to-yellow-500" asChild>
+                        <Link href="/driver-registration" data-testid="button-driver">
+                          Start Driving & Earning
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* QUICK ACCESS FEATURES */}
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                <Button size="sm" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-600" asChild>
+                  <Link href="/pricing" data-testid="button-pricing">
+                    <Calculator className="h-4 w-4 mr-2" />
+                    Pricing
+                  </Link>
+                </Button>
+                <Button size="sm" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-600" asChild>
+                  <Link href="/universal-remote" data-testid="button-remote">
+                    <Monitor className="h-4 w-4 mr-2" />
+                    IoT
+                  </Link>
+                </Button>
+                <Button size="sm" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-600" asChild>
+                  <Link href="/travel-booking" data-testid="button-travel">
+                    <Plane className="h-4 w-4 mr-2" />
+                    Travel
+                  </Link>
+                </Button>
+                <Button size="sm" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-600" asChild>
+                  <Link href="/trading-dashboard" data-testid="button-trading">
+                    <DollarSign className="h-4 w-4 mr-2" />
+                    Trading
+                  </Link>
+                </Button>
+              </div>
             </div>
 
             {/* Contact Info */}
