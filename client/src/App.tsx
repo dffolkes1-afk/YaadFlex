@@ -34,6 +34,7 @@ import WorldEmblemPage from "@/pages/world-emblem";
 import WorkforceDashboard from "@/pages/WorkforceDashboard";
 import JobPosting from "@/pages/JobPosting";
 import DuoWonTheWorld3D from "@/components/DuoWonTheWorld3D";
+import PricingCalculator from "@/pages/pricing-calculator";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -57,6 +58,7 @@ function Router() {
       <Route path="/contact" component={ContactForm} />
       <Route path="/signup" component={ContactForm} />
       <Route path="/social" component={SocialHub} />
+      <Route path="/pricing" component={PricingCalculator} />
       
       {/* Authentication-based routes */}
       {isLoading || !isAuthenticated ? (

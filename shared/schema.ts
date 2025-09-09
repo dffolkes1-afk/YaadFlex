@@ -233,8 +233,8 @@ export const pricingZones = pgTable("pricing_zones", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-// YaadFlex Job Assignment Queue - No Cherry Picking
-export const jobAssignments = pgTable("job_assignments", {
+// YaadFlex Trip Assignment Queue - No Cherry Picking
+export const tripAssignments = pgTable("trip_assignments", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   tripId: varchar("trip_id").references(() => trips.id).notNull(),
   assignedDriverId: varchar("assigned_driver_id").references(() => users.id),
@@ -442,8 +442,8 @@ export type InsertDriverFleet = typeof driverFleets.$inferInsert;
 export type DriverFleet = typeof driverFleets.$inferSelect;
 export type InsertPricingZone = typeof pricingZones.$inferInsert;
 export type PricingZone = typeof pricingZones.$inferSelect;
-export type InsertJobAssignment = typeof jobAssignments.$inferInsert;
-export type JobAssignment = typeof jobAssignments.$inferSelect;
+export type InsertTripAssignment = typeof tripAssignments.$inferInsert;
+export type TripAssignment = typeof tripAssignments.$inferSelect;
 export type InsertLifestyleAddon = typeof lifestyleAddons.$inferInsert;
 export type LifestyleAddon = typeof lifestyleAddons.$inferSelect;
 export type InsertErrandGroup = typeof errandGroups.$inferInsert;
