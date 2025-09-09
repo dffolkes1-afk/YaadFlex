@@ -43,6 +43,7 @@ import TradingDashboard from "@/pages/trading-dashboard";
 import TravelBooking from "@/pages/travel-booking";
 import ServiceMarketplace from "@/pages/service-marketplace";
 import InsuranceFAQ from "@/pages/insurance-faq";
+import EmailAssistant from "@/pages/email-assistant";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -74,6 +75,9 @@ function Router() {
       <Route path="/insurance" component={InsuranceFAQ} />
       <Route path="/insurance-faq" component={InsuranceFAQ} />
       <Route path="/safety" component={InsuranceFAQ} />
+      <Route path="/email-assistant" component={EmailAssistant} />
+      <Route path="/support" component={EmailAssistant} />
+      <Route path="/contact" component={EmailAssistant} />
       <Route path="/universal-remote" component={UniversalRemote} />
       
       {/* Authentication-based routes */}

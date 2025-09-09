@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { InsuranceBadge } from "@/components/InsuranceBadge";
 import { 
   Shield, 
   CheckCircle, 
@@ -103,28 +104,8 @@ export default function InsuranceFAQ() {
           </Badge>
         </div>
 
-        {/* Insurance Badge/Seal */}
-        <Card className="mb-8 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900 dark:to-blue-900 border-2 border-green-200 dark:border-green-700">
-          <CardContent className="p-6 text-center">
-            <div className="flex items-center justify-center gap-6">
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-8 w-8 text-green-600" />
-                <span className="text-lg font-semibold">Business Protected</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Shield className="h-8 w-8 text-blue-600" />
-                <span className="text-lg font-semibold">Data Secured</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Car className="h-8 w-8 text-purple-600" />
-                <span className="text-lg font-semibold">Drivers Insured</span>
-              </div>
-            </div>
-            <p className="text-sm text-gray-600 dark:text-gray-300 mt-3">
-              🇯🇲 Fully compliant with Jamaican insurance requirements
-            </p>
-          </CardContent>
-        </Card>
+        {/* Insurance Badge */}
+        <InsuranceBadge className="mb-8" variant="full" />
 
         {/* Category Filters */}
         <div className="flex flex-wrap gap-3 mb-8 justify-center">

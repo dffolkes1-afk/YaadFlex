@@ -3,6 +3,7 @@ import { Link } from 'wouter';
 import { Car, MapPin, DollarSign, Users, Star, Calculator, Phone, ArrowRight, Zap, Shield, Globe, Monitor, Plane } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { InsuranceBadge } from '@/components/InsuranceBadge';
 
 export default function ModernLanding() {
   const [currentExample, setCurrentExample] = useState(0);
@@ -532,6 +533,21 @@ export default function ModernLanding() {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* Insurance Trust Section */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
+        <div className="text-center mb-8">
+          <h3 className="text-3xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-gray-300 to-white bg-clip-text text-transparent">
+              Secured & Protected
+            </span>
+          </h3>
+          <p className="text-lg text-gray-400">Your safety is our dark power</p>
+        </div>
+        <div className="flex justify-center">
+          <InsuranceBadge className="max-w-sm bg-black/70 border-green-500/70" variant="full" />
         </div>
       </div>
 

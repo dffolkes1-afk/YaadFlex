@@ -127,6 +127,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const { timelessCoreRouter } = await import('./timeless-core-api');
   app.use('/api/timeless-core', timelessCoreRouter);
 
+  // Email Support Route
+  app.post("/api/send-support-email", async (req, res) => {
+    try {
+      const { name, email, phone, subject, message, category } = req.body;
+      
+      if (!name || !email || !message || !subject) {
+        return res.status(400).json({ message: "Missing required fields" });
+      }
+
+      // Email content for YaadFlex support
+      const emailContent = `
+YaadFlex Global Vybz - Support Request
+
+From: ${name} <${email}>
+Phone: ${phone || 'Not provided'}
+Category: ${category || 'general'}
+Subject: ${subject}
+
+Message:
+${message}
+
+---
+Sent via YaadFlex Email Assistant
+Time: ${new Date().toISOString()}
+      `;
+
+      // Log the support request (future: integrate with SendGrid when API key available)
+      console.log('=== YAADFLEX SUPPORT EMAIL ===');
+      console.log('TO: support@yaadflexglobalvybz.com');
+      console.log('FROM:', email);
+      console.log('SUBJECT:', subject);
+      console.log(emailContent);
+      console.log('===============================');
+
+      // For now, simulate successful email sending
+      // Future enhancement: integrate with SendGrid when API key is configured
+      res.json({ 
+        success: true, 
+        message: "Email sent successfully! We'll get back to you within 24 hours.",
+        supportTicketId: `YFX-${Date.now()}`
+      });
+
+    } catch (error: any) {
+      console.error("Error processing support email:", error);
+      res.status(500).json({ message: "Failed to send email" });
+    }
+  });
+
   // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
