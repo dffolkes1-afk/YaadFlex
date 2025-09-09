@@ -47,6 +47,7 @@ import EmailAssistant from "@/pages/email-assistant";
 import CEODashboard from "@/pages/ceo-dashboard";
 import VendorManagement from "@/pages/vendor-management";
 import TimeAuthLogin from "@/pages/time-auth-login";
+import RBACDashboard from "@/pages/rbac-dashboard";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -111,6 +112,7 @@ function Router() {
           <Route path="/ceo-dashboard" component={CEODashboard} />
           <Route path="/vendor-management" component={VendorManagement} />
           <Route path="/secure-login" component={TimeAuthLogin} />
+          <Route path="/rbac-dashboard" component={RBACDashboard} />
         </>
       )}
       <Route path="/secure-login" component={TimeAuthLogin} />

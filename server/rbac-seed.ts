@@ -9,7 +9,7 @@ import {
   rbacWorkAreas 
 } from "@shared/schema";
 import crypto from "node:crypto";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 export async function seedRbacSystem() {
   console.log("🔐 Seeding RBAC + Area Locking system...");
@@ -131,11 +131,14 @@ export async function seedRbacSystem() {
     ];
 
     for (const rolePermission of rolePermissions) {
-      const [existing] = await db.select()
+      const existingPermissions = await db.select()
         .from(rbacRolePermissions)
-        .where(eq(rbacRolePermissions.roleId, rolePermission.roleId));
+        .where(and(
+          eq(rbacRolePermissions.roleId, rolePermission.roleId),
+          eq(rbacRolePermissions.permissionCode, rolePermission.permissionCode)
+        ));
       
-      if (existing.length === 0 || !existing.some(rp => rp.permissionCode === rolePermission.permissionCode)) {
+      if (existingPermissions.length === 0) {
         await db.insert(rbacRolePermissions).values(rolePermission);
       }
     }
@@ -166,11 +169,11 @@ export async function seedRbacSystem() {
     }
 
     // Assign CEO role to CEO user
-    const [existingCEORole] = await db.select()
+    const existingCEORole = await db.select()
       .from(rbacUserRoles)
-      .where(eq(rbacUserRoles.userId, ceoUserId));
+      .where(and(eq(rbacUserRoles.userId, ceoUserId), eq(rbacUserRoles.roleId, ceoRole.id)));
     
-    if (!existingCEORole) {
+    if (existingCEORole.length === 0) {
       await db.insert(rbacUserRoles).values({
         id: crypto.randomUUID(),
         userId: ceoUserId,
