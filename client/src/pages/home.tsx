@@ -11,10 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import globalHeroImage from '@assets/generated_images/CEO_touching_global_world_silhouette_ad066b65.png';
-import yardFlexLogo from '@assets/generated_images/YardFlex_global_connectivity_logo_d834a244.png';
-import rocketToMoonImage from '@assets/generated_images/Jamaica_rocket_to_moon_launch_d8e2fc61.png';
-import rocketLogoImage from '@assets/generated_images/Stylized_Jamaica_moon_rocket_400418f0.png';
+// Images removed for production build
 
 type Transaction = {
   id: string;
@@ -330,12 +327,10 @@ export default function Home() {
       {/* Global Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-r from-green-900/20 to-yellow-900/20 border-b border-yellow-500/30">
         <div className="relative">
-          <img 
-            src={globalHeroImage} 
-            alt="YaadFlex Global Vision - Connecting Jamaica to the World" 
-            className="w-full h-64 md:h-96 object-cover opacity-90"
-            data-testid="img-global-hero"
-          />
+          <div 
+            className="w-full h-64 md:h-96 bg-gradient-to-r from-green-600/40 via-yellow-500/40 to-green-700/40 opacity-90"
+            data-testid="hero-background"
+          ></div>
           
           {/* Hero Overlay Content */}
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-black/40 to-transparent">
@@ -364,12 +359,12 @@ export default function Home() {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <img 
-                src={yardFlexLogo} 
-                alt="YaadFlex Logo" 
-                className="w-10 h-10 rounded-full"
-                data-testid="img-yardflex-logo"
-              />
+              <div 
+                className="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-400 to-green-500 flex items-center justify-center text-white font-bold text-sm"
+                data-testid="yardflex-logo"
+              >
+                YF
+              </div>
               <span className="text-2xl font-bold text-premium" data-testid="brand-name">YaadFlex</span>
               <span className="text-xs bg-green-600 text-white px-2 py-1 rounded-full font-medium" data-testid="global-indicator">
                 GLOBAL
@@ -406,20 +401,18 @@ export default function Home() {
           <Card className="bg-gradient-to-r from-purple-900/30 via-blue-900/30 to-yellow-900/30 border-purple-500/30 relative overflow-hidden" data-testid="moon-mission-card">
             {/* Background Rocket Image */}
             <div className="absolute inset-0 opacity-20">
-              <img 
-                src={rocketToMoonImage} 
-                alt="Jamaica Rocket to Moon" 
-                className="w-full h-full object-cover"
-              />
+              <div 
+                className="w-full h-full bg-gradient-to-br from-purple-600/30 via-blue-600/30 to-yellow-600/30"
+              ></div>
             </div>
             
             <CardHeader className="relative z-10">
               <CardTitle className="flex items-center space-x-3 text-purple-300">
-                <img 
-                  src={rocketLogoImage} 
-                  alt="Rocket Logo" 
-                  className="w-12 h-12"
-                />
+                <div 
+                  className="w-12 h-12 flex items-center justify-center text-4xl"
+                >
+                  🚀
+                </div>
                 <span className="text-2xl font-black">🚀 JAMAICA & CANADA TO THE MOON MISSION 🌙</span>
               </CardTitle>
             </CardHeader>

@@ -1,67 +1,97 @@
-# Overview
+# YaadFlex - Global Total Economy Super-App
 
-YaadFlex is a Caribbean Uber-style super app that provides ride-sharing, delivery services, and e-commerce with instant delivery. The application features a comprehensive financial transaction system with advanced security measures, supporting multiple vehicle types (bikes, cars, vans, trucks) and delivery options ranging from instant to same-day delivery.
+## Overview
 
-## Revolutionary TimelessCore v1.0
+YaadFlex is a comprehensive super-app born in Jamaica with global ambitions. It's a total economy platform that combines ride-sharing, P2P wallet services, marketplace functionality, and more into a single unified application. The project features an innovative multi-currency system, voice-first accessibility, real-time translation capabilities, and cultural authenticity across different countries. The architecture supports everything from basic ride booking to complex business registration, workforce management, and global commerce.
 
-YaadFlex now features the **TimelessCore** system - a continuously upgradeable, human-like adaptive learning AI that improves safely over time without breaking backward compatibility. This makes YaadFlex the first super-app with truly adaptive AI translation and system intelligence that learns and upgrades continuously like a human being.
-
-### Key TimelessCore Features:
-- **Safety-First Learning**: Human-in-the-loop controls with privacy-by-default
-- **Adaptive Intelligence**: System IQ grows from 150 to 200+ through continuous learning  
-- **Self-Diagnostics**: Auto-repair capabilities with drift detection and rollback protection
-- **Enterprise Security**: Feature flags, canary rollouts, and evaluation gates
-- **Privacy Protection**: PII redaction, anonymization, and GDPR/CCPA compliance
-- **Real-Time Monitoring**: Performance metrics, health checks, and predictive insights
-
-# User Preferences
+## User Preferences
 
 Preferred communication style: Simple, everyday language.
 
-# System Architecture
+## System Architecture
 
-## Frontend Architecture
+### Frontend Architecture
+The frontend is built with React and TypeScript, utilizing Vite as the build tool. The application follows a component-driven architecture with:
+- **UI Framework**: Radix UI components with shadcn/ui styling
+- **Styling**: Tailwind CSS with CSS variables for dynamic theming
+- **State Management**: TanStack Query for server state and React hooks for local state
+- **Routing**: Wouter for lightweight client-side routing
+- **3D Graphics**: React Three Fiber for 3D world emblems and animations
+- **PWA Support**: Service worker implementation for offline functionality
 
-**Technology Stack**: React with TypeScript, using Vite as the build tool and development server. The UI is built with shadcn/ui components based on Radix UI primitives and styled with Tailwind CSS.
+### Backend Architecture
+The backend uses Express.js with TypeScript in an ESM environment:
+- **API Design**: RESTful endpoints with consistent error handling
+- **Database Layer**: Drizzle ORM for type-safe database operations
+- **Real-time Communication**: WebSocket integration for CB Radio functionality
+- **Authentication**: Replit Auth with session management
+- **File Structure**: Modular route organization with shared schema definitions
 
-**Component Structure**: Follows a modular component architecture with reusable UI components in the `/client/src/components/ui` directory. The application uses React Router (wouter) for client-side routing and TanStack Query for state management and server communication.
+### Multi-Currency & Payment System
+A sophisticated financial architecture supporting:
+- **KWD/YFD**: Primary wallet currencies with global exchange
+- **Payment Methods**: Stripe integration for cards, digital wallets, mobile money
+- **Real-time Rates**: Dynamic currency conversion with multiple providers
+- **Transaction Security**: Multi-factor authentication and security logging
 
-**Styling**: Uses a dark theme-first approach with CSS custom properties for theming. The design system is consistent across components with proper color tokens and responsive design patterns.
+### Translation & Accessibility Core
+Voice-first design with comprehensive accessibility:
+- **AI Translation**: Real-time text and voice translation across languages
+- **Cultural Adaptation**: Country-specific themes, languages, and dialects
+- **Accessibility Features**: Screen reader support, haptic feedback, live captions
+- **Voice Commands**: Complete voice-driven interface capabilities
 
-## Backend Architecture
+### Real-time Systems
+- **CB Radio Network**: WebSocket-based communication for drivers
+- **Live Tracking**: Real-time location updates and trip monitoring
+- **Chat Translation**: Multi-language chat with automatic translation
+- **Notifications**: Real-time updates across all platform features
 
-**API Design**: RESTful Express.js server with TypeScript, featuring middleware for request logging, authentication, and error handling. The server uses session-based authentication with PostgreSQL session storage.
+### Workforce Management
+Enterprise-grade workforce solutions:
+- **Job Management**: Posting, applications, and assignments
+- **Equipment Tracking**: Inventory management with check-in/out systems
+- **Company Profiles**: Multi-company support with role-based access
+- **Immigration Services**: Document management and legal case tracking
 
-**Authentication**: Implements OpenID Connect (OIDC) authentication integrated with Replit's auth system using Passport.js. Sessions are managed with express-session and stored in PostgreSQL.
-
-**Route Structure**: Organized route handlers in `/server/routes.ts` with dedicated endpoints for user management, transactions, and security logging. All routes are protected with authentication middleware.
-
-## Data Storage Solutions
-
-**Database**: PostgreSQL database accessed through Neon's serverless driver with connection pooling. The database schema is managed using Drizzle ORM for type-safe database operations.
-
-**Schema Design**: Includes core tables for users, transactions, security logs, and session storage. The transaction system supports multiple currencies, security levels, and comprehensive audit trails.
-
-**Migrations**: Uses Drizzle Kit for database migrations with configurations stored in `drizzle.config.ts`.
-
-## Authentication and Authorization
-
-**Provider**: Replit OIDC authentication with automatic user provisioning and session management.
-
-**Security**: Implements comprehensive security logging for all financial transactions, with different security levels (standard, enhanced, beast_mode) and threat monitoring capabilities.
-
-**Session Management**: Secure HTTP-only cookies with PostgreSQL-backed session storage and configurable TTL.
+### Timeless AI Learning System
+Continuous improvement architecture:
+- **Learning Signals**: User feedback collection for AI improvement
+- **Safety-First Design**: Privacy protection with consent requirements
+- **Adaptive Optimization**: System self-improvement based on usage patterns
+- **Version Control**: Model versioning with rollback capabilities
 
 ## External Dependencies
 
-**Database Service**: Neon PostgreSQL serverless database for production data storage and session management.
+### Database & Storage
+- **PostgreSQL**: Primary database via Neon serverless
+- **Drizzle ORM**: Type-safe database operations and migrations
+- **Session Storage**: PostgreSQL-based session management for Replit Auth
 
-**Authentication Provider**: Replit OIDC for user authentication and identity management.
+### Payment & Financial Services
+- **Stripe**: Payment processing for cards and digital wallets
+- **Neon Database**: Serverless PostgreSQL for financial data
+- **Multi-currency APIs**: Exchange rate providers for real-time conversion
 
-**UI Framework**: Radix UI primitives for accessible, unstyled components with custom styling via Tailwind CSS.
+### Communication & Translation
+- **SendGrid**: Email communication system
+- **WebSocket Server**: Real-time chat and CB Radio functionality
+- **Voice APIs**: Speech recognition and text-to-speech services
+- **Translation Services**: AI-powered language translation
 
-**Build Tools**: Vite for frontend development and building, esbuild for server-side bundling in production.
+### Authentication & Security
+- **Replit Auth**: OIDC-based authentication system
+- **Passport.js**: Authentication middleware
+- **Session Management**: Secure session handling with PostgreSQL storage
 
-**Deployment Platform**: Configured for Replit deployment with development-specific plugins and environment variable management.
+### Development & Deployment
+- **Vite**: Frontend build tool and development server
+- **TypeScript**: Type safety across frontend and backend
+- **ESBuild**: Backend bundling for production
+- **Service Workers**: PWA functionality for offline support
 
-**Development Tools**: TypeScript for type safety, TanStack Query for data fetching and caching, React Hook Form with Zod validation for form handling.
+### UI & Experience
+- **Radix UI**: Accessible component primitives
+- **Tailwind CSS**: Utility-first styling framework
+- **React Three Fiber**: 3D graphics and animations
+- **Lucide Icons**: Consistent iconography throughout the app
