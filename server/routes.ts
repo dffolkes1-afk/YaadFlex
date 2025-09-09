@@ -104,10 +104,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Main homepage - super simple!
-  app.get('/', (req, res) => {
-    res.redirect('/yaadflex');
-  });
+  // Let the frontend handle routing
+  // (Frontend React Router will handle the root path)
 
   // Test endpoint to check file
   app.get('/test', (req, res) => {
