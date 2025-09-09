@@ -601,93 +601,141 @@ export default function ModernLanding() {
         </div>
       </div>
 
-      {/* Social Media Section */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
-        <div className="text-center mb-12">
-          <h3 className="text-4xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-gray-300 to-white bg-clip-text text-transparent">
-              Follow YaadFlex 🌍
+      {/* PROMINENT SOCIAL MEDIA SECTION */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 bg-gradient-to-br from-purple-900/30 to-blue-900/30 rounded-xl mx-4 border border-purple-500/40">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 bg-purple-900/40 px-6 py-3 rounded-lg border border-purple-500/40 backdrop-blur-sm mb-6">
+            <span className="text-2xl">📱</span>
+            <span className="text-lg text-purple-300 font-bold">FIND US ON SOCIAL MEDIA</span>
+          </div>
+          <h3 className="text-5xl lg:text-6xl font-bold mb-6">
+            <span className="bg-gradient-to-r from-purple-300 via-pink-300 to-blue-300 bg-clip-text text-transparent">
+              🌟 FOLLOW YAADFLEX 🌟
             </span>
           </h3>
-          <p className="text-xl text-gray-400 mb-8">Connect with us on social media! Get updates, Caribbean vibes, and join our community</p>
+          <p className="text-2xl text-purple-200 mb-4 font-bold">GET THE LATEST UPDATES & CARIBBEAN VIBES!</p>
+          <p className="text-xl text-gray-300">👆 Click any platform below to follow us! 👆</p>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           <a href="https://instagram.com/yaadflex" target="_blank" rel="noopener" 
-             className="bg-gradient-to-br from-pink-600/20 to-purple-600/20 backdrop-blur-lg rounded-xl p-6 border border-pink-500/30 hover:border-pink-400/50 transition-all group text-center" 
+             className="bg-gradient-to-br from-pink-600/30 to-purple-600/30 backdrop-blur-lg rounded-2xl p-8 border-2 border-pink-500/50 hover:border-pink-400/80 transition-all group text-center transform hover:scale-105 hover:shadow-2xl hover:shadow-pink-500/25" 
              data-testid="social-instagram">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-pink-600 to-purple-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-pink-600 to-purple-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+              <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.40s-.644-1.44-1.439-1.44z"/>
               </svg>
             </div>
-            <h4 className="text-lg font-bold text-pink-300 mb-2">Instagram</h4>
-            <p className="text-sm text-gray-400">Photos & Stories</p>
+            <h4 className="text-2xl font-bold text-pink-300 mb-2">📸 Instagram</h4>
+            <p className="text-lg text-pink-200 font-semibold">@yaadflex</p>
+            <p className="text-sm text-gray-300 mt-2">Photos & Stories</p>
+            <div className="mt-4 px-4 py-2 bg-pink-600/20 rounded-lg border border-pink-500/30">
+              <p className="text-sm text-pink-300 font-bold">👆 TAP TO FOLLOW 👆</p>
+            </div>
           </a>
 
           <a href="https://tiktok.com/@yaadflex" target="_blank" rel="noopener" 
-             className="bg-gradient-to-br from-gray-900/40 to-black/40 backdrop-blur-lg rounded-xl p-6 border border-gray-600/30 hover:border-gray-500/50 transition-all group text-center" 
+             className="bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-lg rounded-2xl p-8 border-2 border-gray-600/50 hover:border-white/80 transition-all group text-center transform hover:scale-105 hover:shadow-2xl hover:shadow-white/25" 
              data-testid="social-tiktok">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gray-900 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <div className="w-24 h-24 mx-auto mb-6 bg-gray-900 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+              <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-.88-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
               </svg>
             </div>
-            <h4 className="text-lg font-bold text-white mb-2">TikTok</h4>
-            <p className="text-sm text-gray-400">Caribbean Vibes</p>
+            <h4 className="text-2xl font-bold text-white mb-2">🎥 TikTok</h4>
+            <p className="text-lg text-gray-200 font-semibold">@yaadflex</p>
+            <p className="text-sm text-gray-300 mt-2">Caribbean Vibes</p>
+            <div className="mt-4 px-4 py-2 bg-gray-800/30 rounded-lg border border-gray-600/30">
+              <p className="text-sm text-white font-bold">👆 TAP TO FOLLOW 👆</p>
+            </div>
           </a>
 
           <a href="https://facebook.com/yaadflex" target="_blank" rel="noopener" 
-             className="bg-gradient-to-br from-blue-600/20 to-blue-700/20 backdrop-blur-lg rounded-xl p-6 border border-blue-500/30 hover:border-blue-400/50 transition-all group text-center" 
+             className="bg-gradient-to-br from-blue-600/30 to-blue-700/30 backdrop-blur-lg rounded-2xl p-8 border-2 border-blue-500/50 hover:border-blue-400/80 transition-all group text-center transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25" 
              data-testid="social-facebook">
-            <div className="w-16 h-16 mx-auto mb-4 bg-blue-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <div className="w-24 h-24 mx-auto mb-6 bg-blue-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+              <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
               </svg>
             </div>
-            <h4 className="text-lg font-bold text-blue-300 mb-2">Facebook</h4>
-            <p className="text-sm text-gray-400">Community</p>
+            <h4 className="text-2xl font-bold text-blue-300 mb-2">👥 Facebook</h4>
+            <p className="text-lg text-blue-200 font-semibold">YaadFlex</p>
+            <p className="text-sm text-gray-300 mt-2">Community & Updates</p>
+            <div className="mt-4 px-4 py-2 bg-blue-600/20 rounded-lg border border-blue-500/30">
+              <p className="text-sm text-blue-300 font-bold">👆 TAP TO FOLLOW 👆</p>
+            </div>
           </a>
 
           <a href="https://x.com/yaadflex" target="_blank" rel="noopener" 
-             className="bg-gradient-to-br from-gray-800/40 to-black/40 backdrop-blur-lg rounded-xl p-6 border border-gray-600/30 hover:border-gray-500/50 transition-all group text-center" 
+             className="bg-gradient-to-br from-gray-800/50 to-black/50 backdrop-blur-lg rounded-2xl p-8 border-2 border-gray-600/50 hover:border-gray-400/80 transition-all group text-center transform hover:scale-105 hover:shadow-2xl hover:shadow-gray-500/25" 
              data-testid="social-twitter">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gray-800 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <div className="w-24 h-24 mx-auto mb-6 bg-gray-800 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+              <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
               </svg>
             </div>
-            <h4 className="text-lg font-bold text-white mb-2">X/Twitter</h4>
-            <p className="text-sm text-gray-400">Quick Updates</p>
+            <h4 className="text-2xl font-bold text-white mb-2">🐦 X/Twitter</h4>
+            <p className="text-lg text-gray-200 font-semibold">@yaadflex</p>
+            <p className="text-sm text-gray-300 mt-2">Quick Updates</p>
+            <div className="mt-4 px-4 py-2 bg-gray-800/30 rounded-lg border border-gray-600/30">
+              <p className="text-sm text-white font-bold">👆 TAP TO FOLLOW 👆</p>
+            </div>
           </a>
 
           <a href="https://youtube.com/@yaadflex" target="_blank" rel="noopener" 
-             className="bg-gradient-to-br from-red-600/20 to-red-700/20 backdrop-blur-lg rounded-xl p-6 border border-red-500/30 hover:border-red-400/50 transition-all group text-center" 
+             className="bg-gradient-to-br from-red-600/30 to-red-700/30 backdrop-blur-lg rounded-2xl p-8 border-2 border-red-500/50 hover:border-red-400/80 transition-all group text-center transform hover:scale-105 hover:shadow-2xl hover:shadow-red-500/25" 
              data-testid="social-youtube">
-            <div className="w-16 h-16 mx-auto mb-4 bg-red-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <div className="w-24 h-24 mx-auto mb-6 bg-red-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+              <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
               </svg>
             </div>
-            <h4 className="text-lg font-bold text-red-300 mb-2">YouTube</h4>
-            <p className="text-sm text-gray-400">Videos & Tutorials</p>
+            <h4 className="text-2xl font-bold text-red-300 mb-2">🎥 YouTube</h4>
+            <p className="text-lg text-red-200 font-semibold">@yaadflex</p>
+            <p className="text-sm text-gray-300 mt-2">Videos & Tutorials</p>
+            <div className="mt-4 px-4 py-2 bg-red-600/20 rounded-lg border border-red-500/30">
+              <p className="text-sm text-red-300 font-bold">👆 TAP TO FOLLOW 👆</p>
+            </div>
           </a>
 
           <a href="https://t.me/yaadflex" target="_blank" rel="noopener" 
-             className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 backdrop-blur-lg rounded-xl p-6 border border-blue-400/30 hover:border-blue-300/50 transition-all group text-center" 
+             className="bg-gradient-to-br from-blue-500/30 to-blue-600/30 backdrop-blur-lg rounded-2xl p-8 border-2 border-blue-400/50 hover:border-blue-300/80 transition-all group text-center transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25" 
              data-testid="social-telegram">
-            <div className="w-16 h-16 mx-auto mb-4 bg-blue-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <div className="w-24 h-24 mx-auto mb-6 bg-blue-500 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+              <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.820 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
               </svg>
             </div>
-            <h4 className="text-lg font-bold text-blue-300 mb-2">Telegram</h4>
-            <p className="text-sm text-gray-400">Join Chat</p>
+            <h4 className="text-2xl font-bold text-blue-300 mb-2">💬 Telegram</h4>
+            <p className="text-lg text-blue-200 font-semibold">@yaadflex</p>
+            <p className="text-sm text-gray-300 mt-2">Join Our Chat</p>
+            <div className="mt-4 px-4 py-2 bg-blue-500/20 rounded-lg border border-blue-400/30">
+              <p className="text-sm text-blue-300 font-bold">👆 TAP TO JOIN 👆</p>
+            </div>
           </a>
         </div>
 
-        <div className="text-center mt-8">
-          <p className="text-gray-400">Follow us for Caribbean culture, app updates, driver stories, and community vibes! 🇯🇲🌍</p>
+        <div className="text-center mt-12">
+          <div className="bg-gradient-to-r from-purple-900/40 to-blue-900/40 rounded-xl p-8 border border-purple-500/40">
+            <h4 className="text-3xl font-bold text-purple-300 mb-4">🚀 DON'T MISS OUT! 🚀</h4>
+            <p className="text-xl text-purple-200 font-bold mb-4">Follow YaadFlex on ALL platforms for:</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+              <div className="bg-purple-900/30 rounded-lg p-4 border border-purple-500/30">
+                <p className="text-lg font-bold text-purple-300">🇯🇲 Caribbean Culture</p>
+              </div>
+              <div className="bg-blue-900/30 rounded-lg p-4 border border-blue-500/30">
+                <p className="text-lg font-bold text-blue-300">📱 App Updates</p>
+              </div>
+              <div className="bg-green-900/30 rounded-lg p-4 border border-green-500/30">
+                <p className="text-lg font-bold text-green-300">🚗 Driver Stories</p>
+              </div>
+              <div className="bg-orange-900/30 rounded-lg p-4 border border-orange-500/30">
+                <p className="text-lg font-bold text-orange-300">🌍 Community Vibes</p>
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-white mt-6">👆 TAP ANY SOCIAL MEDIA ABOVE! 👆</p>
+            <p className="text-lg text-gray-300 mt-2">Connect with thousands of YaadFlex users across the Caribbean!</p>
+          </div>
         </div>
       </div>
 
