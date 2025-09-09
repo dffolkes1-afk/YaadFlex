@@ -3,6 +3,9 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { CBRadioWebSocketServer } from "./cbRadioWebSocket";
+import timeAuthRoutes from "./auth/time-auth-routes";
+import { requireCEOAccess } from "./auth/time-guard";
+import { seedTimeAuthSystem } from "./seed-time-auth";
 import { 
   demoWallets, 
   demoTransactions, 
@@ -112,6 +115,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
   await setupAuth(app);
   
+  // Time-locked authentication routes
+  app.use(timeAuthRoutes);
+  
+  // Seed time-locked authentication system
+  app.post('/api/auth/seed', async (req, res) => {
+    try {
+      const result = await seedTimeAuthSystem();
+      res.json(result);
+    } catch (error) {
+      console.error('Error seeding time auth:', error);
+      res.status(500).json({ 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      });
+    }
+  });
+  
   // Serve YaadFlex Landing Page - Main Link for Facebook/Social Media
   app.get('/yaadflex', (req, res) => {
     try {
@@ -126,7 +146,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     } catch (error) {
       console.error('Error serving YaadFlex page:', error);
-      res.status(500).send('Server error: ' + error.message);
+      res.status(500).send('Server error: ' + (error instanceof Error ? error.message : 'Unknown error'));
     }
   });
 
@@ -1329,7 +1349,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   // ===================================================================
 
   // Get all business expenses
-  app.get('/api/ceo/expenses', isAuthenticated, async (req: any, res) => {
+  app.get('/api/ceo/expenses', requireCEOAccess(), async (req: any, res) => {
     try {
       const expenses = await db.select().from(businessExpenses).orderBy(desc(businessExpenses.nextDueDate));
       res.json(expenses);
@@ -1340,7 +1360,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   });
 
   // Create new business expense
-  app.post('/api/ceo/expenses', isAuthenticated, async (req: any, res) => {
+  app.post('/api/ceo/expenses', requireCEOAccess(), async (req: any, res) => {
     try {
       const validatedData = insertBusinessExpenseSchema.parse(req.body);
       
@@ -1360,7 +1380,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   });
 
   // Mark expense as paid
-  app.put('/api/ceo/expenses/:id/paid', isAuthenticated, async (req: any, res) => {
+  app.put('/api/ceo/expenses/:id/paid', requireCEOAccess(), async (req: any, res) => {
     try {
       const { id } = req.params;
       
@@ -1385,7 +1405,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   });
 
   // Get AI advisory reports
-  app.get('/api/ceo/advisory-reports', isAuthenticated, async (req: any, res) => {
+  app.get('/api/ceo/advisory-reports', requireCEOAccess(), async (req: any, res) => {
     try {
       const reports = await db.select().from(aiAdvisoryReports)
         .orderBy(desc(aiAdvisoryReports.generatedAt))
@@ -1399,7 +1419,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   });
 
   // Mark advisory report as read
-  app.put('/api/ceo/advisory-reports/:id/read', isAuthenticated, async (req: any, res) => {
+  app.put('/api/ceo/advisory-reports/:id/read', requireCEOAccess(), async (req: any, res) => {
     try {
       const { id } = req.params;
       
@@ -1423,7 +1443,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   });
 
   // Get business goals
-  app.get('/api/ceo/business-goals', isAuthenticated, async (req: any, res) => {
+  app.get('/api/ceo/business-goals', requireCEOAccess(), async (req: any, res) => {
     try {
       const goals = await db.select().from(businessGoals)
         .where(eq(businessGoals.isActive, true))
@@ -1437,7 +1457,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   });
 
   // Create new business goal
-  app.post('/api/ceo/business-goals', isAuthenticated, async (req: any, res) => {
+  app.post('/api/ceo/business-goals', requireCEOAccess(), async (req: any, res) => {
     try {
       const validatedData = insertBusinessGoalSchema.parse(req.body);
       
@@ -1457,7 +1477,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   });
 
   // Update business goal progress
-  app.put('/api/ceo/business-goals/:id', isAuthenticated, async (req: any, res) => {
+  app.put('/api/ceo/business-goals/:id', requireCEOAccess(), async (req: any, res) => {
     try {
       const { id } = req.params;
       const { currentValue } = req.body;
@@ -1482,7 +1502,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   });
 
   // Get system health metrics
-  app.get('/api/ceo/system-health', isAuthenticated, async (req: any, res) => {
+  app.get('/api/ceo/system-health', requireCEOAccess(), async (req: any, res) => {
     try {
       const metrics = await db.select().from(systemHealthMetrics)
         .orderBy(desc(systemHealthMetrics.recordedAt))
@@ -1496,7 +1516,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   });
 
   // Record system health metric
-  app.post('/api/ceo/system-health', isAuthenticated, async (req: any, res) => {
+  app.post('/api/ceo/system-health', requireCEOAccess(), async (req: any, res) => {
     try {
       const validatedData = insertSystemHealthMetricSchema.parse(req.body);
       
@@ -1516,7 +1536,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   });
 
   // Generate weekly CEO report
-  app.get('/api/ceo/weekly-report', isAuthenticated, async (req: any, res) => {
+  app.get('/api/ceo/weekly-report', requireCEOAccess(), async (req: any, res) => {
     try {
       // Get upcoming expenses (next 30 days)
       const thirtyDaysFromNow = new Date();
@@ -1577,7 +1597,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   });
 
   // Generate AI advisory reports
-  app.post('/api/ceo/generate-ai-reports', isAuthenticated, async (req: any, res) => {
+  app.post('/api/ceo/generate-ai-reports', requireCEOAccess(), async (req: any, res) => {
     try {
       const { advisorType } = req.body;
       
@@ -1598,7 +1618,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   });
 
   // Seed initial business data for CEO dashboard
-  app.post('/api/ceo/seed-data', isAuthenticated, async (req: any, res) => {
+  app.post('/api/ceo/seed-data', requireCEOAccess(), async (req: any, res) => {
     try {
       // Seed some initial business expenses
       const sampleExpenses = [

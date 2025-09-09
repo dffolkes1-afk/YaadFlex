@@ -46,6 +46,7 @@ import InsuranceFAQ from "@/pages/insurance-faq";
 import EmailAssistant from "@/pages/email-assistant";
 import CEODashboard from "@/pages/ceo-dashboard";
 import VendorManagement from "@/pages/vendor-management";
+import TimeAuthLogin from "@/pages/time-auth-login";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -109,8 +110,10 @@ function Router() {
           <Route path="/trading-dashboard" component={TradingDashboard} />
           <Route path="/ceo-dashboard" component={CEODashboard} />
           <Route path="/vendor-management" component={VendorManagement} />
+          <Route path="/secure-login" component={TimeAuthLogin} />
         </>
       )}
+      <Route path="/secure-login" component={TimeAuthLogin} />
       <Route component={NotFound} />
     </Switch>
   );

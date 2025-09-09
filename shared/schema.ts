@@ -12,6 +12,7 @@ import {
   date,
   uuid,
   numeric,
+  time,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -5089,3 +5090,78 @@ export const insertObdReadingSchema = createInsertSchema(obdReadings).omit({
 });
 export type InsertObdReading = z.infer<typeof insertObdReadingSchema>;
 export type ObdReading = typeof obdReadings.$inferSelect;
+
+// =============================================================
+// TIME-LOCKED AUTHENTICATION SYSTEM
+// =============================================================
+
+// Multi-Factor Authentication table
+export const userMfa = pgTable("user_mfa", {
+  userId: varchar("user_id", { length: 36 }).primaryKey().references(() => users.id),
+  totpSecret: text("totp_secret"),             // base32 secret
+  enabled: boolean("enabled").default(false),
+  recoveryCodesHash: text("recovery_codes_hash"), // optional backup codes
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Time-locked user sessions
+export const userSessions = pgTable("user_sessions", {
+  id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id", { length: 36 }).notNull().references(() => users.id),
+  deviceId: varchar("device_id", { length: 64 }),
+  ip: varchar("ip", { length: 64 }),
+  userAgent: text("user_agent"),
+  startedAt: timestamp("started_at").defaultNow(),
+  lastSeenAt: timestamp("last_seen_at").defaultNow(),
+  endedAt: timestamp("ended_at"),
+  active: boolean("active").default(true),
+});
+
+// Work schedules for time-locked access
+export const workSchedules = pgTable("work_schedules", {
+  id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id", { length: 36 }).notNull().references(() => users.id),
+  dayOfWeek: varchar("day_of_week", { length: 16 }).notNull(), // "Sun".."Sat"
+  startTime: time("start_time").notNull(), // 09:00:00
+  endTime: time("end_time").notNull(),     // 17:00:00
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Authentication policies
+export const authPolicies = pgTable("auth_policies", {
+  id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+  minSessionMinutes: integer("min_session_minutes").default(30),
+  cooldownMinutes: integer("cooldown_minutes").default(15),
+  graceMinutesBefore: integer("grace_before").default(10),
+  graceMinutesAfter: integer("grace_after").default(10),
+  singleSessionOnly: boolean("single_session_only").default(true),
+  deviceBindDays: integer("device_bind_days").default(14),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Time-locked authentication schema exports
+export const insertUserMfaSchema = createInsertSchema(userMfa);
+export type InsertUserMfa = z.infer<typeof insertUserMfaSchema>;
+export type UserMfa = typeof userMfa.$inferSelect;
+
+export const insertUserSessionSchema = createInsertSchema(userSessions).omit({
+  id: true,
+  startedAt: true,
+  lastSeenAt: true,
+});
+export type InsertUserSession = z.infer<typeof insertUserSessionSchema>;
+export type UserSession = typeof userSessions.$inferSelect;
+
+export const insertWorkScheduleSchema = createInsertSchema(workSchedules).omit({
+  id: true,
+  createdAt: true,
+});
+export type InsertWorkSchedule = z.infer<typeof insertWorkScheduleSchema>;
+export type WorkSchedule = typeof workSchedules.$inferSelect;
+
+export const insertAuthPolicySchema = createInsertSchema(authPolicies).omit({
+  id: true,
+  createdAt: true,
+});
+export type InsertAuthPolicy = z.infer<typeof insertAuthPolicySchema>;
+export type AuthPolicy = typeof authPolicies.$inferSelect;
