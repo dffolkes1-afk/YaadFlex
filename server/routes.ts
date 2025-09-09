@@ -95,6 +95,7 @@ import {
   rentalBookings, 
   availabilityAlerts
 } from "@shared/schema";
+import { aiAdvisoryService } from "./ai-advisory";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
@@ -1561,6 +1562,134 @@ P.S. - Early business partners get exclusive territory rights and preferred part
     } catch (error) {
       console.error("Error generating weekly report:", error);
       res.status(500).json({ message: "Failed to generate weekly report" });
+    }
+  });
+
+  // Generate AI advisory reports
+  app.post('/api/ceo/generate-ai-reports', isAuthenticated, async (req: any, res) => {
+    try {
+      const { advisorType } = req.body;
+      
+      if (advisorType && ['risk', 'tech', 'finance', 'growth'].includes(advisorType)) {
+        await aiAdvisoryService.generateReportsByType(advisorType);
+      } else {
+        await aiAdvisoryService.generateAllReports();
+      }
+
+      res.json({ 
+        message: `AI advisory reports generated successfully${advisorType ? ` for ${advisorType} advisor` : ''}`,
+        advisorType: advisorType || 'all'
+      });
+    } catch (error) {
+      console.error("Error generating AI advisory reports:", error);
+      res.status(500).json({ message: "Failed to generate AI advisory reports" });
+    }
+  });
+
+  // Seed initial business data for CEO dashboard
+  app.post('/api/ceo/seed-data', isAuthenticated, async (req: any, res) => {
+    try {
+      // Seed some initial business expenses
+      const sampleExpenses = [
+        {
+          category: 'domain',
+          name: 'yaadflex.com Domain',
+          provider: 'GoDaddy',
+          amount: '6500',
+          currency: 'JMD',
+          frequency: 'yearly',
+          nextDueDate: new Date(Date.now() + 22 * 24 * 60 * 60 * 1000), // 22 days from now
+          autoRenewal: true,
+          description: 'Primary domain registration for YaadFlex platform'
+        },
+        {
+          category: 'email',
+          name: 'Google Workspace',
+          provider: 'Google',
+          amount: '3000',
+          currency: 'JMD',
+          frequency: 'monthly',
+          nextDueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
+          autoRenewal: true,
+          description: 'Business email and collaboration suite'
+        },
+        {
+          category: 'insurance',
+          name: 'General Liability Insurance',
+          provider: 'Insurance Company',
+          amount: '35000',
+          currency: 'JMD',
+          frequency: 'quarterly',
+          nextDueDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000), // 60 days from now
+          autoRenewal: false,
+          description: 'General business liability coverage'
+        },
+        {
+          category: 'hosting',
+          name: 'Replit Pro',
+          provider: 'Replit',
+          amount: '2400',
+          currency: 'JMD',
+          frequency: 'monthly',
+          nextDueDate: new Date(Date.now() + 12 * 24 * 60 * 60 * 1000), // 12 days from now
+          autoRenewal: true,
+          description: 'Platform hosting and development environment'
+        }
+      ];
+
+      for (const expense of sampleExpenses) {
+        await db.insert(businessExpenses).values(expense);
+      }
+
+      // Seed some initial business goals
+      const sampleGoals = [
+        {
+          goalType: 'users',
+          name: 'Reach 10,000 Active Users',
+          description: 'Grow user base to 10,000 monthly active users',
+          targetValue: '10000',
+          currentValue: '7500',
+          unit: 'users',
+          targetDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // 90 days from now
+        },
+        {
+          goalType: 'revenue',
+          name: 'Monthly Revenue Goal',
+          description: 'Achieve J$500,000 monthly recurring revenue',
+          targetValue: '500000',
+          currentValue: '275000',
+          unit: 'JMD',
+          targetDate: new Date(Date.now() + 120 * 24 * 60 * 60 * 1000), // 120 days from now
+        },
+        {
+          goalType: 'trips',
+          name: 'Complete 5,000 Trips',
+          description: 'Reach 5,000 completed rides through YaadFlex platform',
+          targetValue: '5000',
+          currentValue: '3200',
+          unit: 'trips',
+          targetDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000), // 60 days from now
+        }
+      ];
+
+      for (const goal of sampleGoals) {
+        await db.insert(businessGoals).values(goal);
+      }
+
+      // Generate initial AI reports
+      await aiAdvisoryService.generateAllReports();
+
+      res.json({ 
+        message: 'CEO Dashboard seed data created successfully',
+        seeded: {
+          expenses: sampleExpenses.length,
+          goals: sampleGoals.length,
+          aiReportsGenerated: true
+        }
+      });
+    } catch (error) {
+      console.error("Error seeding CEO dashboard data:", error);
+      res.status(500).json({ message: "Failed to seed CEO dashboard data" });
     }
   });
 
