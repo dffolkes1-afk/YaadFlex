@@ -399,7 +399,7 @@ export default function ModernLanding() {
                   <div className="text-xs text-blue-300 mt-2 font-bold">247 TRACKED VEHICLES</div>
                 </div>
 
-                {/* LIVE TRAFFIC DATA - WAZE STYLE */}
+                {/* LIVE TRAFFIC DATA - YAADFLEX STYLE */}
                 <div className="absolute bottom-4 left-4 right-4 grid grid-cols-5 gap-1 text-xs">
                   <div className="bg-black/90 px-1 py-2 rounded border border-green-800/60 text-center shadow-sm shadow-green-900/20">
                     <div className="text-green-300 font-medium">ACTIVE</div>
