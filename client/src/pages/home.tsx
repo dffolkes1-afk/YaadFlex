@@ -387,6 +387,14 @@ export default function Home() {
               >
                 💰 Wallet
               </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => setLocation("/business-dashboard")} 
+                className="bg-blue-900/50 border-blue-600 text-blue-400 hover:bg-blue-800/50"
+                data-testid="button-business-dashboard"
+              >
+                📊 Business
+              </Button>
               <Button variant="outline" onClick={handleLogout} data-testid="button-logout">
                 Logout
               </Button>
