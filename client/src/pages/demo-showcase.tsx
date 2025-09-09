@@ -36,8 +36,8 @@ const liveUsers = [
     specialties: ['Airport Transfers', 'Corporate Travel', 'City Tours']
   },
   {
-    email: 'ddrietaxi7@gmail.com', 
-    name: 'DDrie Taxi Express',
+    email: 'ddrivetaxi7@gmail.com', 
+    name: 'DDrive Taxi Express',
     role: 'Elite Driver',
     status: 'On Trip',
     location: 'Spanish Town, Jamaica',
@@ -52,10 +52,10 @@ const liveUsers = [
 ];
 
 const liveActivity = [
-  { time: '2 seconds ago', action: 'DDrie Taxi completed delivery to Half Way Tree', amount: '$45.50', type: 'delivery' },
+  { time: '2 seconds ago', action: 'DDrive Taxi completed delivery to Half Way Tree', amount: '$45.50', type: 'delivery' },
   { time: '8 seconds ago', action: 'InTime Taxi accepted ride request from New Kingston', amount: '$25.00', type: 'ride' },
   { time: '15 seconds ago', action: 'New customer registered from Portmore', amount: '+1 User', type: 'signup' },
-  { time: '23 seconds ago', action: 'DDrie Taxi earned gas delivery commission', amount: '$67.80', type: 'gas' },
+  { time: '23 seconds ago', action: 'DDrive Taxi earned gas delivery commission', amount: '$67.80', type: 'gas' },
   { time: '31 seconds ago', action: 'InTime Taxi completed airport transfer', amount: '$89.25', type: 'ride' },
   { time: '45 seconds ago', action: 'Bulk fuel delivery completed in Spanish Town', amount: '$234.60', type: 'fuel' },
   { time: '52 seconds ago', action: 'InTime Taxi received 5-star rating', amount: '+Rating', type: 'rating' },
@@ -83,7 +83,7 @@ export default function DemoShowcase() {
       // Add new activity
       const newActivities = [
         { time: 'Just now', action: 'InTime Taxi started new ride from Downtown', amount: '$32.00', type: 'ride' },
-        { time: 'Just now', action: 'DDrie Taxi received fuel delivery request', amount: '$156.80', type: 'fuel' },
+        { time: 'Just now', action: 'DDrive Taxi received fuel delivery request', amount: '$156.80', type: 'fuel' },
         { time: 'Just now', action: 'New premium driver joined YaadFlex network', amount: '+Driver', type: 'signup' },
         { time: 'Just now', action: 'Gas station partnership payment processed', amount: '$445.20', type: 'business' }
       ];
