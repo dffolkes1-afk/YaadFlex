@@ -5251,3 +5251,220 @@ export type RbacAuditLog = typeof rbacAuditLogs.$inferSelect;
 export type InsertRbacAuditLog = z.infer<typeof insertRbacAuditLogSchema>;
 export type RbacPayout = typeof rbacPayouts.$inferSelect;
 export type InsertRbacPayout = z.infer<typeof insertRbacPayoutSchema>;
+
+// =========================================
+// UNIVERSAL DELIVERY NETWORK SYSTEM
+// =========================================
+
+export const deliveryPersonnel = pgTable("delivery_personnel", {
+  id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id", { length: 36 }).references(() => users.id).notNull(),
+  deliveryTypes: jsonb("delivery_types").notNull(), // ['gas', 'food', 'packages', 'pharmacy', 'grocery']
+  vehicleType: varchar("vehicle_type").notNull(), // 'motorcycle', 'car', 'truck', 'bicycle', 'van'
+  licenseNumber: varchar("license_number"),
+  vehiclePlateNumber: varchar("vehicle_plate_number"),
+  phoneNumber: varchar("phone_number").notNull(),
+  emergencyContact: varchar("emergency_contact"),
+  bankAccountNumber: varchar("bank_account_number"),
+  routingNumber: varchar("routing_number"),
+  preferredAreas: jsonb("preferred_areas"), // Array of area codes
+  isActive: boolean("is_active").default(true),
+  isOnline: boolean("is_online").default(false),
+  currentLat: decimal("current_lat", { precision: 10, scale: 7 }),
+  currentLng: decimal("current_lng", { precision: 10, scale: 7 }),
+  totalDeliveries: integer("total_deliveries").default(0),
+  totalEarnings: decimal("total_earnings", { precision: 12, scale: 2 }).default('0.00'),
+  rating: decimal("rating", { precision: 3, scale: 2 }).default('5.00'),
+  joinedAt: timestamp("joined_at").defaultNow(),
+  lastActiveAt: timestamp("last_active_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const deliveryOrders = pgTable("delivery_orders", {
+  id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+  orderNumber: varchar("order_number").unique().notNull(),
+  customerId: varchar("customer_id", { length: 36 }).references(() => users.id).notNull(),
+  deliveryPersonnelId: varchar("delivery_personnel_id", { length: 36 }).references(() => deliveryPersonnel.id),
+  deliveryType: varchar("delivery_type").notNull(), // 'gas', 'food', 'packages', 'pharmacy', 'grocery'
+  
+  // Pickup Information
+  pickupAddress: text("pickup_address").notNull(),
+  pickupLat: decimal("pickup_lat", { precision: 10, scale: 7 }).notNull(),
+  pickupLng: decimal("pickup_lng", { precision: 10, scale: 7 }).notNull(),
+  pickupContactName: varchar("pickup_contact_name"),
+  pickupContactPhone: varchar("pickup_contact_phone"),
+  pickupInstructions: text("pickup_instructions"),
+  
+  // Delivery Information
+  deliveryAddress: text("delivery_address").notNull(),
+  deliveryLat: decimal("delivery_lat", { precision: 10, scale: 7 }).notNull(),
+  deliveryLng: decimal("delivery_lng", { precision: 10, scale: 7 }).notNull(),
+  deliveryContactName: varchar("delivery_contact_name").notNull(),
+  deliveryContactPhone: varchar("delivery_contact_phone").notNull(),
+  deliveryInstructions: text("delivery_instructions"),
+  
+  // Order Details
+  items: jsonb("items").notNull(), // Array of items being delivered
+  totalValue: decimal("total_value", { precision: 12, scale: 2 }),
+  deliveryFee: decimal("delivery_fee", { precision: 8, scale: 2 }).notNull(),
+  tip: decimal("tip", { precision: 8, scale: 2 }).default('0.00'),
+  priority: varchar("priority").default('normal'), // 'low', 'normal', 'high', 'urgent'
+  
+  // Status and Timing
+  status: varchar("status").notNull().default('pending'), // 'pending', 'accepted', 'picked_up', 'in_transit', 'delivered', 'cancelled'
+  scheduledPickupTime: timestamp("scheduled_pickup_time"),
+  scheduledDeliveryTime: timestamp("scheduled_delivery_time"),
+  acceptedAt: timestamp("accepted_at"),
+  pickedUpAt: timestamp("picked_up_at"),
+  deliveredAt: timestamp("delivered_at"),
+  cancelledAt: timestamp("cancelled_at"),
+  cancellationReason: text("cancellation_reason"),
+  
+  // Payment
+  paymentStatus: varchar("payment_status").default('pending'), // 'pending', 'paid', 'failed', 'refunded'
+  paymentMethod: varchar("payment_method"), // 'cash', 'card', 'mobile_money', 'wallet'
+  customerRating: integer("customer_rating"), // 1-5
+  customerFeedback: text("customer_feedback"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const deliveryRoutes = pgTable("delivery_routes", {
+  id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+  deliveryPersonnelId: varchar("delivery_personnel_id", { length: 36 }).references(() => deliveryPersonnel.id).notNull(),
+  orderId: varchar("order_id", { length: 36 }).references(() => deliveryOrders.id).notNull(),
+  routeData: jsonb("route_data"), // GPS route coordinates and waypoints
+  estimatedDistance: decimal("estimated_distance", { precision: 8, scale: 2 }), // in kilometers
+  estimatedDuration: integer("estimated_duration"), // in minutes
+  actualDistance: decimal("actual_distance", { precision: 8, scale: 2 }),
+  actualDuration: integer("actual_duration"),
+  startedAt: timestamp("started_at"),
+  completedAt: timestamp("completed_at"),
+  trackingPoints: jsonb("tracking_points"), // Real-time GPS tracking data
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const deliveryEarnings = pgTable("delivery_earnings", {
+  id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+  deliveryPersonnelId: varchar("delivery_personnel_id", { length: 36 }).references(() => deliveryPersonnel.id).notNull(),
+  orderId: varchar("order_id", { length: 36 }).references(() => deliveryOrders.id).notNull(),
+  baseEarning: decimal("base_earning", { precision: 8, scale: 2 }).notNull(),
+  distanceBonus: decimal("distance_bonus", { precision: 8, scale: 2 }).default('0.00'),
+  timeBonus: decimal("time_bonus", { precision: 8, scale: 2 }).default('0.00'),
+  tipEarning: decimal("tip_earning", { precision: 8, scale: 2 }).default('0.00'),
+  priorityBonus: decimal("priority_bonus", { precision: 8, scale: 2 }).default('0.00'),
+  totalEarning: decimal("total_earning", { precision: 8, scale: 2 }).notNull(),
+  platformFee: decimal("platform_fee", { precision: 8, scale: 2 }).default('0.00'),
+  netEarning: decimal("net_earning", { precision: 8, scale: 2 }).notNull(), // Total - Platform Fee
+  payoutStatus: varchar("payout_status").default('pending'), // 'pending', 'processing', 'paid', 'failed'
+  paidAt: timestamp("paid_at"),
+  earnedAt: timestamp("earned_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const deliveryCategories = pgTable("delivery_categories", {
+  id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+  code: varchar("code", { length: 50 }).unique().notNull(), // 'gas', 'food', 'packages'
+  name: varchar("name").notNull(),
+  description: text("description"),
+  icon: varchar("icon"), // Icon name or URL
+  baseRate: decimal("base_rate", { precision: 8, scale: 2 }).notNull(), // Base rate per delivery
+  ratePerKm: decimal("rate_per_km", { precision: 6, scale: 2 }).notNull(), // Additional rate per kilometer
+  minFee: decimal("min_fee", { precision: 6, scale: 2 }).notNull(), // Minimum delivery fee
+  maxFee: decimal("max_fee", { precision: 8, scale: 2 }), // Maximum delivery fee (optional)
+  isActive: boolean("is_active").default(true),
+  requiresSpecialHandling: boolean("requires_special_handling").default(false),
+  allowedVehicleTypes: jsonb("allowed_vehicle_types"), // ['motorcycle', 'car', 'truck']
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const deliveryAreas = pgTable("delivery_areas", {
+  id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+  code: varchar("code", { length: 50 }).unique().notNull(),
+  name: varchar("name").notNull(),
+  description: text("description"),
+  boundaries: jsonb("boundaries").notNull(), // GeoJSON polygon defining the area
+  isActive: boolean("is_active").default(true),
+  deliveryFeeMultiplier: decimal("delivery_fee_multiplier", { precision: 3, scale: 2 }).default('1.00'),
+  estimatedDeliveryTime: integer("estimated_delivery_time").default(30), // minutes
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const deliveryReviews = pgTable("delivery_reviews", {
+  id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+  orderId: varchar("order_id", { length: 36 }).references(() => deliveryOrders.id).notNull(),
+  customerId: varchar("customer_id", { length: 36 }).references(() => users.id).notNull(),
+  deliveryPersonnelId: varchar("delivery_personnel_id", { length: 36 }).references(() => deliveryPersonnel.id).notNull(),
+  rating: integer("rating").notNull(), // 1-5
+  comment: text("comment"),
+  reviewType: varchar("review_type").default('delivery'), // 'delivery', 'pickup', 'overall'
+  isPublic: boolean("is_public").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Universal Delivery Insert Schemas
+export const insertDeliveryPersonnelSchema = createInsertSchema(deliveryPersonnel).omit({
+  id: true,
+  totalDeliveries: true,
+  totalEarnings: true,
+  rating: true,
+  joinedAt: true,
+  lastActiveAt: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertDeliveryOrderSchema = createInsertSchema(deliveryOrders).omit({
+  id: true,
+  orderNumber: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertDeliveryRouteSchema = createInsertSchema(deliveryRoutes).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertDeliveryEarningSchema = createInsertSchema(deliveryEarnings).omit({
+  id: true,
+  earnedAt: true,
+  createdAt: true,
+});
+
+export const insertDeliveryCategorySchema = createInsertSchema(deliveryCategories).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertDeliveryAreaSchema = createInsertSchema(deliveryAreas).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertDeliveryReviewSchema = createInsertSchema(deliveryReviews).omit({
+  id: true,
+  createdAt: true,
+});
+
+// Universal Delivery Types
+export type DeliveryPersonnel = typeof deliveryPersonnel.$inferSelect;
+export type InsertDeliveryPersonnel = z.infer<typeof insertDeliveryPersonnelSchema>;
+export type DeliveryOrder = typeof deliveryOrders.$inferSelect;
+export type InsertDeliveryOrder = z.infer<typeof insertDeliveryOrderSchema>;
+export type DeliveryRoute = typeof deliveryRoutes.$inferSelect;
+export type InsertDeliveryRoute = z.infer<typeof insertDeliveryRouteSchema>;
+export type DeliveryEarning = typeof deliveryEarnings.$inferSelect;
+export type InsertDeliveryEarning = z.infer<typeof insertDeliveryEarningSchema>;
+export type DeliveryCategory = typeof deliveryCategories.$inferSelect;
+export type InsertDeliveryCategory = z.infer<typeof insertDeliveryCategorySchema>;
+export type DeliveryArea = typeof deliveryAreas.$inferSelect;
+export type InsertDeliveryArea = z.infer<typeof insertDeliveryAreaSchema>;
+export type DeliveryReview = typeof deliveryReviews.$inferSelect;
+export type InsertDeliveryReview = z.infer<typeof insertDeliveryReviewSchema>;

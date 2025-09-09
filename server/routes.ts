@@ -8,6 +8,7 @@ import { requireCEOAccess } from "./auth/time-guard";
 import { seedTimeAuthSystem } from "./seed-time-auth";
 import rbacRoutes from "./rbac-routes";
 import { seedRbacSystem } from "./rbac-seed";
+import deliveryRoutes from "./delivery-routes";
 import { 
   demoWallets, 
   demoTransactions, 
@@ -122,6 +123,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // RBAC + Area Locking routes
   app.use(rbacRoutes);
+  
+  // Universal Delivery Network routes
+  app.use(deliveryRoutes);
   
   // Seed time-locked authentication system
   app.post('/api/auth/seed', async (req, res) => {

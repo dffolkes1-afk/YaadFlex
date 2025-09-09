@@ -48,6 +48,8 @@ import CEODashboard from "@/pages/ceo-dashboard";
 import VendorManagement from "@/pages/vendor-management";
 import TimeAuthLogin from "@/pages/time-auth-login";
 import RBACDashboard from "@/pages/rbac-dashboard";
+import DeliveryPersonnelDashboard from "@/pages/delivery-personnel-dashboard";
+import DeliveryBooking from "@/pages/delivery-booking";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -113,6 +115,8 @@ function Router() {
           <Route path="/vendor-management" component={VendorManagement} />
           <Route path="/secure-login" component={TimeAuthLogin} />
           <Route path="/rbac-dashboard" component={RBACDashboard} />
+          <Route path="/delivery-dashboard" component={DeliveryPersonnelDashboard} />
+          <Route path="/book-delivery" component={DeliveryBooking} />
         </>
       )}
       <Route path="/secure-login" component={TimeAuthLogin} />
