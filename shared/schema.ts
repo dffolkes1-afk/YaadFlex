@@ -5165,3 +5165,89 @@ export const insertAuthPolicySchema = createInsertSchema(authPolicies).omit({
 });
 export type InsertAuthPolicy = z.infer<typeof insertAuthPolicySchema>;
 export type AuthPolicy = typeof authPolicies.$inferSelect;
+
+// =========================================
+// RBAC + AREA LOCKING SYSTEM
+// =========================================
+
+export const rbacRoles = pgTable("rbac_roles", {
+  id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+  code: varchar("code", { length: 64 }).notNull().unique(), // e.g. "driver_reg", "support", "finance"
+  label: varchar("label", { length: 120 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const rbacUserRoles = pgTable("rbac_user_roles", {
+  id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id", { length: 36 }).references(() => users.id).notNull(),
+  roleId: varchar("role_id", { length: 36 }).references(() => rbacRoles.id).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const rbacWorkAreas = pgTable("rbac_work_areas", {
+  id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+  code: varchar("code", { length: 64 }).notNull().unique(), // e.g. "driver_registration", "customer_support"
+  label: varchar("label", { length: 120 }).notNull(),
+  lockedByUserId: varchar("locked_by_user_id", { length: 36 }).references(() => users.id),
+  lockExpiresAt: timestamp("lock_expires_at"),
+  isLocked: boolean("is_locked").default(false),
+  lastGoodSnapshot: jsonb("last_good_snapshot"),
+  updatedAt: timestamp("updated_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const rbacPermissions = pgTable("rbac_permissions", {
+  id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+  code: varchar("code", { length: 64 }).notNull().unique(), // e.g. "area:driver_registration", "payout:approve"
+  label: varchar("label", { length: 160 }).notNull(),
+});
+
+export const rbacRolePermissions = pgTable("rbac_role_permissions", {
+  id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+  roleId: varchar("role_id", { length: 36 }).references(() => rbacRoles.id).notNull(),
+  permissionCode: varchar("permission_code", { length: 64 }).notNull(),
+});
+
+export const rbacAuditLogs = pgTable("rbac_audit_logs", {
+  id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id", { length: 36 }).references(() => users.id),
+  action: varchar("action", { length: 96 }).notNull(), // "AREA_ACQUIRE" | "AREA_RELEASE" | "RESET_OVERRIDE"
+  areaCode: varchar("area_code", { length: 64 }),
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const rbacPayouts = pgTable("rbac_payouts", {
+  id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+  driverUserId: varchar("driver_user_id", { length: 36 }).references(() => users.id).notNull(),
+  amountCents: integer("amount_cents").notNull(),
+  currency: varchar("currency", { length: 8 }).default("JMD"),
+  status: varchar("status", { length: 24 }).notNull().default("pending"), // pending|approved|paid|rejected
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// RBAC Insert Schemas
+export const insertRbacRoleSchema = createInsertSchema(rbacRoles);
+export const insertRbacUserRoleSchema = createInsertSchema(rbacUserRoles);
+export const insertRbacWorkAreaSchema = createInsertSchema(rbacWorkAreas);
+export const insertRbacPermissionSchema = createInsertSchema(rbacPermissions);
+export const insertRbacRolePermissionSchema = createInsertSchema(rbacRolePermissions);
+export const insertRbacAuditLogSchema = createInsertSchema(rbacAuditLogs);
+export const insertRbacPayoutSchema = createInsertSchema(rbacPayouts);
+
+// RBAC Types
+export type RbacRole = typeof rbacRoles.$inferSelect;
+export type InsertRbacRole = z.infer<typeof insertRbacRoleSchema>;
+export type RbacUserRole = typeof rbacUserRoles.$inferSelect;
+export type InsertRbacUserRole = z.infer<typeof insertRbacUserRoleSchema>;
+export type RbacWorkArea = typeof rbacWorkAreas.$inferSelect;
+export type InsertRbacWorkArea = z.infer<typeof insertRbacWorkAreaSchema>;
+export type RbacPermission = typeof rbacPermissions.$inferSelect;
+export type InsertRbacPermission = z.infer<typeof insertRbacPermissionSchema>;
+export type RbacRolePermission = typeof rbacRolePermissions.$inferSelect;
+export type InsertRbacRolePermission = z.infer<typeof insertRbacRolePermissionSchema>;
+export type RbacAuditLog = typeof rbacAuditLogs.$inferSelect;
+export type InsertRbacAuditLog = z.infer<typeof insertRbacAuditLogSchema>;
+export type RbacPayout = typeof rbacPayouts.$inferSelect;
+export type InsertRbacPayout = z.infer<typeof insertRbacPayoutSchema>;
