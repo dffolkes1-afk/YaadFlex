@@ -9,6 +9,7 @@ import { seedTimeAuthSystem } from "./seed-time-auth";
 import rbacRoutes from "./rbac-routes";
 import { seedRbacSystem } from "./rbac-seed";
 import deliveryRoutes from "./delivery-routes";
+import { initializeDeliveryRealtime } from "./delivery-realtime";
 import { 
   demoWallets, 
   demoTransactions, 
@@ -4667,6 +4668,9 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   // Initialize CB Radio WebSocket server
   const cbRadioWS = new CBRadioWebSocketServer(httpServer);
   console.log('🔊 CB Radio WebSocket server initialized');
+  
+  // Initialize real-time delivery system (Uber-like)
+  initializeDeliveryRealtime(httpServer);
   
   return httpServer;
 }
