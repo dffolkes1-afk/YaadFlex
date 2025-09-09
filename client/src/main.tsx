@@ -5,13 +5,7 @@ import "./index.css";
 // Register Service Worker for PWA functionality
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/sw.js")
-      .then((registration) => {
-        console.log("🚀 YardFlex SW registered:", registration);
-      })
-      .catch((error) => {
-        console.log("❌ YardFlex SW registration failed:", error);
-      });
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
   });
 }
 
