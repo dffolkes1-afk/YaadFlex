@@ -44,6 +44,7 @@ import TravelBooking from "@/pages/travel-booking";
 import ServiceMarketplace from "@/pages/service-marketplace";
 import InsuranceFAQ from "@/pages/insurance-faq";
 import EmailAssistant from "@/pages/email-assistant";
+import CEODashboard from "@/pages/ceo-dashboard";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -104,6 +105,7 @@ function Router() {
           <Route path="/duo-world" component={DuoWonTheWorld3D} />
           <Route path="/business-dashboard" component={BusinessDashboard} />
           <Route path="/trading-dashboard" component={TradingDashboard} />
+          <Route path="/ceo-dashboard" component={CEODashboard} />
         </>
       )}
       <Route component={NotFound} />
