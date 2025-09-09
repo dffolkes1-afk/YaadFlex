@@ -130,59 +130,82 @@ export default function ModernLanding() {
             
             <div className="space-y-6">
               <h1 className="text-6xl lg:text-8xl font-bold leading-tight">
-                <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-blue-400 via-green-400 to-yellow-400 bg-clip-text text-transparent">
                   YaadFlex
                 </span>
                 <br />
-                <span className="text-white">
-                  Global Vybz
+                <span className="bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">
+                  Super-App
                 </span>
               </h1>
 
               <p className="text-2xl text-gray-300 leading-relaxed">
-                Caribbean super-app for rides, delivery & more. <br/>
-                <strong className="text-green-400">Drivers earn 85%</strong> of every fare!
+                <span className="text-white font-semibold">The Caribbean super-app</span> built for the world.<br/>
+                Rides • Delivery • Social • Investment<br/>
+                <strong className="text-green-400 text-3xl">Drivers earn 85%</strong> of every trip!
               </p>
               
-              <div className="flex items-center gap-3 text-lg">
-                <span className="text-green-400">🇯🇲</span>
-                <span className="text-gray-300">Born in Jamaica • Built for the world</span>
+              <div className="flex items-center gap-4 text-xl">
+                <span className="text-2xl">🇯🇲</span>
+                <span className="bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent font-semibold">
+                  Born in Jamaica • Made for Everyone
+                </span>
               </div>
             </div>
 
-            {/* CLEAR PASSENGER VS DRIVER CHOICE */}
+            {/* CHOOSE YOUR JOURNEY - Modern Clean Design */}
             <div className="space-y-6">
-              <div className="bg-gradient-to-r from-orange-900/30 to-red-900/30 rounded-xl p-6 border border-orange-500/40">
-                <h3 className="text-2xl font-bold text-orange-300 mb-4 text-center">🌍 Choose Your Journey</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-gradient-to-r from-white/10 to-gray-900/30 rounded-2xl p-8 border border-gray-600/30 backdrop-blur-lg shadow-2xl">
+                <h3 className="text-3xl font-bold text-center mb-8">
+                  <span className="bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">
+                    🌟 Join the YaadFlex Experience
+                  </span>
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   
                   {/* PASSENGER SIDE */}
-                  <div className="bg-gradient-to-br from-blue-900/40 to-purple-900/40 rounded-lg p-6 border border-blue-500/50 hover:border-blue-400/70 transition-all group">
+                  <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/30 rounded-xl p-6 border border-blue-400/50 hover:border-blue-300/70 transition-all group hover:scale-105 backdrop-blur-sm">
                     <div className="text-center space-y-4">
-                      <div className="w-16 h-16 mx-auto bg-blue-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <MapPin className="h-8 w-8 text-white" />
+                      <div className="w-20 h-20 mx-auto bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+                        <MapPin className="h-10 w-10 text-white" />
                       </div>
-                      <h4 className="text-xl font-bold text-blue-300">🚖 I NEED A RIDE</h4>
-                      <p className="text-blue-200 text-sm">Book rides across Jamaica<br/>🌍 From Kingston to Montego Bay</p>
-                      <Button size="lg" className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500" asChild>
+                      <h4 className="text-xl font-bold text-blue-300">🚖 Need a Ride?</h4>
+                      <p className="text-blue-200 text-sm">Premium rides across Jamaica<br/>From Kingston to anywhere</p>
+                      <Button size="lg" className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 shadow-lg" asChild>
                         <Link href="/book-ride" data-testid="button-passenger">
-                          Book My Ride Now
+                          Book Ride
                         </Link>
                       </Button>
                     </div>
                   </div>
 
                   {/* DRIVER SIDE */}
-                  <div className="bg-gradient-to-br from-green-900/40 to-yellow-900/40 rounded-lg p-6 border border-green-500/50 hover:border-green-400/70 transition-all group">
+                  <div className="bg-gradient-to-br from-green-500/20 to-emerald-600/30 rounded-xl p-6 border border-green-400/50 hover:border-green-300/70 transition-all group hover:scale-105 backdrop-blur-sm">
                     <div className="text-center space-y-4">
-                      <div className="w-16 h-16 mx-auto bg-green-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <Car className="h-8 w-8 text-white" />
+                      <div className="w-20 h-20 mx-auto bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+                        <Car className="h-10 w-10 text-white" />
                       </div>
-                      <h4 className="text-xl font-bold text-green-300">🚗 I WANT TO DRIVE</h4>
-                      <p className="text-green-200 text-sm">Earn 85% of every fare<br/>🌍 Join drivers across the Caribbean</p>
-                      <Button size="lg" className="w-full bg-gradient-to-r from-green-600 to-yellow-600 hover:from-green-500 hover:to-yellow-500" asChild>
+                      <h4 className="text-xl font-bold text-green-300">🚗 Drive & Earn</h4>
+                      <p className="text-green-200 text-sm">Keep 85% of every fare<br/>Join Caribbean's fairest platform</p>
+                      <Button size="lg" className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 shadow-lg" asChild>
                         <Link href="/driver-registration" data-testid="button-driver">
-                          Start Driving & Earning
+                          Start Earning
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* SOCIAL SIDE - NEW! */}
+                  <div className="bg-gradient-to-br from-purple-500/20 to-pink-600/30 rounded-xl p-6 border border-purple-400/50 hover:border-purple-300/70 transition-all group hover:scale-105 backdrop-blur-sm">
+                    <div className="text-center space-y-4">
+                      <div className="w-20 h-20 mx-auto bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+                        <Users className="h-10 w-10 text-white" />
+                      </div>
+                      <h4 className="text-xl font-bold text-purple-300">🌟 Social Vybz</h4>
+                      <p className="text-purple-200 text-sm">Connect, share, discover<br/>More than just rides</p>
+                      <Button size="lg" className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-400 hover:to-pink-500 shadow-lg" asChild>
+                        <Link href="/social" data-testid="button-social">
+                          Explore Social
                         </Link>
                       </Button>
                     </div>

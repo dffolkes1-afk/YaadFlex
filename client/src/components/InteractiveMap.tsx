@@ -123,11 +123,11 @@ export function InteractiveMap({
   };
 
   return (
-    <div className={`relative bg-gray-900 rounded-xl overflow-hidden border border-gray-700 ${className}`}>
-      {/* Map Container */}
+    <div className={`relative bg-white dark:bg-gray-900 rounded-2xl overflow-hidden border-2 border-blue-200 dark:border-gray-700 shadow-xl ${className}`}>
+      {/* Map Container - Uber-style clean design */}
       <div 
         ref={mapRef}
-        className="relative w-full h-96 bg-gradient-to-br from-gray-800 to-gray-900 cursor-move select-none"
+        className="relative w-full h-96 bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-800 dark:to-gray-900 cursor-move select-none"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -147,7 +147,7 @@ export function InteractiveMap({
           </svg>
         </div>
 
-        {/* Streets */}
+        {/* Streets - Uber-style clean roads */}
         <svg className="absolute inset-0 w-full h-full">
           {streets.map((street, index) => (
             <g key={index}>
@@ -156,18 +156,28 @@ export function InteractiveMap({
                 y1={street.from.y}
                 x2={street.to.x}
                 y2={street.to.y}
-                stroke={street.type === 'major' ? '#6B7280' : '#4B5563'}
-                strokeWidth={street.type === 'major' ? '3' : '2'}
-                className="opacity-80"
+                stroke={street.type === 'major' ? '#E5E7EB' : '#F3F4F6'}
+                strokeWidth={street.type === 'major' ? '4' : '2'}
+                className="opacity-90 dark:opacity-40"
               />
-              {/* Street name labels */}
+              <line
+                x1={street.from.x}
+                y1={street.from.y}
+                x2={street.to.x}
+                y2={street.to.y}
+                stroke={street.type === 'major' ? '#3B82F6' : '#6B7280'}
+                strokeWidth={street.type === 'major' ? '2' : '1'}
+                className="opacity-50 dark:opacity-80"
+              />
+              {/* Street name labels - cleaner typography */}
               <text
                 x={(street.from.x + street.to.x) / 2}
                 y={(street.from.y + street.to.y) / 2}
-                fill="#9CA3AF"
-                fontSize="10"
+                fill="#374151"
+                fontSize="11"
+                fontWeight="500"
                 textAnchor="middle"
-                className="opacity-60 pointer-events-none"
+                className="opacity-70 pointer-events-none dark:fill-gray-300"
               >
                 {currentZoom > 13 && street.name}
               </text>
@@ -196,7 +206,7 @@ export function InteractiveMap({
           </div>
         ))}
 
-        {/* Live Drivers */}
+        {/* Live Drivers - Uber-style with Caribbean flair */}
         {showDrivers && liveDrivers.map((driver) => (
           <div
             key={driver.id}
@@ -207,18 +217,22 @@ export function InteractiveMap({
               transform: `translate(-50%, -50%) rotate(${driver.heading}deg)`
             }}
           >
-            <div className={`relative w-4 h-4 rounded-full border-2 border-white shadow-lg ${
-              driver.status === 'available' ? 'bg-green-500' :
-              driver.status === 'busy' ? 'bg-yellow-500' :
-              'bg-gray-500'
-            }`}>
-              {/* Direction indicator */}
-              <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-b-3 border-transparent border-b-white" />
+            <div className={`relative w-5 h-5 rounded-full border-3 border-white shadow-xl ${
+              driver.status === 'available' ? 'bg-gradient-to-r from-green-400 to-emerald-500' :
+              driver.status === 'busy' ? 'bg-gradient-to-r from-yellow-400 to-orange-500' :
+              'bg-gradient-to-r from-gray-400 to-gray-500'
+            } hover:scale-110 transition-transform`}>
+              {/* Direction indicator - sleeker */}
+              <div className="absolute -top-1.5 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-b-4 border-transparent border-b-white shadow-sm" />
+              {/* Pulse effect for available drivers */}
+              {driver.status === 'available' && (
+                <div className="absolute -inset-1 rounded-full bg-green-400/30 animate-ping" />
+              )}
             </div>
             
             {currentZoom > 14 && (
-              <div className="absolute top-6 left-1/2 transform -translate-x-1/2 text-xs text-white bg-black/90 px-2 py-1 rounded whitespace-nowrap border border-gray-600">
-                {driver.name} • {driver.status}
+              <div className="absolute top-7 left-1/2 transform -translate-x-1/2 text-xs font-medium text-gray-800 dark:text-white bg-white/95 dark:bg-black/90 px-3 py-1.5 rounded-lg whitespace-nowrap border border-gray-200 dark:border-gray-600 shadow-lg backdrop-blur-sm">
+                {driver.name} • {driver.status === 'available' ? '🟢 Available' : driver.status === 'busy' ? '🟡 On Trip' : '⚫ Offline'}
               </div>
             )}
           </div>
@@ -233,49 +247,52 @@ export function InteractiveMap({
         </div>
       </div>
 
-      {/* Map Controls */}
-      <div className="absolute top-4 right-4 flex flex-col gap-2">
+      {/* Map Controls - Clean Uber-style */}
+      <div className="absolute top-4 right-4 flex flex-col gap-1">
         <button
           onClick={handleZoomIn}
-          className="w-10 h-10 bg-black/80 border border-gray-600 rounded-lg flex items-center justify-center text-white hover:bg-black/90 transition-all"
+          className="w-12 h-12 bg-white/95 dark:bg-black/90 border border-gray-200 dark:border-gray-600 rounded-xl flex items-center justify-center text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-black/95 transition-all shadow-lg backdrop-blur-sm"
         >
           <Plus className="w-5 h-5" />
         </button>
         <button
           onClick={handleZoomOut}
-          className="w-10 h-10 bg-black/80 border border-gray-600 rounded-lg flex items-center justify-center text-white hover:bg-black/90 transition-all"
+          className="w-12 h-12 bg-white/95 dark:bg-black/90 border border-gray-200 dark:border-gray-600 rounded-xl flex items-center justify-center text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-black/95 transition-all shadow-lg backdrop-blur-sm"
         >
           <Minus className="w-5 h-5" />
         </button>
       </div>
 
-      {/* Map Info */}
-      <div className="absolute bottom-4 left-4 bg-black/80 border border-gray-600 rounded-lg px-3 py-2">
-        <div className="text-sm text-gray-300">
-          <div className="flex items-center gap-2 mb-1">
-            <Navigation className="w-4 h-4 text-green-400" />
-            <span className="font-semibold text-green-400">Kingston, Jamaica</span>
+      {/* Map Info - Modern design */}
+      <div className="absolute bottom-4 left-4 bg-white/95 dark:bg-black/90 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 shadow-lg backdrop-blur-sm">
+        <div className="text-sm text-gray-700 dark:text-gray-300">
+          <div className="flex items-center gap-2 mb-2">
+            <Navigation className="w-4 h-4 text-blue-500" />
+            <span className="font-semibold text-blue-600 dark:text-blue-400">Kingston, Jamaica</span>
           </div>
-          <div className="text-xs text-gray-400">
-            Zoom: {currentZoom} • {liveDrivers.filter(d => d.status === 'available').length} drivers available
+          <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-3">
+            <span>Zoom: {currentZoom}</span>
+            <span className="text-green-600 dark:text-green-400 font-medium">
+              {liveDrivers.filter(d => d.status === 'available').length} Available Drivers
+            </span>
           </div>
         </div>
       </div>
 
-      {/* Legend */}
-      <div className="absolute top-4 left-4 bg-black/80 border border-gray-600 rounded-lg px-3 py-2">
-        <div className="text-xs text-gray-300 space-y-1">
+      {/* Legend - Cleaner Caribbean style */}
+      <div className="absolute top-4 left-4 bg-white/95 dark:bg-black/90 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 shadow-lg backdrop-blur-sm">
+        <div className="text-xs text-gray-700 dark:text-gray-300 space-y-2">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-green-500 rounded-full" />
-            <span>Available</span>
+            <div className="w-3 h-3 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full shadow-sm" />
+            <span className="font-medium">Available</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-yellow-500 rounded-full" />
-            <span>Busy</span>
+            <div className="w-3 h-3 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full shadow-sm" />
+            <span className="font-medium">On Trip</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-blue-500 rounded-full" />
-            <span>You</span>
+            <div className="w-3 h-3 bg-blue-500 rounded-full shadow-sm animate-pulse" />
+            <span className="font-medium">Your Location</span>
           </div>
         </div>
       </div>
