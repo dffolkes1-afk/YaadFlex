@@ -1,0 +1,129 @@
+{
+  "version": "1.0",
+  "currency": "JMD",
+  "categories": [
+    {
+      "code": "warm_renovation",
+      "label": "Warm Renovation",
+      "units": ["per_room", "per_sq_ft"],
+      "subs": [
+        "wall_repairs", "ceiling_repairs", "drywall_finish",
+        "insulation_upgrade", "soundproofing", "seal_windows_doors"
+      ],
+      "samplePricing": { "per_room_min": 15000, "per_room_max": 45000 },
+      "safety": ["dust_control", "eye_protection", "mask"],
+      "fleet": ["white_van", "contractor_truck", "red_plate_supervisor"],
+      "docs": ["before_photos", "after_photos", "materials_list"]
+    },
+    {
+      "code": "office_renovation",
+      "label": "Office Renovation",
+      "units": ["per_sq_ft", "per_zone"],
+      "subs": [
+        "partitions", "flooring", "painting", "lighting",
+        "cabling", "furniture_fitout"
+      ],
+      "samplePricing": { "per_sq_ft_min": 500, "per_sq_ft_max": 900 },
+      "safety": ["after_hours", "noise_limits", "electrical_lockout"],
+      "fleet": ["red_plate_city", "materials_van"],
+      "docs": ["floor_plan", "scope", "signoff_sheet"]
+    },
+    {
+      "code": "chemical_services",
+      "label": "Chemical Services",
+      "units": ["per_sq_ft", "per_room", "per_kitchen"],
+      "subs": [
+        "floor_strip_polish", "degreasing",
+        "mold_treatment", "chemical_deep_clean"
+      ],
+      "samplePricing": { "job_min": 12000, "job_max": 35000 },
+      "safety": ["gloves", "respirators", "ventilation", "msds"],
+      "fleet": ["white_plate_errand", "red_plate_supervisor"],
+      "docs": ["msds", "disposal_method"]
+    },
+    {
+      "code": "cleaning",
+      "label": "Cleaning & Sanitation",
+      "units": ["per_hour", "per_sq_ft", "per_room"],
+      "subs": ["residential_deep", "office_daily", "post_construction", "windows", "carpet"],
+      "samplePricing": { "per_sq_ft_min": 70, "per_sq_ft_max": 120 }
+    },
+    {
+      "code": "handyman",
+      "label": "Handyman & Repairs",
+      "units": ["per_job", "per_hour"],
+      "subs": ["plumbing_minor", "electrical_minor", "fixtures", "tiles", "locks"],
+      "samplePricing": { "job_min": 8000, "job_max": 20000 }
+    },
+    {
+      "code": "painting",
+      "label": "Painting & Finishes",
+      "units": ["per_sq_ft", "per_room"],
+      "subs": ["interior", "exterior", "waterproofing", "texture", "signage"],
+      "samplePricing": { "per_sq_ft_min": 350, "per_sq_ft_max": 700 }
+    },
+    {
+      "code": "hvac",
+      "label": "HVAC & Cooling",
+      "units": ["per_unit", "per_visit"],
+      "subs": ["ac_service", "split_install", "duct_clean", "filters"],
+      "samplePricing": { "install_min": 18000, "install_max": 45000 }
+    },
+    {
+      "code": "electrical",
+      "label": "Electrical",
+      "units": ["per_point", "per_job"],
+      "subs": ["outlet_add", "panel_tidy", "lighting", "generator_light", "ev_basic"],
+      "samplePricing": { "outlet_min": 10000, "outlet_max": 18000 }
+    },
+    {
+      "code": "plumbing",
+      "label": "Plumbing",
+      "units": ["per_fixture", "per_job"],
+      "subs": ["leak_fix", "faucet_install", "drain_unclog", "heater_swap", "bathroom_set"],
+      "samplePricing": { "unclog_min": 7000, "unclog_max": 15000 }
+    },
+    {
+      "code": "fitout",
+      "label": "Furniture & Fit-Out",
+      "units": ["per_item", "per_wall"],
+      "subs": ["assembly", "shelves", "desks", "tv_mount", "blinds"],
+      "samplePricing": { "tv_mount_min": 6000, "tv_mount_max": 12000 }
+    },
+    {
+      "code": "moving",
+      "label": "Moving & Delivery",
+      "units": ["per_load", "per_km"],
+      "subs": ["small_moves", "office_shuffle", "appliance_delivery", "disposal"],
+      "samplePricing": { "job_min": 18000, "job_max": 40000 }
+    },
+    {
+      "code": "outdoor",
+      "label": "Yard & Outdoor",
+      "units": ["per_sq_ft", "per_visit"],
+      "subs": ["lawn", "hedge", "pressure_wash", "gutter", "landscaping_light"],
+      "samplePricing": { "pressure_min": 80, "pressure_max": 150 }
+    },
+    {
+      "code": "sanitation_pest",
+      "label": "Sanitization & Pest",
+      "units": ["per_room", "per_visit"],
+      "subs": ["fogging", "pests_basic", "roach_ants", "termite_inspect_referral"],
+      "samplePricing": { "home_min": 20000, "home_max": 45000 }
+    },
+    {
+      "code": "construction_lite",
+      "label": "Construction Lite",
+      "units": ["per_sq_ft", "per_job", "per_linear_ft"],
+      "subs": ["small_wall", "step_repair", "skim_coat", "slab_patch"],
+      "samplePricing": { "linear_ft_min": 6000, "linear_ft_max": 12000 }
+    },
+    {
+      "code": "it_office",
+      "label": "IT & Cabling (Office)",
+      "units": ["per_drop", "per_device"],
+      "subs": ["ethernet_runs", "wifi_mesh", "camera_basic", "server_shelf", "cable_tidy"],
+      "samplePricing": { "drop_min": 8000, "drop_max": 14000 }
+    }
+  ]
+}

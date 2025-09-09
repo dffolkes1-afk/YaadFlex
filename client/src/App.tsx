@@ -41,6 +41,7 @@ import CustomerBooking from "@/pages/customer-booking";
 import BusinessDashboard from "@/pages/business-dashboard";
 import TradingDashboard from "@/pages/trading-dashboard";
 import TravelBooking from "@/pages/travel-booking";
+import ServiceMarketplace from "@/pages/service-marketplace";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -67,6 +68,8 @@ function Router() {
       <Route path="/pricing" component={PricingCalculator} />
       <Route path="/book-ride" component={CustomerBooking} />
       <Route path="/travel-booking" component={TravelBooking} />
+      <Route path="/services" component={ServiceMarketplace} />
+      <Route path="/service-marketplace" component={ServiceMarketplace} />
       <Route path="/universal-remote" component={UniversalRemote} />
       
       {/* Authentication-based routes */}
