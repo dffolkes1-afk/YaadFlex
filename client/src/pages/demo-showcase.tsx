@@ -298,42 +298,94 @@ export default function DemoShowcase() {
           </Card>
         </div>
 
-        {/* Sponsor Call-to-Action */}
+        {/* Creative Visual Sponsor Section */}
         <div className="text-center">
-          <Card className="bg-gradient-to-r from-yellow-600/20 to-green-600/20 border-yellow-400/50 mb-8">
-            <CardContent className="p-12">
-              <div className="text-5xl md:text-7xl font-black text-yellow-400 mb-6 animate-pulse">
-                💰 SPONSOR OPPORTUNITY! 💰
-              </div>
-              <div className="text-2xl md:text-3xl text-white mb-6">
-                Join the Caribbean's FASTEST-GROWING Platform!
-              </div>
-              <div className="text-xl text-yellow-300 mb-8">
-                <strong>• 85% Driver Earnings</strong> - Industry's Highest! <br/>
-                <strong>• Unbreakable Security</strong> - Military-Grade Protection! <br/>
-                <strong>• Real-Time Everything</strong> - Uber-Level Technology! <br/>
-                <strong>• Total Economy Platform</strong> - Every Service Covered!
+          <div className="max-w-6xl mx-auto mb-8">
+            <div className="bg-gradient-to-br from-gray-900 via-black to-gray-800 rounded-3xl p-8 border border-gray-600 shadow-2xl relative overflow-hidden">
+              
+              {/* Background Visual Effects */}
+              <div className="absolute inset-0 opacity-10">
+                <div className="text-9xl text-center leading-none text-green-500 select-none">
+                  💰💰💰💰💰<br/>
+                  👁️‍🗨️💵👁️‍🗨️💵👁️‍🗨️<br/>
+                  🤑💎🤑💎🤑<br/>
+                  💰💰💰💰💰
+                </div>
               </div>
               
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button 
-                  size="lg" 
-                  className="bg-yellow-600 hover:bg-yellow-700 text-black text-xl px-8 py-4 font-black"
-                  onClick={() => window.open('mailto:dChris@yaadflexglobalvybz.com?subject=SPONSOR OPPORTUNITY - YaadFlex Partnership')}
-                >
-                  💼 BECOME A SPONSOR
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="border-green-400 text-green-400 hover:bg-green-400/10 text-xl px-8 py-4 font-black"
-                  onClick={() => window.open('tel:+1-800-YAADFLEX')}
-                >
-                  📞 CALL NOW
-                </Button>
+              {/* Main Content */}
+              <div className="relative z-10">
+                <div className="text-6xl md:text-8xl font-black mb-6">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-green-400 to-emerald-400">
+                    ⭐ SPONSOR 
+                  </span>
+                  <br/>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
+                    OPPORTUNITY ⭐
+                  </span>
+                </div>
+                
+                <div className="text-4xl font-bold text-white mb-8 tracking-wide">
+                  🏝️ JOIN THE CARIBBEAN REVOLUTION! 🏝️
+                </div>
+                
+                {/* Visual Money Display */}
+                <div className="flex justify-center items-center mb-8 text-6xl space-x-4">
+                  <span className="animate-bounce">💰</span>
+                  <span className="text-green-400 font-black">$127K+</span>
+                  <span className="animate-bounce delay-300">💰</span>
+                  <span className="text-yellow-400 font-black">DAILY</span>
+                  <span className="animate-bounce delay-700">💰</span>
+                </div>
+                
+                {/* Creative Visual Stats */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  <div className="bg-gradient-to-br from-green-900/50 to-emerald-800/30 rounded-xl p-6 border border-green-500/50">
+                    <div className="text-4xl mb-2">👑</div>
+                    <div className="text-green-400 font-bold text-2xl">85% TO DRIVERS</div>
+                    <div className="text-green-200">Industry Leading</div>
+                  </div>
+                  <div className="bg-gradient-to-br from-blue-900/50 to-cyan-800/30 rounded-xl p-6 border border-blue-500/50">
+                    <div className="text-4xl mb-2">🚀</div>
+                    <div className="text-blue-400 font-bold text-2xl">+89% GROWTH</div>
+                    <div className="text-blue-200">Monthly Expansion</div>
+                  </div>
+                  <div className="bg-gradient-to-br from-purple-900/50 to-pink-800/30 rounded-xl p-6 border border-purple-500/50">
+                    <div className="text-4xl mb-2">🎯</div>
+                    <div className="text-purple-400 font-bold text-2xl">REAL PROFITS</div>
+                    <div className="text-purple-200">Proven Results</div>
+                  </div>
+                </div>
+                
+                {/* Contact Info with Eyes */}
+                <div className="text-3xl font-bold text-yellow-400 mb-4">
+                  👁️‍🗨️ READY TO JOIN THE HUSTLE? 👁️‍🗨️
+                </div>
+                
+                <div className="flex flex-wrap justify-center gap-4 mb-6">
+                  <Button 
+                    size="lg" 
+                    className="bg-gradient-to-r from-yellow-600 to-green-600 hover:from-yellow-500 hover:to-green-500 text-black text-xl px-8 py-4 font-black shadow-xl"
+                    onClick={() => window.open('mailto:dChris@yaadflexglobalvybz.com?subject=SPONSOR OPPORTUNITY - YaadFlex Partnership')}
+                  >
+                    💼 BECOME A SPONSOR
+                  </Button>
+                  <Button 
+                    size="lg" 
+                    variant="outline" 
+                    className="border-green-400 text-green-400 hover:bg-green-400/10 text-xl px-8 py-4 font-black"
+                    onClick={() => window.open('tel:+1-800-YAADFLEX')}
+                  >
+                    📞 CALL NOW
+                  </Button>
+                </div>
+                
+                <div className="text-5xl font-black bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 bg-clip-text text-transparent animate-pulse">
+                  🤝 JOIN THE CARIBBEAN TAKEOVER! 🤝
+                </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Contact Information */}
           <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl p-8 border border-blue-400/30">
