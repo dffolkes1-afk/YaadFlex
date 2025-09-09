@@ -134,6 +134,12 @@ export default function ModernLanding() {
                   Book A Ride
                 </Link>
               </Button>
+              <Button size="lg" variant="outline" className="border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-black" asChild>
+                <Link href="/universal-remote" data-testid="button-remote-control">
+                  <Monitor className="h-5 w-5 mr-2" />
+                  Remote Control
+                </Link>
+              </Button>
             </div>
 
             {/* Contact Info */}

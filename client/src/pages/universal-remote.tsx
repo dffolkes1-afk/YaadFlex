@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
-  Drone, 
+  Plane, 
   Bot, 
   Car, 
   Shield, 
@@ -116,7 +116,7 @@ export default function UniversalRemote() {
 
   const getDeviceIcon = (type: string) => {
     switch (type) {
-      case 'drone': return Drone;
+      case 'drone': return Plane;
       case 'robot': return Bot;
       case 'vehicle': return Car;
       case 'security': return Shield;
