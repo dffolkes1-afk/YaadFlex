@@ -1,0 +1,267 @@
+Got it. Here’s a clean, copy-paste service taxonomy (your style) that includes the items you hinted at—Warm Renovation, Office Renovation, Chemical—and a full, sensible set around them. I’m giving you both a human-readable list and a JSON file you can drop straight into your app.
+
+
+---
+
+YaadFlex Service Categories (Readable)
+
+🏚️ Warm Renovation
+
+Subcategories: wall repairs, ceiling repairs, drywall/compound, insulation upgrade, soundproofing, window/door sealing
+
+Typical units: per room / per sq. ft.
+
+Sample price (JMD): room patch & finish J$15,000–J$45,000
+
+Safety: dust control, masks, eye protection
+
+Fleet: crew van (white plate) or contractor trucks (red/white)
+
+Docs: before/after photos, materials list
+
+
+🏢 Office Renovation
+
+Subcategories: partition build, flooring, paint, lighting, cabling, furniture fit-out
+
+Units: per sq. ft. / per zone
+
+Sample: repaint & minor repairs J$500–J$900 / sq. ft.
+
+Safety: after-hours option, noise limits, electrical lockout
+
+Fleet: red plate (city access), delivery van for materials
+
+Docs: floor plan, scope, sign-off
+
+
+🧪 Chemical Services
+
+Subcategories: floor stripping & polish, degreasing, mold/mildew treatment, chemical bathroom deep clean
+
+Units: per sq. ft. / per bathroom / per kitchen
+
+Sample: kitchen degrease J$12,000–J$35,000
+
+Safety: gloves, respirators, ventilation, chemical MSDS
+
+Fleet: white plate (errands/delivery), supervisor red plate
+
+Docs: MSDS, disposal method
+
+
+🧼 Cleaning & Sanitation
+
+Subcategories: residential deep clean, office daily, post-construction clean, window wash, carpet shampoo
+
+Units: per hour / per sq. ft. / per room
+
+Sample: post-construction clean J$70–J$120 / sq. ft.
+
+
+🧰 Handyman & Repairs
+
+Subcategories: plumbing fixes, electrical minor, fixture install, tiles, door/lock, small masonry
+
+Units: per job / per hour
+
+Sample: minor plumbing J$8,000–J$20,000 + parts
+
+
+🎨 Painting & Finishes
+
+Subcategories: interior, exterior, waterproof, textured walls, signage
+
+Units: per sq. ft. / per room
+
+Sample: interior paint J$350–J$700 / sq. ft. (incl. prep)
+
+
+❄️ HVAC & Cooling
+
+Subcategories: AC service, split install, duct clean, filter program
+
+Units: per unit / per service visit
+
+Sample: split install labour J$18,000–J$45,000 (excl. unit)
+
+
+🔌 Electrical
+
+Subcategories: outlet/circuit add, panel tidy, lighting, generator hookup (light), EV charger basic
+
+Units: per point / per job
+
+Sample: extra outlet J$10,000–J$18,000 (materials separate)
+
+
+🚰 Plumbing
+
+Subcategories: leak fix, faucet install, drain unclog, water heater swap, bathroom set
+
+Units: per fixture / per job
+
+Sample: drain unclog J$7,000–J$15,000
+
+
+🪑 Furniture & Fit-Out
+
+Subcategories: assembly, custom shelves, office desks, mounts, blinds
+
+Units: per item / per wall
+
+Sample: TV mount J$6,000–J$12,000
+
+
+🚚 Moving & Delivery
+
+Subcategories: small moves, office shuffle, appliance delivery, disposal
+
+Units: per load / per km
+
+Sample: small move (town) J$18,000–J$40,000
+
+
+🌿 Yard & Outdoor
+
+Subcategories: lawn cut, hedge trim, pressure wash, gutter clean, light landscaping
+
+Units: per sq. ft. / per visit
+
+Sample: pressure wash J$80–J$150 / sq. ft.
+
+
+🛡️ Sanitization & Pest
+
+Subcategories: fogging, pests basic, roaches/ants package, termite inspection referral
+
+Units: per room / per visit
+
+Sample: fogging 2-bed home J$20,000–J$45,000
+
+
+🧱 Construction Lite
+
+Subcategories: small wall build, step repair, skim coat, slab patch
+
+Units: per sq. ft. / per job
+
+Sample: block wall repair J$6,000–J$12,000 / linear ft.
+
+
+🖥️ IT & Cabling (Office)
+
+Subcategories: ethernet runs, Wi-Fi mesh, camera install (basic), server shelf, cable tidy
+
+Units: per drop / per device
+
+Sample: ethernet drop J$8,000–J$14,000
+
+
+> All numbers are sample JMD ranges for scoping; you’ll tune per parish/market.
+
+
+
+
+---
+
+JSON (drop into your app)
+
+{
+  "version": "1.0",
+  "currency": "JMD",
+  "categories": [
+    {
+      "code": "warm_renovation",
+      "label": "Warm Renovation",
+      "units": ["per_room", "per_sq_ft"],
+      "subs": [
+        "wall_repairs", "ceiling_repairs", "drywall_finish",
+        "insulation_upgrade", "soundproofing", "seal_windows_doors"
+      ],
+      "samplePricing": { "per_room_min": 15000, "per_room_max": 45000 },
+      "safety": ["dust_control", "eye_protection", "mask"],
+      "fleet": ["white_van", "contractor_truck", "red_plate_supervisor"],
+      "docs": ["before_photos", "after_photos", "materials_list"]
+    },
+    {
+      "code": "office_renovation",
+      "label": "Office Renovation",
+      "units": ["per_sq_ft", "per_zone"],
+      "subs": [
+        "partitions", "flooring", "painting", "lighting",
+        "cabling", "furniture_fitout"
+      ],
+      "samplePricing": { "per_sq_ft_min": 500, "per_sq_ft_max": 900 },
+      "safety": ["after_hours", "noise_limits", "electrical_lockout"],
+      "fleet": ["red_plate_city", "materials_van"],
+      "docs": ["floor_plan", "scope", "signoff_sheet"]
+    },
+    {
+      "code": "chemical_services",
+      "label": "Chemical Services",
+      "units": ["per_sq_ft", "per_room", "per_kitchen"],
+      "subs": [
+        "floor_strip_polish", "degreasing",
+        "mold_treatment", "chemical_deep_clean"
+      ],
+      "samplePricing": { "job_min": 12000, "job_max": 35000 },
+      "safety": ["gloves", "respirators", "ventilation", "msds"],
+      "fleet": ["white_plate_errand", "red_plate_supervisor"],
+      "docs": ["msds", "disposal_method"]
+    },
+    {
+      "code": "cleaning",
+      "label": "Cleaning & Sanitation",
+      "units": ["per_hour", "per_sq_ft", "per_room"],
+      "subs": ["residential_deep", "office_daily", "post_construction", "windows", "carpet"],
+      "samplePricing": { "per_sq_ft_min": 70, "per_sq_ft_max": 120 }
+    },
+    {
+      "code": "handyman",
+      "label": "Handyman & Repairs",
+      "units": ["per_job", "per_hour"],
+      "subs": ["plumbing_minor", "electrical_minor", "fixtures", "tiles", "locks"],
+      "samplePricing": { "job_min": 8000, "job_max": 20000 }
+    },
+    {
+      "code": "painting",
+      "label": "Painting & Finishes",
+      "units": ["per_sq_ft", "per_room"],
+      "subs": ["interior", "exterior", "waterproofing", "texture", "signage"],
+      "samplePricing": { "per_sq_ft_min": 350, "per_sq_ft_max": 700 }
+    },
+    {
+      "code": "hvac",
+      "label": "HVAC & Cooling",
+      "units": ["per_unit", "per_visit"],
+      "subs": ["ac_service", "split_install", "duct_clean", "filters"],
+      "samplePricing": { "install_min": 18000, "install_max": 45000 }
+    },
+    {
+      "code": "electrical",
+      "label": "Electrical",
+      "units": ["per_point", "per_job"],
+      "subs": ["outlet_add", "panel_tidy", "lighting", "generator_light", "ev_basic"],
+      "samplePricing": { "outlet_min": 10000, "outlet_max": 18000 }
+    },
+    {
+      "code": "plumbing",
+      "label": "Plumbing",
+      "units": ["per_fixture", "per_job"],
+      "subs": ["leak_fix", "faucet_install", "drain_unclog", "heater_swap", "bathroom_set"],
+      "samplePricing": { "unclog_min": 7000, "unclog_max": 15000 }
+    },
+    {
+      "code": "fitout",
+      "label": "Furniture & Fit-Out",
+      "units": ["per_item", "per_wall"],
+      "subs": ["assembly", "shelves", "desks", "tv_mount", "blinds"],
+      "samplePricing": { "tv_mount_min": 6000, "tv_mount_max": 12000 }
+    },
+    {
+      "code": "moving",
+      "label": "Moving & Delivery",
+      "units": ["per_load", "per_km"],
+      "subs": ["small_moves", "office_shuffle", "ap
+
