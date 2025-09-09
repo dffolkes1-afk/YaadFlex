@@ -1615,6 +1615,87 @@ export const cashbackTransactions = pgTable("cashback_transactions", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// CEO Dashboard - Business Expenses & Renewals
+export const businessExpenses = pgTable("business_expenses", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  category: varchar("category").notNull(), // 'domain', 'hosting', 'insurance', 'licenses', 'marketing', 'compliance', 'developer_tools', 'email'
+  name: varchar("name").notNull(), // e.g., 'yaadflex.com Domain', 'Google Workspace', 'General Liability Insurance'
+  provider: varchar("provider"), // e.g., 'GoDaddy', 'Google', 'Insurance Company'
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).notNull().default('JMD'),
+  frequency: varchar("frequency").notNull(), // 'monthly', 'quarterly', 'yearly', 'one-time'
+  nextDueDate: timestamp("next_due_date").notNull(),
+  lastPaidDate: timestamp("last_paid_date"),
+  autoRenewal: boolean("auto_renewal").default(false),
+  isActive: boolean("is_active").default(true),
+  alertDays: integer("alert_days").default(30), // Days before due date to alert
+  description: text("description"),
+  invoiceUrl: text("invoice_url"), // URL to stored invoice/receipt
+  status: varchar("status").default('upcoming'), // 'upcoming', 'overdue', 'paid', 'cancelled'
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// CEO Dashboard - AI Advisory Reports
+export const aiAdvisoryReports = pgTable("ai_advisory_reports", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  advisorType: varchar("advisor_type").notNull(), // 'risk', 'tech', 'finance', 'growth'
+  reportType: varchar("report_type").notNull(), // 'weekly', 'monthly', 'alert', 'recommendation'
+  priority: varchar("priority").notNull().default('medium'), // 'low', 'medium', 'high', 'critical'
+  title: varchar("title").notNull(),
+  summary: text("summary").notNull(), // Short summary for dashboard
+  details: text("details"), // Full report details
+  recommendations: jsonb("recommendations"), // Array of specific actions
+  metrics: jsonb("metrics"), // Data points that triggered the report
+  status: varchar("status").default('unread'), // 'unread', 'read', 'action_taken', 'dismissed'
+  actionRequired: boolean("action_required").default(false),
+  dueDate: timestamp("due_date"), // If action is required by specific date
+  tags: jsonb("tags"), // Array of tags for categorization
+  generatedAt: timestamp("generated_at").defaultNow(),
+  readAt: timestamp("read_at"),
+  actionTakenAt: timestamp("action_taken_at"),
+});
+
+// CEO Dashboard - Expense Reminders
+export const expenseReminders = pgTable("expense_reminders", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  expenseId: varchar("expense_id").references(() => businessExpenses.id).notNull(),
+  reminderDate: timestamp("reminder_date").notNull(),
+  reminderType: varchar("reminder_type").notNull(), // 'email', 'whatsapp', 'dashboard'
+  message: text("message").notNull(),
+  isSent: boolean("is_sent").default(false),
+  sentAt: timestamp("sent_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// CEO Dashboard - System Health Monitoring
+export const systemHealthMetrics = pgTable("system_health_metrics", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  metricType: varchar("metric_type").notNull(), // 'performance', 'errors', 'usage', 'revenue', 'security'
+  metricName: varchar("metric_name").notNull(), // e.g., 'response_time', 'active_users', 'daily_revenue'
+  value: decimal("value", { precision: 15, scale: 4 }).notNull(),
+  unit: varchar("unit"), // e.g., 'ms', 'users', 'JMD', 'percentage'
+  threshold: decimal("threshold", { precision: 15, scale: 4 }), // Alert threshold
+  isHealthy: boolean("is_healthy").default(true),
+  recordedAt: timestamp("recorded_at").defaultNow(),
+});
+
+// CEO Dashboard - Business Goals & KPIs
+export const businessGoals = pgTable("business_goals", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  goalType: varchar("goal_type").notNull(), // 'revenue', 'users', 'trips', 'market_share'
+  name: varchar("name").notNull(),
+  description: text("description"),
+  targetValue: decimal("target_value", { precision: 15, scale: 2 }).notNull(),
+  currentValue: decimal("current_value", { precision: 15, scale: 2 }).default('0.00'),
+  unit: varchar("unit").notNull(), // 'JMD', 'users', 'trips', 'percentage'
+  targetDate: timestamp("target_date").notNull(),
+  status: varchar("status").default('in_progress'), // 'in_progress', 'achieved', 'overdue', 'cancelled'
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // Relations for Precision & Loyalty
 export const precisionMeasurementsRelations = relations(precisionMeasurements, ({ one }) => ({
   request: one(serviceRequests, {
@@ -1662,6 +1743,30 @@ export const insertLoyaltyProgramSchema = createInsertSchema(loyaltyProgram);
 export const insertPlatformCommissionSchema = createInsertSchema(platformCommissions);
 export const insertCashbackTransactionSchema = createInsertSchema(cashbackTransactions);
 
+// CEO Dashboard Insert Schemas
+export const insertBusinessExpenseSchema = createInsertSchema(businessExpenses).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+export const insertAiAdvisoryReportSchema = createInsertSchema(aiAdvisoryReports).omit({
+  id: true,
+  generatedAt: true,
+});
+export const insertExpenseReminderSchema = createInsertSchema(expenseReminders).omit({
+  id: true,
+  createdAt: true,
+});
+export const insertSystemHealthMetricSchema = createInsertSchema(systemHealthMetrics).omit({
+  id: true,
+  recordedAt: true,
+});
+export const insertBusinessGoalSchema = createInsertSchema(businessGoals).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Types
 export type PrecisionMeasurement = typeof precisionMeasurements.$inferSelect;
 export type InsertPrecisionMeasurement = typeof precisionMeasurements.$inferInsert;
@@ -1671,6 +1776,18 @@ export type PlatformCommission = typeof platformCommissions.$inferSelect;
 export type InsertPlatformCommission = typeof platformCommissions.$inferInsert;
 export type CashbackTransaction = typeof cashbackTransactions.$inferSelect;
 export type InsertCashbackTransaction = typeof cashbackTransactions.$inferInsert;
+
+// CEO Dashboard Types
+export type BusinessExpense = typeof businessExpenses.$inferSelect;
+export type InsertBusinessExpense = z.infer<typeof insertBusinessExpenseSchema>;
+export type AiAdvisoryReport = typeof aiAdvisoryReports.$inferSelect;
+export type InsertAiAdvisoryReport = z.infer<typeof insertAiAdvisoryReportSchema>;
+export type ExpenseReminder = typeof expenseReminders.$inferSelect;
+export type InsertExpenseReminder = z.infer<typeof insertExpenseReminderSchema>;
+export type SystemHealthMetric = typeof systemHealthMetrics.$inferSelect;
+export type InsertSystemHealthMetric = z.infer<typeof insertSystemHealthMetricSchema>;
+export type BusinessGoal = typeof businessGoals.$inferSelect;
+export type InsertBusinessGoal = z.infer<typeof insertBusinessGoalSchema>;
 
 // ===================== E-COMMERCE INVENTORY SYSTEM =====================
 
