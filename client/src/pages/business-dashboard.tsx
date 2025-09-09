@@ -135,6 +135,24 @@ export default function BusinessDashboard() {
 
   const commissionList: BusinessCommission[] = (commissions as BusinessCommission[]) || [];
 
+  // Hardware Partners - Featured: True Value Hardware
+  const hardwarePartners = [
+    {
+      id: "true-value-hardware",
+      name: "True Value Hardware",
+      type: "Hardware Store",
+      location: "Fields, Jamaica",
+      commission: "5.5%",
+      earnings: "2,450.00",
+      orders: 156,
+      status: "Featured Partner",
+      description: "Complete hardware solutions for contractors and homeowners",
+      specialties: ["Construction Tools", "Plumbing Supplies", "Electrical Parts", "Home Improvement"],
+      contact: "fields@truevaluehardware.com",
+      phone: "+1-876-XXX-XXXX"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-900/10 via-background to-yellow-900/10">
       {/* Header */}
@@ -243,6 +261,82 @@ export default function BusinessDashboard() {
               <p className="text-xs text-muted-foreground">
                 {stats.completedJobs} jobs completed
               </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Featured Hardware Partners */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-r from-orange-500/10 to-red-500/10 border-orange-500/20" data-testid="card-hardware-partners">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Store className="w-5 h-5 text-orange-600" />
+                <span>🔨 Featured Hardware Partners</span>
+                <Badge className="bg-orange-500 text-white">EXCLUSIVE</Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {hardwarePartners.map((partner, index) => (
+                  <div key={partner.id} className="p-6 border border-border rounded-lg bg-card hover:bg-muted/50 transition-colors" data-testid={`hardware-partner-${index}`}>
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <h3 className="font-bold text-lg text-orange-600">{partner.name}</h3>
+                        <p className="text-sm text-muted-foreground">{partner.location}</p>
+                        <Badge variant="outline" className="mt-1">{partner.status}</Badge>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-semibold text-green-600">J${partner.earnings}</p>
+                        <p className="text-xs text-muted-foreground">{partner.orders} orders</p>
+                      </div>
+                    </div>
+                    
+                    <p className="text-sm text-muted-foreground mb-3">{partner.description}</p>
+                    
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Commission Rate:</span>
+                        <span className="font-semibold text-blue-600">{partner.commission}</span>
+                      </div>
+                      
+                      <div className="flex flex-wrap gap-1 mb-3">
+                        {partner.specialties.map((specialty, idx) => (
+                          <Badge key={idx} variant="secondary" className="text-xs">
+                            {specialty}
+                          </Badge>
+                        ))}
+                      </div>
+                      
+                      <div className="pt-2 border-t border-border">
+                        <p className="text-xs text-muted-foreground mb-1">Contact:</p>
+                        <p className="text-xs font-mono">{partner.contact}</p>
+                        <p className="text-xs font-mono">{partner.phone}</p>
+                      </div>
+                      
+                      <div className="flex space-x-2 mt-3">
+                        <Button size="sm" className="flex-1 bg-orange-600 hover:bg-orange-700" data-testid={`button-view-products-${index}`}>
+                          View Products
+                        </Button>
+                        <Button size="sm" variant="outline" className="flex-1" data-testid={`button-contact-${index}`}>
+                          Contact
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="mt-6 p-4 bg-gradient-to-r from-orange-500/5 to-red-500/5 rounded-lg border border-orange-500/20">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-semibold text-orange-600">🏪 Want to become a hardware partner?</h4>
+                    <p className="text-sm text-muted-foreground">Join True Value Hardware and other successful partners on YaadFlex</p>
+                  </div>
+                  <Button className="bg-orange-600 hover:bg-orange-700" data-testid="button-become-partner">
+                    Apply Now
+                  </Button>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
