@@ -486,7 +486,7 @@
 
 /* Galactic Background Effects */
 .galactic-bg {
-  background-image: url('@assets/generated_images/Galactic_space_background_with_Earth_519b8f78.png');
+  background: linear-gradient(135deg, var(--cosmic-purple) 0%, var(--earth-blue) 30%, var(--jamaica-black) 70%, var(--cosmic-purple) 100%);
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -494,7 +494,7 @@
 }
 
 .galaxy-pattern-bg {
-  background-image: url('@assets/generated_images/Galaxy_pattern_cosmic_background_96ddf7f2.png');
+  background: radial-gradient(ellipse at center, var(--cosmic-purple) 0%, var(--jamaica-black) 40%, var(--earth-blue) 100%);
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
