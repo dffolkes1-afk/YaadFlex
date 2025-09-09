@@ -358,17 +358,55 @@
       max-width: 100% !important;
     }
     
-    /* Make sure text doesn't get cut off */
+    /* Make sure text doesn't get cut off and is properly centered */
     h1, h2, h3, h4, p, span, div {
       width: 100% !important;
       word-wrap: break-word !important;
       overflow-wrap: break-word !important;
+      text-align: center !important;
+      margin: 0 auto !important;
     }
     
-    /* Make navigation use full width */
+    /* Center all text content properly */
+    .text-xl, .text-lg, .text-base, .text-sm, .text-xs {
+      text-align: center !important;
+      width: 100% !important;
+      margin: 0 auto !important;
+      padding-left: 4px !important;
+      padding-right: 4px !important;
+    }
+    
+    /* Make navigation use full width and center */
     .flex.items-center.justify-between {
       padding-left: 4px !important;
       padding-right: 4px !important;
+      justify-content: center !important;
+    }
+    
+    /* Center all content sections */
+    .space-y-4, .space-y-6, .space-y-8 {
+      text-align: center !important;
+      margin: 0 auto !important;
+    }
+    
+    /* Fix country badges alignment */
+    .flex.items-center.gap-3 {
+      justify-content: center !important;
+      flex-wrap: wrap !important;
+      margin: 0 auto !important;
+      text-align: center !important;
+    }
+    
+    /* Center the main hero content */
+    .lg\\:col-span-2 {
+      text-align: center !important;
+      margin: 0 auto !important;
+    }
+    
+    /* Center pricing examples */
+    .bg-gradient-to-br {
+      margin: 0 auto !important;
+      text-align: center !important;
     }
     
     /* Make the cards stack properly with good spacing */
