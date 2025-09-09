@@ -176,7 +176,7 @@ export default function ModernLanding() {
                 <div className="w-8 h-8 bg-blue-500 rounded-full animate-ping shadow-lg shadow-blue-500/50"></div>
                 <span>YAADTRACK PRO RADAR</span>
                 <div className="text-sm bg-green-900/80 px-3 py-2 rounded-lg text-green-200 font-bold border border-green-700/50">● BROADCAST QUALITY</div>
-                <div className="text-xs bg-red-900/80 px-2 py-1 rounded text-red-200 border border-red-700/50">FIFA-STYLE</div>
+                <div className="text-xs bg-red-900/80 px-2 py-1 rounded text-red-200 border border-red-700/50">PROFESSIONAL</div>
               </h3>
               
               {/* PROFESSIONAL STATS BAR */}
