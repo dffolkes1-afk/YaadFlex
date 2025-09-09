@@ -26,6 +26,7 @@ import CBRadioPage from "@/pages/cb-radio";
 import YaadFlexBankingPage from "@/pages/yaadflex-banking";
 import GalacticPortalPage from "@/pages/galactic-portal";
 import ProfessionalLanding from "@/pages/professional-landing";
+import ModernLanding from "@/pages/modern-landing";
 import ContactForm from "@/pages/contact-form";
 import SocialHub from "./pages/SocialHub";
 import { TranslatorDemoPage } from "@/pages/translator-demo";
@@ -65,12 +66,13 @@ function Router() {
       {/* Authentication-based routes */}
       {isLoading || !isAuthenticated ? (
         <>
-          <Route path="/" component={ProfessionalLanding} />
-          <Route path="/old-landing" component={Landing} />
+          <Route path="/" component={ModernLanding} />
+          <Route path="/old-landing" component={ProfessionalLanding} />
+          <Route path="/original-landing" component={Landing} />
         </>
       ) : (
         <>
-          <Route path="/" component={ProfessionalLanding} />
+          <Route path="/" component={ModernLanding} />
           <Route path="/home" component={Home} />
           <Route path="/tracking" component={RealTimeTracking} />
           <Route path="/cb-radio" component={CBRadio} />
