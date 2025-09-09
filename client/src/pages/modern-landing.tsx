@@ -171,39 +171,39 @@ export default function ModernLanding() {
 
           {/* Right Column - MASSIVE RADAR TRACKING SYSTEM */}
           <div className="lg:col-span-3 relative">
-            <div className="bg-black/90 backdrop-blur-lg rounded-3xl p-8 border-2 border-gray-400/50 shadow-2xl">
+            <div className="bg-black/95 backdrop-blur-lg rounded-3xl p-8 border-2 border-red-900/60 shadow-2xl shadow-red-900/20">
               <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-4">
-                <div className="w-8 h-8 bg-gray-300 rounded-full animate-ping"></div>
-                <span>LIVE RADAR COMMAND CENTER</span>
-                <div className="text-sm bg-gray-600 px-3 py-2 rounded-lg text-white font-bold">● OPERATIONAL</div>
+                <div className="w-8 h-8 bg-red-600 rounded-full animate-ping shadow-lg shadow-red-500/50"></div>
+                <span>HELLSING RADAR COMMAND</span>
+                <div className="text-sm bg-red-900/80 px-3 py-2 rounded-lg text-red-200 font-bold border border-red-700/50">● SUPERNATURAL</div>
               </h3>
               
               {/* MASSIVE RADAR SYSTEM CONTAINER */}
-              <div className="relative h-[500px] bg-black rounded-2xl border-2 border-gray-400/60 overflow-hidden shadow-inner">
+              <div className="relative h-[500px] bg-black rounded-2xl border-2 border-red-900/50 overflow-hidden shadow-inner shadow-red-900/30">
                 
                 {/* MASSIVE RADAR GRID SYSTEM */}
                 <div className="absolute inset-0">
                   {/* Concentric circles like radar - BIGGER */}
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-40 h-40 border border-gray-500/50 rounded-full absolute"></div>
-                    <div className="w-60 h-60 border border-gray-500/50 rounded-full absolute"></div>
-                    <div className="w-80 h-80 border border-gray-500/50 rounded-full absolute"></div>
-                    <div className="w-96 h-96 border border-gray-500/50 rounded-full absolute"></div>
-                    <div className="w-[450px] h-[450px] border border-gray-400/60 rounded-full absolute"></div>
+                    <div className="w-40 h-40 border border-red-800/60 rounded-full absolute shadow-lg shadow-red-900/30"></div>
+                    <div className="w-60 h-60 border border-red-700/50 rounded-full absolute shadow-lg shadow-red-900/20"></div>
+                    <div className="w-80 h-80 border border-red-600/40 rounded-full absolute shadow-lg shadow-red-900/20"></div>
+                    <div className="w-96 h-96 border border-red-500/30 rounded-full absolute shadow-lg shadow-red-900/10"></div>
+                    <div className="w-[450px] h-[450px] border border-red-400/50 rounded-full absolute shadow-lg shadow-red-900/20"></div>
                   </div>
                   
-                  {/* Cross-hair grid - MORE VISIBLE */}
-                  <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gray-500/60"></div>
-                  <div className="absolute left-0 top-1/2 w-full h-0.5 bg-gray-500/60"></div>
-                  <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-transparent via-gray-500/15 to-transparent transform rotate-45 origin-center"></div>
-                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-bl from-transparent via-gray-500/15 to-transparent transform -rotate-45 origin-center"></div>
+                  {/* Cross-hair grid - HELLSING BLOOD LINES */}
+                  <div className="absolute top-0 left-1/2 w-0.5 h-full bg-red-600/70 shadow-lg shadow-red-500/50"></div>
+                  <div className="absolute left-0 top-1/2 w-full h-0.5 bg-red-600/70 shadow-lg shadow-red-500/50"></div>
+                  <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-transparent via-red-600/20 to-transparent transform rotate-45 origin-center"></div>
+                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-bl from-transparent via-red-600/20 to-transparent transform -rotate-45 origin-center"></div>
                 </div>
 
                 {/* MASSIVE RADAR SWEEP ANIMATION */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-[450px] h-[450px] rounded-full relative">
-                    <div className="absolute inset-0 bg-gradient-conic from-transparent via-gray-300/30 to-transparent animate-spin" style={{
-                      background: 'conic-gradient(from 0deg, transparent 0deg, rgba(156, 163, 175, 0.4) 40deg, transparent 80deg)',
+                    <div className="absolute inset-0 bg-gradient-conic from-transparent via-red-500/40 to-transparent animate-spin shadow-lg shadow-red-500/30" style={{
+                      background: 'conic-gradient(from 0deg, transparent 0deg, rgba(239, 68, 68, 0.5) 40deg, transparent 80deg)',
                       animationDuration: '4s'
                     }}></div>
                   </div>
@@ -213,107 +213,107 @@ export default function ModernLanding() {
                 <div className="absolute inset-12 flex items-center justify-center">
                   <div className="relative w-full h-full max-w-80">
                     {/* BIGGER Jamaica Island Shape */}
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-28 bg-gradient-to-r from-gray-600/40 to-gray-500/30 rounded-full border-2 border-gray-400/70 shadow-2xl">
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-28 bg-gradient-to-r from-black/60 via-red-900/30 to-black/60 rounded-full border-2 border-red-700/70 shadow-2xl shadow-red-900/50">
                       
                       {/* BIGGER LIVE MOVING DRIVERS - More visible */}
                       
-                      {/* Kingston Area Drivers - BIGGER */}
-                      <div className="absolute top-4 left-16 w-4 h-4 bg-gray-200 rounded-full shadow-lg animate-pulse">
-                        <div className="absolute inset-0 bg-gray-200 rounded-full animate-ping"></div>
-                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full"></div>
+                      {/* Kingston Area Drivers - HELLSING STYLE */}
+                      <div className="absolute top-4 left-16 w-4 h-4 bg-red-400 rounded-full shadow-lg shadow-red-500/50 animate-pulse">
+                        <div className="absolute inset-0 bg-red-400 rounded-full animate-ping"></div>
+                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-100 rounded-full"></div>
                       </div>
                       
-                      <div className="absolute top-10 left-20 w-4 h-4 bg-gray-300 rounded-full shadow-lg" style={{
+                      <div className="absolute top-10 left-20 w-4 h-4 bg-red-300 rounded-full shadow-lg shadow-red-400/40" style={{
                         animation: 'bounce 2s infinite'
                       }}>
-                        <div className="absolute inset-0 bg-gray-300 rounded-full animate-ping opacity-75"></div>
+                        <div className="absolute inset-0 bg-red-300 rounded-full animate-ping opacity-75"></div>
                       </div>
 
-                      {/* Moving Driver - Animated movement - BIGGER */}
-                      <div className="absolute top-7 left-26 w-4 h-4 bg-white rounded-full shadow-lg" style={{
+                      {/* Moving Driver - VIBRANIUM TECH */}
+                      <div className="absolute top-7 left-26 w-4 h-4 bg-red-100 rounded-full shadow-lg shadow-red-200/60" style={{
                         animation: 'pulse 1.5s infinite, transform 8s linear infinite',
                         transform: 'translateX(0px)'
                       }}>
-                        <div className="absolute inset-0 bg-white rounded-full animate-ping opacity-60"></div>
+                        <div className="absolute inset-0 bg-red-100 rounded-full animate-ping opacity-60"></div>
                       </div>
 
-                      {/* Spanish Town Area - BIGGER */}
-                      <div className="absolute top-16 left-32 w-4 h-4 bg-gray-200 rounded-full shadow-lg animate-pulse delay-500">
-                        <div className="absolute inset-0 bg-gray-200 rounded-full animate-ping"></div>
+                      {/* Spanish Town Area - HELLSING */}
+                      <div className="absolute top-16 left-32 w-4 h-4 bg-red-200 rounded-full shadow-lg shadow-red-300/40 animate-pulse delay-500">
+                        <div className="absolute inset-0 bg-red-200 rounded-full animate-ping"></div>
                       </div>
 
-                      {/* Montego Bay Area Drivers - BIGGER */}
-                      <div className="absolute top-5 right-16 w-4 h-4 bg-gray-300 rounded-full shadow-lg animate-pulse delay-700">
-                        <div className="absolute inset-0 bg-gray-300 rounded-full animate-ping opacity-80"></div>
-                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-white rounded-full"></div>
+                      {/* Montego Bay Area Drivers - HELLSING */}
+                      <div className="absolute top-5 right-16 w-4 h-4 bg-red-300 rounded-full shadow-lg shadow-red-400/50 animate-pulse delay-700">
+                        <div className="absolute inset-0 bg-red-300 rounded-full animate-ping opacity-80"></div>
+                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-100 rounded-full"></div>
                       </div>
 
-                      <div className="absolute top-13 right-20 w-4 h-4 bg-white rounded-full shadow-lg animate-pulse delay-300">
-                        <div className="absolute inset-0 bg-white rounded-full animate-ping"></div>
+                      <div className="absolute top-13 right-20 w-4 h-4 bg-red-100 rounded-full shadow-lg shadow-red-200/50 animate-pulse delay-300">
+                        <div className="absolute inset-0 bg-red-100 rounded-full animate-ping"></div>
                       </div>
 
-                      {/* Negril Area - BIGGER */}
-                      <div className="absolute top-9 right-10 w-4 h-4 bg-gray-200 rounded-full shadow-lg animate-pulse delay-1000">
-                        <div className="absolute inset-0 bg-gray-200 rounded-full animate-ping opacity-70"></div>
+                      {/* Negril Area - HELLSING */}
+                      <div className="absolute top-9 right-10 w-4 h-4 bg-red-200 rounded-full shadow-lg shadow-red-300/40 animate-pulse delay-1000">
+                        <div className="absolute inset-0 bg-red-200 rounded-full animate-ping opacity-70"></div>
                       </div>
 
-                      {/* Central Jamaica Drivers - BIGGER */}
-                      <div className="absolute top-8 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-gray-300 rounded-full shadow-lg animate-pulse delay-200">
-                        <div className="absolute inset-0 bg-gray-300 rounded-full animate-ping"></div>
+                      {/* Central Jamaica Drivers - HELLSING */}
+                      <div className="absolute top-8 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-red-300 rounded-full shadow-lg shadow-red-400/40 animate-pulse delay-200">
+                        <div className="absolute inset-0 bg-red-300 rounded-full animate-ping"></div>
                       </div>
 
-                      <div className="absolute top-14 left-1/2 transform -translate-x-1/2 translate-x-6 w-4 h-4 bg-white rounded-full shadow-lg animate-pulse delay-800">
-                        <div className="absolute inset-0 bg-white rounded-full animate-ping opacity-90"></div>
+                      <div className="absolute top-14 left-1/2 transform -translate-x-1/2 translate-x-6 w-4 h-4 bg-red-100 rounded-full shadow-lg shadow-red-200/50 animate-pulse delay-800">
+                        <div className="absolute inset-0 bg-red-100 rounded-full animate-ping opacity-90"></div>
                       </div>
 
-                      {/* MORE DRIVERS ACROSS JAMAICA */}
-                      <div className="absolute top-6 left-36 w-4 h-4 bg-gray-200 rounded-full shadow-lg animate-pulse delay-400">
-                        <div className="absolute inset-0 bg-gray-200 rounded-full animate-ping"></div>
+                      {/* MORE DRIVERS ACROSS JAMAICA - HELLSING */}
+                      <div className="absolute top-6 left-36 w-4 h-4 bg-red-200 rounded-full shadow-lg shadow-red-300/40 animate-pulse delay-400">
+                        <div className="absolute inset-0 bg-red-200 rounded-full animate-ping"></div>
                       </div>
 
-                      <div className="absolute top-12 right-28 w-4 h-4 bg-gray-300 rounded-full shadow-lg animate-pulse delay-600">
-                        <div className="absolute inset-0 bg-gray-300 rounded-full animate-ping"></div>
+                      <div className="absolute top-12 right-28 w-4 h-4 bg-red-300 rounded-full shadow-lg shadow-red-400/40 animate-pulse delay-600">
+                        <div className="absolute inset-0 bg-red-300 rounded-full animate-ping"></div>
                       </div>
 
-                      <div className="absolute top-18 left-1/2 transform -translate-x-1/2 translate-x-12 w-4 h-4 bg-white rounded-full shadow-lg animate-pulse delay-900">
-                        <div className="absolute inset-0 bg-white rounded-full animate-ping"></div>
+                      <div className="absolute top-18 left-1/2 transform -translate-x-1/2 translate-x-12 w-4 h-4 bg-red-100 rounded-full shadow-lg shadow-red-200/50 animate-pulse delay-900">
+                        <div className="absolute inset-0 bg-red-100 rounded-full animate-ping"></div>
                       </div>
                       
-                      {/* BIGGER LOCATION LABELS */}
-                      <div className="absolute -top-10 left-12 text-sm text-gray-200 font-bold bg-black/80 px-3 py-2 rounded-lg border border-gray-500/50">KINGSTON</div>
-                      <div className="absolute -top-10 right-12 text-sm text-gray-200 font-bold bg-black/80 px-3 py-2 rounded-lg border border-gray-500/50">MONTEGO BAY</div>
-                      <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-sm text-gray-200 font-bold bg-black/80 px-3 py-2 rounded-lg border border-gray-500/50">SPANISH TOWN</div>
-                      <div className="absolute -bottom-8 right-16 text-sm text-gray-200 font-bold bg-black/80 px-3 py-2 rounded-lg border border-gray-500/50">NEGRIL</div>
+                      {/* HELLSING LOCATION LABELS */}
+                      <div className="absolute -top-10 left-12 text-sm text-red-200 font-bold bg-black/90 px-3 py-2 rounded-lg border border-red-800/60 shadow-sm shadow-red-900/30">KINGSTON</div>
+                      <div className="absolute -top-10 right-12 text-sm text-red-200 font-bold bg-black/90 px-3 py-2 rounded-lg border border-red-800/60 shadow-sm shadow-red-900/30">MONTEGO BAY</div>
+                      <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-sm text-red-200 font-bold bg-black/90 px-3 py-2 rounded-lg border border-red-800/60 shadow-sm shadow-red-900/30">SPANISH TOWN</div>
+                      <div className="absolute -bottom-8 right-16 text-sm text-red-200 font-bold bg-black/90 px-3 py-2 rounded-lg border border-red-800/60 shadow-sm shadow-red-900/30">NEGRIL</div>
                     </div>
                   </div>
                 </div>
 
-                {/* RADAR STATUS DISPLAY */}
-                <div className="absolute top-4 left-4 bg-black/80 p-3 rounded border border-gray-600/50">
-                  <div className="text-xs text-gray-400 mb-1">RADAR STATUS</div>
+                {/* HELLSING STATUS DISPLAY */}
+                <div className="absolute top-4 left-4 bg-black/90 p-3 rounded border border-red-800/60 shadow-lg shadow-red-900/30">
+                  <div className="text-xs text-red-300 mb-1">HELLSING STATUS</div>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-gray-300 rounded-full animate-pulse"></div>
-                    <span className="text-xs text-white font-bold">SCANNING</span>
+                    <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse shadow-sm shadow-red-400/50"></div>
+                    <span className="text-xs text-red-100 font-bold">HUNTING</span>
                   </div>
                 </div>
 
-                {/* LIVE TRACKING STATS */}
+                {/* HELLSING TRACKING STATS */}
                 <div className="absolute bottom-4 left-4 right-4 grid grid-cols-4 gap-2 text-xs">
-                  <div className="bg-black/80 px-2 py-2 rounded border border-gray-600/50 text-center">
-                    <div className="text-gray-400 font-medium">ACTIVE</div>
-                    <div className="text-white text-lg font-bold">247</div>
+                  <div className="bg-black/90 px-2 py-2 rounded border border-red-800/60 text-center shadow-sm shadow-red-900/20">
+                    <div className="text-red-300 font-medium">ACTIVE</div>
+                    <div className="text-red-100 text-lg font-bold">247</div>
                   </div>
-                  <div className="bg-black/80 px-2 py-2 rounded border border-gray-600/50 text-center">
-                    <div className="text-gray-400 font-medium">MOVING</div>
-                    <div className="text-white text-lg font-bold">89</div>
+                  <div className="bg-black/90 px-2 py-2 rounded border border-red-800/60 text-center shadow-sm shadow-red-900/20">
+                    <div className="text-red-300 font-medium">HUNTING</div>
+                    <div className="text-red-100 text-lg font-bold">89</div>
                   </div>
-                  <div className="bg-black/80 px-2 py-2 rounded border border-gray-600/50 text-center">
-                    <div className="text-gray-400 font-medium">TRIPS</div>
-                    <div className="text-white text-lg font-bold">156</div>
+                  <div className="bg-black/90 px-2 py-2 rounded border border-red-800/60 text-center shadow-sm shadow-red-900/20">
+                    <div className="text-red-300 font-medium">TARGETS</div>
+                    <div className="text-red-100 text-lg font-bold">156</div>
                   </div>
-                  <div className="bg-black/80 px-2 py-2 rounded border border-gray-600/50 text-center">
-                    <div className="text-gray-400 font-medium">REVENUE</div>
-                    <div className="text-white text-lg font-bold">J$287K</div>
+                  <div className="bg-black/90 px-2 py-2 rounded border border-red-800/60 text-center shadow-sm shadow-red-900/20">
+                    <div className="text-red-300 font-medium">BLOOD J$</div>
+                    <div className="text-red-100 text-lg font-bold">287K</div>
                   </div>
                 </div>
               </div>

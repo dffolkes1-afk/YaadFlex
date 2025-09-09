@@ -4,45 +4,45 @@
 @tailwind utilities;
 
 :root {
-  /* 🖤 GOTHIC KRYPTONIAN COLORS - DARK & MENACING 🖤 */
-  --kryptonian-black: hsl(0, 0%, 5%);        /* Deep Kryptonian Black */
-  --shadow-gray: hsl(0, 0%, 15%);            /* Dark Shadow Gray */
-  --steel-dark: hsl(0, 0%, 25%);             /* Dark Steel */
-  --gothic-silver: hsl(0, 0%, 60%);          /* Gothic Silver */
-  --dark-chrome: hsl(0, 0%, 35%);            /* Dark Chrome */
-  --void-black: hsl(0, 0%, 8%);              /* Void Black */
-  --midnight: hsl(0, 0%, 12%);               /* Midnight */
+  /* 🖤 VIBRANIUM HELLSING SUPERNATURAL TECH COLORS 🖤 */
+  --vibranium-black: hsl(0, 0%, 2%);         /* Pure Vibranium Black */
+  --hellsing-shadow: hsl(0, 5%, 8%);         /* Hellsing Shadow */
+  --vampire-steel: hsl(0, 10%, 18%);         /* Vampire Steel */
+  --supernatural-silver: hsl(0, 5%, 55%);    /* Supernatural Silver */
+  --blood-chrome: hsl(0, 15%, 25%);          /* Blood Chrome */
+  --void-abyss: hsl(0, 0%, 4%);              /* Absolute Void */
+  --gothic-midnight: hsl(0, 5%, 10%);        /* Gothic Midnight */
   
-  /* ⚔️ SHARP GOTHIC ACCENTS ⚔️ */
-  --dark-accent: hsl(0, 0%, 45%);            /* Dark Accent */
-  --gothic-edge: hsl(0, 0%, 20%);            /* Gothic Sharp Edge */
-  --shadow-white: hsl(0, 0%, 90%);           /* Shadow White */
-  --steel-accent: hsl(0, 0%, 55%);           /* Steel Accent */
+  /* 🩸 HELLSING BLOOD ACCENTS 🩸 */
+  --blood-accent: hsl(0, 70%, 20%);          /* Dark Blood */
+  --vampire-edge: hsl(0, 10%, 15%);          /* Vampire Edge */
+  --hellsing-white: hsl(0, 5%, 85%);         /* Hellsing White */
+  --vibranium-accent: hsl(0, 8%, 45%);       /* Vibranium Accent */
   
-  --background: var(--kryptonian-black);
-  --foreground: var(--shadow-white);
-  --card: var(--void-black);
-  --card-foreground: var(--shadow-white);
-  --popover: var(--void-black);
-  --popover-foreground: var(--shadow-white);
-  --primary: var(--shadow-gray);
-  --primary-foreground: var(--shadow-white);
-  --secondary: var(--steel-dark);
-  --secondary-foreground: var(--shadow-white);
-  --muted: var(--midnight);
-  --muted-foreground: var(--gothic-silver);
-  --accent: var(--dark-chrome);
-  --accent-foreground: var(--shadow-white);
-  --destructive: hsl(0 84% 60%);
-  --destructive-foreground: hsl(0, 0%, 100%);
-  --border: var(--gothic-edge);
-  --input: var(--midnight);
-  --ring: var(--dark-chrome);
-  --chart-1: var(--shadow-gray);
-  --chart-2: var(--steel-dark);
-  --chart-3: var(--dark-chrome);
-  --chart-4: var(--gothic-silver);
-  --chart-5: var(--steel-accent);
+  --background: var(--vibranium-black);
+  --foreground: var(--hellsing-white);
+  --card: var(--void-abyss);
+  --card-foreground: var(--hellsing-white);
+  --popover: var(--void-abyss);
+  --popover-foreground: var(--hellsing-white);
+  --primary: var(--hellsing-shadow);
+  --primary-foreground: var(--hellsing-white);
+  --secondary: var(--vampire-steel);
+  --secondary-foreground: var(--hellsing-white);
+  --muted: var(--gothic-midnight);
+  --muted-foreground: var(--supernatural-silver);
+  --accent: var(--blood-chrome);
+  --accent-foreground: var(--hellsing-white);
+  --destructive: var(--blood-accent);
+  --destructive-foreground: var(--hellsing-white);
+  --border: var(--vampire-edge);
+  --input: var(--gothic-midnight);
+  --ring: var(--blood-chrome);
+  --chart-1: var(--hellsing-shadow);
+  --chart-2: var(--vampire-steel);
+  --chart-3: var(--blood-chrome);
+  --chart-4: var(--supernatural-silver);
+  --chart-5: var(--vibranium-accent);
   --sidebar: hsl(222 84% 8%);
   --sidebar-foreground: hsl(210 40% 98%);
   --sidebar-primary: hsl(217 91% 60%);
@@ -68,29 +68,29 @@
 }
 
 .dark {
-  --background: var(--kryptonian-black);
-  --foreground: var(--shadow-white);
-  --card: var(--void-black);
-  --card-foreground: var(--shadow-white);
-  --popover: var(--void-black);
-  --popover-foreground: var(--shadow-white);
-  --primary: var(--steel-dark);
-  --primary-foreground: var(--shadow-white);
-  --secondary: var(--shadow-gray);
-  --secondary-foreground: var(--shadow-white);
-  --muted: var(--midnight);
-  --muted-foreground: var(--gothic-silver);
-  --accent: var(--dark-chrome);
-  --accent-foreground: var(--shadow-white);
-  --destructive: hsl(0 84% 55%);
-  --destructive-foreground: var(--shadow-white);
-  --border: var(--gothic-edge);
-  --input: var(--midnight);
-  --ring: var(--dark-chrome);
+  --background: var(--vibranium-black);
+  --foreground: var(--hellsing-white);
+  --card: var(--void-abyss);
+  --card-foreground: var(--hellsing-white);
+  --popover: var(--void-abyss);
+  --popover-foreground: var(--hellsing-white);
+  --primary: var(--vampire-steel);
+  --primary-foreground: var(--hellsing-white);
+  --secondary: var(--hellsing-shadow);
+  --secondary-foreground: var(--hellsing-white);
+  --muted: var(--gothic-midnight);
+  --muted-foreground: var(--supernatural-silver);
+  --accent: var(--blood-chrome);
+  --accent-foreground: var(--hellsing-white);
+  --destructive: var(--blood-accent);
+  --destructive-foreground: var(--hellsing-white);
+  --border: var(--vampire-edge);
+  --input: var(--gothic-midnight);
+  --ring: var(--blood-chrome);
 }
 
-.fortress-gradient {
-  background: linear-gradient(135deg, hsl(222 84% 5%) 0%, hsl(217 19% 16%) 50%, hsl(222 84% 8%) 100%);
+.vibranium-hellsing-gradient {
+  background: linear-gradient(135deg, hsl(0, 0%, 2%) 0%, hsl(0, 10%, 8%) 25%, hsl(0, 70%, 15%) 50%, hsl(0, 5%, 6%) 75%, hsl(0, 0%, 1%) 100%);
 }
 
 /* RADAR SYSTEM ANIMATIONS */
