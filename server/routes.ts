@@ -99,6 +99,7 @@ import { z } from "zod";
 import { desc, eq, and, sql, lte, gte, or } from "drizzle-orm";
 import path from "path";
 import fs from "fs";
+import { paymentService } from "./payment-service";
 import { db } from "./db";
 import { 
   rentalProperties, 
@@ -1700,6 +1701,178 @@ P.S. - Early business partners get exclusive territory rights and preferred part
     } catch (error) {
       console.error("Error seeding CEO dashboard data:", error);
       res.status(500).json({ message: "Failed to seed CEO dashboard data" });
+    }
+  });
+
+  // ===================================================================
+  // AUTOMATIC PAYMENT SYSTEM FOR BUSINESS EXPENSES
+  // ===================================================================
+
+  // Set up automatic payment for a business expense
+  app.post("/api/payments/setup-auto-payment", isAuthenticated, async (req: any, res) => {
+    try {
+      const { expenseId, paymentMethodId } = req.body;
+
+      if (!expenseId || !paymentMethodId) {
+        return res.status(400).json({ error: "expenseId and paymentMethodId are required" });
+      }
+
+      const success = await paymentService.setupAutomaticPayment(expenseId, paymentMethodId);
+      
+      if (success) {
+        res.json({ 
+          success: true, 
+          message: "Automatic payment configured successfully",
+          expenseId,
+          paymentMethodId 
+        });
+      } else {
+        res.status(500).json({ error: "Failed to setup automatic payment" });
+      }
+    } catch (error) {
+      console.error("Error setting up automatic payment:", error);
+      res.status(500).json({ error: "Failed to setup automatic payment" });
+    }
+  });
+
+  // Process immediate payment for an expense
+  app.post("/api/payments/process-payment", isAuthenticated, async (req: any, res) => {
+    try {
+      const { expenseId } = req.body;
+
+      if (!expenseId) {
+        return res.status(400).json({ error: "expenseId is required" });
+      }
+
+      const success = await paymentService.processPayment(expenseId);
+      
+      if (success) {
+        res.json({ 
+          success: true, 
+          message: "Payment processed successfully",
+          expenseId 
+        });
+      } else {
+        res.status(500).json({ error: "Payment processing failed" });
+      }
+    } catch (error) {
+      console.error("Error processing payment:", error);
+      res.status(500).json({ error: "Failed to process payment" });
+    }
+  });
+
+  // Process all due payments (manual trigger for testing)
+  app.post("/api/payments/process-all-due", isAuthenticated, async (req: any, res) => {
+    try {
+      const results = await paymentService.processAllDuePayments();
+      
+      res.json({ 
+        success: true, 
+        message: "All due payments processed",
+        results 
+      });
+    } catch (error) {
+      console.error("Error processing all due payments:", error);
+      res.status(500).json({ error: "Failed to process due payments" });
+    }
+  });
+
+  // Get payment methods for user
+  app.get("/api/payment-methods", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const methods = await db.select().from(paymentMethods)
+        .where(eq(paymentMethods.userId, userId))
+        .orderBy(desc(paymentMethods.isDefault));
+      
+      res.json(methods);
+    } catch (error) {
+      console.error("Error fetching payment methods:", error);
+      res.status(500).json({ error: "Failed to fetch payment methods" });
+    }
+  });
+
+  // Add payment method
+  app.post("/api/payment-methods", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const validatedData = insertPaymentMethodSchema.parse({
+        ...req.body,
+        userId
+      });
+
+      const [method] = await db.insert(paymentMethods).values(validatedData).returning();
+      res.json(method);
+    } catch (error) {
+      console.error("Error adding payment method:", error);
+      res.status(500).json({ error: "Failed to add payment method" });
+    }
+  });
+
+  // Get payment history
+  app.get("/api/payment-history", isAuthenticated, async (req: any, res) => {
+    try {
+      const history = await db.select({
+        id: paymentHistory.id,
+        amount: paymentHistory.amount,
+        currency: paymentHistory.currency,
+        status: paymentHistory.status,
+        paymentDate: paymentHistory.paymentDate,
+        completedAt: paymentHistory.completedAt,
+        failureReason: paymentHistory.failureReason,
+        expenseName: businessExpenses.name,
+        provider: businessExpenses.provider,
+        category: businessExpenses.category
+      })
+      .from(paymentHistory)
+      .innerJoin(businessExpenses, eq(paymentHistory.expenseId, businessExpenses.id))
+      .orderBy(desc(paymentHistory.createdAt))
+      .limit(50);
+      
+      res.json(history);
+    } catch (error) {
+      console.error("Error fetching payment history:", error);
+      res.status(500).json({ error: "Failed to fetch payment history" });
+    }
+  });
+
+  // Get vendor profiles
+  app.get("/api/vendor-profiles", isAuthenticated, async (req: any, res) => {
+    try {
+      const vendors = await db.select().from(vendorProfiles)
+        .where(eq(vendorProfiles.isActive, true))
+        .orderBy(vendorProfiles.name);
+      
+      res.json(vendors);
+    } catch (error) {
+      console.error("Error fetching vendor profiles:", error);
+      res.status(500).json({ error: "Failed to fetch vendor profiles" });
+    }
+  });
+
+  // Create or update vendor profile
+  app.post("/api/vendor-profiles", isAuthenticated, async (req: any, res) => {
+    try {
+      const validatedData = insertVendorProfileSchema.parse(req.body);
+      const [vendor] = await db.insert(vendorProfiles).values(validatedData).returning();
+      res.json(vendor);
+    } catch (error) {
+      console.error("Error creating vendor profile:", error);
+      res.status(500).json({ error: "Failed to create vendor profile" });
+    }
+  });
+
+  // Seed vendor profiles for common business services
+  app.post("/api/payments/seed-vendors", isAuthenticated, async (req: any, res) => {
+    try {
+      await paymentService.seedVendorProfiles();
+      res.json({ 
+        success: true, 
+        message: "Vendor profiles seeded successfully" 
+      });
+    } catch (error) {
+      console.error("Error seeding vendor profiles:", error);
+      res.status(500).json({ error: "Failed to seed vendor profiles" });
     }
   });
 
