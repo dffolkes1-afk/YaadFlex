@@ -53,11 +53,56 @@ export default function ModernLanding() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white overflow-hidden">
       
-      {/* Animated Background */}
+      {/* Animated Background with Spinning Planets */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-yellow-400/20 to-orange-500/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-green-400/20 to-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-gradient-to-br from-purple-400/10 to-pink-500/10 rounded-full blur-3xl animate-pulse delay-2000"></div>
+        {/* Spinning Planet 1 - Large */}
+        <div className="absolute -top-40 -right-40 w-80 h-80 animate-spin" style={{animationDuration: '20s'}}>
+          <div className="w-full h-full bg-gradient-to-br from-yellow-400/20 to-orange-500/20 rounded-full blur-3xl animate-pulse">
+            <div className="absolute top-4 left-4 w-8 h-8 bg-yellow-500/40 rounded-full blur-sm"></div>
+            <div className="absolute bottom-8 right-12 w-12 h-12 bg-orange-400/30 rounded-full blur-md"></div>
+            <div className="absolute top-1/2 left-8 w-6 h-6 bg-red-400/50 rounded-full blur-sm"></div>
+          </div>
+        </div>
+        
+        {/* Spinning Planet 2 - Medium */}
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 animate-spin" style={{animationDuration: '15s', animationDirection: 'reverse'}}>
+          <div className="w-full h-full bg-gradient-to-br from-green-400/20 to-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000">
+            <div className="absolute top-8 right-8 w-10 h-10 bg-green-500/40 rounded-full blur-sm"></div>
+            <div className="absolute bottom-12 left-16 w-14 h-14 bg-blue-400/30 rounded-full blur-md"></div>
+            <div className="absolute top-1/3 right-1/4 w-7 h-7 bg-cyan-400/50 rounded-full blur-sm"></div>
+          </div>
+        </div>
+        
+        {/* Spinning Planet 3 - Small Center */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 animate-spin" style={{animationDuration: '12s'}}>
+          <div className="w-full h-full bg-gradient-to-br from-purple-400/10 to-pink-500/10 rounded-full blur-3xl animate-pulse delay-2000">
+            <div className="absolute top-6 left-6 w-6 h-6 bg-purple-500/40 rounded-full blur-sm"></div>
+            <div className="absolute bottom-10 right-8 w-8 h-8 bg-pink-400/30 rounded-full blur-md"></div>
+            <div className="absolute top-2/3 left-1/3 w-5 h-5 bg-violet-400/50 rounded-full blur-sm"></div>
+          </div>
+        </div>
+        
+        {/* Additional Small Spinning Planets */}
+        <div className="absolute top-20 left-1/4 w-32 h-32 animate-spin" style={{animationDuration: '8s', animationDirection: 'reverse'}}>
+          <div className="w-full h-full bg-gradient-to-br from-cyan-400/15 to-blue-600/15 rounded-full blur-2xl">
+            <div className="absolute top-2 right-2 w-4 h-4 bg-cyan-500/40 rounded-full blur-sm"></div>
+            <div className="absolute bottom-4 left-4 w-6 h-6 bg-blue-400/30 rounded-full blur-md"></div>
+          </div>
+        </div>
+        
+        <div className="absolute bottom-32 right-1/4 w-28 h-28 animate-spin" style={{animationDuration: '10s'}}>
+          <div className="w-full h-full bg-gradient-to-br from-rose-400/15 to-red-600/15 rounded-full blur-2xl">
+            <div className="absolute top-3 left-3 w-5 h-5 bg-rose-500/40 rounded-full blur-sm"></div>
+            <div className="absolute bottom-2 right-6 w-4 h-4 bg-red-400/30 rounded-full blur-md"></div>
+          </div>
+        </div>
+        
+        <div className="absolute top-1/3 right-12 w-24 h-24 animate-spin" style={{animationDuration: '6s', animationDirection: 'reverse'}}>
+          <div className="w-full h-full bg-gradient-to-br from-emerald-400/15 to-green-600/15 rounded-full blur-2xl">
+            <div className="absolute top-1 right-1 w-3 h-3 bg-emerald-500/40 rounded-full blur-sm"></div>
+            <div className="absolute bottom-3 left-2 w-5 h-5 bg-green-400/30 rounded-full blur-md"></div>
+          </div>
+        </div>
       </div>
 
       {/* Navigation */}
