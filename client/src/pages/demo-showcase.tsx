@@ -103,69 +103,69 @@ export default function DemoShowcase() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white">
+    <div className="min-h-screen bg-black text-white">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 animate-pulse" />
+        <div className="absolute inset-0 bg-gray-900/50" />
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
           <div className="text-center mb-12">
-            <div className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-green-400 to-blue-400 animate-pulse leading-tight mb-6">
-              🇯🇲 YAADFLEX GLOBAL VYBZ 🇯🇲
+            <div className="text-6xl md:text-8xl font-black text-white leading-tight mb-6">
+              YAADFLEX GLOBAL VYBZ
             </div>
-            <div className="text-3xl md:text-5xl font-bold text-green-400 mb-4 animate-bounce">
-              LIVE DEMO - REAL ACTIVITY!
+            <div className="text-3xl md:text-5xl font-bold text-gray-300 mb-4">
+              LIVE DEMO - REAL ACTIVITY
             </div>
-            <div className="text-xl md:text-2xl text-yellow-300 mb-8">
-              Watch Our Platform in ACTION - Real Drivers, Real Earnings, Real Success!
+            <div className="text-xl md:text-2xl text-gray-400 mb-8">
+              Professional Platform - Real Drivers, Real Earnings, Real Success
             </div>
             
             <div className="flex flex-wrap justify-center gap-4 mb-8">
-              <Badge className="bg-green-600 text-white text-lg px-4 py-2 animate-pulse">
-                <Shield className="w-5 h-5 mr-2" />
-                100% SECURE - NO HACKERS CAN BREAK THROUGH
-              </Badge>
-              <Badge className="bg-blue-600 text-white text-lg px-4 py-2 animate-bounce">
-                <DollarSign className="w-5 h-5 mr-2" />
-                85% DRIVER EARNINGS - HIGHEST IN INDUSTRY
-              </Badge>
-              <Badge className="bg-purple-600 text-white text-lg px-4 py-2 animate-pulse">
-                <Globe className="w-5 h-5 mr-2" />
-                CARIBBEAN'S #1 SUPER-APP
-              </Badge>
+              <div className="bg-gray-800 text-gray-300 text-lg px-6 py-3 rounded border border-gray-700">
+                <Shield className="w-5 h-5 mr-2 inline" />
+                Secure Platform
+              </div>
+              <div className="bg-gray-800 text-gray-300 text-lg px-6 py-3 rounded border border-gray-700">
+                <DollarSign className="w-5 h-5 mr-2 inline" />
+                85% Driver Earnings
+              </div>
+              <div className="bg-gray-800 text-gray-300 text-lg px-6 py-3 rounded border border-gray-700">
+                <Globe className="w-5 h-5 mr-2 inline" />
+                Caribbean Super-App
+              </div>
             </div>
           </div>
 
           {/* Live Platform Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-            <Card className="bg-gradient-to-br from-green-600/30 to-green-800/30 border-green-400/50">
+            <Card className="bg-gray-900 border-gray-700">
               <CardContent className="p-6 text-center">
-                <div className="text-3xl md:text-4xl font-black text-green-400 mb-2">{liveStats.totalDrivers}</div>
-                <div className="text-green-200 font-bold">Total Drivers</div>
-                <div className="text-xs text-green-300 mt-1">Growing Daily!</div>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{liveStats.totalDrivers}</div>
+                <div className="text-gray-400 font-medium">Total Drivers</div>
+                <div className="text-xs text-gray-500 mt-1">Active Network</div>
               </CardContent>
             </Card>
             
-            <Card className="bg-gradient-to-br from-blue-600/30 to-blue-800/30 border-blue-400/50">
+            <Card className="bg-gray-900 border-gray-700">
               <CardContent className="p-6 text-center">
-                <div className="text-3xl md:text-4xl font-black text-blue-400 mb-2">{liveStats.totalCustomers}</div>
-                <div className="text-blue-200 font-bold">Active Customers</div>
-                <div className="text-xs text-blue-300 mt-1">Island-Wide!</div>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{liveStats.totalCustomers}</div>
+                <div className="text-gray-400 font-medium">Active Customers</div>
+                <div className="text-xs text-gray-500 mt-1">Island-Wide</div>
               </CardContent>
             </Card>
             
-            <Card className="bg-gradient-to-br from-yellow-600/30 to-yellow-800/30 border-yellow-400/50">
+            <Card className="bg-gray-900 border-gray-700">
               <CardContent className="p-6 text-center">
-                <div className="text-3xl md:text-4xl font-black text-yellow-400 mb-2">{liveStats.dailyEarnings}</div>
-                <div className="text-yellow-200 font-bold">Daily Earnings</div>
-                <div className="text-xs text-yellow-300 mt-1">Live Updates!</div>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{liveStats.dailyEarnings}</div>
+                <div className="text-gray-400 font-medium">Daily Earnings</div>
+                <div className="text-xs text-gray-500 mt-1">Live Updates</div>
               </CardContent>
             </Card>
             
-            <Card className="bg-gradient-to-br from-purple-600/30 to-purple-800/30 border-purple-400/50">
+            <Card className="bg-gray-900 border-gray-700">
               <CardContent className="p-6 text-center">
-                <div className="text-3xl md:text-4xl font-black text-purple-400 mb-2">{liveStats.monthlyGrowth}</div>
-                <div className="text-purple-200 font-bold">Monthly Growth</div>
-                <div className="text-xs text-purple-300 mt-1">Explosive!</div>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{liveStats.monthlyGrowth}</div>
+                <div className="text-gray-400 font-medium">Monthly Growth</div>
+                <div className="text-xs text-gray-500 mt-1">Expanding</div>
               </CardContent>
             </Card>
           </div>
@@ -175,45 +175,45 @@ export default function DemoShowcase() {
       <div className="max-w-7xl mx-auto px-6 pb-12">
         {/* Live Driver Profiles */}
         <div className="mb-12">
-          <h2 className="text-4xl font-black text-yellow-400 mb-8 text-center animate-pulse">
-            🚗 LIVE DRIVER ACTIVITY 🚗
+          <h2 className="text-4xl font-bold text-white mb-8 text-center">
+            LIVE DRIVER ACTIVITY
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {liveUsers.map((user, index) => (
-              <Card key={index} className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border-green-400/30 overflow-hidden relative">
+              <Card key={index} className="bg-gray-900 border-gray-700 overflow-hidden relative">
                 <div className="absolute top-4 right-4">
-                  <Badge className={`${user.status === 'Online' ? 'bg-green-600' : 'bg-orange-600'} animate-pulse`}>
-                    <div className={`w-2 h-2 rounded-full ${user.status === 'Online' ? 'bg-green-300' : 'bg-orange-300'} mr-2 animate-ping`} />
+                  <div className={`${user.status === 'Online' ? 'bg-gray-700 text-gray-300' : 'bg-gray-600 text-gray-200'} px-3 py-1 rounded text-sm`}>
+                    <div className={`w-2 h-2 rounded-full ${user.status === 'Online' ? 'bg-gray-400' : 'bg-gray-500'} mr-2 inline-block`} />
                     {user.status}
-                  </Badge>
+                  </div>
                 </div>
                 
                 <CardHeader>
-                  <CardTitle className="text-green-400 text-2xl font-bold">{user.name}</CardTitle>
-                  <div className="text-blue-300 text-lg">
+                  <CardTitle className="text-white text-2xl font-bold">{user.name}</CardTitle>
+                  <div className="text-gray-300 text-lg">
                     <a 
                       href="/" 
-                      className="text-blue-400 hover:text-yellow-400 underline font-bold transition-colors cursor-pointer"
+                      className="text-gray-400 hover:text-white underline font-medium transition-colors cursor-pointer"
                       title="Click to see YaadFlex app!"
                     >
                       {user.email}
                     </a>
-                    <div className="text-green-400 text-sm mt-1 animate-pulse">
-                      👆 Click email to see the full YaadFlex app!
+                    <div className="text-gray-500 text-sm mt-1">
+                      Click email to see the full YaadFlex app
                     </div>
                   </div>
                 </CardHeader>
                 
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-green-600/20 rounded-lg p-3 text-center">
-                      <div className="text-2xl font-black text-green-400">{user.earnings}</div>
-                      <div className="text-green-200 text-sm">Total Earnings</div>
+                    <div className="bg-gray-800 rounded-lg p-3 text-center border border-gray-700">
+                      <div className="text-2xl font-bold text-white">{user.earnings}</div>
+                      <div className="text-gray-400 text-sm">Total Earnings</div>
                     </div>
-                    <div className="bg-blue-600/20 rounded-lg p-3 text-center">
-                      <div className="text-2xl font-black text-blue-400">{user.trips}</div>
-                      <div className="text-blue-200 text-sm">Completed Trips</div>
+                    <div className="bg-gray-800 rounded-lg p-3 text-center border border-gray-700">
+                      <div className="text-2xl font-bold text-white">{user.trips}</div>
+                      <div className="text-gray-400 text-sm">Completed Trips</div>
                     </div>
                   </div>
                   
