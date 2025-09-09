@@ -202,7 +202,7 @@ export default function RBACDashboard() {
     try {
       setActionLoading('seed');
       
-      const result = await apiRequest('POST', '/api/rbac/seed') as { success: boolean; message: string };
+      const result = (await apiRequest('POST', '/api/rbac/seed')) as { success: boolean; message: string };
       
       if (result.success) {
         toast({
