@@ -40,6 +40,8 @@ import {
   valuations,
   obdTests,
   obdReadings,
+  // Platform Commission Tables
+  platformCommissions,
 } from "@shared/schema";
 import { 
   estimateValue, 
@@ -3838,6 +3840,138 @@ P.S. - Early business partners get exclusive territory rights and preferred part
     } catch (error) {
       console.error("Error fetching market comps:", error);
       res.status(500).json({ error: "Failed to fetch market comparables" });
+    }
+  });
+
+  // Business Dashboard API Routes
+  app.get('/api/business/stats', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { period = '30d' } = req.query;
+      
+      // Calculate date range based on period
+      let dateFilter = new Date();
+      switch (period) {
+        case '7d':
+          dateFilter.setDate(dateFilter.getDate() - 7);
+          break;
+        case '90d':
+          dateFilter.setDate(dateFilter.getDate() - 90);
+          break;
+        case '1y':
+          dateFilter.setFullYear(dateFilter.getFullYear() - 1);
+          break;
+        default: // 30d
+          dateFilter.setDate(dateFilter.getDate() - 30);
+      }
+
+      // Get commission data for the user's business
+      const commissionStats = await db
+        .select({
+          totalEarnings: sql<string>`COALESCE(SUM(worker_earnings), 0)`,
+          totalCommissions: sql<string>`COALESCE(SUM(commission_amount), 0)`,
+          pendingPayments: sql<string>`COALESCE(SUM(CASE WHEN payment_status = 'pending' THEN worker_earnings ELSE 0 END), 0)`,
+          completedJobs: sql<number>`COUNT(*)`,
+          avgCommissionRate: sql<string>`COALESCE(AVG(commission_rate), 0.15)`
+        })
+        .from(platformCommissions)
+        .where(and(
+          eq(platformCommissions.providerId, userId),
+          gte(platformCommissions.processedAt, dateFilter)
+        ));
+
+      // Get unique customer count
+      const customerStats = await db
+        .select({
+          customerCount: sql<number>`COUNT(DISTINCT customer_id)`
+        })
+        .from(platformCommissions)
+        .where(and(
+          eq(platformCommissions.providerId, userId),
+          gte(platformCommissions.processedAt, dateFilter)
+        ));
+
+      const stats = commissionStats[0] || {
+        totalEarnings: "0.00",
+        totalCommissions: "0.00",
+        pendingPayments: "0.00",
+        completedJobs: 0,
+        avgCommissionRate: "15.00"
+      };
+
+      const customers = customerStats[0] || { customerCount: 0 };
+
+      res.json({
+        totalEarnings: stats.totalEarnings,
+        totalCommissions: stats.totalCommissions,
+        pendingPayments: stats.pendingPayments,
+        completedJobs: stats.completedJobs,
+        customerCount: customers.customerCount,
+        commissionRate: Number(stats.avgCommissionRate * 100).toFixed(2)
+      });
+    } catch (error) {
+      console.error("Error fetching business stats:", error);
+      res.status(500).json({ message: "Failed to fetch business statistics" });
+    }
+  });
+
+  app.get('/api/business/commissions', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { period = '30d' } = req.query;
+      
+      // Calculate date range based on period
+      let dateFilter = new Date();
+      switch (period) {
+        case '7d':
+          dateFilter.setDate(dateFilter.getDate() - 7);
+          break;
+        case '90d':
+          dateFilter.setDate(dateFilter.getDate() - 90);
+          break;
+        case '1y':
+          dateFilter.setFullYear(dateFilter.getFullYear() - 1);
+          break;
+        default: // 30d
+          dateFilter.setDate(dateFilter.getDate() - 30);
+      }
+
+      const commissions = await db
+        .select()
+        .from(platformCommissions)
+        .where(and(
+          eq(platformCommissions.providerId, userId),
+          gte(platformCommissions.processedAt, dateFilter)
+        ))
+        .orderBy(desc(platformCommissions.processedAt))
+        .limit(50);
+
+      res.json(commissions);
+    } catch (error) {
+      console.error("Error fetching commissions:", error);
+      res.status(500).json({ message: "Failed to fetch commission history" });
+    }
+  });
+
+  app.put('/api/business/commission-rate', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { rate } = req.body;
+      
+      if (!rate || rate < 0 || rate > 50) {
+        return res.status(400).json({ message: "Invalid commission rate. Must be between 0% and 50%" });
+      }
+
+      // Note: This is a demo endpoint. In a real system, commission rates would be 
+      // set by the platform administrator, not individual businesses
+      res.json({ 
+        message: "Commission rate update received",
+        note: "Rate changes require admin approval in production",
+        requestedRate: rate 
+      });
+    } catch (error) {
+      console.error("Error updating commission rate:", error);
+      res.status(500).json({ message: "Failed to update commission rate" });
     }
   });
 

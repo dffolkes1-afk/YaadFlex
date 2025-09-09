@@ -38,6 +38,7 @@ import JobPosting from "@/pages/JobPosting";
 import DuoWonTheWorld3D from "@/components/DuoWonTheWorld3D";
 import PricingCalculator from "@/pages/pricing-calculator";
 import CustomerBooking from "@/pages/customer-booking";
+import BusinessDashboard from "@/pages/business-dashboard";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -87,6 +88,7 @@ function Router() {
           <Route path="/workforce" component={WorkforceDashboard} />
           <Route path="/post-job" component={JobPosting} />
           <Route path="/duo-world" component={DuoWonTheWorld3D} />
+          <Route path="/business-dashboard" component={BusinessDashboard} />
         </>
       )}
       <Route component={NotFound} />
