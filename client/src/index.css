@@ -22,24 +22,24 @@
   --cosmic-purple: hsl(260, 80%, 45%);       /* Space Purple */
   --solar-orange: hsl(35, 100%, 55%);        /* Sun Orange */
   
-  --background: linear-gradient(135deg, var(--jamaica-black) 0%, hsl(153, 50%, 10%) 50%, var(--jamaica-black) 100%);
-  --foreground: hsl(50, 100%, 95%);
-  --card: linear-gradient(135deg, var(--jamaica-black) 0%, hsl(153, 30%, 12%) 100%);
-  --card-foreground: hsl(50, 100%, 95%);
-  --popover: var(--jamaica-black);
-  --popover-foreground: hsl(50, 100%, 95%);
+  --background: linear-gradient(135deg, hsl(0, 0%, 98%) 0%, hsl(153, 30%, 95%) 50%, hsl(0, 0%, 98%) 100%);
+  --foreground: hsl(0, 0%, 5%);
+  --card: linear-gradient(135deg, hsl(0, 0%, 100%) 0%, hsl(153, 15%, 98%) 100%);
+  --card-foreground: hsl(0, 0%, 5%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(0, 0%, 5%);
   --primary: var(--jamaica-green);
-  --primary-foreground: var(--jamaica-gold);
-  --secondary: var(--jamaica-green-dark);
-  --secondary-foreground: var(--jamaica-gold);
-  --muted: hsl(153, 20%, 15%);
-  --muted-foreground: hsl(50, 50%, 70%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: var(--jamaica-green-light);
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --muted: hsl(153, 20%, 92%);
+  --muted-foreground: hsl(0, 0%, 35%);
   --accent: var(--jamaica-gold);
-  --accent-foreground: var(--jamaica-black);
+  --accent-foreground: hsl(0, 0%, 5%);
   --destructive: hsl(0 84% 60%);
-  --destructive-foreground: hsl(50, 100%, 95%);
-  --border: var(--jamaica-green-dark);
-  --input: hsl(153, 30%, 12%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(153, 20%, 80%);
+  --input: hsl(0, 0%, 98%);
   --ring: var(--jamaica-green);
   --chart-1: var(--jamaica-green);
   --chart-2: var(--jamaica-gold);
