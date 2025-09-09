@@ -4,48 +4,45 @@
 @tailwind utilities;
 
 :root {
-  /* 🇯🇲 JAMAICA FLAG COLORS - AUTHENTIC YARDFLEX VIBE 🇯🇲 */
-  --jamaica-green: hsl(153, 100%, 26%);      /* Rich Jamaica Green */
-  --jamaica-gold: hsl(50, 100%, 50%);        /* Bright Jamaica Gold */
-  --jamaica-black: hsl(0, 0%, 8%);           /* Deep Jamaica Black */
-  --jamaica-green-light: hsl(153, 80%, 35%); /* Lighter Green */
-  --jamaica-green-dark: hsl(153, 100%, 20%); /* Darker Green */
+  /* 💼 PROFESSIONAL BUSINESS COLORS - SLEEK & MODERN 💼 */
+  --business-dark: hsl(215, 25%, 15%);       /* Professional Dark Blue */
+  --business-darker: hsl(215, 30%, 8%);      /* Deep Business Dark */
+  --business-light: hsl(215, 15%, 25%);      /* Light Business Blue */
+  --business-accent: hsl(195, 100%, 45%);    /* Professional Accent Blue */
+  --steel-gray: hsl(210, 10%, 50%);          /* Steel Gray */
+  --silver: hsl(210, 15%, 85%);              /* Silver */
+  --platinum: hsl(210, 10%, 95%);            /* Platinum White */
   
-  /* 🌍 DYNAMIC COUNTRY THEME SUPPORT 🌍 */
-  --cosmic-star-1: hsl(50, 100%, 50%);       /* Dynamic star color 1 */
-  --cosmic-star-2: hsl(153, 100%, 26%);      /* Dynamic star color 2 */
-  --galaxy-bg: linear-gradient(135deg, hsl(0, 0%, 8%) 0%, hsl(153, 50%, 10%) 50%, hsl(0, 0%, 8%) 100%); /* Dynamic galaxy background */
+  /* 🏢 CORPORATE THEME COLORS 🏢 */
+  --corporate-blue: hsl(210, 100%, 40%);     /* Corporate Blue */
+  --executive-gray: hsl(220, 10%, 20%);      /* Executive Gray */
+  --premium-gold: hsl(45, 100%, 60%);        /* Premium Gold Accent */
+  --success-green: hsl(145, 80%, 35%);       /* Success Green */
   
-  /* 🌍 GLOBAL PLANETARY THEME 🌍 */
-  --earth-blue: hsl(210, 100%, 45%);         /* Ocean Blue */
-  --earth-green: hsl(120, 60%, 40%);         /* Land Green */
-  --cosmic-purple: hsl(260, 80%, 45%);       /* Space Purple */
-  --solar-orange: hsl(35, 100%, 55%);        /* Sun Orange */
-  
-  --background: linear-gradient(135deg, hsl(0, 0%, 98%) 0%, hsl(153, 30%, 95%) 50%, hsl(0, 0%, 98%) 100%);
-  --foreground: hsl(0, 0%, 5%);
-  --card: linear-gradient(135deg, hsl(0, 0%, 100%) 0%, hsl(153, 15%, 98%) 100%);
-  --card-foreground: hsl(0, 0%, 5%);
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(215, 25%, 15%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(215, 25%, 15%);
   --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(0, 0%, 5%);
-  --primary: var(--jamaica-green);
+  --popover-foreground: hsl(215, 25%, 15%);
+  --primary: var(--business-dark);
   --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: var(--jamaica-green-light);
+  --secondary: var(--steel-gray);
   --secondary-foreground: hsl(0, 0%, 100%);
-  --muted: hsl(153, 20%, 92%);
-  --muted-foreground: hsl(0, 0%, 35%);
-  --accent: var(--jamaica-gold);
-  --accent-foreground: hsl(0, 0%, 5%);
+  --muted: hsl(210, 15%, 96%);
+  --muted-foreground: hsl(215, 15%, 45%);
+  --accent: var(--business-accent);
+  --accent-foreground: hsl(0, 0%, 100%);
   --destructive: hsl(0 84% 60%);
   --destructive-foreground: hsl(0, 0%, 100%);
-  --border: hsl(153, 20%, 80%);
-  --input: hsl(0, 0%, 98%);
-  --ring: var(--jamaica-green);
-  --chart-1: var(--jamaica-green);
-  --chart-2: var(--jamaica-gold);
-  --chart-3: var(--earth-blue);
-  --chart-4: var(--solar-orange);
-  --chart-5: var(--cosmic-purple);
+  --border: hsl(210, 15%, 85%);
+  --input: hsl(210, 15%, 98%);
+  --ring: var(--business-dark);
+  --chart-1: var(--business-dark);
+  --chart-2: var(--business-accent);
+  --chart-3: var(--corporate-blue);
+  --chart-4: var(--success-green);
+  --chart-5: var(--steel-gray);
   --sidebar: hsl(222 84% 8%);
   --sidebar-foreground: hsl(210 40% 98%);
   --sidebar-primary: hsl(217 91% 60%);
@@ -71,25 +68,25 @@
 }
 
 .dark {
-  --background: hsl(222 84% 3%);
-  --foreground: hsl(210 40% 95%);
-  --card: hsl(222 84% 6%);
-  --card-foreground: hsl(210 40% 95%);
-  --popover: hsl(222 84% 6%);
-  --popover-foreground: hsl(210 40% 95%);
-  --primary: hsl(217 91% 55%);
-  --primary-foreground: hsl(210 40% 98%);
-  --secondary: hsl(217 19% 14%);
-  --secondary-foreground: hsl(210 40% 95%);
-  --muted: hsl(217 19% 10%);
-  --muted-foreground: hsl(215 20% 60%);
-  --accent: hsl(45 93% 53%);
-  --accent-foreground: hsl(222 84% 3%);
+  --background: hsl(215, 30%, 8%);
+  --foreground: hsl(210, 15%, 95%);
+  --card: hsl(215, 25%, 12%);
+  --card-foreground: hsl(210, 15%, 95%);
+  --popover: hsl(215, 25%, 12%);
+  --popover-foreground: hsl(210, 15%, 95%);
+  --primary: hsl(195, 100%, 45%);
+  --primary-foreground: hsl(215, 30%, 8%);
+  --secondary: hsl(215, 15%, 25%);
+  --secondary-foreground: hsl(210, 15%, 95%);
+  --muted: hsl(215, 20%, 18%);
+  --muted-foreground: hsl(210, 15%, 60%);
+  --accent: hsl(45, 100%, 60%);
+  --accent-foreground: hsl(215, 30%, 8%);
   --destructive: hsl(0 84% 55%);
-  --destructive-foreground: hsl(210 40% 98%);
-  --border: hsl(217 19% 14%);
-  --input: hsl(217 19% 14%);
-  --ring: hsl(217 91% 55%);
+  --destructive-foreground: hsl(210, 15%, 95%);
+  --border: hsl(215, 20%, 25%);
+  --input: hsl(215, 20%, 18%);
+  --ring: hsl(195, 100%, 45%);
 }
 
 .fortress-gradient {

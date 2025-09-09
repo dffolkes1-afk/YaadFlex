@@ -13,21 +13,21 @@ export default function ModernLanding() {
       distance: "7km, 20 mins",
       price: "J$1,040",
       breakdown: "Base J$250 + Distance J$490 + Time J$300",
-      color: "from-blue-500 to-cyan-500"
+      color: "from-gray-600 to-blue-600"
     },
     {
-      route: "Uptown Party Run → Barbican", 
+      route: "Uptown Business → Barbican", 
       distance: "5km, 15 mins + extras",
       price: "J$1,175",
-      breakdown: "Base J$300 + Distance J$350 + Time J$225 + Party J$200 + Stop J$100",
-      color: "from-purple-500 to-pink-500"
+      breakdown: "Base J$300 + Distance J$350 + Time J$225 + Service J$200 + Stop J$100",
+      color: "from-blue-600 to-gray-700"
     },
     {
       route: "Rural Clarendon → May Pen",
       distance: "10km, 25 mins",
       price: "J$1,675", 
       breakdown: "Rural Base J$400 + Distance J$700 + Time J$375 + 2 Extra Pass J$200",
-      color: "from-green-500 to-emerald-500"
+      color: "from-gray-700 to-blue-700"
     }
   ];
 
@@ -51,83 +51,37 @@ export default function ModernLanding() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900 text-gray-900 dark:text-white">
       
-      {/* Animated Background with Spinning Planets */}
+      {/* Professional Background Pattern */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Spinning Planet 1 - Large */}
-        <div className="absolute -top-40 -right-40 w-80 h-80 animate-spin" style={{animationDuration: '20s'}}>
-          <div className="w-full h-full bg-gradient-to-br from-yellow-400/20 to-orange-500/20 rounded-full blur-3xl animate-pulse">
-            <div className="absolute top-4 left-4 w-8 h-8 bg-yellow-500/40 rounded-full blur-sm"></div>
-            <div className="absolute bottom-8 right-12 w-12 h-12 bg-orange-400/30 rounded-full blur-md"></div>
-            <div className="absolute top-1/2 left-8 w-6 h-6 bg-red-400/50 rounded-full blur-sm"></div>
-          </div>
-        </div>
-        
-        {/* Spinning Planet 2 - Medium */}
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 animate-spin" style={{animationDuration: '15s', animationDirection: 'reverse'}}>
-          <div className="w-full h-full bg-gradient-to-br from-green-400/20 to-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000">
-            <div className="absolute top-8 right-8 w-10 h-10 bg-green-500/40 rounded-full blur-sm"></div>
-            <div className="absolute bottom-12 left-16 w-14 h-14 bg-blue-400/30 rounded-full blur-md"></div>
-            <div className="absolute top-1/3 right-1/4 w-7 h-7 bg-cyan-400/50 rounded-full blur-sm"></div>
-          </div>
-        </div>
-        
-        {/* Spinning Planet 3 - Small Center */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 animate-spin" style={{animationDuration: '12s'}}>
-          <div className="w-full h-full bg-gradient-to-br from-purple-400/10 to-pink-500/10 rounded-full blur-3xl animate-pulse delay-2000">
-            <div className="absolute top-6 left-6 w-6 h-6 bg-purple-500/40 rounded-full blur-sm"></div>
-            <div className="absolute bottom-10 right-8 w-8 h-8 bg-pink-400/30 rounded-full blur-md"></div>
-            <div className="absolute top-2/3 left-1/3 w-5 h-5 bg-violet-400/50 rounded-full blur-sm"></div>
-          </div>
-        </div>
-        
-        {/* Additional Small Spinning Planets */}
-        <div className="absolute top-20 left-1/4 w-32 h-32 animate-spin" style={{animationDuration: '8s', animationDirection: 'reverse'}}>
-          <div className="w-full h-full bg-gradient-to-br from-cyan-400/15 to-blue-600/15 rounded-full blur-2xl">
-            <div className="absolute top-2 right-2 w-4 h-4 bg-cyan-500/40 rounded-full blur-sm"></div>
-            <div className="absolute bottom-4 left-4 w-6 h-6 bg-blue-400/30 rounded-full blur-md"></div>
-          </div>
-        </div>
-        
-        <div className="absolute bottom-32 right-1/4 w-28 h-28 animate-spin" style={{animationDuration: '10s'}}>
-          <div className="w-full h-full bg-gradient-to-br from-rose-400/15 to-red-600/15 rounded-full blur-2xl">
-            <div className="absolute top-3 left-3 w-5 h-5 bg-rose-500/40 rounded-full blur-sm"></div>
-            <div className="absolute bottom-2 right-6 w-4 h-4 bg-red-400/30 rounded-full blur-md"></div>
-          </div>
-        </div>
-        
-        <div className="absolute top-1/3 right-12 w-24 h-24 animate-spin" style={{animationDuration: '6s', animationDirection: 'reverse'}}>
-          <div className="w-full h-full bg-gradient-to-br from-emerald-400/15 to-green-600/15 rounded-full blur-2xl">
-            <div className="absolute top-1 right-1 w-3 h-3 bg-emerald-500/40 rounded-full blur-sm"></div>
-            <div className="absolute bottom-3 left-2 w-5 h-5 bg-green-400/30 rounded-full blur-md"></div>
-          </div>
-        </div>
+        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/5 via-transparent to-gray-500/5"></div>
       </div>
 
       {/* Navigation */}
-      <nav className="relative z-10 p-6">
+      <nav className="relative z-10 p-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 bg-gradient-to-br from-gray-800 to-blue-600 rounded-lg flex items-center justify-center shadow-lg">
               <Car className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                 YaadFlex Global Vybz
               </h1>
-              <p className="text-xs text-gray-300">Level Up Your Ride!</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">Professional Business Platform</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <Button variant="outline" className="border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black" asChild>
+            <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white" asChild>
               <a href="https://t.me/yaadflex" target="_blank" rel="noopener" data-testid="link-telegram">
-                Join Telegram
+                Join Network
               </a>
             </Button>
-            <Button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black hover:shadow-lg" asChild>
+            <Button className="bg-gradient-to-r from-gray-800 to-blue-600 text-white hover:shadow-lg" asChild>
               <Link href="/links" data-testid="button-enter-app">
-                Enter App
+                Access Platform
               </Link>
             </Button>
           </div>
@@ -140,64 +94,70 @@ export default function ModernLanding() {
           
           {/* Left Column - Hero Text */}
           <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500/20 to-blue-500/20 px-4 py-2 rounded-full border border-green-500/30">
-              <Globe className="h-4 w-4 text-green-400" />
-              <span className="text-sm text-green-300">Caribbean-Born • Global Reach</span>
+            <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-lg border border-blue-200 dark:border-blue-700">
+              <Globe className="h-4 w-4 text-blue-600" />
+              <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">Caribbean-Born • Global Reach</span>
             </div>
             
             <div className="space-y-4">
               <h2 className="text-5xl lg:text-7xl font-bold leading-tight">
-                <span className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                  Level Up
+                <span className="text-gray-900 dark:text-white">
+                  Professional
                 </span>
                 <br />
-                <span className="text-white">Your Vybz!</span>
+                <span className="text-blue-600">Business Platform</span>
               </h2>
-              <p className="text-xl text-gray-300 leading-relaxed">
-                The Caribbean super-app that <strong className="text-yellow-400">actually PAYS drivers 85%!</strong> 
-                Real Jamaican Dollar pricing, no games, no gimmicks. Join the revolution!
+              <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
+                The Caribbean super-app that <strong className="text-blue-600">actually PAYS drivers 85%!</strong> 
+                Real Jamaican Dollar pricing, no games, no gimmicks. Professional business solutions.
               </p>
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black hover:shadow-xl transform hover:scale-105 transition-all" asChild>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <Button size="lg" className="bg-gradient-to-r from-gray-800 to-blue-600 text-white hover:shadow-xl" asChild>
                 <Link href="/pricing" data-testid="button-see-pricing">
                   <Calculator className="h-5 w-5 mr-2" />
-                  See Real Pricing
+                  View Pricing
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black" asChild>
+              <Button size="lg" variant="outline" className="border-gray-600 text-gray-600 hover:bg-gray-600 hover:text-white" asChild>
                 <Link href="/driver-registration" data-testid="button-start-driving">
                   <Car className="h-5 w-5 mr-2" />
-                  Start Driving
+                  Driver Portal
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-black" asChild>
+              <Button size="lg" variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white" asChild>
                 <Link href="/book-ride" data-testid="button-book-ride">
                   <MapPin className="h-5 w-5 mr-2" />
-                  Book A Ride
+                  Book Transport
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-black" asChild>
+              <Button size="lg" variant="outline" className="border-gray-500 text-gray-500 hover:bg-gray-500 hover:text-white" asChild>
                 <Link href="/universal-remote" data-testid="button-remote-control">
                   <Monitor className="h-5 w-5 mr-2" />
-                  Remote Control
+                  IoT Control
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black" asChild>
+              <Button size="lg" variant="outline" className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white" asChild>
                 <Link href="/travel-booking" data-testid="button-travel-booking">
                   <Plane className="h-5 w-5 mr-2" />
-                  Travel Agent
+                  Travel Services
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white" asChild>
+                <Link href="/trading-dashboard" data-testid="button-trading">
+                  <DollarSign className="h-5 w-5 mr-2" />
+                  Trading Platform
                 </Link>
               </Button>
             </div>
 
             {/* Contact Info */}
-            <div className="flex items-center gap-4 text-sm text-gray-400">
+            <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4" />
-                <span>Professional: dChris@yaadflexglobalvybz.com</span>
+                <span>Business Inquiries: dChris@yaadflexglobalvybz.com</span>
               </div>
             </div>
           </div>
@@ -226,7 +186,7 @@ export default function ModernLanding() {
                     <div
                       key={i}
                       className={`w-2 h-2 rounded-full transition-all ${
-                        i === currentExample ? 'bg-yellow-400' : 'bg-gray-600'
+                        i === currentExample ? 'bg-blue-600' : 'bg-gray-400'
                       }`}
                     />
                   ))}
@@ -236,20 +196,20 @@ export default function ModernLanding() {
 
             {/* Fleet Cards */}
             <div className="grid grid-cols-2 gap-4">
-              <Card className="bg-gradient-to-br from-red-500/20 to-red-700/20 border border-red-500/30">
+              <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md">
                 <CardContent className="p-4 text-center">
-                  <div className="w-8 h-8 bg-red-500 rounded-full mx-auto mb-2"></div>
-                  <div className="font-bold text-red-400">Lipstick Fleet</div>
-                  <div className="text-xs text-gray-300">Municipal Areas</div>
-                  <div className="text-sm font-semibold text-red-300">85% Earnings</div>
+                  <div className="w-8 h-8 bg-red-600 rounded-lg mx-auto mb-2"></div>
+                  <div className="font-bold text-gray-900 dark:text-white">Municipal Fleet</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">Standard Areas</div>
+                  <div className="text-sm font-semibold text-red-600">85% Earnings</div>
                 </CardContent>
               </Card>
-              <Card className="bg-gradient-to-br from-gray-400/20 to-gray-600/20 border border-gray-400/30">
+              <Card className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md">
                 <CardContent className="p-4 text-center">
-                  <div className="w-8 h-8 bg-gray-400 rounded-full mx-auto mb-2"></div>
-                  <div className="font-bold text-gray-300">Shadow Fleet</div>
-                  <div className="text-xs text-gray-300">Upscale Zones</div>
-                  <div className="text-sm font-semibold text-gray-200">Premium Service</div>
+                  <div className="w-8 h-8 bg-gray-700 rounded-lg mx-auto mb-2"></div>
+                  <div className="font-bold text-gray-900 dark:text-white">Premium Fleet</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-400">Executive Zones</div>
+                  <div className="text-sm font-semibold text-gray-700 dark:text-gray-300">Premium Service</div>
                 </CardContent>
               </Card>
             </div>
@@ -260,12 +220,10 @@ export default function ModernLanding() {
       {/* Features Section */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
         <div className="text-center mb-12">
-          <h3 className="text-4xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
-              Revolutionary Features
-            </span>
+          <h3 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+            Professional Features
           </h3>
-          <p className="text-xl text-gray-300">Why YaadFlex is changing the game</p>
+          <p className="text-xl text-gray-600 dark:text-gray-300">Enterprise-grade business solutions</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -273,47 +231,47 @@ export default function ModernLanding() {
             {
               icon: DollarSign,
               title: "85% Driver Earnings",
-              description: "Stop hustling for crumbs! Keep 85% of every fare - the highest in Jamaica!",
-              gradient: "from-green-400 to-emerald-500"
+              description: "Industry-leading commission structure. Drivers keep 85% of every fare - highest in the Caribbean.",
+              color: "text-green-600"
             },
             {
               icon: Calculator,
-              title: "Real JMD Pricing",
-              description: "No hidden fees. Base fare + J$70/km + J$15/min. Simple and transparent.",
-              gradient: "from-blue-400 to-cyan-500"
+              title: "Transparent Pricing",
+              description: "No hidden fees. Base fare + J$70/km + J$15/min. Professional pricing structure.",
+              color: "text-blue-600"
             },
             {
               icon: Shield,
-              title: "No Cherry-Picking",
-              description: "Fair job distribution. System assigns automatically - everyone gets opportunities.",
-              gradient: "from-purple-400 to-pink-500"
+              title: "Fair Distribution",
+              description: "Automated job assignment system ensures equal opportunities for all drivers.",
+              color: "text-gray-600"
             },
             {
               icon: Users,
-              title: "Lifestyle Add-ons",
-              description: "Party runs, extra stops, smoke breaks - your ride, your way!",
-              gradient: "from-yellow-400 to-orange-500"
+              title: "Business Services",
+              description: "Corporate transport, executive services, and premium business solutions.",
+              color: "text-blue-700"
             },
             {
               icon: Zap,
-              title: "100% Contactless",
-              description: "Automated payments, real estate, car marketplace, CB radio - all in one app.",
-              gradient: "from-red-400 to-pink-500"
+              title: "Digital Platform",
+              description: "Automated payments, real estate, marketplace, IoT control - integrated business suite.",
+              color: "text-gray-700"
             },
             {
               icon: Star,
-              title: "Teen-Friendly",
-              description: "Challenges, rewards, squad building. Level up your vybz with every ride!",
-              gradient: "from-indigo-400 to-purple-500"
+              title: "Professional Network",
+              description: "Quality service standards, verified drivers, and business-grade reliability.",
+              color: "text-blue-800"
             }
           ].map((feature, i) => (
-            <Card key={i} className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 hover:border-yellow-500/30 transition-all hover:scale-105">
+            <Card key={i} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all">
               <CardContent className="p-6">
-                <div className={`w-12 h-12 bg-gradient-to-r ${feature.gradient} rounded-xl flex items-center justify-center mb-4`}>
-                  <feature.icon className="h-6 w-6 text-white" />
+                <div className={`w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mb-4`}>
+                  <feature.icon className={`h-6 w-6 ${feature.color}`} />
                 </div>
-                <h4 className="text-xl font-semibold mb-2 text-white">{feature.title}</h4>
-                <p className="text-gray-300">{feature.description}</p>
+                <h4 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{feature.title}</h4>
+                <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
               </CardContent>
             </Card>
           ))}
@@ -322,17 +280,17 @@ export default function ModernLanding() {
 
       {/* Stats Section */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
-        <div className="bg-gradient-to-r from-yellow-400/10 to-orange-500/10 rounded-3xl p-8 border border-yellow-500/20">
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-8 border border-gray-200 dark:border-gray-700 shadow-lg">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
-              { number: "85%", label: "Driver Earnings", color: "text-green-400" },
-              { number: "J$1,040", label: "Avg. Trip Cost", color: "text-yellow-400" },
-              { number: "2", label: "Fleet Types", color: "text-blue-400" },
-              { number: "100%", label: "Contactless", color: "text-purple-400" }
+              { number: "85%", label: "Driver Earnings", color: "text-green-600" },
+              { number: "J$1,040", label: "Avg. Trip Cost", color: "text-blue-600" },
+              { number: "2", label: "Fleet Types", color: "text-gray-600" },
+              { number: "100%", label: "Digital Platform", color: "text-blue-700" }
             ].map((stat, i) => (
               <div key={i} className="space-y-2">
                 <div className={`text-4xl font-bold ${stat.color}`}>{stat.number}</div>
-                <div className="text-gray-300 text-sm">{stat.label}</div>
+                <div className="text-gray-600 dark:text-gray-300 text-sm">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -341,56 +299,53 @@ export default function ModernLanding() {
 
       {/* CTA Section */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-16 text-center">
-        <div className="bg-gradient-to-r from-yellow-400/20 to-orange-500/20 rounded-3xl p-12 border border-yellow-500/30">
-          <h3 className="text-4xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
-              Ready For The Revolution?
-            </span>
+        <div className="bg-blue-50 dark:bg-gray-800 rounded-xl p-12 border border-blue-200 dark:border-gray-700">
+          <h3 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+            Ready to Join Our Platform?
           </h3>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Join YaadFlex Global Vybz today and start earning real money. No more getting crushed by other apps!
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+            Join YaadFlex Global Vybz today and start building your professional business network.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Button size="lg" className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black hover:shadow-xl" asChild>
+            <Button size="lg" className="bg-gradient-to-r from-gray-800 to-blue-600 text-white hover:shadow-xl" asChild>
               <Link href="/driver-registration" data-testid="button-join-drivers">
-                Start Driving Today
+                Start Today
                 <ArrowRight className="h-5 w-5 ml-2" />
               </Link>
             </Button>
-            <Button size="lg" variant="outline" className="border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black" asChild>
+            <Button size="lg" variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white" asChild>
               <Link href="/pricing" data-testid="button-calculate-earnings">
-                Calculate Your Earnings
+                View Pricing
               </Link>
             </Button>
           </div>
-          <div className="mt-6 text-sm text-gray-400">
-            Professional inquiries: <a href="mailto:dChris@yaadflexglobalvybz.com" className="text-yellow-400 hover:underline">dChris@yaadflexglobalvybz.com</a>
+          <div className="mt-6 text-sm text-gray-500 dark:text-gray-400">
+            Business inquiries: <a href="mailto:dChris@yaadflexglobalvybz.com" className="text-blue-600 hover:underline">dChris@yaadflexglobalvybz.com</a>
           </div>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="relative z-10 max-w-7xl mx-auto px-6 py-8 border-t border-gray-800">
+      <footer className="relative z-10 max-w-7xl mx-auto px-6 py-8 border-t border-gray-200 dark:border-gray-700">
         <div className="flex flex-wrap justify-between items-center gap-4">
-          <div className="text-gray-400">
-            © 2025 YaadFlex Global Vybz - Level Up Your Ride!
+          <div className="text-gray-600 dark:text-gray-400">
+            © 2025 YaadFlex Global Vybz - Professional Business Platform
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-6">
             {[
-              { name: "Instagram", emoji: "📷", url: "https://instagram.com/yaadflex" },
-              { name: "TikTok", emoji: "🎵", url: "https://tiktok.com/@yaadflex" },
-              { name: "Facebook", emoji: "📘", url: "https://facebook.com/yaadflex" },
-              { name: "Telegram", emoji: "✈️", url: "https://t.me/yaadflex" }
+              { name: "Instagram", url: "https://instagram.com/yaadflex" },
+              { name: "LinkedIn", url: "https://linkedin.com/company/yaadflex" },
+              { name: "Facebook", url: "https://facebook.com/yaadflex" },
+              { name: "Telegram", url: "https://t.me/yaadflex" }
             ].map((social, i) => (
               <a
                 key={i}
                 href={social.url}
                 target="_blank"
                 rel="noopener"
-                className="text-gray-400 hover:text-yellow-400 transition-colors"
+                className="text-gray-600 dark:text-gray-400 hover:text-blue-600 transition-colors text-sm font-medium"
                 data-testid={`link-${social.name.toLowerCase()}`}
               >
-                <span className="mr-1">{social.emoji}</span>
                 {social.name}
               </a>
             ))}
