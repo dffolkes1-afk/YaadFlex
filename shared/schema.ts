@@ -206,6 +206,77 @@ export const securityEvents = pgTable("security_events", {
   resolvedAt: timestamp("resolved_at"),
 });
 
+// YaadFlex Driver Fleet Management - Lipstick vs Shadow Fleet
+export const driverFleets = pgTable("driver_fleets", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  driverId: varchar("driver_id").references(() => users.id).notNull(),
+  fleetType: varchar("fleet_type").notNull(), // 'lipstick', 'shadow'
+  plateType: varchar("plate_type").notNull(), // 'red', 'white'
+  operatingZones: jsonb("operating_zones"), // Array of allowed zones ['downtown', 'uptown', 'rural']
+  isActive: boolean("is_active").default(true),
+  exclusiveAccess: boolean("exclusive_access").default(false), // White plate exclusive status
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// YaadFlex Pricing Zones and Area Configuration
+export const pricingZones = pgTable("pricing_zones", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  zoneName: varchar("zone_name").notNull(), // 'downtown', 'uptown', 'rural', 'airport'
+  zoneType: varchar("zone_type").notNull(), // 'municipal', 'upscale', 'rural', 'special'
+  baseFareMultiplier: decimal("base_fare_multiplier", { precision: 5, scale: 2 }).default('1.0'),
+  allowedPlateTypes: jsonb("allowed_plate_types"), // ['red', 'white']
+  maxWhitePlateDrivers: integer("max_white_plate_drivers").default(2),
+  currentWhitePlateCount: integer("current_white_plate_count").default(0),
+  coordinates: jsonb("coordinates"), // Geographic boundaries
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// YaadFlex Job Assignment Queue - No Cherry Picking
+export const jobAssignments = pgTable("job_assignments", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tripId: varchar("trip_id").references(() => trips.id).notNull(),
+  assignedDriverId: varchar("assigned_driver_id").references(() => users.id),
+  zoneId: varchar("zone_id").references(() => pricingZones.id),
+  assignmentMethod: varchar("assignment_method").default('automatic'), // 'automatic', 'manual_override'
+  algorithmScore: decimal("algorithm_score", { precision: 8, scale: 4 }), // Assignment algorithm score
+  distanceToPickup: decimal("distance_to_pickup", { precision: 8, scale: 2 }),
+  driverWorkloadScore: decimal("driver_workload_score", { precision: 5, scale: 2 }),
+  priorityLevel: integer("priority_level").default(1), // 1-5 priority
+  status: varchar("status").default('pending'), // 'pending', 'accepted', 'rejected', 'completed'
+  assignedAt: timestamp("assigned_at").defaultNow(),
+  respondedAt: timestamp("responded_at"),
+});
+
+// YaadFlex Lifestyle Add-ons and Extra Charges
+export const lifestyleAddons = pgTable("lifestyle_addons", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tripId: varchar("trip_id").references(() => trips.id).notNull(),
+  addonType: varchar("addon_type").notNull(), // 'waiting_time', 'extra_stop', 'party_run', 'airport', 'uphill'
+  quantity: integer("quantity").default(1), // e.g., number of extra stops, waiting minutes
+  unitPrice: decimal("unit_price", { precision: 8, scale: 2 }),
+  totalCharge: decimal("total_charge", { precision: 8, scale: 2 }),
+  isApproved: boolean("is_approved").default(true),
+  description: text("description"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// YaadFlex Errand Grouping for Efficiency
+export const errandGroups = pgTable("errand_groups", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  groupName: varchar("group_name"),
+  assignedDriverId: varchar("assigned_driver_id").references(() => users.id),
+  zoneId: varchar("zone_id").references(() => pricingZones.id),
+  totalTripIds: jsonb("total_trip_ids"), // Array of trip IDs in this group
+  estimatedDuration: integer("estimated_duration"), // Total estimated minutes
+  estimatedDistance: decimal("estimated_distance", { precision: 8, scale: 2 }),
+  totalFare: decimal("total_fare", { precision: 10, scale: 2 }),
+  status: varchar("status").default('pending'), // 'pending', 'in_progress', 'completed'
+  createdAt: timestamp("created_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+});
+
 // CB Radio Channels for driver communication
 export const cbRadioChannels = pgTable("cb_radio_channels", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -365,6 +436,18 @@ export type InsertDriverCbProfile = typeof driverCbProfiles.$inferInsert;
 export type DriverCbProfile = typeof driverCbProfiles.$inferSelect;
 export type InsertCbChannelSubscription = typeof cbChannelSubscriptions.$inferInsert;
 export type CbChannelSubscription = typeof cbChannelSubscriptions.$inferSelect;
+
+// YaadFlex Pricing System Types
+export type InsertDriverFleet = typeof driverFleets.$inferInsert;
+export type DriverFleet = typeof driverFleets.$inferSelect;
+export type InsertPricingZone = typeof pricingZones.$inferInsert;
+export type PricingZone = typeof pricingZones.$inferSelect;
+export type InsertJobAssignment = typeof jobAssignments.$inferInsert;
+export type JobAssignment = typeof jobAssignments.$inferSelect;
+export type InsertLifestyleAddon = typeof lifestyleAddons.$inferInsert;
+export type LifestyleAddon = typeof lifestyleAddons.$inferSelect;
+export type InsertErrandGroup = typeof errandGroups.$inferInsert;
+export type ErrandGroup = typeof errandGroups.$inferSelect;
 
 // DEMO YFX WALLET SYSTEM - For Private Pilot Testing
 export const demoWallets = pgTable("demo_wallets", {
