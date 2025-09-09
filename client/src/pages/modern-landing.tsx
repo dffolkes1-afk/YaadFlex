@@ -601,6 +601,160 @@ export default function ModernLanding() {
         </div>
       </div>
 
+      {/* INVESTMENT PLATFORM SECTION */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 bg-gradient-to-br from-green-900/30 to-emerald-900/30 rounded-xl mx-4 border border-green-500/40 mb-20">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 bg-green-900/40 px-6 py-3 rounded-lg border border-green-500/40 backdrop-blur-sm mb-6">
+            <span className="text-2xl">💰</span>
+            <span className="text-lg text-green-300 font-bold">YAADFLEX INVESTMENT PLATFORM</span>
+          </div>
+          <h3 className="text-5xl lg:text-6xl font-bold mb-6">
+            <span className="bg-gradient-to-r from-green-300 via-emerald-300 to-yellow-300 bg-clip-text text-transparent">
+              💎 INVEST IN YAADFLEX 💎
+            </span>
+          </h3>
+          <p className="text-2xl text-green-200 mb-4 font-bold">BE AN OWNER! MAKE MONEY WITH THE CARIBBEAN SUPER-APP!</p>
+          <p className="text-xl text-gray-300 mb-8">🚀 Future IPO • Stock Market Ready • Caribbean Empire 🌍</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
+          {/* STARTER INVESTMENT */}
+          <div className="bg-gradient-to-br from-blue-600/30 to-blue-700/30 backdrop-blur-lg rounded-2xl p-8 border-2 border-blue-500/50 hover:border-blue-400/80 transition-all group text-center transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25">
+            <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+              <span className="text-3xl">🌱</span>
+            </div>
+            <h4 className="text-2xl font-bold text-blue-300 mb-4">STARTER SHARES</h4>
+            <div className="text-4xl font-bold text-blue-200 mb-2">J$50,000</div>
+            <p className="text-lg text-blue-200 font-semibold mb-4">Minimum Investment</p>
+            <div className="space-y-3 text-left mb-6">
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span className="text-blue-200">0.1% Company Ownership</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span className="text-blue-200">Quarterly Dividends</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span className="text-blue-200">Priority Ride Booking</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span className="text-blue-200">10% Projected Annual ROI</span>
+              </div>
+            </div>
+            <button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded-lg font-bold hover:shadow-lg transition-all">
+              INVEST NOW
+            </button>
+          </div>
+
+          {/* PREMIUM INVESTMENT */}
+          <div className="bg-gradient-to-br from-yellow-600/30 to-yellow-700/30 backdrop-blur-lg rounded-2xl p-8 border-2 border-yellow-500/50 hover:border-yellow-400/80 transition-all group text-center transform hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/25 relative">
+            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-yellow-600 text-black px-4 py-1 rounded-full text-sm font-bold">
+              ⭐ MOST POPULAR
+            </div>
+            <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-yellow-600 to-yellow-700 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+              <span className="text-3xl">👑</span>
+            </div>
+            <h4 className="text-2xl font-bold text-yellow-300 mb-4">PREMIUM SHARES</h4>
+            <div className="text-4xl font-bold text-yellow-200 mb-2">J$500,000</div>
+            <p className="text-lg text-yellow-200 font-semibold mb-4">Premium Investment</p>
+            <div className="space-y-3 text-left mb-6">
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span className="text-yellow-200">1% Company Ownership</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span className="text-yellow-200">Monthly Dividends</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span className="text-yellow-200">VIP Customer Status</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span className="text-yellow-200">15% Projected Annual ROI</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span className="text-yellow-200">Voting Rights</span>
+              </div>
+            </div>
+            <button className="w-full bg-gradient-to-r from-yellow-600 to-yellow-700 text-black py-3 rounded-lg font-bold hover:shadow-lg transition-all">
+              INVEST NOW
+            </button>
+          </div>
+
+          {/* ELITE INVESTMENT */}
+          <div className="bg-gradient-to-br from-purple-600/30 to-purple-700/30 backdrop-blur-lg rounded-2xl p-8 border-2 border-purple-500/50 hover:border-purple-400/80 transition-all group text-center transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/25">
+            <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-purple-600 to-purple-700 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+              <span className="text-3xl">💎</span>
+            </div>
+            <h4 className="text-2xl font-bold text-purple-300 mb-4">ELITE SHARES</h4>
+            <div className="text-4xl font-bold text-purple-200 mb-2">J$2M+</div>
+            <p className="text-lg text-purple-200 font-semibold mb-4">Elite Investment</p>
+            <div className="space-y-3 text-left mb-6">
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span className="text-purple-200">5%+ Company Ownership</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span className="text-purple-200">Weekly Dividends</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span className="text-purple-200">Board Member Status</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span className="text-purple-200">25% Projected Annual ROI</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">✓</span>
+                <span className="text-purple-200">IPO Priority Access</span>
+              </div>
+            </div>
+            <button className="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-3 rounded-lg font-bold hover:shadow-lg transition-all">
+              INVEST NOW
+            </button>
+          </div>
+        </div>
+
+        {/* INVESTMENT BENEFITS */}
+        <div className="bg-gradient-to-r from-green-900/40 to-emerald-900/40 rounded-2xl p-8 border border-green-500/40 text-center">
+          <h4 className="text-3xl font-bold text-green-300 mb-6">🌟 WHY INVEST IN YAADFLEX? 🌟</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-green-900/30 rounded-lg p-6 border border-green-500/30">
+              <div className="text-4xl mb-4">📈</div>
+              <h5 className="text-xl font-bold text-green-300 mb-2">Stock Market Ready</h5>
+              <p className="text-green-200">Preparing for IPO within 2-3 years. Early investors get massive returns!</p>
+            </div>
+            <div className="bg-blue-900/30 rounded-lg p-6 border border-blue-500/30">
+              <div className="text-4xl mb-4">🌍</div>
+              <h5 className="text-xl font-bold text-blue-300 mb-2">Caribbean Empire</h5>
+              <p className="text-blue-200">Expanding across Jamaica, Nigeria, Kenya and entire Caribbean region!</p>
+            </div>
+            <div className="bg-yellow-900/30 rounded-lg p-6 border border-yellow-500/30">
+              <div className="text-4xl mb-4">💰</div>
+              <h5 className="text-xl font-bold text-yellow-300 mb-2">Multiple Revenue</h5>
+              <p className="text-yellow-200">Rides, wallet, marketplace, delivery - 4 income streams growing fast!</p>
+            </div>
+            <div className="bg-purple-900/30 rounded-lg p-6 border border-purple-500/30">
+              <div className="text-4xl mb-4">🚀</div>
+              <h5 className="text-xl font-bold text-purple-300 mb-2">First Mover</h5>
+              <p className="text-purple-200">First Caribbean super-app! No competition = massive market domination!</p>
+            </div>
+          </div>
+          <div className="mt-8">
+            <p className="text-2xl font-bold text-green-300 mb-4">📊 PROJECTED COMPANY VALUE: J$50 BILLION BY 2027! 📊</p>
+            <p className="text-lg text-gray-300">Early investors could see 10x-50x returns when we go public!</p>
+          </div>
+        </div>
+      </div>
+
       {/* PROMINENT SOCIAL MEDIA SECTION */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 bg-gradient-to-br from-purple-900/30 to-blue-900/30 rounded-xl mx-4 border border-purple-500/40">
         <div className="text-center mb-16">
