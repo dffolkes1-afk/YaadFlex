@@ -42,6 +42,7 @@ import BusinessDashboard from "@/pages/business-dashboard";
 import TradingDashboard from "@/pages/trading-dashboard";
 import TravelBooking from "@/pages/travel-booking";
 import ServiceMarketplace from "@/pages/service-marketplace";
+import InsuranceFAQ from "@/pages/insurance-faq";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -70,6 +71,9 @@ function Router() {
       <Route path="/travel-booking" component={TravelBooking} />
       <Route path="/services" component={ServiceMarketplace} />
       <Route path="/service-marketplace" component={ServiceMarketplace} />
+      <Route path="/insurance" component={InsuranceFAQ} />
+      <Route path="/insurance-faq" component={InsuranceFAQ} />
+      <Route path="/safety" component={InsuranceFAQ} />
       <Route path="/universal-remote" component={UniversalRemote} />
       
       {/* Authentication-based routes */}
