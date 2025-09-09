@@ -191,7 +191,18 @@ export default function DemoShowcase() {
                 
                 <CardHeader>
                   <CardTitle className="text-green-400 text-2xl font-bold">{user.name}</CardTitle>
-                  <div className="text-blue-300 text-lg">{user.email}</div>
+                  <div className="text-blue-300 text-lg">
+                    <a 
+                      href="/" 
+                      className="text-blue-400 hover:text-yellow-400 underline font-bold transition-colors cursor-pointer"
+                      title="Click to see YaadFlex app!"
+                    >
+                      {user.email}
+                    </a>
+                    <div className="text-green-400 text-sm mt-1 animate-pulse">
+                      👆 Click email to see the full YaadFlex app!
+                    </div>
+                  </div>
                 </CardHeader>
                 
                 <CardContent className="space-y-4">
