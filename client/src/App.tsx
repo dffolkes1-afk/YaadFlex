@@ -124,6 +124,7 @@ function Router() {
         </>
       )}
       <Route path="/secure-login" component={TimeAuthLogin} />
+      <Route path="/demo" component={DemoShowcase} />
       <Route component={NotFound} />
     </Switch>
   );
