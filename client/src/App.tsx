@@ -39,6 +39,7 @@ import DuoWonTheWorld3D from "@/components/DuoWonTheWorld3D";
 import PricingCalculator from "@/pages/pricing-calculator";
 import CustomerBooking from "@/pages/customer-booking";
 import BusinessDashboard from "@/pages/business-dashboard";
+import TradingDashboard from "@/pages/trading-dashboard";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -89,6 +90,7 @@ function Router() {
           <Route path="/post-job" component={JobPosting} />
           <Route path="/duo-world" component={DuoWonTheWorld3D} />
           <Route path="/business-dashboard" component={BusinessDashboard} />
+          <Route path="/trading-dashboard" component={TradingDashboard} />
         </>
       )}
       <Route component={NotFound} />

@@ -395,6 +395,14 @@ export default function Home() {
               >
                 📊 Business
               </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => setLocation("/trading-dashboard")} 
+                className="bg-purple-900/50 border-purple-600 text-purple-400 hover:bg-purple-800/50"
+                data-testid="button-trading-dashboard"
+              >
+                📈 Trading
+              </Button>
               <Button variant="outline" onClick={handleLogout} data-testid="button-logout">
                 Logout
               </Button>
