@@ -211,6 +211,8 @@ export default function ModernLanding() {
                     <div className="w-80 h-80 border border-blue-400/50 rounded-full absolute shadow-lg shadow-blue-400/25"></div>
                     <div className="w-96 h-96 border border-blue-300/40 rounded-full absolute shadow-lg shadow-blue-300/20"></div>
                     <div className="w-[450px] h-[450px] border border-blue-200/50 rounded-full absolute shadow-lg shadow-blue-200/25"></div>
+                    {/* MASSIVE WORLDWIDE CARIBBEAN RADAR CIRCLE */}
+                    <div className="w-[500px] h-[500px] border-2 border-cyan-400/60 rounded-full absolute shadow-lg shadow-cyan-400/40 animate-pulse"></div>
                   </div>
                   
                   {/* PROFESSIONAL GRID SYSTEM */}
@@ -223,6 +225,8 @@ export default function ModernLanding() {
                   <div className="absolute top-4 left-1/2 transform -translate-x-1/2 text-xs text-blue-300 bg-black/70 px-2 py-1 rounded border border-blue-500/50">50km</div>
                   <div className="absolute top-12 left-1/2 transform -translate-x-1/2 text-xs text-blue-300 bg-black/70 px-2 py-1 rounded border border-blue-500/50">25km</div>
                   <div className="absolute top-20 left-1/2 transform -translate-x-1/2 text-xs text-blue-300 bg-black/70 px-2 py-1 rounded border border-blue-500/50">10km</div>
+                  {/* WORLDWIDE CARIBBEAN RANGE MARKER */}
+                  <div className="absolute top-2 left-1/2 transform -translate-x-1/2 text-xs text-cyan-300 bg-black/80 px-3 py-1 rounded-lg border border-cyan-400/70 font-bold animate-pulse">CARIBBEAN ZONE • 500km</div>
                 </div>
 
                 {/* MASSIVE RADAR SWEEP ANIMATION */}
@@ -310,6 +314,28 @@ export default function ModernLanding() {
                         <div className="absolute inset-0 bg-red-100 rounded-full animate-ping"></div>
                       </div>
                       
+                      {/* CARIBBEAN ISLAND MARKERS - WORLDWIDE FIFA VIEW */}
+                      <div className="absolute -top-16 left-8 w-3 h-3 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/60 animate-pulse">
+                        <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-cyan-300 bg-black/80 px-1 rounded font-bold">CUBA</div>
+                      </div>
+
+                      <div className="absolute top-32 left-2 w-3 h-3 bg-cyan-300 rounded-full shadow-lg shadow-cyan-300/50 animate-pulse delay-200">
+                        <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-cyan-200 bg-black/80 px-1 rounded font-bold">HAITI</div>
+                      </div>
+
+                      <div className="absolute top-4 right-4 w-3 h-3 bg-cyan-300 rounded-full shadow-lg shadow-cyan-300/50 animate-pulse delay-400">
+                        <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-cyan-200 bg-black/80 px-1 rounded font-bold">BAHAMAS</div>
+                      </div>
+
+                      <div className="absolute top-40 right-8 w-3 h-3 bg-cyan-300 rounded-full shadow-lg shadow-cyan-300/50 animate-pulse delay-600">
+                        <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-cyan-200 bg-black/80 px-1 rounded font-bold">BARBADOS</div>
+                      </div>
+
+                      {/* JAMAICA CENTER ISLAND MARKER - HQ */}
+                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-green-400 rounded-full shadow-lg shadow-green-400/80 animate-pulse border-2 border-white">
+                        <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-sm text-green-200 bg-black/90 px-2 py-1 rounded-lg border border-green-400/70 font-bold">🇯🇲 JAMAICA HQ</div>
+                      </div>
+
                       {/* HELLSING LOCATION LABELS */}
                       <div className="absolute -top-10 left-12 text-sm text-red-200 font-bold bg-black/90 px-3 py-2 rounded-lg border border-red-800/60 shadow-sm shadow-red-900/30">KINGSTON</div>
                       <div className="absolute -top-10 right-12 text-sm text-red-200 font-bold bg-black/90 px-3 py-2 rounded-lg border border-red-800/60 shadow-sm shadow-red-900/30">MONTEGO BAY</div>
