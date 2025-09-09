@@ -146,15 +146,14 @@ export default function ModernLanding() {
               </h1>
 
               <p className="text-2xl text-gray-200 leading-relaxed">
-                <span className="text-yellow-200 font-semibold">✨ Bringing light to transportation</span> across the Caribbean.<br/>
-                Rides • Delivery • Social • Investment<br/>
-                <strong className="text-green-400 text-3xl">Drivers prosper with 85%</strong> earnings!
+                <span className="text-yellow-200 font-semibold">✨ Caribbean Super-App</span><br/>
+                <strong className="text-green-400 text-4xl">Drivers Earn 85%</strong>
               </p>
               
               <div className="flex items-center gap-4 text-xl">
                 <span className="text-2xl">🌟</span>
                 <span className="bg-gradient-to-r from-yellow-400 to-green-400 bg-clip-text text-transparent font-semibold">
-                  Born in Light • Built for Prosperity
+                  Light & Success
                 </span>
               </div>
             </div>
@@ -164,7 +163,7 @@ export default function ModernLanding() {
               <div className="bg-gradient-to-r from-white/10 to-gray-900/30 rounded-2xl p-8 border border-gray-600/30 backdrop-blur-lg shadow-2xl">
                 <h3 className="text-3xl font-bold text-center mb-8">
                   <span className="bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">
-                    🌟 Join the YaadFlex Experience
+                    🌟 Join YaadFlex
                   </span>
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -175,8 +174,8 @@ export default function ModernLanding() {
                       <div className="w-20 h-20 mx-auto bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
                         <MapPin className="h-10 w-10 text-white" />
                       </div>
-                      <h4 className="text-xl font-bold text-blue-300">🚖 Need a Ride?</h4>
-                      <p className="text-blue-200 text-sm">Premium rides across Jamaica<br/>From Kingston to anywhere</p>
+                      <h4 className="text-xl font-bold text-blue-300">🚖 Book Ride</h4>
+                      <p className="text-blue-200 text-sm">Jamaica Wide</p>
                       <Button size="lg" className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 shadow-lg" asChild>
                         <Link href="/book-ride" data-testid="button-passenger">
                           Book Ride
@@ -192,7 +191,7 @@ export default function ModernLanding() {
                         <Car className="h-10 w-10 text-white" />
                       </div>
                       <h4 className="text-xl font-bold text-green-300">🚗 Drive & Earn</h4>
-                      <p className="text-green-200 text-sm">Keep 85% of every fare<br/>Join Caribbean's fairest platform</p>
+                      <p className="text-green-200 text-sm">Keep 85%</p>
                       <Button size="lg" className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 shadow-lg" asChild>
                         <Link href="/driver-registration" data-testid="button-driver">
                           Start Earning
@@ -207,8 +206,8 @@ export default function ModernLanding() {
                       <div className="w-20 h-20 mx-auto bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
                         <Users className="h-10 w-10 text-white" />
                       </div>
-                      <h4 className="text-xl font-bold text-purple-300">🌟 Social Vybz</h4>
-                      <p className="text-purple-200 text-sm">Connect, share, discover<br/>More than just rides</p>
+                      <h4 className="text-xl font-bold text-purple-300">🌟 Social</h4>
+                      <p className="text-purple-200 text-sm">Connect & Share</p>
                       <Button size="lg" className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-400 hover:to-pink-500 shadow-lg" asChild>
                         <Link href="/social" data-testid="button-social">
                           Explore Social
@@ -301,7 +300,7 @@ export default function ModernLanding() {
               Success & Prosperity Features
             </span>
           </h3>
-          <p className="text-xl text-gray-300">Bringing light and opportunity to the Caribbean</p>
+          <p className="text-xl text-gray-300">Caribbean Innovation</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
