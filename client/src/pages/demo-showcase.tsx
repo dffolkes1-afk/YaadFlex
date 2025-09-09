@@ -387,6 +387,34 @@ export default function DemoShowcase() {
             </div>
           </div>
 
+          {/* QR Code Section */}
+          <div className="bg-gradient-to-br from-green-900/20 to-blue-900/20 rounded-xl p-8 border border-green-400/30 mb-8 text-center">
+            <div className="text-3xl font-bold text-green-400 mb-4">
+              📱 SCAN TO ACCESS YAADFLEX! 📱
+            </div>
+            <div className="text-lg text-gray-300 mb-6">
+              Scan this QR code with your phone to instantly access the YaadFlex platform!
+            </div>
+            
+            {/* QR Code Display */}
+            <div className="bg-white p-6 rounded-lg inline-block shadow-xl">
+              <div className="w-48 h-48 bg-black relative flex items-center justify-center">
+                <div className="text-white text-center">
+                  <div className="text-4xl mb-2">📱</div>
+                  <div className="text-sm">QR CODE</div>
+                  <div className="text-xs mt-1">YaadFlex App</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="text-yellow-400 font-bold text-xl mt-6">
+              🚀 Instant Access to Caribbean's #1 Super-App! 🚀
+            </div>
+            <div className="text-gray-300 mt-2">
+              Or visit: <span className="text-blue-400 font-mono">yaadflexglobalvibes.com</span>
+            </div>
+          </div>
+
           {/* Contact Information */}
           <div className="bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-xl p-6 border border-blue-400/20">
             <div className="text-xl font-medium text-blue-300 mb-3">Contact Information</div>
