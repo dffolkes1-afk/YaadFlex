@@ -45,6 +45,7 @@ import ServiceMarketplace from "@/pages/service-marketplace";
 import InsuranceFAQ from "@/pages/insurance-faq";
 import EmailAssistant from "@/pages/email-assistant";
 import CEODashboard from "@/pages/ceo-dashboard";
+import VendorManagement from "@/pages/vendor-management";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -107,6 +108,7 @@ function Router() {
           <Route path="/business-dashboard" component={BusinessDashboard} />
           <Route path="/trading-dashboard" component={TradingDashboard} />
           <Route path="/ceo-dashboard" component={CEODashboard} />
+          <Route path="/vendor-management" component={VendorManagement} />
         </>
       )}
       <Route component={NotFound} />
