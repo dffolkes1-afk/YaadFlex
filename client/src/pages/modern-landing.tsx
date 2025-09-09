@@ -131,25 +131,25 @@ export default function ModernLanding() {
             
             <div className="space-y-6">
               <h1 className="text-6xl lg:text-8xl font-bold leading-tight">
-                <span className="bg-gradient-to-r from-blue-400 via-green-400 to-yellow-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-yellow-400 via-green-400 to-blue-400 bg-clip-text text-transparent">
                   YaadFlex
                 </span>
                 <br />
-                <span className="bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">
-                  Super-App
+                <span className="bg-gradient-to-r from-white to-yellow-200 bg-clip-text text-transparent">
+                  Light & Success
                 </span>
               </h1>
 
-              <p className="text-2xl text-gray-300 leading-relaxed">
-                <span className="text-white font-semibold">The Caribbean super-app</span> built for the world.<br/>
+              <p className="text-2xl text-gray-200 leading-relaxed">
+                <span className="text-yellow-200 font-semibold">✨ Bringing light to transportation</span> across the Caribbean.<br/>
                 Rides • Delivery • Social • Investment<br/>
-                <strong className="text-green-400 text-3xl">Drivers earn 85%</strong> of every trip!
+                <strong className="text-green-400 text-3xl">Drivers prosper with 85%</strong> earnings!
               </p>
               
               <div className="flex items-center gap-4 text-xl">
-                <span className="text-2xl">🇯🇲</span>
-                <span className="bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent font-semibold">
-                  Born in Jamaica • Made for Everyone
+                <span className="text-2xl">🌟</span>
+                <span className="bg-gradient-to-r from-yellow-400 to-green-400 bg-clip-text text-transparent font-semibold">
+                  Born in Light • Built for Prosperity
                 </span>
               </div>
             </div>
@@ -292,11 +292,11 @@ export default function ModernLanding() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
         <div className="text-center mb-12">
           <h3 className="text-4xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">
-              Why Choose YaadFlex
+            <span className="bg-gradient-to-r from-yellow-400 to-green-400 bg-clip-text text-transparent">
+              Success & Prosperity Features
             </span>
           </h3>
-          <p className="text-xl text-gray-300">Professional service with Caribbean heart</p>
+          <p className="text-xl text-gray-300">Bringing light and opportunity to the Caribbean</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
