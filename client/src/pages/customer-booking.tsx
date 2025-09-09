@@ -93,10 +93,22 @@ export default function CustomerBooking() {
     paymentMethod: 'cash',
   });
 
-  // Base rates for different vehicle types (JMD)
-  const baseRates = {
-    lipstick: { red: 150, white: 200 },
-    shadow: { red: 150, white: 250 }
+  // Base fares by zone (JMD) - Real Jamaican pricing
+  const getBaseFare = (zoneId: string) => {
+    switch (zoneId) {
+      case 'downtown':
+      case 'spanish_town':
+        return 250; // Downtown Kingston/Spanish Town
+      case 'uptown':
+      case 'barbican':
+        return 300; // Uptown areas
+      case 'rural':
+        return 400; // Rural areas
+      case 'norman_manley':
+        return 300; // Airport (plus surcharge)
+      default:
+        return 300;
+    }
   };
 
   // Calculate total fare
@@ -106,12 +118,19 @@ export default function CustomerBooking() {
     const zone = yaadflexZones.find(z => z.id === bookingData.selectedZone);
     if (!zone) return 0;
 
-    // Base fare calculation
-    const baseRate = baseRates[assignedVehicle.type][assignedVehicle.plate];
-    const baseFare = baseRate + (bookingData.estimatedDistance * 30); // 30 JMD per km
+    // Real JMD pricing calculation
+    const baseFare = getBaseFare(bookingData.selectedZone);
+    const distanceCost = bookingData.estimatedDistance * 70; // J$70 per km
+    const estimatedTime = bookingData.estimatedDistance * 3; // Estimate ~3 min per km in traffic
+    const timeCost = estimatedTime * 15; // J$15 per minute
     
-    // Apply zone multiplier
-    const zoneFare = baseFare * zone.multiplier;
+    // Base trip cost
+    let zoneFare = baseFare + distanceCost + timeCost;
+    
+    // Apply zone-specific multipliers for hilly/special areas
+    if (bookingData.selectedZone === 'stony_hill') {
+      zoneFare *= 1.1; // +10% for hilly areas
+    }
     
     // Add lifestyle add-ons
     const addonTotal = Object.entries(bookingData.addons).reduce((total, [addonId, quantity]) => {
@@ -442,7 +461,7 @@ export default function CustomerBooking() {
                 <CardContent className="p-4">
                   <div className="text-center mb-4">
                     <div className="text-3xl font-bold text-green-600">
-                      ${calculateFare()} JMD
+                      J${calculateFare()}
                     </div>
                     <div className="text-sm text-muted-foreground">Total Trip Cost</div>
                   </div>
@@ -450,7 +469,7 @@ export default function CustomerBooking() {
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span>Base Fare ({assignedVehicle?.type} fleet)</span>
-                      <span>${Math.round((baseRates[assignedVehicle?.type || 'lipstick'][assignedVehicle?.plate || 'red'] + (bookingData.estimatedDistance * 30)) * (yaadflexZones.find(z => z.id === bookingData.selectedZone)?.multiplier || 1))} JMD</span>
+                      <span>J${getBaseFare(bookingData.selectedZone) + (bookingData.estimatedDistance * 70) + (Math.round(bookingData.estimatedDistance * 3) * 15)}</span>
                     </div>
                     
                     {Object.entries(bookingData.addons).filter(([_, qty]) => qty > 0).map(([addonId, quantity]) => {
@@ -458,7 +477,7 @@ export default function CustomerBooking() {
                       return addon ? (
                         <div key={addonId} className="flex justify-between">
                           <span>{addon.name} ({quantity}x)</span>
-                          <span>${addon.basePrice * quantity} JMD</span>
+                          <span>J${addon.basePrice * quantity}</span>
                         </div>
                       ) : null;
                     })}

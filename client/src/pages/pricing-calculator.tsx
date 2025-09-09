@@ -43,22 +43,22 @@ type LifestyleAddon = {
 const yaadflexZones: PricingZone[] = [
   { id: 'downtown', name: 'Downtown Kingston', type: 'municipal', multiplier: 1.0, allowedPlates: ['red', 'white'] },
   { id: 'spanish_town', name: 'Spanish Town', type: 'municipal', multiplier: 1.0, allowedPlates: ['red', 'white'] },
-  { id: 'may_pen', name: 'May Pen', type: 'municipal', multiplier: 0.9, allowedPlates: ['red'] },
-  { id: 'hope_pastures', name: 'Hope Pastures', type: 'upscale', multiplier: 1.5, allowedPlates: ['white'] },
-  { id: 'stony_hill', name: 'Stony Hill', type: 'upscale', multiplier: 1.4, allowedPlates: ['white'] },
-  { id: 'blue_mountains', name: 'Blue Mountains', type: 'rural', multiplier: 1.3, allowedPlates: ['red', 'white'] },
-  { id: 'norman_manley', name: 'Norman Manley Airport', type: 'special', multiplier: 1.6, allowedPlates: ['red', 'white'] },
+  { id: 'uptown', name: 'Uptown (New Kingston, Half Way Tree)', type: 'upscale', multiplier: 1.2, allowedPlates: ['white'] },
+  { id: 'barbican', name: 'Barbican/Constant Spring', type: 'upscale', multiplier: 1.2, allowedPlates: ['white'] },
+  { id: 'stony_hill', name: 'Stony Hill (Hilly Areas)', type: 'upscale', multiplier: 1.3, allowedPlates: ['white'] },
+  { id: 'rural', name: 'Rural Areas (St. Mary, Clarendon)', type: 'rural', multiplier: 1.6, allowedPlates: ['red', 'white'] },
+  { id: 'norman_manley', name: 'Norman Manley Airport', type: 'special', multiplier: 2.0, allowedPlates: ['red', 'white'] },
 ];
 
 const lifestyleAddons: LifestyleAddon[] = [
-  { id: 'waiting', name: 'Waiting Time', type: 'waiting_time', basePrice: 50, unit: 'per minute (after 5 min free)', icon: Clock, description: 'First 5 minutes free' },
-  { id: 'extra_stop', name: 'Extra Stop', type: 'extra_stop', basePrice: 200, unit: 'per stop', icon: Plus, description: 'Pick up friend, quick errands' },
+  { id: 'waiting', name: 'Waiting Time', type: 'waiting_time', basePrice: 50, unit: 'per 5-min block (after 5 min free)', icon: Clock, description: 'First 5 minutes free, then J$50 per 5 minutes' },
+  { id: 'extra_stop', name: 'Pick Up Friend/Extra Stop', type: 'extra_stop', basePrice: 100, unit: 'per stop', icon: Plus, description: 'Pick up friend, quick errands' },
   { id: 'smoke_stop', name: 'Smoke/Chill Stop', type: 'smoke_stop', basePrice: 150, unit: 'per stop', icon: Cigarette, description: 'Quick smoke or chill break' },
-  { id: 'food_stop', name: 'Food Stop', type: 'food_stop', basePrice: 250, unit: 'per stop', icon: Coffee, description: 'Stop for food pickup' },
-  { id: 'party_run', name: 'Party Run', type: 'party_run', basePrice: 300, unit: 'late night surcharge', icon: PartyPopper, description: 'Club/party pickup (10pm-6am)' },
-  { id: 'airport_trip', name: 'Airport Trip', type: 'airport', basePrice: 400, unit: 'airport surcharge', icon: Plane, description: 'Travelers only, workers pay standard' },
-  { id: 'uphill', name: 'Uphill/Mountain', type: 'uphill', basePrice: 200, unit: 'terrain surcharge', icon: Mountain, description: 'Steep or difficult terrain' },
-  { id: 'overload', name: 'Extra Passenger', type: 'overload', basePrice: 100, unit: 'per extra person', icon: Users, description: 'Beyond vehicle comfort limit' },
+  { id: 'eating_in_car', name: 'Eating in Car', type: 'eating_surcharge', basePrice: 200, unit: 'surcharge', icon: Coffee, description: 'Food consumption during ride' },
+  { id: 'party_run', name: 'Party Run (After 10PM)', type: 'party_run', basePrice: 200, unit: 'nightlife surcharge', icon: PartyPopper, description: 'Club/party pickup after 10PM' },
+  { id: 'airport_traveler', name: 'Airport Trip (Traveler)', type: 'airport', basePrice: 500, unit: 'airport surcharge', icon: Plane, description: 'For travelers (workers pay standard)' },
+  { id: 'tourist_trip', name: 'Tourist/Excursion Trip', type: 'tourist', basePrice: 0, unit: '+15% on total', icon: Mountain, description: '15% surcharge on total fare' },
+  { id: 'overload', name: 'Extra Passenger', type: 'overload', basePrice: 100, unit: 'per person above limit', icon: Users, description: 'Beyond vehicle comfort limit' },
 ];
 
 export default function PricingCalculator() {
@@ -70,10 +70,22 @@ export default function PricingCalculator() {
   const [selectedAddons, setSelectedAddons] = useState<{[key: string]: number}>({});
   const [isCalculating, setIsCalculating] = useState(false);
 
-  // Base rates for different vehicle types (JMD)
-  const baseRates = {
-    lipstick: { red: 150, white: 200 }, // Red plate standard, white plate premium
-    shadow: { red: 150, white: 250 }   // Shadow fleet (white plates) get premium rates
+  // Base fares by zone (JMD) - Real Jamaican pricing
+  const getBaseFare = (zoneId: string) => {
+    switch (zoneId) {
+      case 'downtown':
+      case 'spanish_town':
+        return 250; // Downtown Kingston/Spanish Town
+      case 'uptown':
+      case 'barbican':
+        return 300; // Uptown areas
+      case 'rural':
+        return 400; // Rural areas
+      case 'norman_manley':
+        return 300; // Airport (plus surcharge)
+      default:
+        return 300;
+    }
   };
 
   // Calculate total fare
@@ -93,12 +105,21 @@ export default function PricingCalculator() {
       return 0;
     }
 
-    // Base fare calculation
-    const baseRate = baseRates[vehicleType][plateType];
-    const baseFare = baseRate + (distance * 30); // 30 JMD per km
+    // Real JMD pricing calculation
+    const baseFare = getBaseFare(selectedZone);
+    const distanceCost = distance * 70; // J$70 per km
+    const estimatedTime = distance * 3; // Estimate ~3 min per km in traffic
+    const timeCost = estimatedTime * 15; // J$15 per minute
     
-    // Apply zone multiplier
-    const zoneFare = baseFare * zone.multiplier;
+    // Base trip cost
+    let zoneFare = baseFare + distanceCost + timeCost;
+    
+    // Apply zone-specific multipliers for hilly/special areas
+    if (selectedZone === 'stony_hill') {
+      zoneFare *= 1.1; // +10% for hilly areas
+    } else if (selectedZone === 'rural') {
+      // Rural already has higher base fare
+    }
     
     // Add lifestyle add-ons
     const addonTotal = Object.entries(selectedAddons).reduce((total, [addonId, quantity]) => {
@@ -252,7 +273,7 @@ export default function PricingCalculator() {
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-sm font-medium">
-                            ${addon.basePrice} JMD {addon.unit}
+                            J${addon.basePrice} {addon.unit}
                           </span>
                           <Input
                             type="number"
@@ -291,7 +312,7 @@ export default function PricingCalculator() {
                 {/* Total Fare */}
                 <div className="text-center">
                   <div className="text-3xl font-bold text-green-600">
-                    ${calculateFare()} JMD
+                    J${calculateFare()}
                   </div>
                   <div className="text-sm text-muted-foreground">Total Trip Cost</div>
                 </div>
@@ -299,8 +320,16 @@ export default function PricingCalculator() {
                 {/* Breakdown */}
                 <div className="space-y-3 pt-4 border-t">
                   <div className="flex justify-between text-sm">
-                    <span>Base Fare + Distance</span>
-                    <span>${Math.round((baseRates[vehicleType][plateType] + (distance * 30)) * (yaadflexZones.find(z => z.id === selectedZone)?.multiplier || 1))} JMD</span>
+                    <span>Base Fare</span>
+                    <span>J${getBaseFare(selectedZone)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span>Distance ({distance}km × J$70)</span>
+                    <span>J${distance * 70}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span>Time ({Math.round(distance * 3)}min × J$15)</span>
+                    <span>J${Math.round(distance * 3) * 15}</span>
                   </div>
                   
                   {Object.entries(selectedAddons).filter(([_, qty]) => qty > 0).map(([addonId, quantity]) => {
@@ -308,7 +337,7 @@ export default function PricingCalculator() {
                     return addon ? (
                       <div key={addonId} className="flex justify-between text-sm">
                         <span>{addon.name} ({quantity}x)</span>
-                        <span>${addon.basePrice * quantity} JMD</span>
+                        <span>J${addon.basePrice * quantity}</span>
                       </div>
                     ) : null;
                   })}
@@ -316,11 +345,11 @@ export default function PricingCalculator() {
                   <div className="border-t pt-3 space-y-2">
                     <div className="flex justify-between font-medium text-green-600">
                       <span>Driver Earnings (85%)</span>
-                      <span>${driverEarnings} JMD</span>
+                      <span>J${driverEarnings}</span>
                     </div>
                     <div className="flex justify-between text-sm text-muted-foreground">
                       <span>Platform Fee (15%)</span>
-                      <span>${platformFee} JMD</span>
+                      <span>J${platformFee}</span>
                     </div>
                   </div>
                 </div>
@@ -340,6 +369,100 @@ export default function PricingCalculator() {
                   <Car className="h-4 w-4 mr-2" />
                   Book {vehicleType === 'lipstick' ? 'Lipstick' : 'Shadow'} Ride
                 </Button>
+              </CardContent>
+            </Card>
+
+            {/* Sample Pricing Examples */}
+            <Card className="bg-gradient-to-br from-yellow-50 to-green-50 dark:from-yellow-950/20 dark:to-green-950/20">
+              <CardHeader>
+                <CardTitle className="text-yellow-700 dark:text-yellow-300 text-lg">
+                  💰 Real Jamaica Pricing Examples
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm">
+                <div className="space-y-3">
+                  
+                  {/* Example 1 */}
+                  <div className="bg-white dark:bg-gray-900/50 p-3 rounded-lg">
+                    <div className="font-medium text-blue-600 mb-2">Downtown → Half Way Tree (7km, 20 mins)</div>
+                    <div className="space-y-1 text-xs">
+                      <div className="flex justify-between">
+                        <span>Base fare:</span>
+                        <span>J$250</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Distance (7km × J$70):</span>
+                        <span>J$490</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Time (20min × J$15):</span>
+                        <span>J$300</span>
+                      </div>
+                      <div className="flex justify-between font-bold border-t pt-1">
+                        <span>Total:</span>
+                        <span>J$1,040</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Example 2 */}
+                  <div className="bg-white dark:bg-gray-900/50 p-3 rounded-lg">
+                    <div className="font-medium text-purple-600 mb-2">Uptown Party Run → Barbican (5km, 15 mins)</div>
+                    <div className="space-y-1 text-xs">
+                      <div className="flex justify-between">
+                        <span>Base fare:</span>
+                        <span>J$300</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Distance (5km × J$70):</span>
+                        <span>J$350</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Time (15min × J$15):</span>
+                        <span>J$225</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Party surcharge:</span>
+                        <span>J$200</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Extra stop:</span>
+                        <span>J$100</span>
+                      </div>
+                      <div className="flex justify-between font-bold border-t pt-1">
+                        <span>Total:</span>
+                        <span>J$1,175</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Example 3 */}
+                  <div className="bg-white dark:bg-gray-900/50 p-3 rounded-lg">
+                    <div className="font-medium text-green-600 mb-2">Rural Clarendon → May Pen (10km, 25 mins)</div>
+                    <div className="space-y-1 text-xs">
+                      <div className="flex justify-between">
+                        <span>Base fare (rural):</span>
+                        <span>J$400</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Distance (10km × J$70):</span>
+                        <span>J$700</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Time (25min × J$15):</span>
+                        <span>J$375</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>2 extra passengers:</span>
+                        <span>J$200</span>
+                      </div>
+                      <div className="flex justify-between font-bold border-t pt-1">
+                        <span>Total:</span>
+                        <span>J$1,675</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
