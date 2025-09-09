@@ -366,7 +366,7 @@ export default function DemoShowcase() {
                   <Button 
                     size="lg" 
                     className="bg-gradient-to-r from-yellow-600 to-green-600 hover:from-yellow-500 hover:to-green-500 text-black text-xl px-8 py-4 font-black shadow-xl"
-                    onClick={() => window.open('mailto:dChris@yaadflexglobalvybz.com?subject=SPONSOR OPPORTUNITY - YaadFlex Partnership')}
+                    onClick={() => window.open('mailto:dChris@yaadflexglobalvibes.com?subject=SPONSOR OPPORTUNITY - YaadFlex Partnership')}
                   >
                     💼 BECOME A SPONSOR
                   </Button>
@@ -394,7 +394,7 @@ export default function DemoShowcase() {
               <strong>Dwayne Christopher Ffolkes</strong> - Founder & CEO
             </div>
             <div className="text-lg text-blue-300">
-              📧 dChris@yaadflexglobalvybz.com <br/>
+              📧 dChris@yaadflexglobalvibes.com <br/>
               📞 1-800-YAADFLEX <br/>
               🌐 Based in Jamaica, Serving the Caribbean & Beyond
             </div>
