@@ -117,12 +117,13 @@ export default function ModernLanding() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
-        <div className="grid lg:grid-cols-5 gap-12 items-start">
-          
-          {/* Left Column - Hero Text */}
-          <div className="lg:col-span-2 space-y-8">
+      {/* Hero Section - Full Space Utilization */}
+      <div className="relative z-10 max-w-full mx-auto px-6 py-16">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-5 gap-8 items-start">
+            
+            {/* Left Column - Hero Text */}
+            <div className="lg:col-span-2 space-y-8">
             <div className="inline-flex items-center gap-2 bg-gray-900/40 px-4 py-2 rounded-lg border border-gray-600/30 backdrop-blur-sm">
               <Globe className="h-4 w-4 text-gray-300" />
               <span className="text-sm text-gray-300 font-medium">Caribbean-Born • Global Reach</span>
@@ -237,43 +238,50 @@ export default function ModernLanding() {
             </div>
           </div>
 
-          {/* Right Column - LIVE MAP SYSTEM */}
+          {/* Right Column - LIVE MAP SYSTEM - Full Width Utilization */}
           <div className="lg:col-span-3 relative">
-            <div className="bg-black/95 backdrop-blur-lg rounded-3xl p-8 border-2 border-green-500/60 shadow-2xl shadow-green-500/20">
-              <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-4">
-                <div className="w-8 h-8 bg-green-500 rounded-full animate-pulse shadow-lg shadow-green-500/50"></div>
-                <span>LIVE DRIVER MAP</span>
-                <div className="text-sm bg-green-900/80 px-3 py-2 rounded-lg text-green-200 font-bold border border-green-700/50">● UBER-STYLE</div>
-                <div className="text-xs bg-blue-900/80 px-2 py-1 rounded text-blue-200 border border-blue-700/50">PROFESSIONAL</div>
-              </h3>
-              
-              {/* MAP STATS BAR */}
-              <div className="mb-6 grid grid-cols-4 gap-2 text-xs">
-                <div className="bg-green-900/60 px-2 py-1 rounded text-center border border-green-700/40">
-                  <div className="text-green-300 font-bold">LIVE DRIVERS</div>
-                  <div className="text-green-100">47 ACTIVE</div>
+            <div className="bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-lg rounded-3xl p-6 border-2 border-blue-400/30 shadow-2xl">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse shadow-lg"></div>
+                  <h3 className="text-2xl font-bold text-white">Live Driver Map</h3>
+                  <div className="text-xs bg-green-500/20 px-3 py-1 rounded-full text-green-300 font-medium border border-green-500/30">
+                    Professional Grade
+                  </div>
                 </div>
-                <div className="bg-blue-900/60 px-2 py-1 rounded text-center border border-blue-700/40">
-                  <div className="text-blue-300 font-bold">COVERAGE</div>
-                  <div className="text-blue-100">ISLAND-WIDE</div>
-                </div>
-                <div className="bg-purple-900/60 px-2 py-1 rounded text-center border border-purple-700/40">
-                  <div className="text-purple-300 font-bold">ZOOM LEVEL</div>
-                  <div className="text-purple-100">INTERACTIVE</div>
-                </div>
-                <div className="bg-orange-900/60 px-2 py-1 rounded text-center border border-orange-700/40">
-                  <div className="text-orange-300 font-bold">MAP TYPE</div>
-                  <div className="text-orange-100">STREET VIEW</div>
+                <div className="flex gap-2">
+                  <div className="text-xs bg-blue-500/20 px-3 py-1 rounded-full text-blue-300 border border-blue-500/30">Kingston</div>
+                  <div className="text-xs bg-purple-500/20 px-3 py-1 rounded-full text-purple-300 border border-purple-500/30">Real-Time</div>
                 </div>
               </div>
               
-              {/* INTERACTIVE UBER-STYLE MAP */}
+              {/* ENHANCED FULL-WIDTH MAP */}
               <InteractiveMap 
-                className="h-[500px] w-full"
+                className="h-[600px] w-full rounded-2xl"
                 showDrivers={true}
                 zoom={12}
                 center={{ lat: 18.0179, lng: -76.8099 }}
               />
+              
+              {/* BOTTOM STATS - Better Space Usage */}
+              <div className="mt-6 grid grid-cols-4 gap-4">
+                <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/20 p-4 rounded-xl border border-green-500/30 text-center">
+                  <div className="text-2xl font-bold text-green-400">47</div>
+                  <div className="text-sm text-green-300">Live Drivers</div>
+                </div>
+                <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/20 p-4 rounded-xl border border-blue-500/30 text-center">
+                  <div className="text-2xl font-bold text-blue-400">12</div>
+                  <div className="text-sm text-blue-300">Active Routes</div>
+                </div>
+                <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/20 p-4 rounded-xl border border-purple-500/30 text-center">
+                  <div className="text-2xl font-bold text-purple-400">5.0</div>
+                  <div className="text-sm text-purple-300">Avg Rating</div>
+                </div>
+                <div className="bg-gradient-to-r from-orange-500/10 to-red-500/20 p-4 rounded-xl border border-orange-500/30 text-center">
+                  <div className="text-2xl font-bold text-orange-400">2min</div>
+                  <div className="text-sm text-orange-300">Avg Pickup</div>
+                </div>
+              </div>
             </div>
           </div>
 
