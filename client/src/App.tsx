@@ -27,6 +27,7 @@ import YaadFlexBankingPage from "@/pages/yaadflex-banking";
 import GalacticPortalPage from "@/pages/galactic-portal";
 import ProfessionalLanding from "@/pages/professional-landing";
 import ModernLanding from "@/pages/modern-landing";
+import UniversalRemote from "@/pages/universal-remote";
 import ContactForm from "@/pages/contact-form";
 import SocialHub from "./pages/SocialHub";
 import { TranslatorDemoPage } from "@/pages/translator-demo";
@@ -62,6 +63,7 @@ function Router() {
       <Route path="/social" component={SocialHub} />
       <Route path="/pricing" component={PricingCalculator} />
       <Route path="/book-ride" component={CustomerBooking} />
+      <Route path="/universal-remote" component={UniversalRemote} />
       
       {/* Authentication-based routes */}
       {isLoading || !isAuthenticated ? (
