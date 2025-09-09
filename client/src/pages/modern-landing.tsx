@@ -76,7 +76,7 @@ export default function ModernLanding() {
               <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-300 to-white bg-clip-text text-transparent">
                 YaadFlex Global Vybz
               </h1>
-              <p className="text-xs text-gray-400">Dark • Sharp • Gothic</p>
+              <p className="text-xs text-gray-400">Premium • Quality • Caribbean</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -108,11 +108,11 @@ export default function ModernLanding() {
             <div className="space-y-4">
               <h2 className="text-5xl lg:text-7xl font-bold leading-tight">
                 <span className="text-white">
-                  Dark
+                  Premium
                 </span>
                 <br />
                 <span className="bg-gradient-to-r from-gray-300 to-gray-100 bg-clip-text text-transparent">
-                  Gothic Platform
+                  Caribbean App
                 </span>
               </h2>
 
@@ -124,7 +124,7 @@ export default function ModernLanding() {
 
               <div className="space-y-4">
                 <p className="text-xl text-gray-300 leading-relaxed">
-                  The Caribbean super-app with that <strong className="text-gray-300">dark gothic finish!</strong> 
+                  The Caribbean super-app with <strong className="text-gray-300">premium quality!</strong> 
                   Born in Jamaica 🇯🇲, spreading across Africa 🌍 and the Caribbean.
                 </p>
                 <div className="flex items-center gap-3 text-sm flex-wrap">
