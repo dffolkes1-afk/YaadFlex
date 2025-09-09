@@ -284,11 +284,11 @@ export default function ModernLanding() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
         <div className="text-center mb-12">
           <h3 className="text-4xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-gray-300 to-white bg-clip-text text-transparent">
-              Gothic Features
+            <span className="bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">
+              Why Choose YaadFlex
             </span>
           </h3>
-          <p className="text-xl text-gray-400">Dark, sharp, menacing power</p>
+          <p className="text-xl text-gray-300">Professional service with Caribbean heart</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -296,41 +296,41 @@ export default function ModernLanding() {
             {
               icon: DollarSign,
               title: "85% Driver Earnings",
-              description: "Dark money! Drivers keep 85% - no games, no tricks. Pure power.",
-              gradient: "from-gray-600 to-gray-700"
+              description: "Fair earnings! Drivers keep 85% of every fare - transparent and honest.",
+              gradient: "from-green-500 to-emerald-600"
             },
             {
               icon: Calculator,
-              title: "Sharp Pricing",
-              description: "Base fare + J$70/km + J$15/min. Sharp, dark pricing - no nonsense.",
-              gradient: "from-gray-700 to-gray-800"
+              title: "Transparent Pricing",
+              description: "Clear pricing: Base fare + J$70/km + J$15/min. Simple and fair.",
+              gradient: "from-blue-500 to-blue-600"
             },
             {
               icon: Shield,
-              title: "Dark Distribution",
-              description: "System assigns jobs automatically. No cherry-picking - everyone serves.",
-              gradient: "from-gray-500 to-gray-600"
+              title: "Fair Distribution",
+              description: "Smart job assignment ensures fair opportunities for all drivers.",
+              gradient: "from-purple-500 to-purple-600"
             },
             {
               icon: Users,
-              title: "Gothic Services",
-              description: "Executive rides, shadow runs, dark transfers - menacing service.",
-              gradient: "from-gray-600 to-gray-800"
+              title: "Premium Services",
+              description: "Executive rides, delivery services, and social connections - complete ecosystem.",
+              gradient: "from-orange-500 to-red-500"
             },
             {
               icon: Zap,
-              title: "100% Shadow",
-              description: "Dark payments, shadow estate, void control - everything dark.",
-              gradient: "from-gray-700 to-gray-900"
+              title: "Complete Platform",
+              description: "Rides, payments, social features, and investment opportunities all in one.",
+              gradient: "from-cyan-500 to-teal-600"
             },
             {
               icon: Star,
-              title: "Dark Platform",
-              description: "Shadow radio, void viewing, dark booking - we're different.",
-              gradient: "from-gray-500 to-gray-700"
+              title: "Caribbean Innovation",
+              description: "CB Radio, community features, and local culture built for global reach.",
+              gradient: "from-yellow-500 to-orange-500"
             }
           ].map((feature, i) => (
-            <div key={i} className="bg-black/60 backdrop-blur-lg rounded-xl p-6 border border-gray-700/30 hover:border-gray-600/50 transition-all hover:scale-105 shadow-xl">
+            <div key={i} className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-gray-600/30 hover:border-gray-500/50 transition-all hover:scale-105 shadow-xl">
               <div className={`w-12 h-12 bg-gradient-to-r ${feature.gradient} rounded-lg flex items-center justify-center mb-4 shadow-lg`}>
                 <feature.icon className="h-6 w-6 text-white" />
               </div>
@@ -343,17 +343,17 @@ export default function ModernLanding() {
 
       {/* Stats Section */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-16">
-        <div className="bg-black/60 backdrop-blur-lg rounded-xl p-8 border border-gray-700/30 shadow-2xl">
+        <div className="bg-white/10 backdrop-blur-lg rounded-xl p-8 border border-gray-600/30 shadow-2xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
-              { number: "85%", label: "Driver Earnings", color: "text-gray-300" },
-              { number: "J$1,040", label: "Avg. Trip Cost", color: "text-gray-400" },
-              { number: "Live", label: "Real-Time Map", color: "text-gray-300" },
-              { number: "Dark", label: "Gothic Design", color: "text-gray-400" }
+              { number: "85%", label: "Driver Earnings", color: "text-green-400" },
+              { number: "J$1,040", label: "Avg. Trip Cost", color: "text-blue-400" },
+              { number: "Live", label: "Real-Time Map", color: "text-purple-400" },
+              { number: "Pro", label: "Quality Service", color: "text-orange-400" }
             ].map((stat, i) => (
               <div key={i} className="space-y-2">
                 <div className={`text-4xl font-bold ${stat.color}`}>{stat.number}</div>
-                <div className="text-gray-400 text-sm">{stat.label}</div>
+                <div className="text-gray-300 text-sm font-medium">{stat.label}</div>
               </div>
             ))}
           </div>
