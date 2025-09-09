@@ -391,7 +391,7 @@ export default function DemoShowcase() {
           <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl p-8 border border-blue-400/30">
             <div className="text-3xl font-black text-blue-400 mb-4">Contact YaadFlex Leadership</div>
             <div className="text-xl text-white mb-4">
-              <strong>Dwayne Christopher Ffolkes</strong> - Founder & CEO
+              <strong>D.C.F.</strong> - Founder & CEO
             </div>
             <div className="text-lg text-blue-300">
               📧 dChris@yaadflexglobalvibes.com <br/>
