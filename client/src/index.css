@@ -177,7 +177,6 @@
     font-family: var(--font-sans);
     /* 🌌 GALACTIC WORLDLY BACKGROUND - CONNECTING TO THE UNIVERSE 🌌 */
     background: 
-      url('@assets/generated_images/Galaxy_pattern_cosmic_background_96ddf7f2.png') center/cover fixed,
       linear-gradient(135deg, var(--jamaica-black) 0%, hsl(153, 50%, 10%) 25%, hsl(260, 80%, 15%) 50%, var(--jamaica-black) 100%);
     position: relative;
     min-height: 100vh;
