@@ -80,6 +80,7 @@ function Router() {
       <Route path="/support" component={EmailAssistant} />
       <Route path="/contact" component={EmailAssistant} />
       <Route path="/universal-remote" component={UniversalRemote} />
+      <Route path="/ceo-dashboard" component={CEODashboard} />
       
       {/* Authentication-based routes */}
       {isLoading || !isAuthenticated ? (
