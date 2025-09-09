@@ -4,44 +4,44 @@
 @tailwind utilities;
 
 :root {
-  /* 💼 PROFESSIONAL BUSINESS COLORS - SLEEK & MODERN 💼 */
-  --business-dark: hsl(215, 25%, 15%);       /* Professional Dark Blue */
-  --business-darker: hsl(215, 30%, 8%);      /* Deep Business Dark */
-  --business-light: hsl(215, 15%, 25%);      /* Light Business Blue */
-  --business-accent: hsl(195, 100%, 45%);    /* Professional Accent Blue */
+  /* 🎯 BETWAY-STYLE SLEEK COLORS - SMOOTH & POLISHED 🎯 */
+  --sleek-green: hsl(145, 70%, 25%);         /* Betway-style Dark Green */
+  --sleek-green-light: hsl(145, 60%, 35%);   /* Light Sleek Green */
+  --sleek-green-bright: hsl(145, 80%, 45%);  /* Bright Accent Green */
+  --carbon-black: hsl(210, 15%, 8%);         /* Deep Carbon Black */
   --steel-gray: hsl(210, 10%, 50%);          /* Steel Gray */
-  --silver: hsl(210, 15%, 85%);              /* Silver */
-  --platinum: hsl(210, 10%, 95%);            /* Platinum White */
+  --platinum: hsl(210, 5%, 95%);             /* Platinum White */
+  --chrome-silver: hsl(210, 8%, 88%);        /* Chrome Silver */
   
-  /* 🏢 CORPORATE THEME COLORS 🏢 */
-  --corporate-blue: hsl(210, 100%, 40%);     /* Corporate Blue */
-  --executive-gray: hsl(220, 10%, 20%);      /* Executive Gray */
-  --premium-gold: hsl(45, 100%, 60%);        /* Premium Gold Accent */
-  --success-green: hsl(145, 80%, 35%);       /* Success Green */
+  /* 🏎️ SMOOTH POLISHED FINISH COLORS 🏎️ */
+  --dropped-green: hsl(145, 75%, 30%);       /* Dropped Green Finish */
+  --sharp-edge: hsl(210, 20%, 15%);          /* Sharp Edge Dark */
+  --polished-white: hsl(0, 0%, 98%);         /* Polished White */
+  --accent-gold: hsl(45, 90%, 55%);          /* Gold Accent */
   
-  --background: hsl(0, 0%, 100%);
-  --foreground: hsl(215, 25%, 15%);
-  --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(215, 25%, 15%);
-  --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(215, 25%, 15%);
-  --primary: var(--business-dark);
+  --background: var(--polished-white);
+  --foreground: var(--carbon-black);
+  --card: var(--polished-white);
+  --card-foreground: var(--carbon-black);
+  --popover: var(--polished-white);
+  --popover-foreground: var(--carbon-black);
+  --primary: var(--sleek-green);
   --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: var(--steel-gray);
+  --secondary: var(--sleek-green-light);
   --secondary-foreground: hsl(0, 0%, 100%);
-  --muted: hsl(210, 15%, 96%);
-  --muted-foreground: hsl(215, 15%, 45%);
-  --accent: var(--business-accent);
+  --muted: var(--chrome-silver);
+  --muted-foreground: var(--steel-gray);
+  --accent: var(--sleek-green-bright);
   --accent-foreground: hsl(0, 0%, 100%);
   --destructive: hsl(0 84% 60%);
   --destructive-foreground: hsl(0, 0%, 100%);
-  --border: hsl(210, 15%, 85%);
-  --input: hsl(210, 15%, 98%);
-  --ring: var(--business-dark);
-  --chart-1: var(--business-dark);
-  --chart-2: var(--business-accent);
-  --chart-3: var(--corporate-blue);
-  --chart-4: var(--success-green);
+  --border: var(--chrome-silver);
+  --input: var(--polished-white);
+  --ring: var(--sleek-green);
+  --chart-1: var(--sleek-green);
+  --chart-2: var(--sleek-green-bright);
+  --chart-3: var(--dropped-green);
+  --chart-4: var(--accent-gold);
   --chart-5: var(--steel-gray);
   --sidebar: hsl(222 84% 8%);
   --sidebar-foreground: hsl(210 40% 98%);
@@ -68,25 +68,25 @@
 }
 
 .dark {
-  --background: hsl(215, 30%, 8%);
+  --background: var(--carbon-black);
   --foreground: hsl(210, 15%, 95%);
-  --card: hsl(215, 25%, 12%);
+  --card: var(--sharp-edge);
   --card-foreground: hsl(210, 15%, 95%);
-  --popover: hsl(215, 25%, 12%);
+  --popover: var(--sharp-edge);
   --popover-foreground: hsl(210, 15%, 95%);
-  --primary: hsl(195, 100%, 45%);
-  --primary-foreground: hsl(215, 30%, 8%);
-  --secondary: hsl(215, 15%, 25%);
+  --primary: var(--sleek-green-bright);
+  --primary-foreground: var(--carbon-black);
+  --secondary: var(--sleek-green);
   --secondary-foreground: hsl(210, 15%, 95%);
-  --muted: hsl(215, 20%, 18%);
+  --muted: hsl(210, 15%, 20%);
   --muted-foreground: hsl(210, 15%, 60%);
-  --accent: hsl(45, 100%, 60%);
-  --accent-foreground: hsl(215, 30%, 8%);
+  --accent: var(--accent-gold);
+  --accent-foreground: var(--carbon-black);
   --destructive: hsl(0 84% 55%);
   --destructive-foreground: hsl(210, 15%, 95%);
-  --border: hsl(215, 20%, 25%);
-  --input: hsl(215, 20%, 18%);
-  --ring: hsl(195, 100%, 45%);
+  --border: hsl(210, 15%, 25%);
+  --input: hsl(210, 15%, 18%);
+  --ring: var(--sleek-green-bright);
 }
 
 .fortress-gradient {
