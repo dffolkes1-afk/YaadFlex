@@ -103,15 +103,20 @@ export default function ModernLanding() {
                 </svg>
               </a>
             </div>
-            <Button variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-600 hover:text-white transition-all" asChild>
-              <a href="https://t.me/yaadflex" target="_blank" rel="noopener" data-testid="link-telegram">
-                Join Network
-              </a>
+            <Button className="bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:shadow-xl hover:shadow-green-500/25 transition-all" asChild>
+              <Link href="/driver-registration" data-testid="button-signup">
+                Sign Up Now
+              </Link>
             </Button>
-            <Button className="bg-gradient-to-r from-gray-700 to-gray-800 text-white hover:shadow-xl hover:shadow-gray-700/25 transition-all" asChild>
+            <Button variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-600 hover:text-white transition-all" asChild>
               <Link href="/links" data-testid="button-enter-app">
                 Enter Platform
               </Link>
+            </Button>
+            <Button variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-600 hover:text-white transition-all" asChild>
+              <a href="https://t.me/yaadflex" target="_blank" rel="noopener" data-testid="link-telegram">
+                Join Community
+              </a>
             </Button>
           </div>
         </div>
