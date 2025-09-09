@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
-import { Car, MapPin, DollarSign, Users, Star, Calculator, Phone, ArrowRight, Zap, Shield, Globe, Monitor } from 'lucide-react';
+import { Car, MapPin, DollarSign, Users, Star, Calculator, Phone, ArrowRight, Zap, Shield, Globe, Monitor, Plane } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -183,6 +183,12 @@ export default function ModernLanding() {
                 <Link href="/universal-remote" data-testid="button-remote-control">
                   <Monitor className="h-5 w-5 mr-2" />
                   Remote Control
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" className="border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black" asChild>
+                <Link href="/travel-booking" data-testid="button-travel-booking">
+                  <Plane className="h-5 w-5 mr-2" />
+                  Travel Agent
                 </Link>
               </Button>
             </div>

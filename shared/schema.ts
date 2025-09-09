@@ -4573,6 +4573,151 @@ export const insertVehicleSchema = createInsertSchema(vehicles).omit({
   updatedAt: true,
 });
 
+// =============================================================
+// YAADLEX TRAVEL BOOKING SYSTEM
+// Complete travel agent functionality for flights, hotels, cars
+// =============================================================
+
+// Travel Bookings - Main booking records
+export const travelBookings = pgTable("travel_bookings", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  bookingType: varchar("booking_type").notNull(), // 'flight', 'hotel', 'car', 'package'
+  status: varchar("status").notNull().default('pending'), // 'pending', 'confirmed', 'cancelled', 'completed'
+  totalAmount: decimal("total_amount", { precision: 12, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).notNull().default('JMD'),
+  commission: decimal("commission", { precision: 12, scale: 2 }).notNull(), // YaadFlex commission (8%)
+  bookingReference: varchar("booking_reference").notNull(),
+  customerName: varchar("customer_name").notNull(),
+  customerEmail: varchar("customer_email").notNull(),
+  customerPhone: varchar("customer_phone").notNull(),
+  specialRequests: text("special_requests"),
+  bookingDetails: jsonb("booking_details"), // Flight/hotel/car specific details
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Flight Bookings - Specific flight details
+export const flightBookings = pgTable("flight_bookings", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  travelBookingId: varchar("travel_booking_id").references(() => travelBookings.id).notNull(),
+  flightType: varchar("flight_type").notNull(), // 'round_trip', 'one_way', 'multi_city'
+  departureAirport: varchar("departure_airport").notNull(), // 'KIN', 'MBJ', etc.
+  arrivalAirport: varchar("arrival_airport").notNull(),
+  departureDate: date("departure_date").notNull(),
+  returnDate: date("return_date"),
+  passengerCount: integer("passenger_count").notNull().default(1),
+  cabinClass: varchar("cabin_class").notNull().default('economy'), // 'economy', 'business', 'first'
+  airline: varchar("airline"),
+  flightNumber: varchar("flight_number"),
+  seatPreference: varchar("seat_preference"), // 'window', 'aisle', 'any'
+  mealPreference: varchar("meal_preference"), // 'standard', 'vegetarian', 'kosher', etc.
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Hotel Bookings - Accommodation details
+export const hotelBookings = pgTable("hotel_bookings", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  travelBookingId: varchar("travel_booking_id").references(() => travelBookings.id).notNull(),
+  hotelName: varchar("hotel_name").notNull(),
+  destination: varchar("destination").notNull(), // City/Country
+  checkInDate: date("check_in_date").notNull(),
+  checkOutDate: date("check_out_date").notNull(),
+  roomType: varchar("room_type").notNull(), // 'standard', 'deluxe', 'suite'
+  guestCount: integer("guest_count").notNull().default(1),
+  roomCount: integer("room_count").notNull().default(1),
+  starRating: integer("star_rating"), // 1-5 stars
+  amenities: jsonb("amenities"), // ['wifi', 'pool', 'gym', 'spa']
+  specialRequests: text("special_requests"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Car Rental Bookings - Vehicle rental details
+export const carRentalBookings = pgTable("car_rental_bookings", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  travelBookingId: varchar("travel_booking_id").references(() => travelBookings.id).notNull(),
+  pickupLocation: varchar("pickup_location").notNull(),
+  dropoffLocation: varchar("dropoff_location").notNull(),
+  pickupDate: date("pickup_date").notNull(),
+  dropoffDate: date("dropoff_date").notNull(),
+  carType: varchar("car_type").notNull(), // 'economy', 'compact', 'midsize', 'luxury', 'suv'
+  carMake: varchar("car_make"),
+  carModel: varchar("car_model"),
+  transmission: varchar("transmission").default('automatic'), // 'automatic', 'manual'
+  fuelType: varchar("fuel_type").default('gasoline'), // 'gasoline', 'diesel', 'electric'
+  insurance: boolean("insurance").default(false),
+  gpsNavigation: boolean("gps_navigation").default(false),
+  driverAge: integer("driver_age"),
+  additionalDrivers: integer("additional_drivers").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Travel Packages - All-inclusive deals
+export const travelPackages = pgTable("travel_packages", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  packageName: varchar("package_name").notNull(),
+  destination: varchar("destination").notNull(),
+  duration: integer("duration").notNull(), // Number of days
+  packageType: varchar("package_type").notNull(), // 'honeymoon', 'family', 'business', 'adventure'
+  basePrice: decimal("base_price", { precision: 12, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).notNull().default('JMD'),
+  maxCapacity: integer("max_capacity").notNull(),
+  currentBookings: integer("current_bookings").default(0),
+  includes: jsonb("includes"), // ['flight', 'hotel', 'meals', 'tours']
+  excludes: jsonb("excludes"), // ['visa', 'personal_expenses']
+  highlights: jsonb("highlights"), // Key attractions/features
+  isActive: boolean("is_active").default(true),
+  validFrom: date("valid_from").notNull(),
+  validTo: date("valid_to").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Travel Agent Commissions - Track earnings
+export const travelCommissions = pgTable("travel_commissions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  travelBookingId: varchar("travel_booking_id").references(() => travelBookings.id).notNull(),
+  agentId: varchar("agent_id").references(() => users.id), // If using travel agents
+  commissionRate: decimal("commission_rate", { precision: 5, scale: 2 }).notNull().default('8.00'), // 8% default
+  commissionAmount: decimal("commission_amount", { precision: 12, scale: 2 }).notNull(),
+  bookingAmount: decimal("booking_amount", { precision: 12, scale: 2 }).notNull(),
+  payoutStatus: varchar("payout_status").default('pending'), // 'pending', 'paid', 'cancelled'
+  paidAt: timestamp("paid_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Popular Destinations - Marketing and recommendations
+export const popularDestinations = pgTable("popular_destinations", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  destination: varchar("destination").notNull(),
+  country: varchar("country").notNull(),
+  airportCode: varchar("airport_code", { length: 3 }),
+  imageUrl: varchar("image_url"),
+  description: text("description"),
+  averagePrice: decimal("average_price", { precision: 10, scale: 2 }),
+  currency: varchar("currency", { length: 3 }).notNull().default('JMD'),
+  season: varchar("season"), // 'peak', 'shoulder', 'off'
+  bookingCount: integer("booking_count").default(0),
+  rating: decimal("rating", { precision: 3, scale: 2 }).default('5.00'),
+  isPromoted: boolean("is_promoted").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type InsertTravelBooking = typeof travelBookings.$inferInsert;
+export type TravelBooking = typeof travelBookings.$inferSelect;
+export type InsertFlightBooking = typeof flightBookings.$inferInsert;
+export type FlightBooking = typeof flightBookings.$inferSelect;
+export type InsertHotelBooking = typeof hotelBookings.$inferInsert;
+export type HotelBooking = typeof hotelBookings.$inferSelect;
+export type InsertCarRentalBooking = typeof carRentalBookings.$inferInsert;
+export type CarRentalBooking = typeof carRentalBookings.$inferSelect;
+export type InsertTravelPackage = typeof travelPackages.$inferInsert;
+export type TravelPackage = typeof travelPackages.$inferSelect;
+export type InsertTravelCommission = typeof travelCommissions.$inferInsert;
+export type TravelCommission = typeof travelCommissions.$inferSelect;
+export type InsertPopularDestination = typeof popularDestinations.$inferInsert;
+export type PopularDestination = typeof popularDestinations.$inferSelect;
+
 export const insertTripSchema = createInsertSchema(trips).omit({
   id: true,
   createdAt: true,
