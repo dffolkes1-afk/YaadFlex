@@ -142,6 +142,49 @@ export default function CeoDashboard() {
     },
   });
 
+  // Process automatic payment for an expense
+  const processPayment = useMutation({
+    mutationFn: async (expenseId: string) => {
+      await apiRequest('POST', '/api/payments/process-payment', { expenseId });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/ceo/expenses'] });
+      toast({
+        title: 'Payment Processed',
+        description: 'The automatic payment has been initiated successfully.',
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: 'Payment Failed',
+        description: error.message || 'Failed to process automatic payment',
+        variant: 'destructive',
+      });
+    },
+  });
+
+  // Process all due payments
+  const processAllDue = useMutation({
+    mutationFn: async () => {
+      const response = await apiRequest('POST', '/api/payments/process-all-due');
+      return response;
+    },
+    onSuccess: (data: any) => {
+      queryClient.invalidateQueries({ queryKey: ['/api/ceo/expenses'] });
+      toast({
+        title: 'All Due Payments Processed',
+        description: `Processed: ${data.results.processed}, Successful: ${data.results.successful}, Failed: ${data.results.failed}`,
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: 'Payment Processing Failed',
+        description: error.message || 'Failed to process due payments',
+        variant: 'destructive',
+      });
+    },
+  });
+
   // Get upcoming expenses (next 30 days)
   const upcomingExpenses = expenses.filter((expense: BusinessExpense) => {
     const dueDate = new Date(expense.nextDueDate);
@@ -193,6 +236,25 @@ export default function CeoDashboard() {
             </p>
           </div>
           <div className="flex items-center gap-3">
+            <Button 
+              onClick={() => processAllDue.mutate()}
+              disabled={processAllDue.isPending}
+              variant="outline"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-600"
+              data-testid="process-all-payments-btn"
+            >
+              {processAllDue.isPending ? (
+                <>
+                  <Activity className="w-4 h-4 mr-2 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <DollarSign className="w-4 h-4 mr-2" />
+                  Pay All Due
+                </>
+              )}
+            </Button>
             <Badge variant="secondary" className="px-3 py-1">
               <Activity className="w-4 h-4 mr-1" />
               All Systems Operational
