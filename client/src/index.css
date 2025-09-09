@@ -320,20 +320,44 @@
       overflow-wrap: break-word;
     }
     
-    /* Make grids stack better on small phones */
+    /* Better balanced grids for small phones */
     .grid-cols-2 {
       grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+      gap: 16px !important;
     }
     
-    .md\\:grid-cols-2 {
-      grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    /* Ensure proper spacing from screen edges */
+    body {
+      padding-left: 20px !important;
+      padding-right: 20px !important;
     }
     
-    .lg\\:grid-cols-3,
-    .md\\:grid-cols-3,
-    .lg\\:grid-cols-4,
-    .md\\:grid-cols-4 {
-      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    /* Balance the main container */
+    .max-w-7xl {
+      padding-left: 16px !important;
+      padding-right: 16px !important;
+      max-width: 100% !important;
+    }
+    
+    /* Fix the passenger vs driver cards to be properly sized */
+    .space-y-6 .bg-gradient-to-r {
+      margin-left: 8px !important;
+      margin-right: 8px !important;
+      padding: 12px !important;
+    }
+    
+    /* Make the cards stack properly with good spacing */
+    .grid.md\\:grid-cols-2 {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 16px !important;
+    }
+    
+    /* Size each passenger/driver card properly */
+    .grid.md\\:grid-cols-2 > div {
+      width: 100% !important;
+      max-width: 320px !important;
+      margin: 0 auto !important;
     }
   }
 
