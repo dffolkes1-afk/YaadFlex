@@ -51,6 +51,7 @@ import RBACDashboard from "@/pages/rbac-dashboard";
 import DeliveryPersonnelDashboard from "@/pages/delivery-personnel-dashboard";
 import DeliveryBooking from "@/pages/delivery-booking";
 import LiveDeliveryTracking from "@/pages/live-delivery-tracking";
+import DemoShowcase from "@/pages/demo-showcase";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -119,6 +120,7 @@ function Router() {
           <Route path="/delivery-dashboard" component={DeliveryPersonnelDashboard} />
           <Route path="/book-delivery" component={DeliveryBooking} />
           <Route path="/track-delivery" component={LiveDeliveryTracking} />
+          <Route path="/demo" component={DemoShowcase} />
         </>
       )}
       <Route path="/secure-login" component={TimeAuthLogin} />
