@@ -29,6 +29,7 @@ import {
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
+import { Link } from 'wouter';
 
 interface BusinessExpense {
   id: string;
@@ -236,6 +237,14 @@ export default function CeoDashboard() {
             </p>
           </div>
           <div className="flex items-center gap-3">
+            <Link 
+              to="/vendor-management" 
+              className="inline-flex items-center px-4 py-2 border border-slate-600 rounded-md text-sm font-medium text-slate-300 bg-slate-700 hover:bg-slate-600 transition-colors"
+              data-testid="vendor-management-link"
+            >
+              <Building2 className="w-4 h-4 mr-2" />
+              Vendor Management
+            </Link>
             <Button 
               onClick={() => processAllDue.mutate()}
               disabled={processAllDue.isPending}

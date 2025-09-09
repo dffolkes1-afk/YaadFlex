@@ -1862,6 +1862,26 @@ P.S. - Early business partners get exclusive territory rights and preferred part
     }
   });
 
+  // Update vendor profile (for auto-pay toggle)
+  app.put("/api/vendor-profiles/:id", isAuthenticated, async (req: any, res) => {
+    try {
+      const [vendor] = await db
+        .update(vendorProfiles)
+        .set({ ...req.body, updatedAt: new Date() })
+        .where(eq(vendorProfiles.id, req.params.id))
+        .returning();
+      
+      if (!vendor) {
+        return res.status(404).json({ error: "Vendor not found" });
+      }
+      
+      res.json(vendor);
+    } catch (error) {
+      console.error("Error updating vendor profile:", error);
+      res.status(500).json({ error: "Failed to update vendor profile" });
+    }
+  });
+
   // Seed vendor profiles for common business services
   app.post("/api/payments/seed-vendors", isAuthenticated, async (req: any, res) => {
     try {
