@@ -114,6 +114,13 @@ export default function ModernLanding() {
                   Gothic Platform
                 </span>
               </h2>
+
+              {/* WE'RE DIFFERENT MESSAGING */}
+              <div className="p-4 bg-gradient-to-r from-blue-900/30 to-purple-900/30 rounded-xl border border-blue-500/40 backdrop-blur-sm">
+                <h3 className="text-lg font-bold text-blue-300 mb-1">🚀 WE'RE DIFFERENT FROM THE REST</h3>
+                <p className="text-blue-100 font-semibold">We're here to make a REAL difference in Jamaica!</p>
+              </div>
+
               <p className="text-xl text-gray-300 leading-relaxed">
                 The Caribbean super-app with that <strong className="text-gray-300">dark gothic finish!</strong> 
                 Sharp edges, menacing design. <strong className="text-gray-200">Drivers keep 85%</strong> - dark, sharp, powerful.
