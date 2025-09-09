@@ -882,3 +882,45 @@
     #1e3a8a 100%);
 }
 
+/* 🏆⚽ FIFA-STYLE REAL-TIME CAR MOVEMENTS - WORLD CUP QUALITY ⚽🏆 */
+@keyframes carMove1 {
+  0% { transform: translateX(0px) translateY(0px); }
+  25% { transform: translateX(80px) translateY(10px); }
+  50% { transform: translateX(160px) translateY(-5px); }
+  75% { transform: translateX(240px) translateY(15px); }
+  100% { transform: translateX(320px) translateY(0px); }
+}
+
+@keyframes carMove2 {
+  0% { transform: translateX(0px) translateY(0px); }
+  20% { transform: translateX(40px) translateY(20px); }
+  40% { transform: translateX(120px) translateY(40px); }
+  60% { transform: translateX(160px) translateY(80px); }
+  80% { transform: translateX(200px) translateY(60px); }
+  100% { transform: translateX(280px) translateY(100px); }
+}
+
+@keyframes carMove3 {
+  0% { transform: translateX(0px) translateY(0px); }
+  30% { transform: translateX(-20px) translateY(60px); }
+  60% { transform: translateX(30px) translateY(120px); }
+  100% { transform: translateX(0px) translateY(180px); }
+}
+
+@keyframes carMove4 {
+  0% { transform: translateX(0px) translateY(0px); }
+  25% { transform: translateX(-60px) translateY(20px); }
+  50% { transform: translateX(-120px) translateY(60px); }
+  75% { transform: translateX(-180px) translateY(40px); }
+  100% { transform: translateX(-240px) translateY(80px); }
+}
+
+@keyframes carMove5 {
+  0% { transform: translateX(0px) translateY(0px); }
+  20% { transform: translateX(50px) translateY(-20px); }
+  40% { transform: translateX(100px) translateY(-10px); }
+  60% { transform: translateX(150px) translateY(30px); }
+  80% { transform: translateX(200px) translateY(20px); }
+  100% { transform: translateX(250px) translateY(-30px); }
+}
+

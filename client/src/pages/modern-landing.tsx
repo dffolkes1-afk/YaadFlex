@@ -261,14 +261,56 @@ export default function ModernLanding() {
                         <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-yellow-200 bg-black/90 px-2 py-1 rounded-lg border border-yellow-500/50 font-bold">HEAVY TRAFFIC</div>
                       </div>
 
-                      {/* Moving Driver - FIFA-STYLE TRACKING */}
-                      <div className="absolute top-7 left-26 w-5 h-5 bg-blue-400 rounded-full shadow-lg shadow-blue-400/70 border-2 border-blue-100/60" style={{
-                        animation: 'pulse 1.5s infinite, transform 8s linear infinite',
-                        transform: 'translateX(0px)'
+                      {/* REAL-TIME MOVING CARS - FIFA STYLE TRACKING */}
+                      
+                      {/* Car 1 - Moving horizontally like FIFA player tracking */}
+                      <div className="absolute top-8 left-4" style={{
+                        animation: 'carMove1 6s linear infinite',
+                        animationDelay: '0s'
                       }}>
-                        <div className="absolute inset-0 bg-blue-400 rounded-full animate-ping opacity-60"></div>
-                        <div className="absolute -top-3 -left-8 text-xs text-blue-100 bg-blue-900/90 px-2 py-1 rounded border border-blue-400/50 font-bold">ROUTE #47</div>
-                        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-blue-200 bg-black/90 px-2 py-1 rounded-lg border border-blue-500/50 font-bold">89km/h ACTIVE</div>
+                        <div className="w-3 h-3 bg-blue-400 rounded-full shadow-lg shadow-blue-400/80 border border-white">
+                          <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 text-xs text-blue-200 bg-black/90 px-1 rounded font-bold">87km/h</div>
+                        </div>
+                      </div>
+
+                      {/* Car 2 - Moving diagonally like FIFA */}
+                      <div className="absolute top-12 left-8" style={{
+                        animation: 'carMove2 8s linear infinite',
+                        animationDelay: '1s'
+                      }}>
+                        <div className="w-3 h-3 bg-green-400 rounded-full shadow-lg shadow-green-400/80 border border-white">
+                          <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 text-xs text-green-200 bg-black/90 px-1 rounded font-bold">45km/h</div>
+                        </div>
+                      </div>
+
+                      {/* Car 3 - Moving vertically */}
+                      <div className="absolute top-4 left-20" style={{
+                        animation: 'carMove3 7s linear infinite',
+                        animationDelay: '2s'
+                      }}>
+                        <div className="w-3 h-3 bg-yellow-400 rounded-full shadow-lg shadow-yellow-400/80 border border-white">
+                          <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 text-xs text-yellow-200 bg-black/90 px-1 rounded font-bold">65km/h</div>
+                        </div>
+                      </div>
+
+                      {/* Car 4 - Moving in curve */}
+                      <div className="absolute top-16 right-16" style={{
+                        animation: 'carMove4 9s linear infinite',
+                        animationDelay: '0.5s'
+                      }}>
+                        <div className="w-3 h-3 bg-purple-400 rounded-full shadow-lg shadow-purple-400/80 border border-white">
+                          <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 text-xs text-purple-200 bg-black/90 px-1 rounded font-bold">92km/h</div>
+                        </div>
+                      </div>
+
+                      {/* Car 5 - Moving around corners */}
+                      <div className="absolute top-20 left-12" style={{
+                        animation: 'carMove5 5s linear infinite',
+                        animationDelay: '3s'
+                      }}>
+                        <div className="w-3 h-3 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/80 border border-white">
+                          <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 text-xs text-cyan-200 bg-black/90 px-1 rounded font-bold">38km/h</div>
+                        </div>
                       </div>
 
                       {/* Spanish Town Area - HELLSING */}
