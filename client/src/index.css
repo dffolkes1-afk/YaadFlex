@@ -376,11 +376,39 @@
       padding-right: 4px !important;
     }
     
-    /* Make navigation use full width and center */
+    /* Make navigation use full width and center everything */
     .flex.items-center.justify-between {
       padding-left: 4px !important;
       padding-right: 4px !important;
       justify-content: center !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 12px !important;
+      text-align: center !important;
+    }
+    
+    /* Center navigation content */
+    nav .max-w-7xl {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      text-align: center !important;
+      width: 100% !important;
+      gap: 16px !important;
+    }
+    
+    /* Center logo and social media buttons separately but aligned */
+    nav .flex.items-center.gap-3,
+    nav .flex.items-center.gap-2 {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-wrap: wrap !important;
+      gap: 8px !important;
+      margin: 0 auto !important;
+      text-align: center !important;
     }
     
     /* Center all content sections */
