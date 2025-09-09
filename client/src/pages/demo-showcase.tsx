@@ -388,12 +388,12 @@ export default function DemoShowcase() {
           </div>
 
           {/* Contact Information */}
-          <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl p-8 border border-blue-400/30">
-            <div className="text-3xl font-black text-blue-400 mb-4">Contact YaadFlex Leadership</div>
-            <div className="text-xl text-white mb-4">
-              <strong>D.C.F.</strong> - Founder & CEO
+          <div className="bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-xl p-6 border border-blue-400/20">
+            <div className="text-xl font-medium text-blue-300 mb-3">Contact Information</div>
+            <div className="text-lg text-gray-300 mb-3">
+              D.C.F. - Founder & CEO
             </div>
-            <div className="text-lg text-blue-300">
+            <div className="text-base text-blue-200">
               📧 dChris@yaadflexglobalvibes.com <br/>
               📞 1-800-YAADFLEX <br/>
               🌐 Based in Jamaica, Serving the Caribbean & Beyond
