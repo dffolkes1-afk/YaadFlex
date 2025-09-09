@@ -93,6 +93,51 @@
   background: linear-gradient(135deg, hsl(222 84% 5%) 0%, hsl(217 19% 16%) 50%, hsl(222 84% 8%) 100%);
 }
 
+/* RADAR SYSTEM ANIMATIONS */
+@keyframes radarSweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes blipPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes moveAcross {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(20px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+.radar-sweep {
+  animation: radarSweep 4s linear infinite;
+}
+
+.driver-blip {
+  animation: blipPulse 2s ease-in-out infinite;
+}
+
+.moving-driver {
+  animation: moveAcross 8s ease-in-out infinite;
+}
+
 .security-pulse {
   animation: securityPulse 2s ease-in-out infinite;
 }
