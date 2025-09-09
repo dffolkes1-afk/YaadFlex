@@ -9,7 +9,7 @@ import {
   rbacAuditLogs,
   users 
 } from "@shared/schema";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import crypto from "node:crypto";
 import type { Request, Response, NextFunction } from "express";
 
@@ -188,8 +188,7 @@ export async function assignRoleToUser(userId: string, roleCode: string): Promis
   // Check if user already has this role
   const existing = await db.select()
     .from(rbacUserRoles)
-    .where(eq(rbacUserRoles.userId, userId))
-    .where(eq(rbacUserRoles.roleId, role.id));
+    .where(and(eq(rbacUserRoles.userId, userId), eq(rbacUserRoles.roleId, role.id)));
 
   if (existing.length === 0) {
     await db.insert(rbacUserRoles).values({
@@ -208,6 +207,5 @@ export async function removeRoleFromUser(userId: string, roleCode: string): Prom
   }
 
   await db.delete(rbacUserRoles)
-    .where(eq(rbacUserRoles.userId, userId))
-    .where(eq(rbacUserRoles.roleId, role.id));
+    .where(and(eq(rbacUserRoles.userId, userId), eq(rbacUserRoles.roleId, role.id)));
 }

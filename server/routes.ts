@@ -6,6 +6,8 @@ import { CBRadioWebSocketServer } from "./cbRadioWebSocket";
 import timeAuthRoutes from "./auth/time-auth-routes";
 import { requireCEOAccess } from "./auth/time-guard";
 import { seedTimeAuthSystem } from "./seed-time-auth";
+import rbacRoutes from "./rbac-routes";
+import { seedRbacSystem } from "./rbac-seed";
 import { 
   demoWallets, 
   demoTransactions, 
@@ -118,6 +120,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Time-locked authentication routes
   app.use(timeAuthRoutes);
   
+  // RBAC + Area Locking routes
+  app.use(rbacRoutes);
+  
   // Seed time-locked authentication system
   app.post('/api/auth/seed', async (req, res) => {
     try {
@@ -125,6 +130,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(result);
     } catch (error) {
       console.error('Error seeding time auth:', error);
+      res.status(500).json({ 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      });
+    }
+  });
+
+  // Seed RBAC system
+  app.post('/api/rbac/seed', async (req, res) => {
+    try {
+      const result = await seedRbacSystem();
+      res.json(result);
+    } catch (error) {
+      console.error('Error seeding RBAC system:', error);
       res.status(500).json({ 
         success: false, 
         error: error instanceof Error ? error.message : 'Unknown error' 
