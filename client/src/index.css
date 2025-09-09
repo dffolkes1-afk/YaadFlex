@@ -326,24 +326,49 @@
       gap: 16px !important;
     }
     
-    /* Ensure proper spacing from screen edges */
+    /* Use more screen width for better text visibility */
     body {
-      padding-left: 20px !important;
-      padding-right: 20px !important;
+      padding-left: 8px !important;
+      padding-right: 8px !important;
     }
     
-    /* Balance the main container */
+    /* Make container use more width */
     .max-w-7xl {
-      padding-left: 16px !important;
-      padding-right: 16px !important;
+      padding-left: 8px !important;
+      padding-right: 8px !important;
       max-width: 100% !important;
     }
     
-    /* Fix the passenger vs driver cards to be properly sized */
+    /* Make text containers wider */
     .space-y-6 .bg-gradient-to-r {
-      margin-left: 8px !important;
-      margin-right: 8px !important;
-      padding: 12px !important;
+      margin-left: 4px !important;
+      margin-right: 4px !important;
+      padding: 8px !important;
+    }
+    
+    /* Make all text areas use more width */
+    .px-6 {
+      padding-left: 8px !important;
+      padding-right: 8px !important;
+    }
+    
+    .container {
+      padding-left: 4px !important;
+      padding-right: 4px !important;
+      max-width: 100% !important;
+    }
+    
+    /* Make sure text doesn't get cut off */
+    h1, h2, h3, h4, p, span, div {
+      width: 100% !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+    }
+    
+    /* Make navigation use full width */
+    .flex.items-center.justify-between {
+      padding-left: 4px !important;
+      padding-right: 4px !important;
     }
     
     /* Make the cards stack properly with good spacing */
@@ -353,11 +378,23 @@
       gap: 16px !important;
     }
     
-    /* Size each passenger/driver card properly */
+    /* Size each passenger/driver card to use more width */
     .grid.md\\:grid-cols-2 > div {
       width: 100% !important;
-      max-width: 320px !important;
+      max-width: 95% !important;
       margin: 0 auto !important;
+    }
+    
+    /* Make buttons use more width and be easier to see */
+    .w-full {
+      width: 100% !important;
+      margin: 0 !important;
+    }
+    
+    /* Ensure all cards use maximum available width */
+    .rounded-lg, .rounded-xl {
+      width: 100% !important;
+      max-width: 95% !important;
     }
   }
 
