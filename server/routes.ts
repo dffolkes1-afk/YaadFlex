@@ -42,6 +42,12 @@ import {
   obdReadings,
   // Platform Commission Tables
   platformCommissions,
+  // CEO Dashboard Tables
+  businessExpenses,
+  aiAdvisoryReports,
+  expenseReminders,
+  systemHealthMetrics,
+  businessGoals,
 } from "@shared/schema";
 import { 
   estimateValue, 
@@ -71,7 +77,13 @@ import {
   insertChatMessageSchema,
   insertMessageTranslationSchema,
   insertChatParticipantSchema,
-  insertTranslationReportSchema
+  insertTranslationReportSchema,
+  // CEO Dashboard Insert Schemas
+  insertBusinessExpenseSchema,
+  insertAiAdvisoryReportSchema,
+  insertExpenseReminderSchema,
+  insertSystemHealthMetricSchema,
+  insertBusinessGoalSchema,
 } from "@shared/schema";
 import { z } from "zod";
 import { desc, eq, and, sql, lte, gte, or } from "drizzle-orm";
@@ -1297,6 +1309,258 @@ P.S. - Early business partners get exclusive territory rights and preferred part
     } catch (error) {
       console.error("Error registering partnership interest:", error);
       res.status(500).json({ message: "Failed to register partnership interest" });
+    }
+  });
+
+  // ===================================================================
+  // CEO DASHBOARD API ROUTES
+  // ===================================================================
+
+  // Get all business expenses
+  app.get('/api/ceo/expenses', isAuthenticated, async (req: any, res) => {
+    try {
+      const expenses = await db.select().from(businessExpenses).orderBy(desc(businessExpenses.nextDueDate));
+      res.json(expenses);
+    } catch (error) {
+      console.error("Error fetching business expenses:", error);
+      res.status(500).json({ message: "Failed to fetch business expenses" });
+    }
+  });
+
+  // Create new business expense
+  app.post('/api/ceo/expenses', isAuthenticated, async (req: any, res) => {
+    try {
+      const validatedData = insertBusinessExpenseSchema.parse(req.body);
+      
+      const [expense] = await db.insert(businessExpenses)
+        .values(validatedData)
+        .returning();
+
+      res.json(expense);
+    } catch (error) {
+      console.error("Error creating business expense:", error);
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "Invalid expense data", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "Failed to create business expense" });
+      }
+    }
+  });
+
+  // Mark expense as paid
+  app.put('/api/ceo/expenses/:id/paid', isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      
+      const [updatedExpense] = await db.update(businessExpenses)
+        .set({ 
+          status: 'paid',
+          lastPaidDate: new Date(),
+          updatedAt: new Date()
+        })
+        .where(eq(businessExpenses.id, id))
+        .returning();
+
+      if (!updatedExpense) {
+        return res.status(404).json({ message: "Expense not found" });
+      }
+
+      res.json(updatedExpense);
+    } catch (error) {
+      console.error("Error marking expense as paid:", error);
+      res.status(500).json({ message: "Failed to update expense" });
+    }
+  });
+
+  // Get AI advisory reports
+  app.get('/api/ceo/advisory-reports', isAuthenticated, async (req: any, res) => {
+    try {
+      const reports = await db.select().from(aiAdvisoryReports)
+        .orderBy(desc(aiAdvisoryReports.generatedAt))
+        .limit(50);
+      
+      res.json(reports);
+    } catch (error) {
+      console.error("Error fetching advisory reports:", error);
+      res.status(500).json({ message: "Failed to fetch advisory reports" });
+    }
+  });
+
+  // Mark advisory report as read
+  app.put('/api/ceo/advisory-reports/:id/read', isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      
+      const [updatedReport] = await db.update(aiAdvisoryReports)
+        .set({ 
+          status: 'read',
+          readAt: new Date()
+        })
+        .where(eq(aiAdvisoryReports.id, id))
+        .returning();
+
+      if (!updatedReport) {
+        return res.status(404).json({ message: "Advisory report not found" });
+      }
+
+      res.json(updatedReport);
+    } catch (error) {
+      console.error("Error marking report as read:", error);
+      res.status(500).json({ message: "Failed to update report" });
+    }
+  });
+
+  // Get business goals
+  app.get('/api/ceo/business-goals', isAuthenticated, async (req: any, res) => {
+    try {
+      const goals = await db.select().from(businessGoals)
+        .where(eq(businessGoals.isActive, true))
+        .orderBy(businessGoals.targetDate);
+      
+      res.json(goals);
+    } catch (error) {
+      console.error("Error fetching business goals:", error);
+      res.status(500).json({ message: "Failed to fetch business goals" });
+    }
+  });
+
+  // Create new business goal
+  app.post('/api/ceo/business-goals', isAuthenticated, async (req: any, res) => {
+    try {
+      const validatedData = insertBusinessGoalSchema.parse(req.body);
+      
+      const [goal] = await db.insert(businessGoals)
+        .values(validatedData)
+        .returning();
+
+      res.json(goal);
+    } catch (error) {
+      console.error("Error creating business goal:", error);
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "Invalid goal data", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "Failed to create business goal" });
+      }
+    }
+  });
+
+  // Update business goal progress
+  app.put('/api/ceo/business-goals/:id', isAuthenticated, async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const { currentValue } = req.body;
+      
+      const [updatedGoal] = await db.update(businessGoals)
+        .set({ 
+          currentValue,
+          updatedAt: new Date()
+        })
+        .where(eq(businessGoals.id, id))
+        .returning();
+
+      if (!updatedGoal) {
+        return res.status(404).json({ message: "Business goal not found" });
+      }
+
+      res.json(updatedGoal);
+    } catch (error) {
+      console.error("Error updating business goal:", error);
+      res.status(500).json({ message: "Failed to update business goal" });
+    }
+  });
+
+  // Get system health metrics
+  app.get('/api/ceo/system-health', isAuthenticated, async (req: any, res) => {
+    try {
+      const metrics = await db.select().from(systemHealthMetrics)
+        .orderBy(desc(systemHealthMetrics.recordedAt))
+        .limit(100);
+      
+      res.json(metrics);
+    } catch (error) {
+      console.error("Error fetching system health metrics:", error);
+      res.status(500).json({ message: "Failed to fetch system health metrics" });
+    }
+  });
+
+  // Record system health metric
+  app.post('/api/ceo/system-health', isAuthenticated, async (req: any, res) => {
+    try {
+      const validatedData = insertSystemHealthMetricSchema.parse(req.body);
+      
+      const [metric] = await db.insert(systemHealthMetrics)
+        .values(validatedData)
+        .returning();
+
+      res.json(metric);
+    } catch (error) {
+      console.error("Error recording system health metric:", error);
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "Invalid metric data", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "Failed to record system health metric" });
+      }
+    }
+  });
+
+  // Generate weekly CEO report
+  app.get('/api/ceo/weekly-report', isAuthenticated, async (req: any, res) => {
+    try {
+      // Get upcoming expenses (next 30 days)
+      const thirtyDaysFromNow = new Date();
+      thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
+      
+      const upcomingExpenses = await db.select().from(businessExpenses)
+        .where(and(
+          eq(businessExpenses.status, 'upcoming'),
+          lte(businessExpenses.nextDueDate, thirtyDaysFromNow)
+        ))
+        .orderBy(businessExpenses.nextDueDate);
+
+      // Get critical advisory reports
+      const criticalReports = await db.select().from(aiAdvisoryReports)
+        .where(and(
+          eq(aiAdvisoryReports.priority, 'critical'),
+          eq(aiAdvisoryReports.status, 'unread')
+        ))
+        .limit(5);
+
+      // Get active business goals
+      const activeGoals = await db.select().from(businessGoals)
+        .where(and(
+          eq(businessGoals.isActive, true),
+          eq(businessGoals.status, 'in_progress')
+        ));
+
+      // Calculate monthly expenses
+      const monthlyExpenses = await db.select({
+        totalAmount: sql<number>`COALESCE(SUM(CAST(${businessExpenses.amount} AS DECIMAL)), 0)`
+      }).from(businessExpenses)
+      .where(and(
+        eq(businessExpenses.frequency, 'monthly'),
+        eq(businessExpenses.isActive, true)
+      ));
+
+      const report = {
+        generatedAt: new Date().toISOString(),
+        summary: {
+          monthlyExpenses: monthlyExpenses[0]?.totalAmount || 0,
+          upcomingRenewals: upcomingExpenses.length,
+          criticalAlerts: criticalReports.length,
+          activeGoals: activeGoals.length
+        },
+        upcomingExpenses: upcomingExpenses.slice(0, 10),
+        criticalReports: criticalReports,
+        goalProgress: activeGoals.map(goal => ({
+          ...goal,
+          progress: Math.min((parseFloat(goal.currentValue) / parseFloat(goal.targetValue)) * 100, 100)
+        }))
+      };
+
+      res.json(report);
+    } catch (error) {
+      console.error("Error generating weekly report:", error);
+      res.status(500).json({ message: "Failed to generate weekly report" });
     }
   });
 
