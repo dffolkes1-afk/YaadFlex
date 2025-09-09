@@ -4,45 +4,45 @@
 @tailwind utilities;
 
 :root {
-  /* 🎯 BETWAY-STYLE SLEEK COLORS - SMOOTH & POLISHED 🎯 */
-  --sleek-green: hsl(145, 70%, 25%);         /* Betway-style Dark Green */
-  --sleek-green-light: hsl(145, 60%, 35%);   /* Light Sleek Green */
-  --sleek-green-bright: hsl(145, 80%, 45%);  /* Bright Accent Green */
-  --carbon-black: hsl(210, 15%, 8%);         /* Deep Carbon Black */
-  --steel-gray: hsl(210, 10%, 50%);          /* Steel Gray */
-  --platinum: hsl(210, 5%, 95%);             /* Platinum White */
-  --chrome-silver: hsl(210, 8%, 88%);        /* Chrome Silver */
+  /* 🖤 GOTHIC KRYPTONIAN COLORS - DARK & MENACING 🖤 */
+  --kryptonian-black: hsl(0, 0%, 5%);        /* Deep Kryptonian Black */
+  --shadow-gray: hsl(0, 0%, 15%);            /* Dark Shadow Gray */
+  --steel-dark: hsl(0, 0%, 25%);             /* Dark Steel */
+  --gothic-silver: hsl(0, 0%, 60%);          /* Gothic Silver */
+  --dark-chrome: hsl(0, 0%, 35%);            /* Dark Chrome */
+  --void-black: hsl(0, 0%, 8%);              /* Void Black */
+  --midnight: hsl(0, 0%, 12%);               /* Midnight */
   
-  /* 🏎️ SMOOTH POLISHED FINISH COLORS 🏎️ */
-  --dropped-green: hsl(145, 75%, 30%);       /* Dropped Green Finish */
-  --sharp-edge: hsl(210, 20%, 15%);          /* Sharp Edge Dark */
-  --polished-white: hsl(0, 0%, 98%);         /* Polished White */
-  --accent-gold: hsl(45, 90%, 55%);          /* Gold Accent */
+  /* ⚔️ SHARP GOTHIC ACCENTS ⚔️ */
+  --dark-accent: hsl(0, 0%, 45%);            /* Dark Accent */
+  --gothic-edge: hsl(0, 0%, 20%);            /* Gothic Sharp Edge */
+  --shadow-white: hsl(0, 0%, 90%);           /* Shadow White */
+  --steel-accent: hsl(0, 0%, 55%);           /* Steel Accent */
   
-  --background: var(--polished-white);
-  --foreground: var(--carbon-black);
-  --card: var(--polished-white);
-  --card-foreground: var(--carbon-black);
-  --popover: var(--polished-white);
-  --popover-foreground: var(--carbon-black);
-  --primary: var(--sleek-green);
-  --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: var(--sleek-green-light);
-  --secondary-foreground: hsl(0, 0%, 100%);
-  --muted: var(--chrome-silver);
-  --muted-foreground: var(--steel-gray);
-  --accent: var(--sleek-green-bright);
-  --accent-foreground: hsl(0, 0%, 100%);
+  --background: var(--kryptonian-black);
+  --foreground: var(--shadow-white);
+  --card: var(--void-black);
+  --card-foreground: var(--shadow-white);
+  --popover: var(--void-black);
+  --popover-foreground: var(--shadow-white);
+  --primary: var(--shadow-gray);
+  --primary-foreground: var(--shadow-white);
+  --secondary: var(--steel-dark);
+  --secondary-foreground: var(--shadow-white);
+  --muted: var(--midnight);
+  --muted-foreground: var(--gothic-silver);
+  --accent: var(--dark-chrome);
+  --accent-foreground: var(--shadow-white);
   --destructive: hsl(0 84% 60%);
   --destructive-foreground: hsl(0, 0%, 100%);
-  --border: var(--chrome-silver);
-  --input: var(--polished-white);
-  --ring: var(--sleek-green);
-  --chart-1: var(--sleek-green);
-  --chart-2: var(--sleek-green-bright);
-  --chart-3: var(--dropped-green);
-  --chart-4: var(--accent-gold);
-  --chart-5: var(--steel-gray);
+  --border: var(--gothic-edge);
+  --input: var(--midnight);
+  --ring: var(--dark-chrome);
+  --chart-1: var(--shadow-gray);
+  --chart-2: var(--steel-dark);
+  --chart-3: var(--dark-chrome);
+  --chart-4: var(--gothic-silver);
+  --chart-5: var(--steel-accent);
   --sidebar: hsl(222 84% 8%);
   --sidebar-foreground: hsl(210 40% 98%);
   --sidebar-primary: hsl(217 91% 60%);
@@ -68,25 +68,25 @@
 }
 
 .dark {
-  --background: var(--carbon-black);
-  --foreground: hsl(210, 15%, 95%);
-  --card: var(--sharp-edge);
-  --card-foreground: hsl(210, 15%, 95%);
-  --popover: var(--sharp-edge);
-  --popover-foreground: hsl(210, 15%, 95%);
-  --primary: var(--sleek-green-bright);
-  --primary-foreground: var(--carbon-black);
-  --secondary: var(--sleek-green);
-  --secondary-foreground: hsl(210, 15%, 95%);
-  --muted: hsl(210, 15%, 20%);
-  --muted-foreground: hsl(210, 15%, 60%);
-  --accent: var(--accent-gold);
-  --accent-foreground: var(--carbon-black);
+  --background: var(--kryptonian-black);
+  --foreground: var(--shadow-white);
+  --card: var(--void-black);
+  --card-foreground: var(--shadow-white);
+  --popover: var(--void-black);
+  --popover-foreground: var(--shadow-white);
+  --primary: var(--steel-dark);
+  --primary-foreground: var(--shadow-white);
+  --secondary: var(--shadow-gray);
+  --secondary-foreground: var(--shadow-white);
+  --muted: var(--midnight);
+  --muted-foreground: var(--gothic-silver);
+  --accent: var(--dark-chrome);
+  --accent-foreground: var(--shadow-white);
   --destructive: hsl(0 84% 55%);
-  --destructive-foreground: hsl(210, 15%, 95%);
-  --border: hsl(210, 15%, 25%);
-  --input: hsl(210, 15%, 18%);
-  --ring: var(--sleek-green-bright);
+  --destructive-foreground: var(--shadow-white);
+  --border: var(--gothic-edge);
+  --input: var(--midnight);
+  --ring: var(--dark-chrome);
 }
 
 .fortress-gradient {
