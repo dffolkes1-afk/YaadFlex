@@ -387,6 +387,10 @@
     .space-y-4, .space-y-6, .space-y-8 {
       text-align: center !important;
       margin: 0 auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
     }
     
     /* Fix country badges alignment */
@@ -395,18 +399,49 @@
       flex-wrap: wrap !important;
       margin: 0 auto !important;
       text-align: center !important;
+      display: flex !important;
+      align-items: center !important;
     }
     
     /* Center the main hero content */
     .lg\\:col-span-2 {
       text-align: center !important;
       margin: 0 auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
     }
     
     /* Center pricing examples */
     .bg-gradient-to-br {
       margin: 0 auto !important;
       text-align: center !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    
+    /* Center all grid layouts */
+    .grid {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 16px !important;
+      text-align: center !important;
+    }
+    
+    /* Balance all cards and sections */
+    .rounded-xl, .rounded-lg {
+      margin: 0 auto !important;
+      max-width: 95% !important;
+      text-align: center !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
     }
     
     /* Make the cards stack properly with good spacing */
@@ -414,6 +449,29 @@
       display: flex !important;
       flex-direction: column !important;
       gap: 16px !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    
+    /* Balance the main layout */
+    .grid.lg\\:grid-cols-5 {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      text-align: center !important;
+      gap: 20px !important;
+    }
+    
+    /* Center the main container */
+    .max-w-7xl {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      text-align: center !important;
+      width: 95% !important;
+      margin: 0 auto !important;
     }
     
     /* Size each passenger/driver card to use more width */
