@@ -1627,11 +1627,96 @@ export const businessExpenses = pgTable("business_expenses", {
   nextDueDate: timestamp("next_due_date").notNull(),
   lastPaidDate: timestamp("last_paid_date"),
   autoRenewal: boolean("auto_renewal").default(false),
+  autoPayment: boolean("auto_payment").default(false), // Enable automatic payment
+  paymentMethodId: varchar("payment_method_id"), // Stripe payment method ID
+  stripeSubscriptionId: varchar("stripe_subscription_id"), // For recurring payments
+  vendorProfileId: varchar("vendor_profile_id"), // Reference to vendor details
+  paymentStatus: varchar("payment_status").default('pending'), // 'pending', 'processing', 'completed', 'failed'
+  lastPaymentAttempt: timestamp("last_payment_attempt"),
+  nextPaymentRetry: timestamp("next_payment_retry"),
+  paymentFailureCount: integer("payment_failure_count").default(0),
   isActive: boolean("is_active").default(true),
   alertDays: integer("alert_days").default(30), // Days before due date to alert
   description: text("description"),
   invoiceUrl: text("invoice_url"), // URL to stored invoice/receipt
   status: varchar("status").default('upcoming'), // 'upcoming', 'overdue', 'paid', 'cancelled'
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Payment Methods table for automatic payments
+export const paymentMethods = pgTable("payment_methods", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  stripePaymentMethodId: varchar("stripe_payment_method_id").notNull(),
+  type: varchar("type").notNull(), // 'card', 'bank_account', 'digital_wallet'
+  brand: varchar("brand"), // 'visa', 'mastercard', etc.
+  last4: varchar("last_4"),
+  expiryMonth: integer("expiry_month"),
+  expiryYear: integer("expiry_year"),
+  bankName: varchar("bank_name"),
+  isDefault: boolean("is_default").default(false),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Payment History table for tracking all payments
+export const paymentHistory = pgTable("payment_history", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  expenseId: varchar("expense_id").references(() => businessExpenses.id).notNull(),
+  paymentMethodId: varchar("payment_method_id").references(() => paymentMethods.id),
+  stripePaymentIntentId: varchar("stripe_payment_intent_id"),
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).notNull().default('JMD'),
+  status: varchar("status").notNull(), // 'pending', 'processing', 'completed', 'failed', 'cancelled'
+  paymentDate: timestamp("payment_date"),
+  completedAt: timestamp("completed_at"),
+  failureReason: text("failure_reason"),
+  receiptUrl: varchar("receipt_url"),
+  vendorConfirmation: varchar("vendor_confirmation"),
+  stripeChargeId: varchar("stripe_charge_id"),
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Vendor Profiles for managing payment recipients
+export const vendorProfiles = pgTable("vendor_profiles", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name").notNull(), // e.g., 'GoDaddy', 'Google LLC', 'Insurance Company'
+  category: varchar("category").notNull(), // 'insurance', 'hosting', 'domain', 'email', 'legal'
+  contactEmail: varchar("contact_email").notNull(),
+  billingEmail: varchar("billing_email"),
+  supportEmail: varchar("support_email"),
+  accountNumber: varchar("account_number"), // Your account number with them
+  customerNumber: varchar("customer_number"),
+  paymentTerms: varchar("payment_terms").default('due_on_receipt'), // 'net15', 'net30', 'due_on_receipt'
+  preferredPaymentMethod: varchar("preferred_payment_method").default('card'), // 'card', 'bank_transfer', 'check', 'paypal'
+  website: varchar("website"),
+  phone: varchar("phone"),
+  address: text("address"),
+  taxId: varchar("tax_id"),
+  notes: text("notes"), // Special payment instructions
+  autoPayEnabled: boolean("auto_pay_enabled").default(true),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Automatic Payment Jobs for scheduling
+export const paymentJobs = pgTable("payment_jobs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  expenseId: varchar("expense_id").references(() => businessExpenses.id).notNull(),
+  scheduledDate: timestamp("scheduled_date").notNull(),
+  jobType: varchar("job_type").notNull(), // 'payment', 'reminder', 'retry'
+  status: varchar("status").default('scheduled'), // 'scheduled', 'processing', 'completed', 'failed', 'cancelled'
+  attempts: integer("attempts").default(0),
+  maxAttempts: integer("max_attempts").default(3),
+  lastAttemptAt: timestamp("last_attempt_at"),
+  nextRetryAt: timestamp("next_retry_at"),
+  errorMessage: text("error_message"),
+  metadata: jsonb("metadata"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -1767,6 +1852,28 @@ export const insertBusinessGoalSchema = createInsertSchema(businessGoals).omit({
   updatedAt: true,
 });
 
+// Automatic Payment Insert Schemas
+export const insertPaymentMethodSchema = createInsertSchema(paymentMethods).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+export const insertPaymentHistorySchema = createInsertSchema(paymentHistory).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+export const insertVendorProfileSchema = createInsertSchema(vendorProfiles).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+export const insertPaymentJobSchema = createInsertSchema(paymentJobs).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Types
 export type PrecisionMeasurement = typeof precisionMeasurements.$inferSelect;
 export type InsertPrecisionMeasurement = typeof precisionMeasurements.$inferInsert;
@@ -1788,6 +1895,16 @@ export type SystemHealthMetric = typeof systemHealthMetrics.$inferSelect;
 export type InsertSystemHealthMetric = z.infer<typeof insertSystemHealthMetricSchema>;
 export type BusinessGoal = typeof businessGoals.$inferSelect;
 export type InsertBusinessGoal = z.infer<typeof insertBusinessGoalSchema>;
+
+// Automatic Payment Types
+export type PaymentMethod = typeof paymentMethods.$inferSelect;
+export type InsertPaymentMethod = z.infer<typeof insertPaymentMethodSchema>;
+export type PaymentHistory = typeof paymentHistory.$inferSelect;
+export type InsertPaymentHistory = z.infer<typeof insertPaymentHistorySchema>;
+export type VendorProfile = typeof vendorProfiles.$inferSelect;
+export type InsertVendorProfile = z.infer<typeof insertVendorProfileSchema>;
+export type PaymentJob = typeof paymentJobs.$inferSelect;
+export type InsertPaymentJob = z.infer<typeof insertPaymentJobSchema>;
 
 // ===================== E-COMMERCE INVENTORY SYSTEM =====================
 

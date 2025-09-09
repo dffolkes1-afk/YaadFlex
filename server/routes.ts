@@ -48,6 +48,11 @@ import {
   expenseReminders,
   systemHealthMetrics,
   businessGoals,
+  // Automatic Payment Tables
+  paymentMethods,
+  paymentHistory,
+  vendorProfiles,
+  paymentJobs,
 } from "@shared/schema";
 import { 
   estimateValue, 
@@ -84,6 +89,11 @@ import {
   insertExpenseReminderSchema,
   insertSystemHealthMetricSchema,
   insertBusinessGoalSchema,
+  // Automatic Payment Insert Schemas
+  insertPaymentMethodSchema,
+  insertPaymentHistorySchema,
+  insertVendorProfileSchema,
+  insertPaymentJobSchema,
 } from "@shared/schema";
 import { z } from "zod";
 import { desc, eq, and, sql, lte, gte, or } from "drizzle-orm";
