@@ -52,17 +52,11 @@ export default function ModernLanding() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
       
-      {/* Gothic Kryptonian Background */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Dark gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-gray-900/90 to-black/95"></div>
-        {/* Sharp angular patterns */}
-        <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-bl from-gray-700/5 to-transparent transform rotate-12"></div>
-        <div className="absolute bottom-0 left-0 w-1/4 h-1/4 bg-gradient-to-tr from-gray-600/5 to-transparent transform -rotate-12"></div>
-        {/* Subtle dark glow */}
-        <div className="absolute top-1/4 left-1/2 w-96 h-96 bg-gradient-radial from-gray-700/3 to-transparent rounded-full blur-3xl"></div>
+      {/* Clean Background */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/95 to-black/95"></div>
       </div>
 
       {/* Navigation */}
@@ -133,34 +127,25 @@ export default function ModernLanding() {
               <span className="text-sm text-gray-300 font-medium">Caribbean-Born • Global Reach</span>
             </div>
             
-            <div className="space-y-4">
-              <h2 className="text-5xl lg:text-7xl font-bold leading-tight">
-                <span className="text-white">
-                  Premium
+            <div className="space-y-6">
+              <h1 className="text-6xl lg:text-8xl font-bold leading-tight">
+                <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
+                  YaadFlex
                 </span>
                 <br />
-                <span className="bg-gradient-to-r from-gray-300 to-gray-100 bg-clip-text text-transparent">
-                  Caribbean App
+                <span className="text-white">
+                  Global Vybz
                 </span>
-              </h2>
+              </h1>
 
-              {/* WE'RE DIFFERENT MESSAGING */}
-              <div className="p-4 bg-gradient-to-r from-blue-900/30 to-purple-900/30 rounded-xl border border-blue-500/40 backdrop-blur-sm">
-                <h3 className="text-lg font-bold text-blue-300 mb-1">🚀 WE'RE DIFFERENT FROM THE REST</h3>
-                <p className="text-blue-100 font-semibold">We're here to make a REAL difference in Jamaica!</p>
-              </div>
-
-              <div className="space-y-4">
-                <p className="text-xl text-gray-300 leading-relaxed">
-                  The Caribbean super-app with <strong className="text-gray-300">premium quality!</strong> 
-                  Born in Jamaica 🇯🇲, spreading across Africa 🌍 and the Caribbean.
-                </p>
-                <div className="flex items-center gap-3 text-sm flex-wrap">
-                  <span className="bg-green-900/40 px-3 py-1 rounded-lg border border-green-500/40 text-green-300">🇯🇲 Jamaica</span>
-                  <span className="bg-orange-900/40 px-3 py-1 rounded-lg border border-orange-500/40 text-orange-300">🇳🇬 Nigeria</span>
-                  <span className="bg-red-900/40 px-3 py-1 rounded-lg border border-red-500/40 text-red-300">🇰🇪 Kenya</span>
-                  <span className="bg-purple-900/40 px-3 py-1 rounded-lg border border-purple-500/40 text-purple-300">🌍 Africa</span>
-                </div>
+              <p className="text-2xl text-gray-300 leading-relaxed">
+                Caribbean super-app for rides, delivery & more. <br/>
+                <strong className="text-green-400">Drivers earn 85%</strong> of every fare!
+              </p>
+              
+              <div className="flex items-center gap-3 text-lg">
+                <span className="text-green-400">🇯🇲</span>
+                <span className="text-gray-300">Born in Jamaica • Built for the world</span>
               </div>
             </div>
 
@@ -204,30 +189,16 @@ export default function ModernLanding() {
                 </div>
               </div>
 
-              {/* QUICK ACCESS FEATURES */}
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                <Button size="sm" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-600" asChild>
+              {/* SIMPLE QUICK ACCESS */}
+              <div className="flex gap-4">
+                <Button variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-600" asChild>
                   <Link href="/pricing" data-testid="button-pricing">
-                    <Calculator className="h-4 w-4 mr-2" />
-                    Pricing
+                    View Pricing
                   </Link>
                 </Button>
-                <Button size="sm" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-600" asChild>
-                  <Link href="/universal-remote" data-testid="button-remote">
-                    <Monitor className="h-4 w-4 mr-2" />
-                    IoT
-                  </Link>
-                </Button>
-                <Button size="sm" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-600" asChild>
-                  <Link href="/travel-booking" data-testid="button-travel">
-                    <Plane className="h-4 w-4 mr-2" />
-                    Travel
-                  </Link>
-                </Button>
-                <Button size="sm" variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-600" asChild>
-                  <Link href="/trading-dashboard" data-testid="button-trading">
-                    <DollarSign className="h-4 w-4 mr-2" />
-                    Trading
+                <Button variant="outline" className="border-gray-600 text-gray-300 hover:bg-gray-600" asChild>
+                  <Link href="/contact" data-testid="button-contact">
+                    Contact Us
                   </Link>
                 </Button>
               </div>
