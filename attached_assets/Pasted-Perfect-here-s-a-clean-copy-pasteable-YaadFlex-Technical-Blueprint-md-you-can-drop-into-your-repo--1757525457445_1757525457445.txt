@@ -1,0 +1,272 @@
+Perfect—here’s a clean, copy-pasteable YaadFlex-Technical-Blueprint.md you can drop into your repo, send to a dev, or paste into any chat. It’s self-contained and action-ready.
+
+# YaadFlex – Technical Blueprint
+
+**Owner:** Dwayne Ffolkes  
+**Product:** YaadFlex Global Vybz (Caribbean super-app)  
+**Status:** Jamaica-first demo (rides + delivery + wallet) ready to implement; global-ready roadmap below.  
+**Philosophy:** 85% driver/worker earnings, transparent fees, safety-first automation.
+
+---
+
+## 1) Product Overview
+
+YaadFlex is an all-in-one platform for:
+- **Mobility:** ride-hailing (red plate urban / curated white plate rural), errands, deliveries.
+- **Workforce:** job marketplace (construction + freelancers) with hiring & payouts.
+- **Commerce:** shops/malls online, equipment rentals, vehicle marketplace.
+- **Communication:** voice UX (accessible), chat/translation, Teen Vybz social layer.
+- **Finance:** multi-currency wallet (JMD/USD/YFX), QR pay, cash-in/out, driver/worker payouts.
+
+**Key Differentiators**
+- Voice-first + accessibility for the blind.
+- Built-in AI translator (chat in your language, others see theirs).
+- Self-healing DevRep agent (observability → propose patch → PR → canary → rollback).
+- Unified payout tunnel (drivers + workers share the same wallet engine).
+
+---
+
+## 2) Architecture (High Level)
+
+[ Web App (React/Vite/Tailwind/shadcn) ] | v [ API Gateway / Express + Zod ] | +-- Auth (OIDC/JWT, role-based ACL) +-- Payments (Wallet + Processor integrations) +-- Domains: rides, delivery, jobs, marketplace, social | v [ PostgreSQL (Neon/Cloud) + Drizzle ORM ] | +-- Queues (BullMQ/Redis) for async jobs +-- Object Storage (images/docs) (S3/Cloudflare R2) | v [ Observability: logs/metrics/traces (OpenTelemetry + Grafana/Prom)] | v [ DevRep Agent (LLM tool-use) -> Repo/CI/Monitor/Sec scanners ]
+
+**Environments**
+- `dev` (Replit/local), `staging` (preview deploy + test data), `prod` (locked, approvals required).
+
+---
+
+## 3) Tech Stack
+
+- **Frontend:** React + TypeScript, Vite, shadcn/ui, Tailwind, TanStack Query, React Hook Form + Zod.
+- **Backend:** Node/Express + TypeScript, Drizzle ORM, PostgreSQL (Neon), BullMQ + Redis.
+- **Auth:** OIDC/JWT (Clerk/Auth0/Replit OIDC), RBAC middleware.
+- **Payments:** Internal Wallet (JMD/USD/YFX) + external rails (Stripe/PayPal/Local bank partner).
+- **Realtime:** WebSockets or SSE for live jobs/driver location.
+- **Maps/Geo:** Mapbox or Google Maps SDK, geofencing + pricing zones.
+- **Files:** S3/R2 for images (IDs, vehicle pics, receipts).
+- **Infra:** Replit (dev), Fly.io/Vercel/Render (staging/prod) or Replit Teams Deploy.
+- **Obs/Sec:** OpenTelemetry, Semgrep, Dependabot/Snyk, GitHub Actions CI.
+
+---
+
+## 4) Core Domains & Minimal Schemas (Drizzle-style)
+
+> Tables are simplified; extend as needed.
+
+### 4.1 Users & Roles
+- `users(id, email, displayName, role: "customer|driver|worker|merchant|admin", isActive, createdAt)`
+- `profiles(userId, phone, photoUrl, locale, kycStatus)`
+
+### 4.2 Wallet & Payments
+- `wallets(id, userId, createdAt)`
+- `wallet_balances(walletId, currency, amount, updatedAt)` (PK: walletId+currency)
+- `wallet_tx(id, type, currency, amount, fee, fromWalletId?, toWalletId?, externalRef?, meta, status, createdAt)`
+- `payment_requests(id, merchantWalletId, currency, amount, description, expiresAt, status)`
+- `payout_methods(id, walletId, kind, label, details, isDefault, createdAt)`
+- `fx_rates(pair, rate, updatedAt)`
+- `coin_denominations(code, value, face, theme, artworkUrl)` // YardFlex coins up to 2000
+
+**Commission Flow (Ride = 2000 JMD, 15% fee)**
+1) House → Revenue: 300 JMD  
+2) House → Driver: 1700 JMD
+
+### 4.3 Rides & Delivery
+- `drivers(id, userId, status, rating, carMake, carModel, plateType:"red|white", plateNo, insuranceExp, fitnessExp, docs)`
+- `rides(id, riderId, driverId, pickup, dropoff, distanceKm, eta, priceJMD, status:"requested|accepted|arrived|in_progress|completed|cancelled", createdAt, completedAt)`
+- `ride_events(id, rideId, type, payload, ts)` // audit trail
+- `delivery_orders(id, senderId, courierId, pickup, dropoff, weight, priceJMD, status, createdAt)`
+
+**Pricing Policy**
+- Base fare by zone + per-km + per-minute.
+- Addons: waiting time, extra stops, night fee, “party rush” premium (capped).
+- JMD primary; FX overlay for USD if needed.
+
+### 4.4 Jobs & Workforce
+- `companies(id, name, email, phone, address, industry, isActive)`
+- `jobs(id, companyId, title, description, category, location, payRate, payType, skillLevel, equipmentRequired[], status, startDate, endDate)`
+- `workers(id, firstName, lastName, email, phone, skills[], experienceLevel, location, hourlyRate, isAvailable, rating, bio)`
+- `job_applications(id, jobId, workerId, status, appliedAt, message)`
+- `job_assignments(id, jobId, workerId, status, assignedAt, notes)`
+
+### 4.5 Marketplace (Vehicles/Equipment)
+- `vehicle_listings(id, sellerId, make, model, year, price, mileage, condition, fuelType, transmission, location, images[], description, isActive)`
+- `equipment_hubs(id, name, address, phone, email, operatingHours, equipment[], isActive)`
+- `equipment_checkouts(id, workerId, hubId, jobId, equipmentName, checkedOutAt, returnedAt, status, condition, notes)`
+
+### 4.6 Social & Translation
+- `posts(id, userId, kind:"photo|short_video|text", mediaUrl?, caption, visibility, createdAt)`
+- `comments(id, postId, userId, text, createdAt)`
+- `translations(id, sourceText, srcLang, dstLang, translatedText, createdAt)` // caching
+- **Teen Vybz**: age-gated communities, mod tools, content filters.
+
+---
+
+## 5) API Surface (Express + Zod)
+
+**Auth**
+- `POST /api/auth/login`, `POST /api/auth/refresh`
+- `GET /api/me`
+
+**Wallet**
+- `POST /api/wallets` (create for user)
+- `GET /api/wallets/:id/balances`
+- `GET /api/wallets/:id/tx`
+- `POST /api/wallets/:id/deposit`
+- `POST /api/wallets/transfer`
+- `POST /api/payment-requests`
+- `POST /api/payment-requests/:id/pay`
+- `POST /api/payout-methods`
+- `POST /api/payouts` (initiate cash-out; async job)
+
+**Rides**
+- `POST /api/rides/request`
+- `POST /api/rides/:id/accept` (driver)
+- `POST /api/rides/:id/status` (arrived|in_progress|completed|cancelled)
+- `GET /api/rides/:id`
+- WebSocket: driver location, ETA, live status.
+
+**Delivery**
+- `POST /api/deliveries`
+- `POST /api/deliveries/:id/assign`
+- `POST /api/deliveries/:id/status`
+- `GET /api/deliveries/:id`
+
+**Jobs**
+- `POST /api/jobs`
+- `GET /api/jobs?status=open&skill=...`
+- `POST /api/jobs/:id/apply`
+- `POST /api/jobs/:id/assign/:workerId`
+
+**Marketplace**
+- `POST /api/vehicles`, `GET /api/vehicles`, `GET /api/vehicles/:id`
+
+**Admin/CEO**
+- `GET /api/admin/obligations` (insurance/licensing/renewals)
+- `POST /api/admin/run-payables` (push-to-pay, requires approval)
+- `POST /api/admin/toggles` (feature flags)
+
+---
+
+## 6) Security, Compliance & Roles
+
+**RBAC**
+- `admin` (CEO ops, approvals, kill-switch), `devlead`, `merchant`, `driver`, `worker`, `customer`.
+
+**KYC/AML**
+- Tiered KYC: Basic (low limits), Plus, Pro (higher limits).
+- Sanctions screening via payment partner where required.
+- **Logs:** all payments & approvals auditable.
+
+**PII/Sec**
+- Secrets vault, key rotation.
+- JWT short TTL + refresh.
+- Rate limiting + bot protection on wallet routes.
+
+---
+
+## 7) Pricing & Earnings
+
+- **Driver/Worker earnings:** target **85%** of net, platform takes **≤15%** (transparent).
+- Dynamic addons: waiting time, extra passengers, area premium (fair caps).
+- Promotions/Rewards: `reward_points` bank (convertible to rides/discounts).
+
+---
+
+## 8) Realtime & Geo
+
+- Driver location updates through WS (throttled, e.g., 1–2s).
+- Geofencing for zones (urban/rural policy differences).
+- Surge-like multipliers for peak events (cap to protect users).
+
+---
+
+## 9) DevRep Agent (Self-Healing)
+
+**Signals → Plan → PR → Canary → Rollback**
+- Watches error rate/p95 latency; proposes patches with citations.
+- Auto PR for low-risk; approvals required for high-risk.
+- Canary 5% traffic, auto rollback on SLO breach.
+
+**Audits**
+- Every change logged with diff, build link, metrics.
+
+---
+
+## 10) Deployment & Environments
+
+- **Dev:** Replit (preview URL), local `.env`.
+- **Staging:** seed demo data, QA test runs, Semgrep scan.
+- **Prod:** protected branch, approvals; infra as code (Pulumi/Terraform optional).
+
+**Build commands**
+```bash
+npm i
+npm run db:generate && npm run db:migrate
+npm run build
+npm run start
+
+
+---
+
+11) Domain & Email
+
+Domains: yardflex.com, yaadflex.com, yardflexglobal.com (buy when ready).
+
+Email: Google Workspace; aliases for support, ops, payouts.
+
+
+
+---
+
+12) Roadmap (90 Days)
+
+Phase 1 (Weeks 1–3): Wallet (JMD + YFX), rides MVP, driver onboarding, QR payments.
+Phase 2 (Weeks 4–6): Delivery MVP, CEO dashboard obligations, payouts (local bank partner).
+Phase 3 (Weeks 7–9): Jobs marketplace workflows + marketplace listings.
+Phase 4 (Weeks 10–12): Translator/voice UX, Teen Vybz beta, DevRep agent alpha.
+
+
+---
+
+13) Quickstart Commands
+
+# backend
+npm i express cors zod dotenv pg drizzle-orm drizzle-kit bullmq ioredis
+echo 'export default { schema: "./src/db/**/*.ts", out: "./drizzle" }' > drizzle.config.ts
+npx drizzle-kit generate && npx drizzle-kit migrate
+npm run dev
+
+# frontend
+npm create vite@latest yaadflex -- --template react-ts
+cd yaadflex && npm i @tanstack/react-query zod react-hook-form tailwindcss
+
+
+---
+
+14) Success Criteria
+
+Sub-10s ride matching in urban zones; <2% failed payments; 99.5% uptime.
+
+85% net earnings realized by drivers/workers.
+
+CEO dashboard shows zero overdue obligations (insurance/taxes/licensing).
+
+Positive accessibility feedback from blind users (voice-first flows).
+
+
+
+---
+
+15) Contacts
+
+Owner: Dwayne Ffolkes
+
+Support: support@yardflex.com (alias)
+
+Ops/Approvals: ops@yardflex.com
+
+
+---
+
+If you want, I can also export that as a **PDF** for sharing, but you can already **copy & paste** this Markdown anywhere right now.0
+
