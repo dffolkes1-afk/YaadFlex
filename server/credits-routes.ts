@@ -180,75 +180,110 @@ router.post("/api/credits/top-up", isAuthenticated, async (req: any, res) => {
   }
 });
 
-// Complete top-up (webhook or callback from payment provider)
-async function completeTopUp(topUpId: string) {
+// Verify webhook signature for security
+async function verifyWebhookSignature(provider: string, signature: string, payload: any): Promise<boolean> {
+  // In production, implement provider-specific verification
+  // For Stripe: use stripe.webhooks.constructEvent
+  // For other providers: use HMAC validation with shared secret
+  
+  if (provider === "test") {
+    // Test provider always passes in dev mode
+    return process.env.NODE_ENV === "development";
+  }
+  
+  // TODO: Implement real provider verification
+  console.warn(`Webhook verification not implemented for provider: ${provider}`);
+  return false;
+}
+
+// Complete top-up with idempotency and proper locking
+async function completeTopUp(topUpId: string, providerRefId?: string) {
   return await db.transaction(async (tx) => {
-    // Get top-up details
+    // Get top-up details with FOR UPDATE lock
     const [topUp] = await tx.select()
       .from(creditTopUps)
-      .where(eq(creditTopUps.id, topUpId));
+      .where(eq(creditTopUps.id, topUpId))
+      .for("update");
     
     if (!topUp || topUp.status !== "pending") {
       throw new Error("Invalid top-up");
     }
     
+    // Check for idempotency - prevent double processing
+    if (providerRefId && topUp.providerRefId === providerRefId) {
+      throw new Error("Top-up already processed");
+    }
+    
     // Get wallet
     const [wallet] = await tx.select()
       .from(creditWallets)
-      .where(eq(creditWallets.id, topUp.walletId));
+      .where(eq(creditWallets.id, topUp.walletId))
+      .for("update");
     
-    const amount = Number(topUp.amountJMD);
-    const bonus = Number(topUp.bonusJMD || 0);
-    const oldBalance = Number(wallet.balanceJMD);
-    const oldBonus = Number(wallet.bonusCreditsJMD || 0);
-    const newBalance = oldBalance + amount;
-    const newBonus = oldBonus + bonus;
+    // Use SQL arithmetic for precision - no JS Number conversion
+    const [updatedWallet] = await tx.execute(sql`
+      UPDATE credit_wallets
+      SET 
+        balance_jmd = balance_jmd + ${topUp.amountJMD},
+        bonus_credits_jmd = COALESCE(bonus_credits_jmd, 0) + ${topUp.bonusJMD || 0},
+        total_top_ups = COALESCE(total_top_ups, 0) + ${topUp.amountJMD},
+        updated_at = NOW()
+      WHERE id = ${wallet.id}
+      RETURNING *
+    `);
     
-    // Update wallet balance
-    await tx.update(creditWallets)
-      .set({
-        balanceJMD: String(newBalance),
-        bonusCreditsJMD: String(newBonus),
-        totalTopUps: String(Number(wallet.totalTopUps || 0) + amount),
-        updatedAt: new Date(),
-      })
-      .where(eq(creditWallets.id, wallet.id));
-    
-    // Update top-up status
+    // Update top-up status with provider reference for idempotency
     await tx.update(creditTopUps)
       .set({ 
         status: "completed",
         completedAt: new Date(),
+        providerRefId: providerRefId || topUp.providerRefId,
       })
       .where(eq(creditTopUps.id, topUpId));
     
-    // Record transaction
+    // Record transaction with exact amounts from database
     const transactionData = {
       walletId: wallet.id,
       type: "top_up" as const,
-      amountJMD: String(amount + bonus),
-      balanceBeforeJMD: String(oldBalance + oldBonus),
-      balanceAfterJMD: String(newBalance + newBonus),
+      amountJMD: sql`${topUp.amountJMD} + ${topUp.bonusJMD || 0}`,
+      balanceBeforeJMD: sql`${wallet.balanceJMD} + COALESCE(${wallet.bonusCreditsJMD}, 0)`,
+      balanceAfterJMD: sql`${updatedWallet.balance_jmd} + COALESCE(${updatedWallet.bonus_credits_jmd}, 0)`,
       referenceType: "top_up",
       referenceId: topUpId,
-      description: `Top-up of $${amount} JMD${bonus > 0 ? ` + $${bonus} bonus` : ""}`,
+      description: `Top-up of ${topUp.amountJMD} JMD${topUp.bonusJMD ? ` + ${topUp.bonusJMD} bonus` : ""}`,
     };
     
-    const validatedTransaction = insertCreditTransactionSchema.parse(transactionData);
-    await tx.insert(creditTransactions).values(validatedTransaction);
+    await tx.insert(creditTransactions).values(transactionData);
     
-    return { newBalance, newBonus };
+    return { 
+      newBalance: updatedWallet.balance_jmd,
+      newBonus: updatedWallet.bonus_credits_jmd,
+      totalBalance: sql`${updatedWallet.balance_jmd} + COALESCE(${updatedWallet.bonus_credits_jmd}, 0)`
+    };
   });
 }
 
-// Process payment webhook
+// Process payment webhook with signature verification
 router.post("/api/credits/webhook/payment", async (req, res) => {
   try {
-    // TODO: Verify webhook signature
+    // Verify webhook signature based on provider
+    const signature = req.headers['x-webhook-signature'] as string;
+    const provider = req.headers['x-payment-provider'] as string;
+    
+    if (!signature || !provider) {
+      return res.status(401).json({ error: "Missing webhook signature or provider" });
+    }
+    
+    // Provider-specific signature verification
+    const isValid = await verifyWebhookSignature(provider, signature, req.body);
+    if (!isValid) {
+      return res.status(401).json({ error: "Invalid webhook signature" });
+    }
+    
     const { topUpId, status, providerRefId } = req.body;
     
     if (status === "completed") {
-      const result = await completeTopUp(topUpId);
+      const result = await completeTopUp(topUpId, providerRefId);
       res.json({ success: true, ...result });
     } else {
       // Update top-up status to failed
@@ -286,35 +321,34 @@ router.post("/api/credits/deduct", isAuthenticated, async (req: any, res) => {
         throw new Error("Wallet not found");
       }
       
-      const totalBalance = Number(wallet.balanceJMD) + Number(wallet.bonusCreditsJMD || 0);
-      const deductAmount = Number(amountJMD);
+      // Check balance using SQL to avoid precision errors
+      const [balanceCheck] = await tx.execute(sql`
+        SELECT 
+          balance_jmd + COALESCE(bonus_credits_jmd, 0) as total_balance,
+          balance_jmd,
+          bonus_credits_jmd
+        FROM credit_wallets
+        WHERE id = ${wallet.id}
+      `);
       
-      if (totalBalance < deductAmount) {
+      if (Number(balanceCheck.total_balance) < Number(amountJMD)) {
         throw new Error("Insufficient balance");
       }
       
-      // Calculate deduction from main balance and bonus
-      let mainDeduction = deductAmount;
-      let bonusDeduction = 0;
-      
-      if (Number(wallet.bonusCreditsJMD || 0) > 0) {
-        // Use bonus credits first
-        bonusDeduction = Math.min(deductAmount, Number(wallet.bonusCreditsJMD));
-        mainDeduction = deductAmount - bonusDeduction;
-      }
-      
-      const newBalance = Number(wallet.balanceJMD) - mainDeduction;
-      const newBonus = Number(wallet.bonusCreditsJMD || 0) - bonusDeduction;
-      
-      // Update wallet
-      await tx.update(creditWallets)
-        .set({
-          balanceJMD: String(newBalance),
-          bonusCreditsJMD: String(newBonus),
-          totalSpent: String(Number(wallet.totalSpent || 0) + deductAmount),
-          updatedAt: new Date(),
-        })
-        .where(eq(creditWallets.id, wallet.id));
+      // Deduct using SQL arithmetic - bonus first, then main balance
+      const [updatedWallet] = await tx.execute(sql`
+        UPDATE credit_wallets
+        SET
+          bonus_credits_jmd = GREATEST(0, COALESCE(bonus_credits_jmd, 0) - ${amountJMD}),
+          balance_jmd = CASE
+            WHEN COALESCE(bonus_credits_jmd, 0) >= ${amountJMD} THEN balance_jmd
+            ELSE balance_jmd - (${amountJMD} - COALESCE(bonus_credits_jmd, 0))
+          END,
+          total_spent = COALESCE(total_spent, 0) + ${amountJMD},
+          updated_at = NOW()
+        WHERE id = ${wallet.id}
+        RETURNING *
+      `);
       
       // Record transaction
       const transactionData = {
