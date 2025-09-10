@@ -136,6 +136,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const vehicleRegistrationRoutes = (await import('./vehicle-registration-routes')).default;
   app.use(vehicleRegistrationRoutes);
   
+  // Broker Network System for Registration Services
+  const brokerRoutes = (await import('./broker-routes')).default;
+  app.use(brokerRoutes);
+  
   // Seed time-locked authentication system
   app.post('/api/auth/seed', async (req, res) => {
     try {

@@ -5751,6 +5751,94 @@ export const registrationPayments = pgTable("registration_payments", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// ========== BROKER NETWORK SYSTEM FOR REGISTRATION SERVICES ==========
+// Complete broker network for handling TAJ paperwork and physical registration tasks
+
+export const brokers = pgTable("brokers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  fullName: varchar("full_name").notNull(),
+  email: varchar("email").notNull(),
+  phone: varchar("phone"),
+  govId: varchar("gov_id"), // TRN or national ID  
+  verified: boolean("verified").default(false),
+  rating: decimal("rating", { precision: 3, scale: 2 }),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const brokerRegions = pgTable("broker_regions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  brokerId: varchar("broker_id").notNull().references(() => brokers.id),
+  parish: varchar("parish").notNull(), // "Kingston", "St. Andrew", etc
+  active: boolean("active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const regServiceCatalog = pgTable("reg_service_catalog", {
+  code: varchar("code").primaryKey(), // 'NEW_REG', 'RENEWAL', 'TRANSFER', 'RED_PLATE', 'REPLACEMENT'
+  name: varchar("name").notNull(),
+  baseFeeJMD: integer("base_fee_jmd").notNull(), // YardFlex service fee
+  estGovFeeJMD: integer("est_gov_fee_jmd").default(0), // TAJ/Transport Authority fees (informational)
+  slaHours: integer("sla_hours").default(72),
+  active: boolean("active").default(true),
+});
+
+export const regRequests = pgTable("reg_requests", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  applicationId: varchar("application_id").notNull().references(() => registrationApplications.id),
+  ownerId: varchar("owner_id").notNull().references(() => vehicleOwners.id),
+  vehicleId: varchar("vehicle_id").notNull().references(() => registrationVehicles.id),
+  serviceCode: varchar("service_code").notNull().references(() => regServiceCatalog.code),
+  parish: varchar("parish").notNull(),
+  pickupAddress: text("pickup_address"),
+  deliveryAddress: text("delivery_address"),
+  notes: text("notes"),
+  quotedFeeJMD: integer("quoted_fee_jmd"),
+  govFeeJMD: integer("gov_fee_jmd"),
+  status: varchar("status").default("pending_quote"), // 'pending_quote'|'pending_payment'|'assigned'|'in_progress'|'delivered'|'completed'
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const regEvents = pgTable("reg_events", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  requestId: varchar("request_id").notNull().references(() => regRequests.id),
+  type: varchar("type").notNull(), // 'QUOTE_CREATED','ASSIGNED','PICKED_UP','SUBMITTED_TAJ','APPROVED','REJECTED','DELIVERED'
+  meta: jsonb("meta"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const regAssignments = pgTable("reg_assignments", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  requestId: varchar("request_id").notNull().references(() => regRequests.id),
+  brokerId: varchar("broker_id").notNull().references(() => brokers.id),
+  status: varchar("status").default("assigned"), // 'assigned'|'in_progress'|'completed'|'cancelled'
+  pickupAt: timestamp("pickup_at"),
+  deliveredAt: timestamp("delivered_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const regPayouts = pgTable("reg_payouts", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  brokerId: varchar("broker_id").notNull().references(() => brokers.id),
+  requestId: varchar("request_id").notNull().references(() => regRequests.id),
+  amountJMD: integer("amount_jmd").notNull(),
+  status: varchar("status").default("pending"), // 'pending'|'paid'|'failed'
+  provider: varchar("provider").default("stripe_connect"),
+  providerPayoutId: varchar("provider_payout_id"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const regSLA = pgTable("reg_sla", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  requestId: varchar("request_id").notNull().references(() => regRequests.id),
+  startAt: timestamp("start_at").defaultNow(),
+  dueAt: timestamp("due_at"),
+  breached: boolean("breached").default(false),
+});
+
 // AUTONOMOUS OPS AGENT TYPES
 // ==========================
 
@@ -5849,6 +5937,46 @@ export const insertRegistrationPaymentSchema = createInsertSchema(registrationPa
   createdAt: true,
 });
 
+// Broker Network Insert Schemas
+export const insertBrokerSchema = createInsertSchema(brokers).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertBrokerRegionSchema = createInsertSchema(brokerRegions).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertRegServiceCatalogSchema = createInsertSchema(regServiceCatalog);
+
+export const insertRegRequestSchema = createInsertSchema(regRequests).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertRegEventSchema = createInsertSchema(regEvents).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertRegAssignmentSchema = createInsertSchema(regAssignments).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertRegPayoutSchema = createInsertSchema(regPayouts).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertRegSLASchema = createInsertSchema(regSLA).omit({
+  id: true,
+});
+
 // Select Types
 export type Freelancer = typeof freelancers.$inferSelect;
 export type InsertFreelancer = z.infer<typeof insertFreelancerSchema>;
@@ -5884,3 +6012,21 @@ export type RegistrationApplication = typeof registrationApplications.$inferSele
 export type InsertRegistrationApplication = z.infer<typeof insertRegistrationApplicationSchema>;
 export type RegistrationPayment = typeof registrationPayments.$inferSelect;
 export type InsertRegistrationPayment = z.infer<typeof insertRegistrationPaymentSchema>;
+
+// Broker Network Types
+export type Broker = typeof brokers.$inferSelect;
+export type InsertBroker = z.infer<typeof insertBrokerSchema>;
+export type BrokerRegion = typeof brokerRegions.$inferSelect;
+export type InsertBrokerRegion = z.infer<typeof insertBrokerRegionSchema>;
+export type RegServiceCatalog = typeof regServiceCatalog.$inferSelect;
+export type InsertRegServiceCatalog = z.infer<typeof insertRegServiceCatalogSchema>;
+export type RegRequest = typeof regRequests.$inferSelect;
+export type InsertRegRequest = z.infer<typeof insertRegRequestSchema>;
+export type RegEvent = typeof regEvents.$inferSelect;
+export type InsertRegEvent = z.infer<typeof insertRegEventSchema>;
+export type RegAssignment = typeof regAssignments.$inferSelect;
+export type InsertRegAssignment = z.infer<typeof insertRegAssignmentSchema>;
+export type RegPayout = typeof regPayouts.$inferSelect;
+export type InsertRegPayout = z.infer<typeof insertRegPayoutSchema>;
+export type RegSLA = typeof regSLA.$inferSelect;
+export type InsertRegSLA = z.infer<typeof insertRegSLASchema>;
