@@ -58,6 +58,7 @@ import GlobalJobs from "@/pages/GlobalJobs";
 import YaadWallet from "@/pages/YaadWallet";
 import HeritageDelivery from "@/pages/HeritageDelivery";
 import UniversalPaymentPage from "@/pages/UniversalPaymentPage";
+import VoiceControlCenter from "@/pages/VoiceControlCenter";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -87,6 +88,8 @@ function Router() {
       <Route path="/delivery-riders" component={HeritageDelivery} />
       <Route path="/universal-payment" component={UniversalPaymentPage} />
       <Route path="/link-payment" component={UniversalPaymentPage} />
+      <Route path="/voice-control" component={VoiceControlCenter} />
+      <Route path="/voice-interactive" component={VoiceControlCenter} />
       <Route path="/pricing" component={PricingCalculator} />
       <Route path="/book-ride" component={CustomerBooking} />
       <Route path="/travel-booking" component={TravelBooking} />
