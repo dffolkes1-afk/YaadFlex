@@ -1,170 +1,146 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'wouter';
-import { Sparkles, Rocket } from 'lucide-react';
+import { MapPin, Car, Users, Building, Truck, Phone, CreditCard, Radio } from 'lucide-react';
 
 export default function SimpleLinksPage() {
-  const [showGreeting, setShowGreeting] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowGreeting(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div className="min-h-screen bg-black text-white p-8 relative overflow-hidden">
-      {/* Animated space background */}
-      <div className="absolute inset-0">
-        {[...Array(30)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${2 + Math.random() * 4}s`
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
+    <div className="min-h-screen text-[#e6eef6]" style={{
+      background: `
+        radial-gradient(1200px 600px at 70% -10%, rgba(109,167,255,0.10), transparent 60%),
+        radial-gradient(900px 500px at 10% -10%, rgba(180,197,214,0.08), transparent 60%),
+        #0c1116
+      `
+    }}>
+      
+      <div className="max-w-4xl mx-auto px-6 py-12">
         
-        {showGreeting ? (
-          <div className="text-center animate-fade-in">
-            <div className="text-6xl mb-4 animate-bounce">🌌</div>
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-gold-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent mb-4">
-              WELCOME TO THE FUTURE
-            </h1>
-            <p className="text-2xl text-purple-300">
-              You are now operating at <span className="text-gold-400 font-bold">GALACTIC STANDARD</span>
-            </p>
-            <div className="flex items-center justify-center mt-4 space-x-2 text-cyan-400">
-              <Sparkles className="animate-spin" size={20} />
-              <span className="text-lg">YaadFlex Global Vybz Universe</span>
-              <Sparkles className="animate-spin" size={20} />
-            </div>
-          </div>
-        ) : (
-          <>
-            <div className="text-center mb-8">
-              <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-gold-400 to-purple-500 bg-clip-text text-transparent">
-                🇯🇲 YaadFlex Command Center
-              </h1>
-              <p className="text-lg text-gray-300">
-                Access all galactic-level business operations
-              </p>
-              <Link href="/portal">
-                <button className="mt-4 px-6 py-2 bg-gradient-to-r from-purple-600 to-gold-500 rounded-full text-sm font-bold hover:from-purple-700 hover:to-gold-600 transition-all duration-300 transform hover:scale-105" data-testid="button-galactic-portal">
-                  <Rocket className="inline mr-2" size={16} />
-                  Experience Transformation Portal
-                </button>
-              </Link>
-            </div>
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-3xl font-bold mb-3">YaadFlex Platform</h1>
+          <p className="text-[#9fb0c2]">Professional transportation and business services</p>
+        </div>
 
-            <div className="space-y-4 w-full max-w-md">
-              
-              {/* Galactic-Level Business Operations */}
-              <a 
-                href="/premium-storefront" 
-                className="block w-full p-4 bg-gradient-to-r from-gold-500 via-yellow-500 to-gold-600 text-black text-center font-bold text-xl rounded-lg border-2 border-gold-400 shadow-lg shadow-gold-400/20 hover:shadow-gold-400/40 hover:scale-105 transition-all duration-300"
-                data-testid="link-premium-storefront"
-              >
-                ✨ GALACTIC STOREFRONTS ✨<br/>
-                <span className="text-sm font-normal">Premium Business Universe</span>
-              </a>
-              
-              <a 
-                href="/real-estate" 
-                className="block w-full p-4 bg-gradient-to-r from-green-500 via-emerald-500 to-blue-500 text-white text-center font-bold text-xl rounded-lg border-2 border-green-400 shadow-lg shadow-green-400/20 hover:shadow-green-400/40 hover:scale-105 transition-all duration-300"
-                data-testid="link-real-estate"
-              >
-                🌍 PLANETARY REAL ESTATE 🌍<br/>
-                <span className="text-sm font-normal">Advanced Property Matrix</span>
-              </a>
-              
-              <a 
-                href="/car-marketplace" 
-                className="block w-full p-4 bg-gradient-to-r from-red-500 via-orange-500 to-red-600 text-white text-center font-bold text-xl rounded-lg border-2 border-red-400 shadow-lg shadow-red-400/20 hover:shadow-red-400/40 hover:scale-105 transition-all duration-300"
-                data-testid="link-car-marketplace"
-              >
-                🚀 3D VEHICLE DIMENSION 🚀<br/>
-                <span className="text-sm font-normal">Holographic Car Viewing</span>
-              </a>
-              
-              <a 
-                href="/ride-booking" 
-                className="block w-full p-4 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 text-white text-center font-bold text-xl rounded-lg border-2 border-purple-400 shadow-lg shadow-purple-400/20 hover:shadow-purple-400/40 hover:scale-105 transition-all duration-300"
-                data-testid="link-ride-booking"
-              >
-                ⚡ QUANTUM TRANSPORTATION ⚡<br/>
-                <span className="text-sm font-normal">Instant Ride Summoning</span>
-              </a>
-              
-              <a 
-                href="/driver-registration" 
-                className="block w-full p-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-white text-center font-bold text-xl rounded-lg border-2 border-emerald-400 shadow-lg shadow-emerald-400/20 hover:shadow-emerald-400/40 hover:scale-105 transition-all duration-300"
-                data-testid="link-driver-registration"
-              >
-                💫 ELITE DRIVER STATUS 💫<br/>
-                <span className="text-sm font-normal">85% Galactic Earnings</span>
-              </a>
-              
-              <a 
-                href="/business-registration" 
-                className="block w-full p-4 bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500 text-white text-center font-bold text-xl rounded-lg border-2 border-indigo-400 shadow-lg shadow-indigo-400/20 hover:shadow-indigo-400/40 hover:scale-105 transition-all duration-300"
-                data-testid="link-business-registration"
-              >
-                🌟 BUSINESS ASCENSION 🌟<br/>
-                <span className="text-sm font-normal">Civilization Upgrade</span>
-              </a>
-              
-              <a 
-                href="/contactless" 
-                className="block w-full p-4 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 text-white text-center font-bold text-xl rounded-lg border-2 border-yellow-400 shadow-lg shadow-yellow-400/20 hover:shadow-yellow-400/40 hover:scale-105 transition-all duration-300"
-                data-testid="link-contactless"
-              >
-                🤖 AUTOMATED DIMENSION 🤖<br/>
-                <span className="text-sm font-normal">Zero Human Contact Required</span>
-              </a>
-              
-              <a 
-                href="/cb-radio" 
-                className="block w-full p-4 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white text-center font-bold text-xl rounded-lg border-2 border-blue-400 shadow-lg shadow-blue-400/20 hover:shadow-blue-400/40 hover:scale-105 transition-all duration-300"
-                data-testid="link-cb-radio"
-              >
-                📡 INTERDIMENSIONAL COMMS 📡<br/>
-                <span className="text-sm font-normal">Driver Network Frequency</span>
-              </a>
-              
-              <a 
-                href="/banking" 
-                className="block w-full p-4 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white text-center font-bold text-xl rounded-lg border-2 border-green-400 shadow-lg shadow-green-400/20 hover:shadow-green-400/40 hover:scale-105 transition-all duration-300"
-                data-testid="link-banking"
-              >
-                💰 GALACTIC TREASURY 💰<br/>
-                <span className="text-sm font-normal">Automatic Wealth Transfer</span>
-              </a>
-              
-            </div>
-            
-            <div className="text-center mt-12 space-y-4">
-              <p className="text-gray-400">
-                <span className="text-cyan-400 font-bold">GALACTIC STATUS:</span> FULLY OPERATIONAL
-              </p>
-              <p className="text-sm text-purple-300">
-                ⚡ All systems automated • 🌌 Operating at maximum efficiency • 💰 Revenue flowing automatically
-              </p>
-              <div className="flex items-center justify-center space-x-2 text-gold-400">
-                <Sparkles size={16} />
-                <span className="text-xs">YaadFlex Global Vybz - The Future is NOW</span>
-                <Sparkles size={16} />
+        {/* Services Grid */}
+        <div className="grid md:grid-cols-2 gap-4 max-w-3xl mx-auto">
+          
+          <Link href="/ride-booking">
+            <div className="p-6 border border-[#1b2633] rounded-2xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-all group cursor-pointer">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-[#6da7ff] to-[#8ec1ff] flex items-center justify-center">
+                  <MapPin className="h-6 w-6 text-[#06101a]" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">Book Ride</h3>
+                  <p className="text-[#9fb0c2] text-sm">Professional drivers across Jamaica</p>
+                </div>
               </div>
             </div>
-          </>
-        )}
+          </Link>
+
+          <Link href="/driver-registration">
+            <div className="p-6 border border-[#1b2633] rounded-2xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-all group cursor-pointer">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center">
+                  <Car className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">Drive & Earn</h3>
+                  <p className="text-[#9fb0c2] text-sm">Join our driver network - 85% earnings</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/business-registration">
+            <div className="p-6 border border-[#1b2633] rounded-2xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-all group cursor-pointer">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center">
+                  <Building className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">Business Services</h3>
+                  <p className="text-[#9fb0c2] text-sm">Register your business on our platform</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/premium-storefront">
+            <div className="p-6 border border-[#1b2633] rounded-2xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-all group cursor-pointer">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-purple-500 to-pink-600 flex items-center justify-center">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">Marketplace</h3>
+                  <p className="text-[#9fb0c2] text-sm">Premium storefronts and vendors</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/contactless">
+            <div className="p-6 border border-[#1b2633] rounded-2xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-all group cursor-pointer">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 flex items-center justify-center">
+                  <Truck className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">Delivery</h3>
+                  <p className="text-[#9fb0c2] text-sm">Fast and reliable delivery services</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/cb-radio">
+            <div className="p-6 border border-[#1b2633] rounded-2xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-all group cursor-pointer">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-600 flex items-center justify-center">
+                  <Radio className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">Driver Network</h3>
+                  <p className="text-[#9fb0c2] text-sm">Communication and coordination</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/banking">
+            <div className="p-6 border border-[#1b2633] rounded-2xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-all group cursor-pointer">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 flex items-center justify-center">
+                  <CreditCard className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">Banking</h3>
+                  <p className="text-[#9fb0c2] text-sm">Payments and financial services</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/real-estate">
+            <div className="p-6 border border-[#1b2633] rounded-2xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-all group cursor-pointer">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-600 flex items-center justify-center">
+                  <Building className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">Real Estate</h3>
+                  <p className="text-[#9fb0c2] text-sm">Property listings and services</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+        </div>
+
+        {/* Footer */}
+        <div className="text-center mt-12 text-[#9fb0c2] text-sm">
+          Professional services • Trusted platform • Caribbean innovation
+        </div>
+
       </div>
     </div>
   );
