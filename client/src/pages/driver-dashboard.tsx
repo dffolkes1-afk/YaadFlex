@@ -109,7 +109,9 @@ export default function DriverDashboard() {
           variant: "destructive",
         });
         setTimeout(() => {
-          window.location.href = "/api/login";
+          if (typeof window !== 'undefined') {
+            window.location.href = "/api/login";
+          }
         }, 500);
         return;
       }
@@ -147,7 +149,11 @@ export default function DriverDashboard() {
           <CardContent className="p-8 text-center">
             <h2 className="text-2xl font-bold mb-4">Driver Login Required</h2>
             <p className="text-muted-foreground mb-6">Please log in to access your driver dashboard</p>
-            <Button onClick={() => window.location.href = "/api/login"}>
+            <Button onClick={() => {
+              if (typeof window !== 'undefined') {
+                window.location.href = "/api/login";
+              }
+            }}>
               Log In
             </Button>
           </CardContent>

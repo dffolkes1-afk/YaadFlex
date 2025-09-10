@@ -556,7 +556,11 @@ export default function CustomerBooking() {
                 </div>
               </div>
 
-              <Button onClick={() => window.location.href = '/'} className="w-full">
+              <Button onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.location.href = '/';
+                }
+              }} className="w-full">
                 Back to Home
               </Button>
             </CardContent>

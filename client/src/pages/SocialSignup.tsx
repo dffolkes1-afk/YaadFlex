@@ -37,7 +37,9 @@ export default function SocialSignup() {
         description: "Your account is ready. Start sharing your story!",
       });
       // Redirect to social feed
-      window.location.href = '/social-feed';
+      if (typeof window !== 'undefined') {
+        window.location.href = '/social-feed';
+      }
     },
     onError: (error: any) => {
       toast({
@@ -54,7 +56,9 @@ export default function SocialSignup() {
       return response.json();
     },
     onSuccess: () => {
-      window.location.href = '/social-feed';
+      if (typeof window !== 'undefined') {
+        window.location.href = '/social-feed';
+      }
     },
     onError: (error: any) => {
       toast({

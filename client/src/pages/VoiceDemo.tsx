@@ -128,7 +128,11 @@ export default function VoiceDemo() {
         title: "Booking Ride",
         description: "Opening YaadFlex ride booking...",
       });
-      setTimeout(() => window.location.href = '/ride-booking', 1000);
+      setTimeout(() => {
+        if (typeof window !== 'undefined') {
+          window.location.href = '/ride-booking';
+        }
+      }, 1000);
     } 
     else if (lowerText.includes('call') && lowerText.includes('driver')) {
       actionTaken = 'Start driver call';
@@ -143,7 +147,11 @@ export default function VoiceDemo() {
         title: "Opening Wallet",
         description: "YaadWallet loading...",
       });
-      setTimeout(() => window.location.href = '/yaad-wallet', 1000);
+      setTimeout(() => {
+        if (typeof window !== 'undefined') {
+          window.location.href = '/yaad-wallet';
+        }
+      }, 1000);
     }
     else if (lowerText.includes('social') || lowerText.includes('post') || lowerText.includes('share')) {
       actionTaken = 'Open social feed';
@@ -151,7 +159,11 @@ export default function VoiceDemo() {
         title: "Opening Social",
         description: "YaadFlex social feed loading...",
       });
-      setTimeout(() => window.location.href = '/social-feed', 1000);
+      setTimeout(() => {
+        if (typeof window !== 'undefined') {
+          window.location.href = '/social-feed';
+        }
+      }, 1000);
     }
     else if (lowerText.includes('delivery') || lowerText.includes('package')) {
       actionTaken = 'Open Heritage Delivery';
@@ -159,7 +171,11 @@ export default function VoiceDemo() {
         title: "Delivery Jobs",
         description: "Heritage Delivery loading...",
       });
-      setTimeout(() => window.location.href = '/heritage-delivery', 1000);
+      setTimeout(() => {
+        if (typeof window !== 'undefined') {
+          window.location.href = '/heritage-delivery';
+        }
+      }, 1000);
     }
     else if (lowerText.includes('payment') || lowerText.includes('pay with card')) {
       actionTaken = 'Open Universal Payment';
@@ -167,7 +183,11 @@ export default function VoiceDemo() {
         title: "Universal Payment",
         description: "Opening payment system...",
       });
-      setTimeout(() => window.location.href = '/universal-payment', 1000);
+      setTimeout(() => {
+        if (typeof window !== 'undefined') {
+          window.location.href = '/universal-payment';
+        }
+      }, 1000);
     }
     else if (lowerText.includes('music') || lowerText.includes('play')) {
       actionTaken = 'Start music player';
@@ -182,7 +202,11 @@ export default function VoiceDemo() {
         title: "Going Home",
         description: "Navigating to main page...",
       });
-      setTimeout(() => window.location.href = '/', 1000);
+      setTimeout(() => {
+        if (typeof window !== 'undefined') {
+          window.location.href = '/';
+        }
+      }, 1000);
     }
     else {
       // Generic text input - write what they said
