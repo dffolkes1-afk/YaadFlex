@@ -1,0 +1,199 @@
+Perfect — that’s the cleanest way: give media houses a verified profile + a “Live Window” where they paste their own stream link. You don’t rebroadcast; you just embed what they already host. Here’s a tight, copy-paste setup you can drop into your app.
+
+Media Hub: Live Window (schema + API + React)
+
+1) DB (Drizzle) — minimal tables
+
+// drizzle/schema.media.ts
+import { pgTable, varchar, text, boolean, timestamp } from "drizzle-orm/pg-core";
+
+export const mediaChannels = pgTable("media_channels", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  ownerUserId: varchar("ownerUserId", { length: 36 }).notNull(),
+  handle: varchar("handle", { length: 48 }).notNull().unique(), // e.g. "tvj", "cvm", "gleaner"
+  displayName: varchar("displayName", { length: 120 }).notNull(),
+  about: text("about"),
+  verified: boolean("verified").default(false),
+  avatarUrl: text("avatarUrl"),
+  createdAt: timestamp("createdAt").defaultNow()
+});
+
+export const mediaStreams = pgTable("media_streams", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  channelId: varchar("channelId", { length: 36 }).notNull(),
+  title: varchar("title", { length: 160 }).notNull(),
+  // Supported: HLS .m3u8, YouTube, Twitch, Vimeo (we render smartly on frontend)
+  streamUrl: text("streamUrl").notNull(),
+  provider: varchar("provider", { length: 24 }).notNull(), // "hls" | "youtube" | "twitch" | "vimeo" | "other"
+  posterImage: text("posterImage"),
+  isLive: boolean("isLive").default(false),
+  createdAt: timestamp("createdAt").defaultNow()
+});
+
+2) API routes (Express)
+
+// server/routes.media.ts
+import express from "express";
+import { db } from "../drizzle/db";
+import { mediaChannels, mediaStreams } from "../drizzle/schema.media";
+import crypto from "node:crypto";
+import { eq } from "drizzle-orm";
+
+const router = express.Router();
+
+// Simple helper to detect provider
+function detectProvider(url: string): "hls"|"youtube"|"twitch"|"vimeo"|"other" {
+  const u = url.toLowerCase();
+  if (u.endsWith(".m3u8")) return "hls";
+  if (u.includes("youtube.com") || u.includes("youtu.be")) return "youtube";
+  if (u.includes("twitch.tv")) return "twitch";
+  if (u.includes("vimeo.com")) return "vimeo";
+  return "other";
+}
+
+// Create channel (admin/verified onboarding)
+router.post("/api/media/channels", async (req, res) => {
+  const id = crypto.randomUUID();
+  const [row] = await db.insert(mediaChannels).values({
+    id,
+    ownerUserId: req.body.ownerUserId,
+    handle: req.body.handle,
+    displayName: req.body.displayName,
+    about: req.body.about,
+    avatarUrl: req.body.avatarUrl,
+    verified: !!req.body.verified
+  }).returning();
+  res.json(row);
+});
+
+// List channels
+router.get("/api/media/channels", async (_req, res) => {
+  const rows = await db.select().from(mediaChannels);
+  res.json(rows);
+});
+
+// Create/update live stream window (channel pastes their link)
+router.post("/api/media/streams", async (req, res) => {
+  const id = crypto.randomUUID();
+  const provider = detectProvider(req.body.streamUrl);
+  const [row] = await db.insert(mediaStreams).values({
+    id,
+    channelId: req.body.channelId,
+    title: req.body.title,
+    streamUrl: req.body.streamUrl,
+    provider,
+    posterImage: req.body.posterImage,
+    isLive: !!req.body.isLive
+  }).returning();
+  res.json(row);
+});
+
+// Get streams by channel
+router.get("/api/media/channels/:channelId/streams", async (req, res) => {
+  const rows = await db.select().from(mediaStreams)
+    .where(eq(mediaStreams.channelId, req.params.channelId));
+  res.json(rows);
+});
+
+export default router;
+
+> Add app.use(mediaRoutes) in your server bootstrap.
+
+
+
+3) Frontend: Smart <LiveWindow> component (React)
+
+HLS (.m3u8) → use hls.js
+
+YouTube/Twitch/Vimeo → safe <iframe> embed
+
+Poster image until play
+
+
+// components/LiveWindow.tsx
+import React, { useEffect, useRef, useState } from "react";
+// @ts-ignore
+import Hls from "hls.js";
+
+type Stream = {
+  id: string;
+  title: string;
+  streamUrl: string;
+  posterImage?: string;
+  provider: "hls" | "youtube" | "twitch" | "vimeo" | "other";
+  isLive: boolean;
+};
+
+export default function LiveWindow({ stream }: { stream: Stream }) {
+  if (!stream) return null;
+
+  if (stream.provider === "hls") {
+    return <HlsPlayer src={stream.streamUrl} poster={stream.posterImage} title={stream.title} />;
+  }
+
+  if (stream.provider === "youtube") {
+    // supports youtube.com/watch?v=... or youtu.be/...
+    const videoId = extractYouTubeId(stream.streamUrl);
+    const src = `https://www.youtube.com/embed/${videoId}?autoplay=0&mute=0`;
+    return <IFramePlayer src={src} title={stream.title} />;
+  }
+
+  if (stream.provider === "twitch") {
+    // expects https://www.twitch.tv/{channel}
+    const channel = stream.streamUrl.split("/").pop();
+    const src = `https://player.twitch.tv/?channel=${channel}&parent=${window.location.hostname}&muted=false`;
+    return <IFramePlayer src={src} title={stream.title} />;
+  }
+
+  if (stream.provider === "vimeo") {
+    // expects https://vimeo.com/{id}
+    const id = stream.streamUrl.split("/").pop();
+    const src = `https://player.vimeo.com/video/${id}`;
+    return <IFramePlayer src={src} title={stream.title} />;
+  }
+
+  // fallback: open link
+  return (
+    <div className="rounded-xl overflow-hidden border p-4 bg-black/70 text-white">
+      <p className="mb-2">{stream.title}</p>
+      <a className="underline" href={stream.streamUrl} target="_blank" rel="noreferrer">
+        Open stream
+      </a>
+    </div>
+  );
+}
+
+function IFramePlayer({ src, title }: { src: string; title: string }) {
+  return (
+    <div className="aspect-video w-full rounded-xl overflow-hidden shadow">
+      <iframe
+        src={src}
+        title={title}
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowFullScreen
+        className="w-full h-full"
+      />
+    </div>
+  );
+}
+
+function extractYouTubeId(url: string) {
+  try {
+    const u = new URL(url);
+    if (u.hostname.includes("youtu.be")) return u.pathname.replace("/", "");
+    if (u.searchParams.get("v")) return u.searchParams.get("v")!;
+  } catch {}
+  return url;
+}
+
+function HlsPlayer({ src, poster, title }: { src: string; poster?: string; title: string }) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [supported, setSupported] = useState<boolean>(false);
+
+  useEffect(() => {
+    setSupported(Hls.isSupported());
+    if (Hls.isSupported() && videoRef.current) {
+      const hls = new Hls({ maxBufferLength: 10 });
+      hls.loadSource(src);
+      hls.attachMedia
+

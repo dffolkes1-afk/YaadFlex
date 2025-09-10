@@ -1,0 +1,155 @@
+I love the vision—but for always-on movies/clips, we have to do it legally + simply. Here’s a tight plan you can drop in now:
+
+
+---
+
+One-Way Display (Always-On Feed) — Blueprint + Code
+
+What it is
+
+A single “Billboard” surface in YardFlex that’s always playing licensed content (clips, trailers, news, live feeds). It’s read-only for users (no upload here), and partners paste their stream/clip links. Your app embeds (doesn’t re-host) the video.
+
+> ✅ Works for official YouTube/Vimeo/Twitch/HLS links
+✅ Can rotate “movies” if you’ve got the rights (or public-domain films)
+❗️No unlicensed full movies—stick to content you own, have partner rights for, or public domain.
+
+
+
+
+---
+
+Minimal DB (Drizzle)
+
+// drizzle/schema.billboard.ts
+import { pgTable, varchar, text, boolean, integer, timestamp } from "drizzle-orm/pg-core";
+
+export const partners = pgTable("partners", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  name: varchar("name", { length: 120 }).notNull(),
+  handle: varchar("handle", { length: 64 }).notNull().unique(), // e.g. tvj, cvm
+  verified: boolean("verified").default(false),
+  avatarUrl: text("avatarUrl"),
+  createdAt: timestamp("createdAt").defaultNow(),
+});
+
+export const billboardItems = pgTable("billboard_items", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  partnerId: varchar("partnerId", { length: 36 }).notNull(),
+  title: varchar("title", { length: 160 }).notNull(),
+  synopsis: text("synopsis"),
+  // videoUrl: can be HLS (.m3u8), YouTube, Twitch, Vimeo, or your CDN
+  videoUrl: text("videoUrl").notNull(),
+  provider: varchar("provider", { length: 24 }).notNull(), // 'hls'|'youtube'|'twitch'|'vimeo'|'other'
+  posterImage: text("posterImage"),
+  // RIGHTS: keep this honest—use what you have permission for
+  licenseType: varchar("licenseType", { length: 24 }).notNull(), // 'owned'|'partner'|'public_domain'|'ugc_with_rights'
+  territories: text("territories"), // e.g. "JM,TT,BB" or "*" for worldwide
+  tags: text("tags"), // comma separated (e.g. "movie,action,caribbean")
+  weight: integer("weight").default(1), // for ranking/rotation
+  isLive: boolean("isLive").default(false),
+  isActive: boolean("isActive").default(true),
+  createdAt: timestamp("createdAt").defaultNow(),
+});
+
+
+---
+
+API (Express)
+
+// server/routes.billboard.ts
+import express from "express";
+import { db } from "../drizzle/db";
+import { partners, billboardItems } from "../drizzle/schema.billboard";
+import { eq, and } from "drizzle-orm";
+import crypto from "node:crypto";
+
+const router = express.Router();
+
+function detectProvider(url: string): "hls"|"youtube"|"twitch"|"vimeo"|"other" {
+  const u = url.toLowerCase();
+  if (u.endsWith(".m3u8")) return "hls";
+  if (u.includes("youtube.com") || u.includes("youtu.be")) return "youtube";
+  if (u.includes("twitch.tv")) return "twitch";
+  if (u.includes("vimeo.com")) return "vimeo";
+  return "other";
+}
+
+// Create partner (verified media house, studio, etc.)
+router.post("/api/partners", async (req, res) => {
+  const [row] = await db.insert(partners).values({
+    id: crypto.randomUUID(),
+    name: req.body.name,
+    handle: req.body.handle,
+    verified: !!req.body.verified,
+    avatarUrl: req.body.avatarUrl,
+  }).returning();
+  res.json(row);
+});
+
+// Add a billboard item (partner pastes link)
+router.post("/api/billboard/items", async (req, res) => {
+  const provider = detectProvider(req.body.videoUrl);
+  const [row] = await db.insert(billboardItems).values({
+    id: crypto.randomUUID(),
+    partnerId: req.body.partnerId,
+    title: req.body.title,
+    synopsis: req.body.synopsis,
+    videoUrl: req.body.videoUrl,
+    provider,
+    posterImage: req.body.posterImage,
+    licenseType: req.body.licenseType, // enforce on UI
+    territories: req.body.territories || "*",
+    tags: (req.body.tags || []).join(","),
+    weight: Number(req.body.weight ?? 1),
+    isLive: !!req.body.isLive,
+    isActive: true,
+  }).returning();
+  res.json(row);
+});
+
+// Personalized billboard rotation (very simple starter)
+router.get("/api/billboard/now", async (req, res) => {
+  const region = (req.query.region as string) || "*"; // e.g. 'JM'
+  const tag = (req.query.tag as string) || "";        // optional preference
+
+  let rows = await db.select().from(billboardItems);
+  rows = rows.filter(r => r.isActive);
+
+  // territory filter
+  rows = rows.filter(r => r.territories === "*" || r.territories.split(",").map(s=>s.trim()).includes(region));
+
+  // tag preference (soft)
+  if (tag) {
+    const tagged = rows.filter(r => (r.tags || "").split(",").map(s=>s.trim()).includes(tag));
+    if (tagged.length) rows = tagged;
+  }
+
+  // simple weight ranking (you can replace with real recommender later)
+  rows.sort((a,b)=> (b.weight||1) - (a.weight||1));
+
+  // pick first
+  const current = rows[0] || null;
+  res.json({ current, queue: rows.slice(1,6) });
+});
+
+export default router;
+
+Add to your server:
+
+// server/index.ts
+import billboardRoutes from "./routes.billboard";
+app.use(billboardRoutes);
+
+
+---
+
+React: Always-On Billboard component
+
+// components/Billboard.tsx
+import React, { useEffect, useState } from "react";
+// @ts-ignore
+import Hls from "hls.js";
+
+type Item = {
+  id: string; title: string
+
