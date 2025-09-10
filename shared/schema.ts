@@ -5476,6 +5476,22 @@ export const walletTransactions = pgTable("wallet_transactions", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Vendors table for managing external entities
+export const vendors = pgTable("vendors", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name").notNull(),
+  type: varchar("type").notNull(), // 'government', 'insurance', 'saas', 'contractor', 'utility'
+  contactEmail: varchar("contact_email"),
+  contactPhone: varchar("contact_phone"),
+  website: varchar("website"),
+  accountNumber: varchar("account_number"),
+  paymentMethod: varchar("payment_method"), // 'ach', 'wire', 'credit_card', 'check'
+  paymentDetails: jsonb("payment_details"), // Encrypted payment information
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // Obligations table for tracking taxes, fees, insurance
 export const obligations = pgTable("obligations", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -5490,22 +5506,6 @@ export const obligations = pgTable("obligations", {
   priority: varchar("priority").notNull().default('medium'), // 'critical', 'high', 'medium', 'low'
   autopay: boolean("autopay").default(false),
   category: varchar("category"), // 'tax', 'insurance', 'license', 'subscription', 'regulatory'
-  isActive: boolean("is_active").default(true),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
-
-// Vendors table for managing external entities
-export const vendors = pgTable("vendors", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  name: varchar("name").notNull(),
-  type: varchar("type").notNull(), // 'government', 'insurance', 'saas', 'contractor', 'utility'
-  contactEmail: varchar("contact_email"),
-  contactPhone: varchar("contact_phone"),
-  website: varchar("website"),
-  accountNumber: varchar("account_number"),
-  paymentMethod: varchar("payment_method"), // 'ach', 'wire', 'credit_card', 'check'
-  paymentDetails: jsonb("payment_details"), // Encrypted payment information
   isActive: boolean("is_active").default(true),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -5650,3 +5650,84 @@ export type DeliveryArea = typeof deliveryAreas.$inferSelect;
 export type InsertDeliveryArea = z.infer<typeof insertDeliveryAreaSchema>;
 export type DeliveryReview = typeof deliveryReviews.$inferSelect;
 export type InsertDeliveryReview = z.infer<typeof insertDeliveryReviewSchema>;
+
+// ==========================
+// AUTONOMOUS OPS AGENT TYPES
+// ==========================
+
+// Insert Schemas
+export const insertFreelancerSchema = createInsertSchema(freelancers).omit({
+  id: true,
+  totalEarnings: true,
+  lastPayoutAt: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertWalletTransactionSchema = createInsertSchema(walletTransactions).omit({
+  id: true,
+  processedAt: true,
+  createdAt: true,
+});
+
+export const insertVendorSchema = createInsertSchema(vendors).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertObligationSchema = createInsertSchema(obligations).omit({
+  id: true,
+  lastPaidAt: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertAutonomousTaskSchema = createInsertSchema(autonomousTasks).omit({
+  id: true,
+  executedAt: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertApprovalSchema = createInsertSchema(approvals).omit({
+  id: true,
+  approvedAt: true,
+  createdAt: true,
+});
+
+export const insertPlatformPaymentSchema = createInsertSchema(platformPayments).omit({
+  id: true,
+  processedAt: true,
+  createdAt: true,
+});
+
+export const insertCeoDashboardMetricSchema = createInsertSchema(ceoDashboardMetrics).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertAgentLogSchema = createInsertSchema(agentLogs).omit({
+  id: true,
+  createdAt: true,
+});
+
+// Select Types
+export type Freelancer = typeof freelancers.$inferSelect;
+export type InsertFreelancer = z.infer<typeof insertFreelancerSchema>;
+export type WalletTransaction = typeof walletTransactions.$inferSelect;
+export type InsertWalletTransaction = z.infer<typeof insertWalletTransactionSchema>;
+export type Vendor = typeof vendors.$inferSelect;
+export type InsertVendor = z.infer<typeof insertVendorSchema>;
+export type Obligation = typeof obligations.$inferSelect;
+export type InsertObligation = z.infer<typeof insertObligationSchema>;
+export type AutonomousTask = typeof autonomousTasks.$inferSelect;
+export type InsertAutonomousTask = z.infer<typeof insertAutonomousTaskSchema>;
+export type Approval = typeof approvals.$inferSelect;
+export type InsertApproval = z.infer<typeof insertApprovalSchema>;
+export type PlatformPayment = typeof platformPayments.$inferSelect;
+export type InsertPlatformPayment = z.infer<typeof insertPlatformPaymentSchema>;
+export type CeoDashboardMetric = typeof ceoDashboardMetrics.$inferSelect;
+export type InsertCeoDashboardMetric = z.infer<typeof insertCeoDashboardMetricSchema>;
+export type AgentLog = typeof agentLogs.$inferSelect;
+export type InsertAgentLog = z.infer<typeof insertAgentLogSchema>;
