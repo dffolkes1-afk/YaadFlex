@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Coins } from 'lucide-react';
 
-// YFD Coin System - The "SOVEREIGN" is the highest denomination
+// YFD Coin System - The "DINAR" is the supreme denomination
 const coinDesigns = [
   {
     value: 1,
@@ -17,7 +17,8 @@ const coinDesigns = [
     emblem: '🌺',
     description: 'Doctor Bird - National Symbol',
     edge: 'Smooth',
-    features: ['Lignum Vitae Flower', 'National Bird', 'Unity Symbol']
+    features: ['Lignum Vitae Flower', 'National Bird', 'Unity Symbol'],
+    historicalPlace: 'Hope Botanical Gardens'
   },
   {
     value: 5,
@@ -30,7 +31,8 @@ const coinDesigns = [
     emblem: '🌿',
     description: 'National Fruit',
     edge: 'Reeded',
-    features: ['Ackee Tree', 'Agricultural Heritage', 'Nourishment Symbol']
+    features: ['Ackee Tree', 'Agricultural Heritage', 'Nourishment Symbol'],
+    historicalPlace: 'St. Elizabeth Breadbasket'
   },
   {
     value: 10,
@@ -43,7 +45,8 @@ const coinDesigns = [
     emblem: '⛰️',
     description: 'Blue Mountain Peak',
     edge: 'Grooved',
-    features: ['Mountain Range', 'Coffee Heritage', 'Natural Beauty']
+    features: ['Mountain Range', 'Coffee Heritage', 'Natural Beauty'],
+    historicalPlace: 'Blue Mountain Coffee Estate'
   },
   {
     value: 25,
@@ -56,7 +59,8 @@ const coinDesigns = [
     emblem: '⚓',
     description: 'Historic Port City',
     edge: 'Inscribed',
-    features: ['Pirate History', 'Maritime Heritage', 'Trading Post']
+    features: ['Pirate History', 'Maritime Heritage', 'Trading Post'],
+    historicalPlace: 'Sunken City of Port Royal'
   },
   {
     value: 50,
@@ -69,24 +73,26 @@ const coinDesigns = [
     emblem: '🛡️',
     description: 'Freedom Fighters Legacy',
     edge: 'Alternating',
-    features: ['Accompong Town', 'Freedom Trail', 'Warrior Spirit']
+    features: ['Accompong Town', 'Freedom Trail', 'Warrior Spirit'],
+    historicalPlace: 'Nanny Town, Moore Town'
   },
   {
     value: 100,
-    name: '1 Sovereign',
+    name: '1 Dinar',
     metal: 'Gold Plated',
     color: 'from-yellow-400 to-amber-600',
     centerColor: 'from-yellow-500 to-amber-700',
     size: 'w-44 h-44',
-    symbol: 'Black Star',
+    symbol: 'Black Star Gate',
     emblem: '⭐',
-    description: 'The Sovereign Crown',
+    description: 'The Supreme Dinar',
     edge: 'Security Ridge',
-    features: ['Marcus Garvey Star', 'African Unity', 'Supreme Value']
+    features: ['Marcus Garvey Star', 'African Unity', 'Supreme Value'],
+    historicalPlace: 'National Heroes Park'
   },
   {
     value: 500,
-    name: '5 Sovereign',
+    name: '5 Dinar',
     metal: 'Platinum Plated',
     color: 'from-purple-400 to-indigo-600',
     centerColor: 'from-purple-500 to-indigo-700',
@@ -95,7 +101,8 @@ const coinDesigns = [
     emblem: '🦁',
     description: 'Royal Authority',
     edge: 'Diamond Cut',
-    features: ['Rastafari Symbol', 'Royal Seal', 'Divine Protection']
+    features: ['Rastafari Symbol', 'Royal Seal', 'Divine Protection'],
+    historicalPlace: 'Nine Mile, Trench Town'
   }
 ];
 
@@ -121,10 +128,10 @@ export default function YFDCoins() {
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold mb-2">YFD Coin System</h2>
         <p className="text-gray-600 dark:text-gray-400">
-          From Cents to Sovereigns - Each Coin Tells Our Story
+          From Cents to Dinars - Each Coin Carries Our Sacred Places
         </p>
         <Badge className="mt-2 bg-gradient-to-r from-green-600 to-yellow-600 text-white">
-          The "Sovereign" - Our Highest Honor
+          The "Dinar" - Supreme Value of YaadFlex
         </Badge>
       </div>
 
@@ -228,11 +235,14 @@ export default function YFDCoins() {
               <div>
                 <h3 className="font-bold text-lg mb-2">{currentCoin.name}</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {currentCoin.value === 100 ? 'Base Sovereign Unit' : 
-                   currentCoin.value === 500 ? 'Premium Sovereign' :
+                  {currentCoin.value === 100 ? 'Base Dinar Unit' : 
+                   currentCoin.value === 500 ? 'Premium Dinar' :
                    `Value: ${currentCoin.value} cent${currentCoin.value > 1 ? 's' : ''}`}
                 </p>
                 <Badge className="mt-2">{currentCoin.metal}</Badge>
+                <p className="text-xs text-gray-500 mt-2 italic">
+                  Historical Place: {currentCoin.historicalPlace}
+                </p>
               </div>
               
               <div>
@@ -308,19 +318,19 @@ export default function YFDCoins() {
 
       {/* Information Card */}
       <Card className="mt-8 p-6 bg-gradient-to-r from-yellow-50 to-green-50 dark:from-yellow-950 dark:to-green-950">
-        <h3 className="text-xl font-bold mb-3">The Sovereign System</h3>
+        <h3 className="text-xl font-bold mb-3">The Dinar System</h3>
         <div className="space-y-2 text-sm">
           <p>
-            <strong>The Sovereign:</strong> Our highest denomination coin, representing supreme value and authority.
-            1 Sovereign = 100 cents, making it a powerful yet practical unit.
+            <strong>The Dinar:</strong> Our supreme denomination, representing the highest value in the YaadFlex economy.
+            1 Dinar = 100 cents, making it both prestigious and practical.
           </p>
           <p>
-            <strong>Historical Significance:</strong> Each coin features symbols from Jamaican heritage,
-            from the Doctor Bird to Port Royal, the Blue Mountains to Maroon settlements.
+            <strong>Real Places, Real History:</strong> Each coin features actual Jamaican historical sites -
+            from Hope Gardens to Port Royal, Blue Mountains to Trench Town. These aren't just symbols, they're our story.
           </p>
           <p>
-            <strong>Security:</strong> Advanced edge patterns and bi-metallic designs prevent counterfeiting
-            while celebrating our cultural identity.
+            <strong>Surreal Design:</strong> Elegant metallic gradients with embedded cultural emblems,
+            creating coins that feel both ancient and futuristic - uniquely YaadFlex.
           </p>
         </div>
       </Card>
