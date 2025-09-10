@@ -67,6 +67,7 @@ import ErrorDashboard from "@/pages/ErrorDashboard";
 import UploadTest from "@/pages/UploadTest";
 import SimpleUpload from "@/pages/SimpleUpload";
 import TinyUpload from "@/pages/TinyUpload";
+import WorldVybz from "@/pages/WorldVybz";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -92,6 +93,9 @@ function Router() {
       <Route path="/social" component={SocialFeed} />
       <Route path="/social-feed" component={SocialFeed} />
       <Route path="/social-hub" component={SocialHub} />
+      <Route path="/world-vybz" component={WorldVybz} />
+      <Route path="/global-content" component={WorldVybz} />
+      <Route path="/world-content" component={WorldVybz} />
       <Route path="/heritage-delivery" component={HeritageDelivery} />
       <Route path="/delivery-riders" component={HeritageDelivery} />
       <Route path="/universal-payment" component={UniversalPaymentPage} />
