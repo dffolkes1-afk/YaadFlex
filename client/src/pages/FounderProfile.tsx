@@ -94,6 +94,8 @@ export default function FounderProfile() {
                   <div>
                     <div className="font-bold text-lg">Notable Projects</div>
                     <div className="text-gray-700">
+                      • <strong className="text-green-600">SUPER CENTER - SAVED THE PROJECT</strong><br/>
+                      &nbsp;&nbsp;Part of the drywall team that rescued it when work was going bad<br/>
                       • Portmore Commercial Complex - Lead Finisher<br/>
                       • Custom Ceiling Design Innovation - Water Damage Solutions<br/>
                       • Multiple High-End Residential Projects<br/>
@@ -172,6 +174,7 @@ export default function FounderProfile() {
                     <div className="font-bold text-lg">The Real Journey</div>
                     <div className="text-gray-700">
                       • Grew up without a father - learned to survive alone<br/>
+                      • Used to chill at 69 Brooks with the Phillips family<br/>
                       • Hated 9-to-5 jobs and gas station work<br/>
                       • Always searching for something different<br/>
                       • Grasped knowledge everywhere - streets to books<br/>
@@ -288,7 +291,9 @@ export default function FounderProfile() {
             <div className="text-center space-y-4">
               <div className="text-lg">
                 <strong className="text-red-600">O'Neill Phillips & Debbie Phillips</strong> - The MAIN Inspirations<br/>
-                <span className="italic">"They kept me working, kept me learning, gave me the drive to never stop"</span><br/><br/>
+                <span className="italic">"From 69 Brooks - They kept me working, kept me learning, gave me the drive to never stop"</span><br/>
+                <strong className="text-blue-600">Bings (Beans)</strong> - Great childhood friend from the Phillips family<br/>
+                <span className="italic">"Drew my attention to the family - we were all that"</span><br/><br/>
                 <strong>Trevor Bailey</strong> - Master Mentor & Teacher<br/>
                 <strong>Dennis Williams</strong> - Prominent Architect & Inspiration<br/>
                 <strong>Louis Aitken</strong> - Early Business Mentor<br/>
