@@ -103,7 +103,7 @@ export default function FounderProfile() {
                       • Portmore Commercial Complex - Lead Finisher<br/>
                       • Custom Ceiling Design Innovation - Water Damage Solutions<br/>
                       • Multiple Elite Residences - Norbrook Drive & Terrace<br/>
-                      • <strong className="text-red-600">HURRICANE IVAN HERO (2004)</strong> - Repaired 70-78 CHURCHES after disaster<br/>
+                      • <strong className="text-red-600">HURRICANE IVAN HERO (2004)</strong> - Church repair work after disaster<br/>
                       • College Principal's House in Cayman - First discovery project<br/>
                       • Charles Russell Jr. Projects - He discovered me after principal & got my permit
                     </div>
@@ -121,7 +121,7 @@ export default function FounderProfile() {
                       • Then discovered by Charles Russell Jr. - took me to complete jobs<br/>
                       • Charles Russell Jr. got me work permit - "I want your permit"<br/>
                       • Freelance work - Skill overcame everything, permit didn't matter<br/>
-                      • <strong className="text-red-600">HURRICANE IVAN HERO</strong> - Repair work on 70-78 CHURCHES after Ivan<br/>
+                      • <strong className="text-red-600">HURRICANE IVAN HERO</strong> - Church repair work after Ivan<br/>
                       &nbsp;&nbsp;Churches approached ME for repairs - worked Sundays, God was with me<br/>
                       • Sunday church work with Alvin Watkins<br/>
                       • Worked at Kmart too - but stayed freelance on both permits<br/>
