@@ -30,6 +30,7 @@ export function VoiceInteractive({
   const [lastCommand, setLastCommand] = useState<string>('');
   const [voiceEnabled, setVoiceEnabled] = useState(true);
   const [recognition, setRecognition] = useState<any>(null);
+  const recognitionRef = useRef<any>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -77,24 +78,41 @@ export function VoiceInteractive({
       };
       
       setRecognition(recognitionInstance);
+      recognitionRef.current = recognitionInstance;
     }
   }, []);
 
   const startListening = () => {
-    if (recognition) {
-      recognition.start();
-      setTranscript('');
-      toast({
-        title: "🎤 Voice Active",
-        description: "Listening... Say what you want to do!",
-      });
+    const rec = recognitionRef.current || recognition;
+    if (rec) {
+      try {
+        rec.start();
+        setTranscript('');
+        toast({
+          title: "🎤 Voice Active",
+          description: "Listening... Say what you want to do!",
+        });
+      } catch (error) {
+        console.error('Error starting voice recognition:', error);
+        toast({
+          title: "Voice Error",
+          description: "Could not start voice recognition. Please try again.",
+          variant: "destructive",
+        });
+      }
     }
   };
 
   const stopListening = () => {
-    if (recognition) {
-      recognition.stop();
-      setIsListening(false);
+    const rec = recognitionRef.current || recognition;
+    if (rec) {
+      try {
+        rec.stop();
+        setIsListening(false);
+      } catch (error) {
+        console.error('Error stopping voice recognition:', error);
+        setIsListening(false);
+      }
     }
   };
 
