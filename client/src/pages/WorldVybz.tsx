@@ -13,236 +13,168 @@ interface ContentItem {
 }
 
 const globalContent: ContentItem[] = [
-  // Shopping & Home Improvement
+  // Island Life - Free & Stress-Free Living
   {
     id: '1',
-    title: 'Creative Wall Finishes - DIY Home Makeover',
-    description: 'Amazing creative wall finishing techniques that transform any home beautifully',
+    title: 'Caribbean Island Life - Living Free & Happy',
+    description: 'See how Caribbean islanders live stress-free, enjoying life without financial pressure',
     type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=creative+wall+finishes+diy+home+makeover',
-    country: 'Global 🌍',
-    category: 'Creative Finishes',
-    views: '4.2M views'
+    url: 'https://www.youtube.com/results?search_query=caribbean+island+life+stress+free+living',
+    country: 'Caribbean 🏝️',
+    category: 'Island Life',
+    views: '3.2M views'
   },
   {
     id: '2',
-    title: 'Beautiful Floor Designs - Home Shopping Style',
-    description: 'Gorgeous flooring ideas and designs for every room - shopping channel style',
+    title: 'Philippines Island Communities - Simple Living',
+    description: 'Remote island communities living simply, fishing, sharing, and enjoying life naturally',
     type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=beautiful+floor+designs+home+shopping',
-    country: 'Global 🌍',
-    category: 'Home Shopping',
-    views: '3.8M views'
+    url: 'https://www.youtube.com/results?search_query=philippines+island+communities+simple+living',
+    country: 'Philippines 🇵🇭',
+    category: 'Island Life',
+    views: '2.8M views'
   },
-  
-  // Natural Herbs & Health
   {
     id: '3',
-    title: 'Ghana Healing Herbs - Traditional Medicine',
-    description: 'Powerful healing herbs from Ghana that keep you healthy naturally',
+    title: 'Fiji Village Life - Community Living Without Stress',
+    description: 'Fiji villages where money doesn\'t control life - community sharing and happiness',
     type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=ghana+healing+herbs+traditional+medicine',
-    country: 'Ghana 🇬🇭',
-    category: 'Natural Health',
+    url: 'https://www.youtube.com/results?search_query=fiji+village+life+community+living',
+    country: 'Fiji 🇫🇯',
+    category: 'Island Life',
     views: '1.9M views'
   },
+
+  // River Life - Free Spirit Communities
   {
     id: '4',
-    title: 'African Herbal Remedies - Natural Healing',
-    description: 'Ancient African herbs and natural remedies used for centuries',
+    title: 'Amazon River Communities - Living With Nature',
+    description: 'Communities living along Amazon rivers - free from city stress, connected to nature',
     type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=african+herbal+remedies+natural+healing',
-    country: 'Pan-Africa 🌍',
-    category: 'Natural Health',
-    views: '2.5M views'
+    url: 'https://www.youtube.com/results?search_query=amazon+river+communities+living+with+nature',
+    country: 'Brazil 🇧🇷',
+    category: 'River Life',
+    views: '2.1M views'
   },
   {
     id: '5',
-    title: 'Jamaican Bush Medicine - Island Herbs',
-    description: 'Traditional Jamaican bush medicine and healing herbs from the island',
+    title: 'African River Life - Peaceful Communities',
+    description: 'African river communities living peacefully without the stress of modern financial pressure',
     type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=jamaican+bush+medicine+healing+herbs',
-    country: 'Jamaica 🇯🇲',
-    category: 'Natural Health',
-    views: '870K views'
+    url: 'https://www.youtube.com/results?search_query=african+river+communities+peaceful+living',
+    country: 'Africa 🌍',
+    category: 'River Life',
+    views: '1.7M views'
   },
-
-  // Garden & Outdoor Beauty
   {
     id: '6',
-    title: 'Beautiful Garden Designs - Outdoor Paradise',
-    description: 'Stunning garden ideas that make your outdoor space absolutely beautiful',
+    title: 'Mekong River Life - Floating Communities',
+    description: 'Floating communities on Mekong River living free, sharing resources, enjoying simple life',
     type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=beautiful+garden+designs+outdoor+paradise',
-    country: 'Global 🌍',
-    category: 'Garden & Outdoor',
-    views: '5.1M views'
-  },
-  {
-    id: '7',
-    title: 'Home Decoration Shopping - Interior Style',
-    description: 'Beautiful home decoration ideas - shopping channel style interior design',
-    type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=home+decoration+shopping+interior+design',
-    country: 'Global 🌍',
-    category: 'Home Shopping',
-    views: '6.3M views'
+    url: 'https://www.youtube.com/results?search_query=mekong+river+floating+communities+simple+life',
+    country: 'Vietnam 🇻🇳',
+    category: 'River Life',
+    views: '1.4M views'
   },
 
-  // African Culture & Business
+  // Mountain Free Life
   {
-    id: '8',
-    title: 'Lagos Street Food Culture - Amazing Jollof Rice',
-    description: 'See how authentic Jollof rice is made on Lagos streets - the real African way',
+    id: '7',
+    title: 'Himalayan Mountain Communities - Simple Living',
+    description: 'Mountain communities living without financial stress - sharing, helping, enjoying life',
     type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=lagos+street+food+jollof+rice',
-    country: 'Nigeria 🇳🇬',
-    category: 'Culture & Food',
+    url: 'https://www.youtube.com/results?search_query=himalayan+mountain+communities+simple+living',
+    country: 'Nepal 🇳🇵',
+    category: 'Mountain Life',
     views: '2.3M views'
   },
   {
-    id: '9',
-    title: 'Natural Health Products - Herbal Shopping',
-    description: 'Amazing natural health products and herbal supplements from around the world',
+    id: '8',
+    title: 'Andean Communities - Living Free in Mountains',
+    description: 'Andean mountain people living free from money stress, sharing resources naturally',
     type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=natural+health+products+herbal+shopping',
-    country: 'Global 🌍',
-    category: 'Health Shopping',
-    views: '3.4M views'
+    url: 'https://www.youtube.com/results?search_query=andean+communities+living+free+mountains',
+    country: 'Peru 🇵🇪',
+    category: 'Mountain Life',
+    views: '1.8M views'
+  },
+
+  // African Free Spirit Communities
+  {
+    id: '9',
+    title: 'African Village Life - Community Sharing',
+    description: 'African villages where community comes first - sharing resources, no financial stress',
+    type: 'youtube',
+    url: 'https://www.youtube.com/results?search_query=african+village+life+community+sharing',
+    country: 'Africa 🌍',
+    category: 'Village Life',
+    views: '3.5M views'
   },
   {
     id: '10',
-    title: 'Creative Home Finishes - Professional Tips',
-    description: 'Professional creative finishing techniques that make homes look expensive',
+    title: 'Masai Community Life - Living Free & Traditional',
+    description: 'Masai communities living free from modern financial pressure - traditional sharing economy',
     type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=creative+home+finishes+professional+tips',
-    country: 'Global 🌍',
-    category: 'Creative Finishes',
-    views: '2.7M views'
+    url: 'https://www.youtube.com/results?search_query=masai+community+life+traditional+sharing',
+    country: 'Kenya 🇰🇪',
+    category: 'Village Life',
+    views: '2.6M views'
   },
+
+  // Beach & Coastal Free Life
   {
     id: '11',
-    title: 'Accra Gold Mines - Real Mining Operations',
-    description: 'Live footage from Ghana gold mining operations - see the real work happening',
+    title: 'Pacific Island Beach Life - No Money Stress',
+    description: 'Pacific islanders living on beaches, fishing, sharing - money doesn\'t control happiness',
     type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=ghana+gold+mining+operations',
-    country: 'Ghana 🇬🇭',
-    category: 'Business & Mining',
-    views: '890K views'
-  },
-  {
-    id: '3',
-    title: 'Cape Town Township Life - Real Stories',
-    description: 'Daily life in South African townships - real people, real stories',
-    type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=cape+town+township+daily+life',
-    country: 'South Africa 🇿🇦',
-    category: 'Lifestyle',
-    views: '1.5M views'
-  },
-  {
-    id: '4',
-    title: 'Nairobi Matatu Culture - Urban Transport',
-    description: 'The famous Matatu buses of Kenya - colorful urban transport culture',
-    type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=nairobi+matatu+culture',
-    country: 'Kenya 🇰🇪',
-    category: 'Transport & Culture',
-    views: '670K views'
-  },
-  {
-    id: '5',
-    title: 'African Fashion Designers - Ankara Styles',
-    description: 'Beautiful African fashion and Ankara clothing designs from across the continent',
-    type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=african+ankara+fashion+designs',
-    country: 'Pan-Africa 🌍',
-    category: 'Fashion & Style',
-    views: '3.2M views'
-  },
-
-  // Caribbean Content
-  {
-    id: '6',
-    title: 'Jamaica Blue Mountain Coffee Farms',
-    description: 'How the world\'s most expensive coffee is grown in Jamaica\'s mountains',
-    type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=jamaica+blue+mountain+coffee+farms',
-    country: 'Jamaica 🇯🇲',
-    category: 'Agriculture & Export',
-    views: '450K views'
-  },
-  {
-    id: '7',
-    title: 'Trinidad Carnival Preparation',
-    description: 'Behind the scenes of Trinidad Carnival - the world\'s greatest street party',
-    type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=trinidad+carnival+preparation+behind+scenes',
-    country: 'Trinidad 🇹🇹',
-    category: 'Culture & Festivals',
-    views: '820K views'
-  },
-
-  // Global Interesting Content
-  {
-    id: '8',
-    title: 'Mumbai Street Vendors - Business Hustle',
-    description: 'How street vendors in Mumbai make their living - amazing business skills',
-    type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=mumbai+street+vendors+business',
-    country: 'India 🇮🇳',
-    category: 'Business & Entrepreneurship',
-    views: '1.8M views'
-  },
-  {
-    id: '9',
-    title: 'Philippines Island Life - Remote Communities',
-    description: 'Life on remote Philippine islands - fishing communities and island culture',
-    type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=philippines+remote+island+communities',
-    country: 'Philippines 🇵🇭',
-    category: 'Island Life',
-    views: '920K views'
+    url: 'https://www.youtube.com/results?search_query=pacific+island+beach+life+no+money+stress',
+    country: 'Pacific Islands 🏖️',
+    category: 'Beach Life',
+    views: '4.1M views'
   },
   {
     id: '12',
-    title: 'Home Shopping Network Style - Beautiful Products',
-    description: 'Shopping channel style home products that make your space beautiful',
+    title: 'Costa Rica Beach Communities - Simple Living',
+    description: 'Costa Rican beach communities living simply, surfing, fishing, enjoying life freely',
     type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=home+shopping+network+beautiful+products',
-    country: 'Global 🌍',
-    category: 'Home Shopping',
-    views: '4.8M views'
+    url: 'https://www.youtube.com/results?search_query=costa+rica+beach+communities+simple+living',
+    country: 'Costa Rica 🇨🇷',
+    category: 'Beach Life',
+    views: '2.9M views'
   },
+
+  // Caribbean Free Spirit Life
   {
     id: '13',
-    title: 'Traditional African Medicines - Natural Healing',
-    description: 'Educational content about traditional African medicines and natural healing',
+    title: 'Jamaica Country Life - Free & Easy Living',
+    description: 'Rural Jamaica where life is free and easy - growing food, sharing, no financial stress',
     type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=traditional+african+medicines+natural+healing',
-    country: 'Pan-Africa 🌍',
-    category: 'Health Education',
-    views: '1.6M views'
+    url: 'https://www.youtube.com/results?search_query=jamaica+country+life+free+easy+living',
+    country: 'Jamaica 🇯🇲',
+    category: 'Country Life',
+    views: '2.4M views'
   },
   {
     id: '14',
-    title: 'Beautiful Room Makeovers - Creative Inspiration',
-    description: 'Inspiring room makeover ideas with creative finishes and beautiful designs',
+    title: 'Barbados Village Life - Community Spirit',
+    description: 'Barbadian villages where community spirit means no one goes without - sharing economy',
     type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=beautiful+room+makeovers+creative+inspiration',
-    country: 'Global 🌍',
-    category: 'Home Inspiration',
-    views: '7.2M views'
+    url: 'https://www.youtube.com/results?search_query=barbados+village+life+community+spirit',
+    country: 'Barbados 🇧🇧',
+    category: 'Village Life',
+    views: '1.6M views'
   },
+
+  // Off-Grid Free Living
   {
     id: '15',
-    title: 'Morocco Marrakech Markets - Trading Culture',
-    description: 'The famous souks of Marrakech - traditional trading and craftsmanship',
+    title: 'Off-Grid Communities - Living Without Money Stress',
+    description: 'Communities living off-grid, growing food, sharing resources - free from financial pressure',
     type: 'youtube',
-    url: 'https://www.youtube.com/results?search_query=marrakech+souk+markets+trading',
-    country: 'Morocco 🇲🇦',
-    category: 'Markets & Trade',
-    views: '1.1M views'
+    url: 'https://www.youtube.com/results?search_query=off+grid+communities+living+without+money+stress',
+    country: 'Global 🌍',
+    category: 'Off-Grid Life',
+    views: '5.7M views'
   }
 ];
 
@@ -254,17 +186,17 @@ export default function WorldVybz() {
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-green-500 mb-4 flex items-center justify-center gap-3">
             <Globe className="h-10 w-10" />
-            World Vybz
+            World Vybz - Free Spirit Life
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Shopping-style content, creative finishes, natural herbs, beautiful home designs, and health education. 
-            Real attractive content from Ghana, Jamaica, Africa and around the world - just like TV shopping programs!
+            See how people around the world live FREE and stress-free! River life, island life, communities that enjoy life without financial pressure. 
+            This is the FREE SPIRIT LIFE we're building with YaadFlex - where money doesn't control your happiness!
           </p>
         </div>
 
         {/* Categories */}
         <div className="flex flex-wrap justify-center gap-4 mb-8">
-          {['Creative Finishes', 'Home Shopping', 'Natural Health', 'Garden & Outdoor', 'Health Shopping', 'Culture & Food', 'Business & Mining', 'Home Inspiration', 'Health Education'].map((category) => (
+          {['Island Life', 'River Life', 'Mountain Life', 'Village Life', 'Beach Life', 'Country Life', 'Off-Grid Life'].map((category) => (
             <span 
               key={category}
               className="px-4 py-2 bg-gray-800 rounded-full text-sm hover:bg-gray-700 cursor-pointer transition-colors"
@@ -330,15 +262,15 @@ export default function WorldVybz() {
 
         {/* Footer */}
         <div className="text-center mt-12 p-8 bg-gray-900 rounded-lg">
-          <h3 className="text-xl font-bold text-green-500 mb-4">More Shopping & Lifestyle Content</h3>
+          <h3 className="text-xl font-bold text-green-500 mb-4">This Is The FREE SPIRIT LIFE We're Building</h3>
           <p className="text-gray-400 mb-4">
-            Just like your favorite TV shopping programs! We're adding more creative finishes, natural herbs from Ghana, 
-            beautiful home designs, garden ideas, and health education content. From African herbal medicine to 
-            creative home makeovers - everything that's attractive and inspirational!
+            See how people around the world live FREE from financial stress! Island communities, river life, mountain villages - 
+            places where money doesn't control your happiness. This is what YaadFlex represents - limiting how your pocket 
+            stresses you and hurts your life every day. We're building a platform where people can live freely and enjoy life!
           </p>
           <p className="text-sm text-gray-500">
-            All links open safely to YouTube and trusted platforms - perfect for browsing beautiful content, 
-            learning about natural health, and getting inspired by creative home ideas from around the world.
+            With YaadFlex's 85% driver earnings and fair financial system, we're creating the FREE SPIRIT LIFE right here. 
+            No more financial pressure controlling your happiness - just pure living, community sharing, and enjoying life naturally.
           </p>
         </div>
       </div>
