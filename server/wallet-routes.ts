@@ -232,7 +232,8 @@ walletRouter.post("/api/payment-requests/:id/pay", async (req, res) => {
     }
     
     // Use internal transfer
-    const transferResult = await fetch(`http://localhost:5000/api/wallets/transfer`, {
+    const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : '';
+    const transferResult = await fetch(`${baseUrl}/api/wallets/transfer`, {
       method: "POST", 
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

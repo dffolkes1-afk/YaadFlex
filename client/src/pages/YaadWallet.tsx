@@ -15,6 +15,7 @@ import {
 import YFDCurrency from '@/components/YFDCurrency';
 import YFDCoins from '@/components/YFDCoins';
 import MiniCoinFlip from '@/components/MiniCoinFlip';
+import RealisticYFDCurrency from '@/components/RealisticYFDCurrency';
 import YaadFlexLogo from '@assets/generated_images/YaadFlex_Bank_logo_09b86b5e.png';
 
 interface Transaction {
@@ -528,6 +529,21 @@ export default function YaadWallet() {
 
         {/* YFD Currency Display Section */}
         <div className="mt-12 space-y-8">
+          {/* NEW REALISTIC CURRENCY */}
+          <Card className="border-4 border-amber-400 shadow-2xl">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-2xl bg-gradient-to-r from-emerald-600 to-amber-600 bg-clip-text text-transparent">
+                💎 REALISTIC YFD Currency - Bank Grade Design
+              </CardTitle>
+              <CardDescription className="text-lg font-medium">
+                🏛️ Egyptian Gods + 🇯🇲 Jamaican Heroes + 🌍 World Heritage Sites = Professional Money
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RealisticYFDCurrency />
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-2xl">
