@@ -59,6 +59,7 @@ import YaadWallet from "@/pages/YaadWallet";
 import CompanyDashboard from "@/pages/CompanyDashboard";
 import LogisticsBrokers from "@/pages/LogisticsBrokers";
 import HeritageDelivery from "@/pages/HeritageDelivery";
+import FounderProfile from "@/pages/FounderProfile";
 import UniversalPaymentPage from "@/pages/UniversalPaymentPage";
 import VoiceControlCenter from "@/pages/VoiceControlCenter";
 import VoiceDemo from "@/pages/VoiceDemo";
@@ -123,6 +124,9 @@ function Router() {
       <Route path="/port-clearing" component={LogisticsBrokers} />
       <Route path="/barrel-service" component={LogisticsBrokers} />
       <Route path="/brokers" component={LogisticsBrokers} />
+      
+      {/* Hidden Founder Profile - Private */}
+      <Route path="/founder-vision-2024" component={FounderProfile} />
       
       {/* Authentication-based routes */}
       {isLoading || !isAuthenticated ? (
