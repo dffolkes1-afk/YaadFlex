@@ -12,6 +12,8 @@ import { seedRbacSystem } from "./rbac-seed";
 import deliveryRoutes from "./delivery-routes";
 import { initializeDeliveryRealtime } from "./delivery-realtime";
 import { registerSocialRoutes } from "./routes/social";
+import { autonomousOpsAgent } from "./autonomous-ops-agent";
+import { paymentTunnel } from "./unified-payment-tunnel";
 import { 
   demoWallets, 
   demoTransactions, 
@@ -4827,12 +4829,218 @@ P.S. - Early business partners get exclusive territory rights and preferred part
     }
   });
 
+  // ============================================================
+  // AUTONOMOUS OPS AGENT & CEO DASHBOARD ENDPOINTS
+  // ============================================================
+
+  // Start autonomous agent
+  app.post('/api/autonomous/start', isAuthenticated, async (req, res) => {
+    try {
+      await autonomousOpsAgent.start();
+      res.json({ message: 'Autonomous agent started successfully' });
+    } catch (error) {
+      console.error('Error starting agent:', error);
+      res.status(500).json({ message: 'Failed to start agent' });
+    }
+  });
+
+  // Emergency stop autonomous agent
+  app.post('/api/autonomous/emergency-stop', isAuthenticated, async (req, res) => {
+    try {
+      await autonomousOpsAgent.emergencyStop();
+      res.json({ message: 'Emergency stop activated' });
+    } catch (error) {
+      console.error('Error stopping agent:', error);
+      res.status(500).json({ message: 'Failed to stop agent' });
+    }
+  });
+
+  // Get agent status
+  app.get('/api/autonomous/status', async (req, res) => {
+    try {
+      const status = await autonomousOpsAgent.getStatus();
+      res.json(status);
+    } catch (error) {
+      console.error('Error getting agent status:', error);
+      res.status(500).json({ message: 'Failed to get agent status' });
+    }
+  });
+
+  // CEO Dashboard Metrics
+  app.get('/api/ceo/metrics', isAuthenticated, async (req, res) => {
+    try {
+      const [revenue, users, tasks, obligations, payments, agentLogs] = await Promise.all([
+        // Get revenue metrics
+        storage.getCeoMetrics('revenue'),
+        // Get user metrics
+        storage.getCeoMetrics('users'),
+        // Get task metrics
+        storage.getCeoMetrics('tasks'),
+        // Get obligations
+        storage.getActiveObligations(),
+        // Get recent payments
+        storage.getRecentPayments(10),
+        // Get recent agent logs
+        storage.getRecentAgentLogs(20)
+      ]);
+
+      res.json({
+        revenue,
+        users,
+        tasks,
+        obligations,
+        payments,
+        agentLogs
+      });
+    } catch (error) {
+      console.error('Error fetching CEO metrics:', error);
+      res.status(500).json({ message: 'Failed to fetch metrics' });
+    }
+  });
+
+  // Get compliance status
+  app.get('/api/ceo/compliance', isAuthenticated, async (req, res) => {
+    try {
+      const compliance = await storage.getComplianceStatus();
+      res.json(compliance);
+    } catch (error) {
+      console.error('Error fetching compliance:', error);
+      res.status(500).json({ message: 'Failed to fetch compliance status' });
+    }
+  });
+
+  // Get pending approvals
+  app.get('/api/ceo/approvals/pending', isAuthenticated, async (req, res) => {
+    try {
+      const approvals = await storage.getPendingApprovals();
+      res.json(approvals);
+    } catch (error) {
+      console.error('Error fetching approvals:', error);
+      res.status(500).json({ message: 'Failed to fetch pending approvals' });
+    }
+  });
+
+  // Process approval
+  app.post('/api/ceo/approvals/:taskId/:action', isAuthenticated, async (req, res) => {
+    try {
+      const { taskId, action } = req.params;
+      const userId = req.user?.claims?.sub;
+      
+      if (action !== 'approve' && action !== 'reject') {
+        return res.status(400).json({ message: 'Invalid action' });
+      }
+
+      await storage.processApproval(taskId, action, userId);
+      res.json({ message: `Task ${action}ed successfully` });
+    } catch (error) {
+      console.error('Error processing approval:', error);
+      res.status(500).json({ message: 'Failed to process approval' });
+    }
+  });
+
+  // ============================================================
+  // UNIFIED PAYMENT TUNNEL ENDPOINTS
+  // ============================================================
+
+  // Process driver earning
+  app.post('/api/payment-tunnel/driver-earning', isAuthenticated, async (req, res) => {
+    try {
+      const { driverId, tripAmount, currency, tripId } = req.body;
+      const result = await paymentTunnel.processDriverEarning(
+        driverId,
+        tripAmount,
+        currency,
+        tripId
+      );
+      res.json(result);
+    } catch (error) {
+      console.error('Error processing driver earning:', error);
+      res.status(500).json({ message: 'Failed to process driver earning' });
+    }
+  });
+
+  // Process worker payment
+  app.post('/api/payment-tunnel/worker-payment', isAuthenticated, async (req, res) => {
+    try {
+      const { workerId, amount, currency, jobId, description } = req.body;
+      const result = await paymentTunnel.processWorkerPayment(
+        workerId,
+        amount,
+        currency,
+        jobId,
+        description
+      );
+      res.json(result);
+    } catch (error) {
+      console.error('Error processing worker payment:', error);
+      res.status(500).json({ message: 'Failed to process worker payment' });
+    }
+  });
+
+  // Cash out request
+  app.post('/api/payment-tunnel/cash-out', isAuthenticated, async (req, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      const { role, amount, currency, method } = req.body;
+      const result = await paymentTunnel.processCashOut(
+        userId,
+        role,
+        amount,
+        currency,
+        method
+      );
+      res.json(result);
+    } catch (error) {
+      console.error('Error processing cash out:', error);
+      res.status(500).json({ message: 'Failed to process cash out' });
+    }
+  });
+
+  // Get wallet summary
+  app.get('/api/payment-tunnel/wallet-summary', isAuthenticated, async (req, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      const summary = await paymentTunnel.getWalletSummary(userId);
+      res.json(summary);
+    } catch (error) {
+      console.error('Error fetching wallet summary:', error);
+      res.status(500).json({ message: 'Failed to fetch wallet summary' });
+    }
+  });
+
+  // Get transaction history
+  app.get('/api/payment-tunnel/transactions', isAuthenticated, async (req, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      const { role, startDate, endDate, limit } = req.query;
+      const transactions = await paymentTunnel.getTransactionHistory(
+        userId,
+        role as string,
+        startDate ? new Date(startDate as string) : undefined,
+        endDate ? new Date(endDate as string) : undefined,
+        limit ? parseInt(limit as string) : 50
+      );
+      res.json(transactions);
+    } catch (error) {
+      console.error('Error fetching transactions:', error);
+      res.status(500).json({ message: 'Failed to fetch transaction history' });
+    }
+  });
+
   // Initialize observability system
   try {
     await observabilityService.initializeSubsystems();
     console.log('🔍 Observability system initialized');
   } catch (error) {
     console.log('⚠️ Observability system will initialize when database is ready');
+  }
+
+  // Start autonomous ops agent
+  try {
+    await autonomousOpsAgent.start();
+    console.log('🤖 Autonomous Ops Agent started');
+  } catch (error) {
+    console.log('⚠️ Autonomous Ops Agent will start when database is ready');
   }
 
   const httpServer = createServer(app);
