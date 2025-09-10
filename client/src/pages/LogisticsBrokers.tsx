@@ -617,12 +617,13 @@ export default function LogisticsBrokers() {
 
                   <div className="p-4 bg-gradient-to-br from-purple-100 to-blue-100 rounded-lg border-2 border-purple-300">
                     <div className="text-center">
-                      <div className="font-bold text-purple-800 text-lg mb-2">❤️ OUR PROMISE:</div>
+                      <div className="font-bold text-purple-800 text-lg mb-2">⚖️ FAIRNESS ACROSS THE TABLE:</div>
                       <div className="text-sm text-purple-700">
+                        <strong>EVERYONE BENEFITS - Drivers, Customers, Businesses</strong><br/>
                         <strong>We NEVER kick you off</strong><br/>
-                        <strong>We TEACH you to earn more</strong><br/>
-                        <strong>We SHOW you what works</strong><br/>
-                        <strong>We HELP you grow!</strong>
+                        <strong>Misbehave? We redirect you to delivery only to calm down</strong><br/>
+                        <strong>We TEACH you better ways to earn</strong><br/>
+                        <strong>FAIRNESS for ALL - that's our promise!</strong>
                       </div>
                     </div>
                   </div>
