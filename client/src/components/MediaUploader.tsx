@@ -12,8 +12,10 @@ interface MediaFile {
   file: File;
   type: 'image' | 'video' | 'audio';
   url: string;
+  localUrl?: string;
   thumbnail?: string;
   duration?: number;
+  uploadError?: boolean;
 }
 
 interface MediaUploaderProps {
@@ -45,44 +47,110 @@ export function MediaUploader({
     return 'image'; // fallback
   };
 
+  const uploadFileToStorage = async (file: File): Promise<string> => {
+    try {
+      // Get upload URL from backend
+      const response = await fetch('/api/objects/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ fileName: file.name })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get upload URL');
+      }
+
+      const { uploadURL } = await response.json();
+
+      // Upload file directly to object storage
+      const uploadResponse = await fetch(uploadURL, {
+        method: 'PUT',
+        body: file,
+        headers: {
+          'Content-Type': file.type
+        }
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error('Failed to upload file');
+      }
+
+      // Return the object storage URL
+      return uploadURL.split('?')[0]; // Remove query params
+    } catch (error) {
+      console.error('Upload error:', error);
+      throw error;
+    }
+  };
+
   const handleFileSelect = async (files: FileList) => {
-    const newMedia: MediaFile[] = [];
+    setIsUploading(true);
+    setUploadProgress(0);
     
-    for (let i = 0; i < Math.min(files.length, maxFiles - selectedMedia.length); i++) {
+    const newMedia: MediaFile[] = [];
+    const totalFiles = Math.min(files.length, maxFiles - selectedMedia.length);
+    
+    for (let i = 0; i < totalFiles; i++) {
       const file = files[i];
       const type = getFileType(file);
-      const url = URL.createObjectURL(file);
+      const localUrl = URL.createObjectURL(file);
       
-      const mediaFile: MediaFile = {
-        id: `${Date.now()}-${i}`,
-        file,
-        type,
-        url
-      };
+      try {
+        // Upload file to object storage
+        const storageUrl = await uploadFileToStorage(file);
+        
+        const mediaFile: MediaFile = {
+          id: `${Date.now()}-${i}`,
+          file,
+          type,
+          url: storageUrl, // Use storage URL instead of local URL
+          localUrl // Keep local URL for preview
+        };
 
-      // Get duration for video/audio files
-      if (type === 'video' || type === 'audio') {
-        try {
-          const duration = await getMediaDuration(file);
-          mediaFile.duration = duration;
-        } catch (error) {
-          console.warn('Could not get media duration:', error);
+        // Get duration for video/audio files
+        if (type === 'video' || type === 'audio') {
+          try {
+            const duration = await getMediaDuration(file);
+            mediaFile.duration = duration;
+          } catch (error) {
+            console.warn('Could not get media duration:', error);
+          }
         }
-      }
 
-      // Generate thumbnail for videos
-      if (type === 'video') {
-        try {
-          const thumbnail = await generateVideoThumbnail(file);
-          mediaFile.thumbnail = thumbnail;
-        } catch (error) {
-          console.warn('Could not generate video thumbnail:', error);
+        // Generate thumbnail for videos
+        if (type === 'video') {
+          try {
+            const thumbnail = await generateVideoThumbnail(file);
+            mediaFile.thumbnail = thumbnail;
+          } catch (error) {
+            console.warn('Could not generate video thumbnail:', error);
+          }
         }
-      }
 
-      newMedia.push(mediaFile);
+        newMedia.push(mediaFile);
+        
+        // Update progress
+        const progress = ((i + 1) / totalFiles) * 100;
+        setUploadProgress(progress);
+        
+      } catch (error) {
+        console.error(`Failed to upload ${file.name}:`, error);
+        // Still add to newMedia with local URL as fallback
+        newMedia.push({
+          id: `${Date.now()}-${i}`,
+          file,
+          type,
+          url: localUrl,
+          localUrl,
+          uploadError: true
+        });
+      }
     }
 
+    setIsUploading(false);
+    setUploadProgress(100);
+    
     const updatedMedia = [...selectedMedia, ...newMedia];
     setSelectedMedia(updatedMedia);
     onMediaSelect(updatedMedia);
