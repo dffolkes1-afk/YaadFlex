@@ -160,12 +160,13 @@ export default function LogisticsBrokers() {
         </div>
 
         <Tabs defaultValue="find-brokers" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="find-brokers">🔍 Find Brokers</TabsTrigger>
-            <TabsTrigger value="autonomous-ops">🤖 Auto-Ops</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-7 text-xs">
+            <TabsTrigger value="find-brokers">🔍 Find</TabsTrigger>
+            <TabsTrigger value="autonomous-ops">🤖 Auto</TabsTrigger>
+            <TabsTrigger value="dashboard-system">🚗 Dashboard</TabsTrigger>
             <TabsTrigger value="pricing-system">💰 Pricing</TabsTrigger>
-            <TabsTrigger value="qr-system">📱 QR System</TabsTrigger>
-            <TabsTrigger value="become-broker">👥 Join as Broker</TabsTrigger>
+            <TabsTrigger value="qr-system">📱 QR</TabsTrigger>
+            <TabsTrigger value="become-broker">👥 Join</TabsTrigger>
             <TabsTrigger value="track-shipment">📍 Track</TabsTrigger>
           </TabsList>
 
@@ -639,6 +640,307 @@ export default function LogisticsBrokers() {
                         <strong>App handles routine tasks</strong><br/>
                         <strong>You focus on growing your empire</strong><br/>
                         <strong>Best of both worlds!</strong>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* Dashboard & Vehicle Tracking Tab */}
+          <TabsContent value="dashboard-system">
+            {/* Hero Section */}
+            <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-green-600 text-white p-8 rounded-3xl shadow-2xl mb-8">
+              <div className="text-center">
+                <h2 className="text-4xl font-bold mb-4">🚗 IN-CAR DASHBOARD + GPS TRACKING!</h2>
+                <div className="text-2xl font-semibold mb-6">
+                  💻 SAFER THAN PHONE • 📡 COMPLETE CAR TRACKING • 🛡️ SECURITY MONITORING
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-white/20 p-4 rounded-xl">
+                    <div className="text-3xl mb-2">💻</div>
+                    <div className="font-bold">DASHBOARD DISPLAY</div>
+                    <div className="text-sm opacity-90">Better than phone - park phone safely</div>
+                  </div>
+                  <div className="bg-white/20 p-4 rounded-xl">
+                    <div className="text-3xl mb-2">📡</div>
+                    <div className="font-bold">GPS TRACKING</div>
+                    <div className="text-sm opacity-90">Know where every vehicle is</div>
+                  </div>
+                  <div className="bg-white/20 p-4 rounded-xl">
+                    <div className="text-3xl mb-2">🛡️</div>
+                    <div className="font-bold">SECURITY SYSTEM</div>
+                    <div className="text-sm opacity-90">Car movement alerts & protection</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              
+              {/* Dashboard Display System */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="text-2xl">💻</div>
+                    In-Car Dashboard Display - SAFER Than Phone!
+                  </CardTitle>
+                  <CardDescription>
+                    Professional dashboard display - park your phone and drive safely
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  
+                  <div className="p-4 bg-red-50 rounded-lg border-l-4 border-red-400">
+                    <div className="font-bold text-red-800 mb-2">🚫 DON'T Use Phone While Driving!</div>
+                    <div className="text-sm text-red-700">
+                      Park your phone safely - Use dashboard display for all business operations
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="p-4 bg-blue-50 rounded-lg border">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-2xl">🖥️</div>
+                        <div className="font-bold text-blue-800">Dashboard Integration</div>
+                      </div>
+                      <div className="text-sm text-blue-700">
+                        • Connect to your car's display system<br/>
+                        • Run YaadFlex directly on dashboard<br/>
+                        • Touch controls while parked only<br/>
+                        • Voice commands while driving
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 bg-green-50 rounded-lg border">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-2xl">💻</div>
+                        <div className="font-bold text-green-800">Laptop/Tablet Option</div>
+                      </div>
+                      <div className="text-sm text-green-700">
+                        • Mount laptop/tablet on dashboard<br/>
+                        • Business management interface<br/>
+                        • Two places at once - car + office<br/>
+                        • Full control from anywhere
+                      </div>
+                    </div>
+
+                    <div className="p-4 bg-purple-50 rounded-lg border">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-2xl">📱</div>
+                        <div className="font-bold text-purple-800">Screen Sharing</div>
+                      </div>
+                      <div className="text-sm text-purple-700">
+                        • Share phone screen to dashboard<br/>
+                        • No app download needed on car system<br/>
+                        • Works with any car display<br/>
+                        • Wireless connection available
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg border-2 border-emerald-300">
+                    <div className="font-bold text-emerald-800 text-center mb-2">🎯 DASHBOARD BENEFITS:</div>
+                    <div className="text-sm text-emerald-700 text-center">
+                      • SAFER driving - hands on wheel<br/>
+                      • BIGGER screen - easier to see<br/>
+                      • PROFESSIONAL look for customers<br/>
+                      • DUAL setup - car + office control
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* GPS Vehicle Tracking */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="text-2xl">📡</div>
+                    Complete Vehicle GPS Tracking System
+                  </CardTitle>
+                  <CardDescription>
+                    Know exactly where every vehicle is - complete fleet control
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  
+                  <div className="space-y-3">
+                    <div className="p-4 bg-blue-50 rounded-lg border">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-2xl">🗺️</div>
+                        <div className="font-bold text-blue-800">Real-Time Location</div>
+                      </div>
+                      <div className="text-sm text-blue-700">
+                        • See all vehicles on live map<br/>
+                        • GPS coordinates updated every 30 seconds<br/>
+                        • Route history and patterns<br/>
+                        • Distance traveled tracking
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 bg-green-50 rounded-lg border">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-2xl">⚡</div>
+                        <div className="font-bold text-green-800">Movement Alerts</div>
+                      </div>
+                      <div className="text-sm text-green-700">
+                        • Instant alerts when car moves<br/>
+                        • Unauthorized movement detection<br/>
+                        • Speed limit monitoring<br/>
+                        • Idle time tracking for efficiency
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 bg-purple-50 rounded-lg border">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-2xl">📊</div>
+                        <div className="font-bold text-purple-800">Fleet Insights</div>
+                      </div>
+                      <div className="text-sm text-purple-700">
+                        • Fuel efficiency analysis<br/>
+                        • Driver performance metrics<br/>
+                        • Route optimization suggestions<br/>
+                        • Maintenance scheduling based on usage
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border-2 border-blue-300">
+                    <div className="font-bold text-blue-800 text-center mb-2">🎯 TRACKING CONTROL:</div>
+                    <div className="text-sm text-blue-700 text-center">
+                      • WE control the GPS system<br/>
+                      • ANY amount of GPS points you want<br/>
+                      • COMPLETE insights into vehicle operations<br/>
+                      • SECURITY protection for your fleet
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Security & Protection */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="text-2xl">🛡️</div>
+                    Complete Vehicle Security System
+                  </CardTitle>
+                  <CardDescription>
+                    Protect your entire fleet with advanced security monitoring
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  
+                  <div className="space-y-3">
+                    <div className="p-4 bg-red-50 rounded-lg border-l-4 border-red-400">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-2xl">🚨</div>
+                        <div className="font-bold text-red-800">Theft Protection</div>
+                      </div>
+                      <div className="text-sm text-red-700">
+                        • Instant alerts if car moves without authorization<br/>
+                        • GPS tracking even if engine is off<br/>
+                        • Emergency contact notifications<br/>
+                        • Integration with security companies
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 bg-amber-50 rounded-lg border-l-4 border-amber-400">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-2xl">🔍</div>
+                        <div className="font-bold text-amber-800">24/7 Monitoring</div>
+                      </div>
+                      <div className="text-sm text-amber-700">
+                        • Continuous vehicle monitoring<br/>
+                        • Battery level tracking<br/>
+                        • Engine diagnostics alerts<br/>
+                        • Maintenance reminders
+                      </div>
+                    </div>
+
+                    <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-2xl">📱</div>
+                        <div className="font-bold text-green-800">Mobile Control</div>
+                      </div>
+                      <div className="text-sm text-green-700">
+                        • Remote engine disable (if supported)<br/>
+                        • Horn/light activation for location<br/>
+                        • Geofence alerts (enter/leave areas)<br/>
+                        • Driver behavior monitoring
+                      </div>
+                    </div>
+
+                    <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-2xl">💰</div>
+                        <div className="font-bold text-blue-800">Insurance Benefits</div>
+                      </div>
+                      <div className="text-sm text-blue-700">
+                        • Lower insurance premiums with tracking<br/>
+                        • Accident reconstruction data<br/>
+                        • Driver safety scoring<br/>
+                        • Proof of vehicle usage for claims
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Installation & Setup */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="text-2xl">🔧</div>
+                    Easy Installation & Setup
+                  </CardTitle>
+                  <CardDescription>
+                    Professional installation and complete system setup
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                      <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
+                      <div>
+                        <div className="font-semibold">GPS Tracker Installation</div>
+                        <div className="text-sm text-gray-600">Professional install in your vehicle (hidden location)</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                      <div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</div>
+                      <div>
+                        <div className="font-semibold">Dashboard Setup</div>
+                        <div className="text-sm text-gray-600">Connect to your car display or mount tablet/laptop</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
+                      <div className="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold">3</div>
+                      <div>
+                        <div className="font-semibold">YaadFlex Integration</div>
+                        <div className="text-sm text-gray-600">Link tracking system to your broker account</div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 p-3 bg-amber-50 rounded-lg">
+                      <div className="w-8 h-8 bg-amber-600 text-white rounded-full flex items-center justify-center text-sm font-bold">4</div>
+                      <div>
+                        <div className="font-semibold">Complete Control</div>
+                        <div className="text-sm text-gray-600">Monitor and manage everything from anywhere</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-gradient-to-r from-gold-50 to-yellow-50 rounded-lg border-2 border-yellow-400">
+                    <div className="text-center">
+                      <div className="font-bold text-yellow-800 text-lg mb-2">💎 COMPLETE SYSTEM:</div>
+                      <div className="text-sm text-yellow-700">
+                        <strong>Dashboard Display + GPS Tracking + Security</strong><br/>
+                        <strong>Everything you need for professional operations</strong><br/>
+                        <strong>Control your entire fleet from anywhere!</strong>
                       </div>
                     </div>
                   </div>
