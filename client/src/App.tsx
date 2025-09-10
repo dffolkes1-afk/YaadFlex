@@ -77,6 +77,7 @@ function Router() {
       <Route path="/contact" component={ContactForm} />
       <Route path="/signup" component={ContactForm} />
       <Route path="/social" component={SocialHub} />
+      <Route path="/social-hub" component={SocialHub} />
       <Route path="/pricing" component={PricingCalculator} />
       <Route path="/book-ride" component={CustomerBooking} />
       <Route path="/travel-booking" component={TravelBooking} />
