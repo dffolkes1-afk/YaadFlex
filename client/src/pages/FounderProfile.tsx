@@ -104,8 +104,8 @@ export default function FounderProfile() {
                       • Custom Ceiling Design Innovation - Water Damage Solutions<br/>
                       • Multiple Elite Residences - Norbrook Drive & Terrace<br/>
                       • <strong className="text-red-600">HURRICANE IVAN CHURCHES (2004)</strong> - Repaired ALL churches after disaster<br/>
-                      • Principal's House in Cayman - Discovery project that launched career<br/>
-                      • International Projects with Charles Russell Jr. - Macross Company
+                      • College Principal's House in Cayman - First discovery project<br/>
+                      • Charles Russell Jr. Projects - He discovered me after principal & got my permit
                     </div>
                   </div>
                 </div>
@@ -115,12 +115,13 @@ export default function FounderProfile() {
                   <div>
                     <div className="font-bold text-lg">Cayman Islands Hero Work</div>
                     <div className="text-gray-700">
-                      • Worked with Charles Russell Jr. - Macross Family Company<br/>
-                      • Built house for school principal - discovered by talent<br/>
+                      • First discovered by college principal - built their house<br/>
+                      • Then discovered by Charles Russell Jr. - took me to complete jobs<br/>
+                      • Charles Russell Jr. got me work permit - "I want your permit"<br/>
                       • <strong className="text-red-600">HURRICANE IVAN HERO</strong> - Repaired ALL churches after Ivan<br/>
                       • Sunday church work with Alvin Watkins<br/>
                       • Close friend of Junior, Margaret (Mom) & Macross family<br/>
-                      • First work permit holder - Wesley was first friend there
+                      • Wesley was first friend there
                     </div>
                   </div>
                 </div>
