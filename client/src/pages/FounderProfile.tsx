@@ -99,7 +99,7 @@ export default function FounderProfile() {
                       • <strong className="text-amber-600">TANKWELL BOSS'S HOUSE - NORBROOK DRIVE (1999-2000)</strong><br/>
                       &nbsp;&nbsp;Good size house next to golf club - Met Eladio & Julian here<br/>
                       • <strong className="text-green-600">SUPER CENTER - SAVED THE PROJECT (2000)</strong><br/>
-                      &nbsp;&nbsp;Best finishers in Jamaica - rescued project when finishing was bad<br/>
+                      &nbsp;&nbsp;One of few who could frame, board & plaster - complete finisher<br/>
                       • Portmore Commercial Complex - Lead Finisher<br/>
                       • Custom Ceiling Design Innovation - Water Damage Solutions<br/>
                       • Multiple Elite Residences - Norbrook Drive & Terrace<br/>
@@ -115,13 +115,15 @@ export default function FounderProfile() {
                   <div>
                     <div className="font-bold text-lg">Cayman Islands Hero Work</div>
                     <div className="text-gray-700">
+                      • <strong className="text-purple-600">RARE COMPLETE SKILLSET</strong> - Could frame, board, AND plaster<br/>
+                      &nbsp;&nbsp;Most Jamaicans could only do one - I did EVERYTHING<br/>
                       • First discovered by college principal - built their house<br/>
                       • Then discovered by Charles Russell Jr. - took me to complete jobs<br/>
                       • Charles Russell Jr. got me work permit - "I want your permit"<br/>
+                      • Freelance work - Skill overcame everything, permit didn't matter<br/>
                       • <strong className="text-red-600">HURRICANE IVAN HERO</strong> - Repaired ALL churches after Ivan<br/>
                       • Sunday church work with Alvin Watkins<br/>
-                      • Close friend of Junior, Margaret (Mom) & Macross family<br/>
-                      • Wesley was first friend there
+                      • Close friend of Junior, Margaret (Mom) & Macross family
                     </div>
                   </div>
                 </div>
