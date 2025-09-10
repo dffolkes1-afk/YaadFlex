@@ -56,6 +56,7 @@ import SocialSignup from "@/pages/SocialSignup";
 import SocialFeed from "@/pages/SocialFeed";
 import GlobalJobs from "@/pages/GlobalJobs";
 import YaadWallet from "@/pages/YaadWallet";
+import CompanyDashboard from "@/pages/CompanyDashboard";
 import HeritageDelivery from "@/pages/HeritageDelivery";
 import UniversalPaymentPage from "@/pages/UniversalPaymentPage";
 import VoiceControlCenter from "@/pages/VoiceControlCenter";
@@ -114,6 +115,9 @@ function Router() {
       <Route path="/contact" component={EmailAssistant} />
       <Route path="/universal-remote" component={UniversalRemote} />
       <Route path="/ceo-dashboard" component={CeoDashboard} />
+      <Route path="/company-dashboard" component={CompanyDashboard} />
+      <Route path="/taxi-company" component={CompanyDashboard} />
+      <Route path="/business-control" component={CompanyDashboard} />
       
       {/* Authentication-based routes */}
       {isLoading || !isAuthenticated ? (
