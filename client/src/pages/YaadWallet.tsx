@@ -10,8 +10,9 @@ import { useToast } from '@/hooks/use-toast';
 import { 
   Wallet, Send, ArrowDownToLine, ArrowUpFromLine, CreditCard, 
   DollarSign, Users, Globe, Zap, QrCode, Phone, Mail,
-  TrendingUp, Shield, Clock, Plus, Minus, Eye, EyeOff
+  TrendingUp, Shield, Clock, Plus, Minus, Eye, EyeOff, Banknote
 } from 'lucide-react';
+import YFDCurrency from '@/components/YFDCurrency';
 
 interface Transaction {
   id: string;
@@ -449,6 +450,24 @@ export default function YaadWallet() {
               </CardContent>
             </Card>
           </div>
+        </div>
+
+        {/* YFD Currency Display Section */}
+        <div className="mt-12">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-2xl">
+                <Banknote className="h-6 w-6" />
+                YaadFlex Dollar (YFD) - Our Heroes, Our Currency
+              </CardTitle>
+              <CardDescription>
+                Celebrating Jamaican National Heroes and African Unity Leaders
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <YFDCurrency />
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
