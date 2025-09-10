@@ -103,7 +103,9 @@ export default function FounderProfile() {
                       • Portmore Commercial Complex - Lead Finisher<br/>
                       • Custom Ceiling Design Innovation - Water Damage Solutions<br/>
                       • Multiple Elite Residences - Norbrook Drive & Terrace<br/>
-                      • International Projects in Grand Cayman - Macross Company
+                      • <strong className="text-red-600">HURRICANE IVAN CHURCHES (2004)</strong> - Repaired ALL churches after disaster<br/>
+                      • Principal's House in Cayman - Discovery project that launched career<br/>
+                      • International Projects with Charles Russell Jr. - Macross Company
                     </div>
                   </div>
                 </div>
@@ -111,11 +113,14 @@ export default function FounderProfile() {
                 <div className="flex items-start gap-3">
                   <Globe className="h-6 w-6 text-green-600 mt-1" />
                   <div>
-                    <div className="font-bold text-lg">International Experience</div>
+                    <div className="font-bold text-lg">Cayman Islands Hero Work</div>
                     <div className="text-gray-700">
-                      • Cayman Islands - Macross/Russell Company<br/>
-                      • Premium Construction Projects<br/>
-                      • Cross-Cultural Business Expertise
+                      • Worked with Charles Russell Jr. - Macross Family Company<br/>
+                      • Built house for school principal - discovered by talent<br/>
+                      • <strong className="text-red-600">HURRICANE IVAN HERO</strong> - Repaired ALL churches after Ivan<br/>
+                      • Sunday church work with Alvin Watkins<br/>
+                      • Close friend of Junior, Margaret (Mom) & Macross family<br/>
+                      • First work permit holder - Wesley was first friend there
                     </div>
                   </div>
                 </div>
@@ -313,7 +318,10 @@ export default function FounderProfile() {
                 <strong>Dennis Williams</strong> - Prominent Architect & Inspiration<br/>
                 <strong>Louis Aitken</strong> - Early Business Mentor<br/>
                 <strong>The Bailey Family</strong> - Lifelong Friends & Supporters<br/>
-                <strong>Macross/Russell Company</strong> - International Experience<br/>
+                <strong>Charles Russell Jr. & Macross Family</strong> - Cayman Islands family<br/>
+                <strong>Alvin Watkins</strong> - Sunday church work partner<br/>
+                <strong>Wesley</strong> - First friend in Cayman, helped get work permit<br/>
+                <strong>Junior & Margaret (Mom)</strong> - Close Macross family friends<br/>
               </div>
               
               <div className="p-4 bg-gradient-to-r from-gold-50 to-yellow-50 rounded-lg">
