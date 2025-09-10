@@ -227,6 +227,16 @@ export default function LogisticsBrokers() {
                               <Star className="h-4 w-4 text-yellow-500 fill-current" />
                               <span className="font-semibold">{broker.rating}</span>
                               <span>({broker.reviews} reviews)</span>
+                              {broker.rating >= 4.8 && (
+                                <Badge className="bg-yellow-100 text-yellow-800 border-yellow-300 ml-2">
+                                  🏆 Elite
+                                </Badge>
+                              )}
+                              {broker.rating >= 4.5 && broker.rating < 4.8 && (
+                                <Badge className="bg-blue-100 text-blue-800 border-blue-300 ml-2">
+                                  ⭐ Pro
+                                </Badge>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -289,6 +299,88 @@ export default function LogisticsBrokers() {
                 </Card>
               ))}
             </div>
+
+            {/* Reputation System Section */}
+            <Card className="mt-8">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Star className="h-5 w-5 text-yellow-500" />
+                  🏆 Build & Keep Your Reputation
+                </CardTitle>
+                <CardDescription>
+                  How brokers build lasting reputation and keep their standing
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  
+                  <div className="p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="text-2xl">🏆</div>
+                      <div className="font-bold text-yellow-800">Elite Status</div>
+                    </div>
+                    <div className="text-sm text-yellow-700">
+                      <div className="font-semibold">4.8+ Rating</div>
+                      <div>• Premium visibility</div>
+                      <div>• Top search results</div>
+                      <div>• Elite badge display</div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="text-2xl">⭐</div>
+                      <div className="font-bold text-blue-800">Pro Status</div>
+                    </div>
+                    <div className="text-sm text-blue-700">
+                      <div className="font-semibold">4.5+ Rating</div>
+                      <div>• Pro badge</div>
+                      <div>• Higher visibility</div>
+                      <div>• Trusted broker status</div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="text-2xl">📈</div>
+                      <div className="font-bold text-green-800">Build Reputation</div>
+                    </div>
+                    <div className="text-sm text-green-700">
+                      <div className="font-semibold">How to Improve:</div>
+                      <div>• Fast service delivery</div>
+                      <div>• Clear communication</div>
+                      <div>• Professional handling</div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-purple-50 rounded-lg border-l-4 border-purple-400">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="text-2xl">🛡️</div>
+                      <div className="font-bold text-purple-800">Keep Standing</div>
+                    </div>
+                    <div className="text-sm text-purple-700">
+                      <div className="font-semibold">Maintain Quality:</div>
+                      <div>• Consistent performance</div>
+                      <div>• Customer satisfaction</div>
+                      <div>• Long-term reliability</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg border-2 border-emerald-300">
+                  <div className="text-center">
+                    <div className="font-bold text-emerald-800 text-lg mb-2">
+                      💎 REPUTATION = MORE EARNINGS!
+                    </div>
+                    <div className="text-sm text-emerald-700">
+                      <strong>Elite brokers (4.8+):</strong> Get 40% more customers • Higher prices • Premium listings<br/>
+                      <strong>Pro brokers (4.5+):</strong> Get 25% more customers • Better visibility • Trust badges<br/>
+                      <strong>Your reputation follows you everywhere</strong> - Build it once, keep it forever!
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Pricing System Tab */}
