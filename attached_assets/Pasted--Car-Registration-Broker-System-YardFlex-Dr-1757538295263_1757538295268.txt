@@ -1,0 +1,84 @@
+// ============================================== // Car Registration Broker System — YardFlex // Drizzle ORM (Postgres) + Express routes (TypeScript) // ============================================== // Assumes you already have: // - drizzle/db.ts exporting db // - Vehicle core from earlier (vehicleOwners, vehicles, insurancePolicies, inspections, //   registrationApplications, regPayments) // You can paste these files into your project and wire up server/index.ts.
+
+// ============================================== // drizzle/schema.broker.ts // ============================================== import { pgTable, varchar, text, boolean, timestamp, integer, decimal, jsonb } from "drizzle-orm/pg-core";
+
+export const brokers = pgTable("brokers", { id: varchar("id", { length: 36 }).primaryKey(), fullName: varchar("fullName", { length: 160 }).notNull(), email: varchar("email", { length: 160 }).notNull(), phone: varchar("phone", { length: 40 }), govId: varchar("govId", { length: 64 }), // TRN or national ID verified: boolean("verified").default(false), rating: decimal("rating", { precision: 3, scale: 2 }), isActive: boolean("isActive").default(true), createdAt: timestamp("createdAt").defaultNow(), updatedAt: timestamp("updatedAt").defaultNow() });
+
+export const brokerRegions = pgTable("broker_regions", { id: varchar("id", { length: 36 }).primaryKey(), brokerId: varchar("brokerId", { length: 36 }).notNull(), parish: varchar("parish", { length: 64 }).notNull(), // e.g. "Kingston", "St. Andrew" active: boolean("active").default(true), createdAt: timestamp("createdAt").defaultNow() });
+
+export const regServiceCatalog = pgTable("reg_service_catalog", { code: varchar("code", { length: 32 }).primaryKey(), // 'NEW_REG', 'RENEWAL', 'TRANSFER', 'RED_PLATE', 'REPLACEMENT' name: varchar("name", { length: 120 }).notNull(), baseFeeJMD: integer("baseFeeJMD").notNull(), // your service fee (not TAJ fee) estGovFeeJMD: integer("estGovFeeJMD").default(0), // estimated TAJ/Transport Authority fees (informational) slaHours: integer("slaHours").default(72), active: boolean("active").default(true) });
+
+export const regRequests = pgTable("reg_requests", { id: varchar("id", { length: 36 }).primaryKey(), applicationId: varchar("applicationId", { length: 36 }).notNull(), // FK -> registrationApplications.id ownerId: varchar("ownerId", { length: 36 }).notNull(), vehicleId: varchar("vehicleId", { length: 36 }).notNull(), serviceCode: varchar("serviceCode", { length: 32 }).notNull(), // FK -> regServiceCatalog.code parish: varchar("parish", { length: 64 }).notNull(), pickupAddress: text("pickupAddress"), deliveryAddress: text("deliveryAddress"), notes: text("notes"), quotedFeeJMD: integer("quotedFeeJMD"), govFeeJMD: integer("govFeeJMD"), status: varchar("status", { length: 32 }).default("pending_quote"), createdAt: timestamp("createdAt").defaultNow(), updatedAt: timestamp("updatedAt").defaultNow() });
+
+export const regEvents = pgTable("reg_events", { id: varchar("id", { length: 36 }).primaryKey(), requestId: varchar("requestId", { length: 36 }).notNull(), type: varchar("type", { length: 40 }).notNull(), // 'QUOTE_CREATED','ASSIGNED','PICKED_UP','SUBMITTED_TAJ','APPROVED','REJECTED','DELIVERED' meta: jsonb("meta"), createdAt: timestamp("createdAt").defaultNow() });
+
+export const regAssignments = pgTable("reg_assignments", { id: varchar("id", { length: 36 }).primaryKey(), requestId: varchar("requestId", { length: 36 }).notNull(), brokerId: varchar("brokerId", { length: 36 }).notNull(), status: varchar("status", { length: 24 }).default("assigned"), // 'assigned'|'in_progress'|'completed'|'cancelled' pickupAt: timestamp("pickupAt"), deliveredAt: timestamp("deliveredAt"), createdAt: timestamp("createdAt").defaultNow(), updatedAt: timestamp("updatedAt").defaultNow() });
+
+export const regPayouts = pgTable("reg_payouts", { id: varchar("id", { length: 36 }).primaryKey(), brokerId: varchar("brokerId", { length: 36 }).notNull(), requestId: varchar("requestId", { length: 36 }).notNull(), amountJMD: integer("amountJMD").notNull(), status: varchar("status", { length: 24 }).default("pending"), // 'pending'|'paid'|'failed' provider: varchar("provider", { length: 24 }).default("stripe_connect"), providerPayoutId: varchar("providerPayoutId", { length: 80 }), createdAt: timestamp("createdAt").defaultNow() });
+
+export const regSLA = pgTable("reg_sla", { id: varchar("id", { length: 36 }).primaryKey(), requestId: varchar("requestId", { length: 36 }).notNull(), startAt: timestamp("startAt").defaultNow(), dueAt: timestamp("dueAt"), breached: boolean("breached").default(false) });
+
+// ============================================== // server/routes.broker.ts // ============================================== import express from "express"; import crypto from "node:crypto"; import { and, eq, desc } from "drizzle-orm"; import { db } from "../drizzle/db"; import { brokers, brokerRegions, regServiceCatalog, regRequests, regEvents, regAssignments, regPayouts, regSLA } from "../drizzle/schema.broker"; import { registrationApplications, vehicles } from "../drizzle/schema.vehicle";
+
+const router = express.Router(); const uid = () => crypto.randomUUID();
+
+// ---- Pricing/Commission policy (can move to DB/config) ---- const COMMISSION = { brokerShare: 0.6, // 60% of YardFlex service fee goes to broker yardflexShare: 0.4 };
+
+// ---- Create or update broker ---- router.post("/api/brokers", async (req, res) => { const id = req.body.id || uid(); const [row] = await db.insert(brokers).values({ id, fullName: req.body.fullName, email: req.body.email, phone: req.body.phone, govId: req.body.govId, verified: !!req.body.verified }).onConflictDoUpdate({ target: brokers.id, set: { fullName: req.body.fullName, email: req.body.email, phone: req.body.phone, govId: req.body.govId, verified: !!req.body.verified, updatedAt: new Date() } }).returning(); res.json(row); });
+
+// ---- Broker regions ---- router.post("/api/brokers/:brokerId/regions", async (req, res) => { const [row] = await db.insert(brokerRegions).values({ id: uid(), brokerId: req.params.brokerId, parish: req.body.parish, active: true }).returning(); res.json(row); });
+
+// ---- Service catalog seed/add ---- router.post("/api/reg/services", async (req, res) => { const [row] = await db.insert(regServiceCatalog).values({ code: req.body.code, name: req.body.name, baseFeeJMD: req.body.baseFeeJMD, estGovFeeJMD: req.body.estGovFeeJMD || 0, slaHours: req.body.slaHours || 72, active: true }).returning(); res.json(row); });
+
+router.get("/api/reg/services", async (_req, res) => { const rows = await db.select().from(regServiceCatalog); res.json(rows); });
+
+// ---- Create registration request (driver submits) ---- router.post("/api/reg/requests", async (req, res) => { const id = uid(); // simple quote from catalog const [svc] = await db.select().from(regServiceCatalog).where(eq(regServiceCatalog.code, req.body.serviceCode)); if (!svc) return res.status(400).json({ error: "Unknown serviceCode" }); const quoted = Number(svc.baseFeeJMD);
+
+const [row] = await db.insert(regRequests).values({ id, applicationId: req.body.applicationId, ownerId: req.body.ownerId, vehicleId: req.body.vehicleId, serviceCode: req.body.serviceCode, parish: req.body.parish, pickupAddress: req.body.pickupAddress, deliveryAddress: req.body.deliveryAddress, notes: req.body.notes, quotedFeeJMD: quoted, govFeeJMD: svc.estGovFeeJMD, status: "pending_payment" }).returning();
+
+await db.insert(regEvents).values({ id: uid(), requestId: id, type: "QUOTE_CREATED", meta: { quoted } }); res.json(row); });
+
+// ---- List open requests (for dispatcher UI) ---- router.get("/api/reg/requests", async (req, res) => { const parish = req.query.parish as string | undefined; let rows = await db.select().from(regRequests); if (parish) rows = rows.filter(r => r.parish === parish); rows.sort((a,b)=> b.createdAt.getTime() - a.createdAt.getTime()); res.json(rows); });
+
+// ---- Assign to a broker ---- router.post("/api/reg/requests/:id/assign", async (req, res) => { const requestId = req.params.id; const brokerId = req.body.brokerId; const [assign] = await db.insert(regAssignments).values({ id: uid(), requestId, brokerId, status: "assigned" }).returning(); await db.insert(regEvents).values({ id: uid(), requestId, type: "ASSIGNED", meta: { brokerId } }); res.json(assign); });
+
+// ---- Update assignment status ---- router.post("/api/reg/assignments/:id/status", async (req, res) => { const [row] = await db.update(regAssignments) .set({ status: req.body.status, pickupAt: req.body.pickupAt || undefined, deliveredAt: req.body.deliveredAt || undefined, updatedAt: new Date() }) .where(eq(regAssignments.id, req.params.id)) .returning(); await db.insert(regEvents).values({ id: uid(), requestId: row.requestId, type: ASSIGN_${req.body.status.toUpperCase()} }); res.json(row); });
+
+// ---- Mark request state (dispatcher/admin) ---- router.post("/api/reg/requests/:id/status", async (req, res) => { const [row] = await db.update(regRequests) .set({ status: req.body.status, updatedAt: new Date() }) .where(eq(regRequests.id, req.params.id)) .returning(); await db.insert(regEvents).values({ id: uid(), requestId: req.params.id, type: req.body.status.toUpperCase() }); res.json(row); });
+
+// ---- Auto payout on completion ---- router.post("/api/reg/requests/:id/complete", async (req, res) => { const requestId = req.params.id; // mark delivered const [reqRow] = await db.update(regRequests) .set({ status: "delivered", updatedAt: new Date() }) .where(eq(regRequests.id, requestId)) .returning();
+
+// find assignment const assigns = await db.select().from(regAssignments).where(eq(regAssignments.requestId, requestId)); const assign = assigns[0]; if (!assign) return res.status(400).json({ error: "No assignment" });
+
+const brokerAmount = Math.round(Number(reqRow.quotedFeeJMD || 0) * COMMISSION.brokerShare); const [payout] = await db.insert(regPayouts).values({ id: uid(), requestId, brokerId: assign.brokerId, amountJMD: brokerAmount, status: "pending" }).returning();
+
+await db.insert(regEvents).values({ id: uid(), requestId, type: "DELIVERED", meta: { brokerAmount } }); res.json({ request: reqRow, payout }); });
+
+// ---- Payout status webhook (e.g., Stripe Connect transfer) ---- router.post("/webhooks/payouts", async (req, res) => { // Validate signature separately… then update payout const providerPayoutId = req.body.providerPayoutId; const status = req.body.status; // 'paid'|'failed' const [row] = await db.update(regPayouts) .set({ status, providerPayoutId: providerPayoutId }) .where(eq(regPayouts.id, req.body.payoutId)) .returning(); res.json(row); });
+
+export default router;
+
+// ============================================== // server/index.ts (wire it) // ============================================== import express from "express"; import brokerRoutes from "./routes.broker";
+
+const app = express(); app.use(express.json()); app.use(brokerRoutes);
+
+const port = process.env.PORT || 4000; app.listen(port, () => console.log(Broker API running on http://localhost:${port}));
+
+// ============================================== // scripts/seed.broker.ts — quick seed // ============================================== import { db } from "../drizzle/db"; import { brokers, brokerRegions, regServiceCatalog } from "../drizzle/schema.broker"; import crypto from "node:crypto";
+
+async function seed() { const id = () => crypto.randomUUID();
+
+// Services await db.insert(regServiceCatalog).values([ { code: "RENEWAL", name: "Registration Renewal", baseFeeJMD: 3000, estGovFeeJMD: 12000, slaHours: 48, active: true }, { code: "RED_PLATE", name: "Red Plate Application", baseFeeJMD: 6000, estGovFeeJMD: 20000, slaHours: 96, active: true }, { code: "TRANSFER", name: "Transfer of Ownership", baseFeeJMD: 4000, estGovFeeJMD: 15000, slaHours: 72, active: true } ]);
+
+// Brokers const [b1] = await db.insert(brokers).values({ id: id(), fullName: "RD Courier", email: "rd@yardflex.com", phone: "+1-876-555-0101", verified: true }).returning(); const [b2] = await db.insert(brokers).values({ id: id(), fullName: "Mikey Runner", email: "mikey@yardflex.com", phone: "+1-876-555-0102", verified: true }).returning();
+
+await db.insert(brokerRegions).values([ { id: id(), brokerId: b1.id, parish: "Kingston", active: true }, { id: id(), brokerId: b1.id, parish: "St. Andrew", active: true }, { id: id(), brokerId: b2.id, parish: "St. Catherine", active: true } ]);
+
+console.log("Broker seed complete"); process.exit(0); }
+
+seed().catch(e => { console.error(e); process.exit(1); });
+
+// ============================================== // Quick cURL test flow (after creating owner/vehicle/app from earlier module) // ============================================== // 1) Create request/quote // curl -X POST http://localhost:4000/api/reg/requests -H "content-type: application/json" -d '{ //   "applicationId": "<APP_ID>", //   "ownerId": "user-001", //   "vehicleId": "<VEHICLE_ID>", //   "serviceCode": "RENEWAL", //   "parish": "Kingston", //   "pickupAddress": "Half Way Tree Plaza", //   "deliveryAddress": "New Kingston", //   "notes": "Please rush" // }' // // 2) Assign broker // curl -X POST http://localhost:4000/api/reg/requests/<REQ_ID>/assign -H "content-type: application/json" -d '{ //   "brokerId": "<BROKER_ID>" // }' // // 3) Mark progress // curl -X POST http://localhost:4000/api/reg/requests/<REQ_ID>/status -H "content-type: application/json" -d '{ //   "status": "submitted_taj" // }' // // 4) Complete & payout // curl -X POST http://localhost:4000/api/reg/requests/<REQ_ID>/complete
+
+// ============================================== // SHARE PACK — copy/paste this message to ChatGPT/Ripley // ============================================== // What to create (exact paths): // 1) drizzle/schema.vehicle.ts      ← from the earlier module I gave you // 2) drizzle/schema.broker.ts       ← in this message above // 3) server/routes.vehicle.ts       ← from the earlier module // 4) server/routes.broker.ts        ← in this message above // 5) server/index.ts                ← import and app.use both route files // 6) scripts/seed.ts                ← earlier (vehicles) // 7) scripts/seed.broker.ts         ← in this message above // // Install (once): //   npm i express cors zod dotenv pg drizzle-orm drizzle-kit //   npx drizzle-kit generate && npx drizzle-kit migrate //   npx ts-node scripts/seed.ts && npx ts-node scripts/seed.broker.ts //   npx ts-node server/index.ts // // Quick test (replace IDs returned from previous steps): //   curl -X POST http://localhost:4000/api/reg/requests -H "content-type: application/json" -d '{ //     "applicationId": "<APP_ID>", //     "ownerId": "user-001", //     "vehicleId": "<VEHICLE_ID>", //     "serviceCode": "RENEWAL", //     "parish": "Kingston", //     "pickupAddress": "Half Way Tree Plaza", //     "deliveryAddress": "New Kingston" //   }' //   curl -X POST http://localhost:4000/api/reg/requests/<REQ_ID>/assign -H "content-type: application/json" -d '{"brokerId":"<BROKER_ID>"}' //   curl -X POST http://localhost:4000/api/reg/requests/<REQ_ID>/status -H "content-type: application/json" -d '{"status":"submitted_taj"}' //   curl -X POST http://localhost:4000/api/reg/requests/<REQ_ID>/complete // // Notes: // - Broker gets auto-payout record on completion (reg_payouts). // - Commission split set at 60/40 (broker/YardFlex) in routes.broker.ts → COMMISSION. // - Add Stripe Connect later: create a Transfer when status = delivered, then update reg_payouts via /webhooks/payouts.
+

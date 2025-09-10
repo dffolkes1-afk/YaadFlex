@@ -5951,6 +5951,7 @@ export const insertBrokerRegionSchema = createInsertSchema(brokerRegions).omit({
 
 export const insertRegServiceCatalogSchema = createInsertSchema(regServiceCatalog);
 
+// Allow ownerId in validation but server will override it
 export const insertRegRequestSchema = createInsertSchema(regRequests).omit({
   id: true,
   createdAt: true,
