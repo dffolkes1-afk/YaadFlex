@@ -40,46 +40,67 @@ export default function YaadWallet() {
     JMD: 45750.00,
     USD: 285.50,
     KWD: 95.25,
-    YFD: 1250.75  // YaadFlex Digital - The global currency
+    YFD: 2000.00  // YaadFlex Digital - The global currency
   };
+
+  // Exchange rates (1 YFD = X currency)
+  const exchangeRates = {
+    USD: 0.0075,  // 1 YFD = $0.0075 USD (2000 YFD = $15 USD)
+    JMD: 1.15,    // 1 YFD = $1.15 JMD
+    EUR: 0.0068,  // 1 YFD = €0.0068 EUR
+    GBP: 0.0058   // 1 YFD = £0.0058 GBP
+  };
+
+  // Calculate YFD value in other currencies
+  const yfdValueInUSD = (balances.YFD * exchangeRates.USD).toFixed(2);
+  const yfdValueInJMD = (balances.YFD * exchangeRates.JMD).toFixed(2);
 
   // Recent transactions
   const transactions: Transaction[] = [
     {
       id: '1',
       type: 'receive',
-      amount: 2550,
-      currency: 'JMD',
-      description: 'YaadFlex Ride Payment',
+      amount: 450,
+      currency: 'YFD',
+      description: 'YaadFlex Ride Earnings (85% driver share)',
       timestamp: '2 minutes ago',
       status: 'completed',
-      from: 'Sarah Mitchell'
+      from: 'Trip #YF2024'
     },
     {
       id: '2', 
       type: 'send',
-      amount: 50,
-      currency: 'USD',
-      description: 'Money sent to Marcus',
+      amount: 200,
+      currency: 'YFD',
+      description: 'Sent to family member',
       timestamp: '1 hour ago',
       status: 'completed',
-      to: 'marcus.driver@yaad.flex'
+      to: 'marcus.family@yaad.flex'
     },
     {
       id: '3',
       type: 'job',
       amount: 850,
       currency: 'YFD',
-      description: 'Global Job Payment - Content Creator',
+      description: 'Freelance Work Payment ($6.38 USD)',
       timestamp: '3 hours ago',
       status: 'completed'
     },
     {
       id: '4',
+      type: 'receive',
+      amount: 1200,
+      currency: 'YFD',
+      description: 'Shop Sales Today ($9.00 USD)',
+      timestamp: '5 hours ago',
+      status: 'completed'
+    },
+    {
+      id: '5',
       type: 'topup',
-      amount: 10000,
-      currency: 'JMD',
-      description: 'Bank Transfer Top-up',
+      amount: 500,
+      currency: 'YFD',
+      description: 'Added funds from bank',
       timestamp: '1 day ago',
       status: 'completed'
     }
@@ -180,8 +201,11 @@ export default function YaadWallet() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold mb-4">
-                  {showBalance ? `${balances.JMD.toLocaleString()} JMD` : '••••••'}
+                <div className="text-3xl font-bold mb-2">
+                  {showBalance ? `${balances.YFD.toLocaleString()} YFD` : '••••••'}
+                </div>
+                <div className="text-lg opacity-90 mb-4">
+                  Worth: ${yfdValueInUSD} USD • J${yfdValueInJMD} JMD
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {Object.entries(balances).map(([currency, amount]) => (
@@ -193,6 +217,39 @@ export default function YaadWallet() {
                       </div>
                     </div>
                   ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* YFD Exchange Rate Display */}
+            <Card className="bg-gradient-to-r from-green-50 to-yellow-50 dark:from-green-950 dark:to-yellow-950">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5" />
+                  YFD Exchange Rates
+                </CardTitle>
+                <CardDescription>
+                  Real value of YaadFlex Digital currency
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
+                    <div className="text-sm text-gray-600 dark:text-gray-400">1 YFD =</div>
+                    <div className="text-xl font-bold">${exchangeRates.USD} USD</div>
+                  </div>
+                  <div className="p-3 bg-white dark:bg-gray-800 rounded-lg">
+                    <div className="text-sm text-gray-600 dark:text-gray-400">1 YFD =</div>
+                    <div className="text-xl font-bold">J${exchangeRates.JMD} JMD</div>
+                  </div>
+                </div>
+                <div className="p-4 bg-green-100 dark:bg-green-900 rounded-lg">
+                  <div className="text-sm font-medium mb-2">Worker Earnings Example:</div>
+                  <div className="space-y-1 text-sm">
+                    <div>• Driver earns 500 YFD/day = ${(500 * exchangeRates.USD).toFixed(2)} USD</div>
+                    <div>• Developer earns 5000 YFD/week = ${(5000 * exchangeRates.USD).toFixed(2)} USD</div>
+                    <div>• Shop owner earns 10000 YFD/month = ${(10000 * exchangeRates.USD).toFixed(2)} USD</div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
