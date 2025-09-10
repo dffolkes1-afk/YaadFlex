@@ -8,9 +8,12 @@ import { useToast } from '@/hooks/use-toast';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { Link } from 'wouter';
+import { MusicPlayer } from '@/components/MusicPlayer';
+import { MediaUploader } from '@/components/MediaUploader';
 import { 
   Heart, MessageCircle, Share2, Camera, Video, Smile, Send, 
-  MoreHorizontal, MapPin, Star, Zap, Home, Search, Plus, User
+  MoreHorizontal, MapPin, Star, Zap, Home, Search, Plus, User,
+  Music, Play, Volume2, TrendingUp, Fire, Globe, Headphones
 } from 'lucide-react';
 
 interface Post {
@@ -22,11 +25,22 @@ interface Post {
   content: string;
   imageUrl?: string;
   videoUrl?: string;
+  audioUrl?: string;
+  musicTrack?: {
+    id: string;
+    title: string;
+    artist: string;
+    duration: number;
+    url: string;
+  };
   location?: string;
   likes: number;
   comments: number;
   shares: number;
+  plays?: number;
   isLiked: boolean;
+  isVerified?: boolean;
+  isTrending?: boolean;
   createdAt: string;
 }
 
@@ -39,11 +53,12 @@ interface PostData {
 export default function SocialFeed() {
   const [newPost, setNewPost] = useState<PostData>({ content: '' });
   const [showCreatePost, setShowCreatePost] = useState(false);
+  const [selectedMedia, setSelectedMedia] = useState<any[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // Sample data for now
+  // Sample data with multimedia - Better than TikTok!
   const samplePosts: Post[] = [
     {
       id: '1',
@@ -53,11 +68,21 @@ export default function SocialFeed() {
       profileImage: '',
       content: 'Just completed my 50th ride as a YaadFlex driver! 🚗 Love connecting with people across Kingston and earning that 85%. Big up to all the drivers making moves! #YaadFlexDriver #KingstonVibes',
       imageUrl: '',
+      musicTrack: {
+        id: 'track1',
+        title: 'Drive Fi Life',
+        artist: 'YaadFlex Riddim',
+        duration: 180,
+        url: 'https://example.com/drive-fi-life.mp3'
+      },
       location: 'Kingston, Jamaica',
-      likes: 47,
-      comments: 12,
-      shares: 5,
+      likes: 147,
+      comments: 32,
+      shares: 25,
+      plays: 1250,
       isLiked: false,
+      isVerified: true,
+      isTrending: true,
       createdAt: '2 hours ago'
     },
     {
@@ -67,12 +92,22 @@ export default function SocialFeed() {
       fullName: 'Keisha Williams',
       profileImage: '',
       content: 'Started my online boutique through YaadFlex marketplace! 🛍️ From selling clothes to my friends to having my own storefront. Dreams do come true when you take action! Special thanks to the YaadFlex business team for the support. 💪🇯🇲',
-      imageUrl: '',
+      videoUrl: 'https://example.com/boutique-story.mp4',
+      musicTrack: {
+        id: 'track2',
+        title: 'Boss Lady',
+        artist: 'Keisha Williams',
+        duration: 210,
+        url: 'https://example.com/boss-lady.mp3'
+      },
       location: 'Montego Bay, Jamaica',
-      likes: 128,
-      comments: 23,
-      shares: 15,
+      likes: 528,
+      comments: 89,
+      shares: 156,
+      plays: 3400,
       isLiked: true,
+      isVerified: false,
+      isTrending: true,
       createdAt: '1 day ago'
     },
     {
@@ -82,13 +117,66 @@ export default function SocialFeed() {
       fullName: 'Andre Campbell',
       profileImage: '',
       content: 'Food delivery through YaadFlex has changed my restaurant game! 📱 Orders coming in steady, customers happy, and my jerk chicken reaching all over the island. Technology meets tradition! 🔥',
-      imageUrl: '',
+      imageUrl: 'https://example.com/jerk-chicken.jpg',
+      audioUrl: 'https://example.com/cooking-sounds.mp3',
       location: 'Spanish Town, Jamaica',
-      likes: 89,
-      comments: 18,
-      shares: 8,
+      likes: 289,
+      comments: 45,
+      shares: 78,
+      plays: 890,
       isLiked: false,
+      isVerified: true,
+      isTrending: false,
       createdAt: '3 days ago'
+    },
+    {
+      id: '4',
+      userId: 'user4',
+      username: 'yaad_musician',
+      fullName: 'Dancehall Star',
+      profileImage: '',
+      content: '🎵 New track dropping on YaadFlex! This is why we better than Spotify - artists get 95% of streams! Support independent Caribbean music! 🇯🇲🎶 #YaadFlexMusic #BetterThanSpotify',
+      musicTrack: {
+        id: 'track3',
+        title: 'Caribbean Digital',
+        artist: 'Dancehall Star',
+        duration: 195,
+        url: 'https://example.com/caribbean-digital.mp3'
+      },
+      location: 'Global',
+      likes: 1250,
+      comments: 234,
+      shares: 456,
+      plays: 15600,
+      isLiked: false,
+      isVerified: true,
+      isTrending: true,
+      createdAt: '5 hours ago'
+    },
+    {
+      id: '5',
+      userId: 'user5',
+      username: 'global_creator',
+      fullName: 'Content Creator Pro',
+      profileImage: '',
+      content: '🌍 YaadFlex Social is taking over! Better engagement than Twitter, better music than TikTok, better community than Facebook! We building something special here family! 💪 #YaadFlexTakeover #SocialRevolution',
+      videoUrl: 'https://example.com/social-revolution.mp4',
+      musicTrack: {
+        id: 'track4',
+        title: 'Social Revolution',
+        artist: 'YaadFlex Anthem',
+        duration: 160,
+        url: 'https://example.com/social-revolution.mp3'
+      },
+      location: 'Global Network',
+      likes: 2150,
+      comments: 567,
+      shares: 890,
+      plays: 28400,
+      isLiked: true,
+      isVerified: true,
+      isTrending: true,
+      createdAt: '12 hours ago'
     }
   ];
 
@@ -218,20 +306,29 @@ export default function SocialFeed() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-purple-600 hover:text-purple-700"
-                        data-testid="button-add-location"
+                        className="text-blue-600 hover:text-blue-700"
+                        data-testid="button-add-video"
                       >
-                        <MapPin className="h-4 w-4 mr-1" />
-                        Location
+                        <Video className="h-4 w-4 mr-1" />
+                        Video
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-green-600 hover:text-green-700"
+                        data-testid="button-add-music"
+                      >
+                        <Music className="h-4 w-4 mr-1" />
+                        Music
                       </Button>
                       <Button
                         variant="ghost"
                         size="sm"
                         className="text-purple-600 hover:text-purple-700"
-                        data-testid="button-add-emoji"
+                        data-testid="button-add-location"
                       >
-                        <Smile className="h-4 w-4 mr-1" />
-                        Feeling
+                        <MapPin className="h-4 w-4 mr-1" />
+                        Location
                       </Button>
                     </div>
                     
@@ -304,7 +401,11 @@ export default function SocialFeed() {
                         )}
                       </Avatar>
                       <div>
-                        <div className="font-semibold text-sm">{post.fullName}</div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold text-sm">{post.fullName}</span>
+                          {post.isVerified && <Star className="h-3 w-3 text-yellow-500 fill-current" />}
+                          {post.isTrending && <Fire className="h-3 w-3 text-red-500" />}
+                        </div>
                         <div className="text-xs text-gray-500">@{post.username} • {post.createdAt}</div>
                         {post.location && (
                           <div className="flex items-center gap-1 text-xs text-gray-500">
@@ -325,14 +426,69 @@ export default function SocialFeed() {
                   <p className="text-gray-900 leading-relaxed">{post.content}</p>
                 </div>
 
+                {/* Music Player - Better than TikTok! */}
+                {post.musicTrack && (
+                  <div className="px-4 pb-3">
+                    <MusicPlayer track={post.musicTrack} showFullPlayer={false} />
+                  </div>
+                )}
+
+                {/* Video Player */}
+                {post.videoUrl && (
+                  <div className="px-4 pb-3">
+                    <div className="relative bg-black rounded-lg overflow-hidden">
+                      <video 
+                        controls 
+                        className="w-full h-auto"
+                        poster={post.imageUrl}
+                      >
+                        <source src={post.videoUrl} type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+                      <div className="absolute top-3 right-3">
+                        <div className="bg-black/50 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
+                          <Video className="h-3 w-3" />
+                          Video
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Audio Player */}
+                {post.audioUrl && !post.musicTrack && (
+                  <div className="px-4 pb-3">
+                    <div className="bg-gradient-to-r from-green-500 to-blue-500 text-white p-3 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="text-white hover:bg-white/20 h-8 w-8 p-0"
+                        >
+                          <Play className="h-4 w-4" />
+                        </Button>
+                        <div className="flex-1">
+                          <div className="text-sm font-medium">Audio Recording</div>
+                          <div className="text-xs opacity-75">Tap to play</div>
+                        </div>
+                        <Headphones className="h-4 w-4" />
+                      </div>
+                      <audio controls className="w-full mt-2" style={{filter: 'invert(1)'}}>
+                        <source src={post.audioUrl} type="audio/mpeg" />
+                        Your browser does not support the audio element.
+                      </audio>
+                    </div>
+                  </div>
+                )}
+
                 {/* Post Image */}
-                {post.imageUrl && (
+                {post.imageUrl && !post.videoUrl && (
                   <div className="px-4 pb-3">
                     <img src={post.imageUrl} alt="Post content" className="w-full rounded-lg" />
                   </div>
                 )}
 
-                {/* Post Actions */}
+                {/* Post Actions - Better than Twitter/Facebook! */}
                 <div className="px-4 py-3 border-t border-gray-100">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-6">
@@ -343,7 +499,7 @@ export default function SocialFeed() {
                         data-testid={`button-like-${post.id}`}
                       >
                         <Heart className={`h-4 w-4 ${post.isLiked ? 'fill-current' : ''}`} />
-                        <span className="text-sm">{post.likes}</span>
+                        <span className="text-sm">{post.likes.toLocaleString()}</span>
                       </Button>
                       
                       <Button
@@ -365,6 +521,32 @@ export default function SocialFeed() {
                         <Share2 className="h-4 w-4" />
                         <span className="text-sm">{post.shares}</span>
                       </Button>
+
+                      {/* Play Count for Music/Video */}
+                      {(post.musicTrack || post.videoUrl || post.audioUrl) && post.plays && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="flex items-center gap-2 text-gray-600 hover:text-purple-500"
+                          data-testid={`button-plays-${post.id}`}
+                        >
+                          <Play className="h-4 w-4" />
+                          <span className="text-sm">{post.plays.toLocaleString()}</span>
+                        </Button>
+                      )}
+
+                      {/* Music/Audio specific actions */}
+                      {(post.musicTrack || post.audioUrl) && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="flex items-center gap-2 text-gray-600 hover:text-purple-500"
+                          data-testid={`button-listen-${post.id}`}
+                        >
+                          <Volume2 className="h-4 w-4" />
+                          <span className="text-sm">Listen</span>
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </div>
