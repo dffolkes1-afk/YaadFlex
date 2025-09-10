@@ -323,7 +323,7 @@ export function MediaUploader({
                     <div className="flex-shrink-0">
                       {media.type === 'image' && (
                         <img 
-                          src={media.url} 
+                          src={media.localUrl || media.url} 
                           alt="Preview" 
                           className="w-16 h-16 object-cover rounded-lg"
                         />

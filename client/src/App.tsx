@@ -61,6 +61,7 @@ import UniversalPaymentPage from "@/pages/UniversalPaymentPage";
 import VoiceControlCenter from "@/pages/VoiceControlCenter";
 import VoiceDemo from "@/pages/VoiceDemo";
 import ErrorDashboard from "@/pages/ErrorDashboard";
+import UploadTest from "@/pages/UploadTest";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -94,6 +95,7 @@ function Router() {
       <Route path="/voice-interactive" component={VoiceControlCenter} />
       <Route path="/voice-demo" component={VoiceDemo} />
       <Route path="/error-dashboard" component={ErrorDashboard} />
+      <Route path="/upload-test" component={UploadTest} />
       <Route path="/diagnostics" component={ErrorDashboard} />
       <Route path="/pricing" component={PricingCalculator} />
       <Route path="/book-ride" component={CustomerBooking} />
