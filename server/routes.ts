@@ -10,6 +10,7 @@ import rbacRoutes from "./rbac-routes";
 import { seedRbacSystem } from "./rbac-seed";
 import deliveryRoutes from "./delivery-routes";
 import { initializeDeliveryRealtime } from "./delivery-realtime";
+import { registerSocialRoutes } from "./routes/social";
 import { 
   demoWallets, 
   demoTransactions, 
@@ -186,6 +187,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       cwd: process.cwd()
     });
   });
+  
+  // YaadFlex Independent Social Platform
+  registerSocialRoutes(app);
   
   // Timeless Upgrade System API
   const timelessApi = (await import('./timeless-api')).default;

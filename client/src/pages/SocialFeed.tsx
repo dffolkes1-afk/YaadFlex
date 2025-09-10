@@ -94,7 +94,7 @@ export default function SocialFeed() {
 
   const { data: posts = samplePosts } = useQuery<Post[]>({
     queryKey: ['/api/social/posts'],
-    enabled: false // Using sample data for now
+    enabled: true // Enable real API calls
   });
 
   const createPostMutation = useMutation({

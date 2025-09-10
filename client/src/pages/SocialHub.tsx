@@ -133,10 +133,10 @@ export default function SocialHub() {
           gap: '24px'
         }}>
           
-          {/* Instagram Section */}
+          {/* YaadFlex Social Features */}
           <div style={{
             background: 'linear-gradient(180deg,#0c1117,#0b1118)',
-            border: '1px solid rgba(255,255,255,.06)',
+            border: '2px solid #10d07a',
             borderRadius: '16px',
             padding: '24px'
           }}>
@@ -149,40 +149,38 @@ export default function SocialHub() {
               <div style={{
                 width: '32px',
                 height: '32px',
-                background: 'linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)',
+                background: 'linear-gradient(45deg, #10d07a, #07a86e)',
                 borderRadius: '8px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <span style={{ color: 'white', fontSize: '16px' }}>📷</span>
+                <span style={{ color: '#000', fontSize: '16px', fontWeight: 'bold' }}>📱</span>
               </div>
-              <h2 style={{ margin: 0, fontSize: '18px' }}>Instagram</h2>
+              <h2 style={{ margin: 0, fontSize: '18px', color: '#10d07a' }}>Your Social Platform</h2>
             </div>
             <p style={{ margin: '0 0 16px', color: '#9fb0c0', fontSize: '14px' }}>
-              Follow @yardflexglobalvybz for latest updates, driver stories, and Caribbean business culture.
+              100% YOUR platform. No external companies profiting from your content. Share driver stories, business updates, and connect with the YaadFlex family.
             </p>
             <a 
-              href="https://instagram.com/yardflexglobalvybz" 
-              target="_blank" 
-              rel="noopener noreferrer"
+              href="/social-feed" 
               style={{
                 display: 'inline-block',
-                background: 'linear-gradient(45deg, #f09433, #dc2743)',
-                color: 'white',
+                background: 'linear-gradient(45deg, #10d07a, #07a86e)',
+                color: '#000',
                 textDecoration: 'none',
-                padding: '10px 16px',
+                padding: '12px 20px',
                 borderRadius: '8px',
                 fontSize: '14px',
                 fontWeight: 'bold'
               }}
-              data-testid="button-instagram"
+              data-testid="button-your-social"
             >
-              Follow on Instagram
+              🚀 Enter YOUR Social Platform
             </a>
           </div>
 
-          {/* X (Twitter) Section */}
+          {/* Community Benefits */}
           <div style={{
             background: 'linear-gradient(180deg,#0c1117,#0b1118)',
             border: '1px solid rgba(255,255,255,.06)',
@@ -198,136 +196,31 @@ export default function SocialHub() {
               <div style={{
                 width: '32px',
                 height: '32px',
-                background: '#000000',
+                background: '#fbbf24',
                 borderRadius: '8px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <span style={{ color: 'white', fontSize: '16px', fontWeight: 'bold' }}>𝕏</span>
+                <span style={{ color: '#000', fontSize: '16px', fontWeight: 'bold' }}>👑</span>
               </div>
-              <h2 style={{ margin: 0, fontSize: '18px' }}>X (Twitter)</h2>
+              <h2 style={{ margin: 0, fontSize: '18px' }}>Full Ownership</h2>
             </div>
             <p style={{ margin: '0 0 16px', color: '#9fb0c0', fontSize: '14px' }}>
-              Join the conversation @yardflexapp for real-time updates, community discussions, and industry news.
+              Unlike other platforms, YOU own everything here. No algorithms controlling your reach. No ads stealing your audience. This is truly yours.
             </p>
-            <a 
-              href="https://x.com/yardflexapp" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              style={{
-                display: 'inline-block',
-                background: '#000000',
-                color: 'white',
-                textDecoration: 'none',
-                padding: '10px 16px',
-                borderRadius: '8px',
-                fontSize: '14px',
-                fontWeight: 'bold',
-                border: '1px solid rgba(255,255,255,.1)'
-              }}
-              data-testid="button-twitter"
-            >
-              Follow on X
-            </a>
-          </div>
-
-          {/* Telegram Section */}
-          <div style={{
-            background: 'linear-gradient(180deg,#0c1117,#0b1118)',
-            border: '1px solid rgba(255,255,255,.06)',
-            borderRadius: '16px',
-            padding: '24px'
-          }}>
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '12px', 
-              marginBottom: '16px' 
+            <div style={{
+              background: 'rgba(251, 191, 36, 0.1)',
+              padding: '8px 12px',
+              borderRadius: '6px',
+              border: '1px solid rgba(251, 191, 36, 0.3)',
+              fontSize: '12px',
+              color: '#fbbf24'
             }}>
-              <div style={{
-                width: '32px',
-                height: '32px',
-                background: '#229ED9',
-                borderRadius: '8px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <span style={{ color: 'white', fontSize: '16px' }}>✈️</span>
-              </div>
-              <h2 style={{ margin: 0, fontSize: '18px' }}>Telegram Community</h2>
+              ✅ 100% Revenue Yours<br/>
+              ✅ No External Profit Sharing<br/>
+              ✅ Complete Control
             </div>
-            <p style={{ margin: '0 0 16px', color: '#9fb0c0', fontSize: '14px' }}>
-              Connect directly with drivers, customers, and team members. Get instant support and updates.
-            </p>
-            <a 
-              href="https://t.me/yaadflex" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              style={{
-                display: 'inline-block',
-                background: '#229ED9',
-                color: 'white',
-                textDecoration: 'none',
-                padding: '10px 16px',
-                borderRadius: '8px',
-                fontSize: '14px',
-                fontWeight: 'bold'
-              }}
-              data-testid="button-telegram"
-            >
-              Join Telegram
-            </a>
-          </div>
-
-          {/* WhatsApp Section */}
-          <div style={{
-            background: 'linear-gradient(180deg,#0c1117,#0b1118)',
-            border: '1px solid rgba(255,255,255,.06)',
-            borderRadius: '16px',
-            padding: '24px'
-          }}>
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '12px', 
-              marginBottom: '16px' 
-            }}>
-              <div style={{
-                width: '32px',
-                height: '32px',
-                background: '#25D366',
-                borderRadius: '8px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <span style={{ color: 'white', fontSize: '16px' }}>💬</span>
-              </div>
-              <h2 style={{ margin: 0, fontSize: '18px' }}>WhatsApp Business</h2>
-            </div>
-            <p style={{ margin: '0 0 16px', color: '#9fb0c0', fontSize: '14px' }}>
-              Direct business communication for partnerships, driver support, and customer service.
-            </p>
-            <a 
-              href="https://wa.me/1876XXXXXXX" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              style={{
-                display: 'inline-block',
-                background: '#25D366',
-                color: 'white',
-                textDecoration: 'none',
-                padding: '10px 16px',
-                borderRadius: '8px',
-                fontSize: '14px',
-                fontWeight: 'bold'
-              }}
-              data-testid="button-whatsapp"
-            >
-              Message on WhatsApp
-            </a>
           </div>
 
           {/* Business Contact */}
