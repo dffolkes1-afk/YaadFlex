@@ -160,8 +160,9 @@ export default function LogisticsBrokers() {
         </div>
 
         <Tabs defaultValue="find-brokers" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="find-brokers">🔍 Find Brokers</TabsTrigger>
+            <TabsTrigger value="autonomous-ops">🤖 Auto-Ops</TabsTrigger>
             <TabsTrigger value="pricing-system">💰 Pricing</TabsTrigger>
             <TabsTrigger value="qr-system">📱 QR System</TabsTrigger>
             <TabsTrigger value="become-broker">👥 Join as Broker</TabsTrigger>
@@ -381,6 +382,269 @@ export default function LogisticsBrokers() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Autonomous Operations Tab */}
+          <TabsContent value="autonomous-ops">
+            {/* Hero Section */}
+            <div className="bg-gradient-to-br from-purple-600 via-blue-600 to-green-600 text-white p-8 rounded-3xl shadow-2xl mb-8">
+              <div className="text-center">
+                <h2 className="text-4xl font-bold mb-4">🤖 THE APP OPERATES ITSELF!</h2>
+                <div className="text-2xl font-semibold mb-6">
+                  🗣️ TALK TO YOUR BUSINESS • 🤖 AUTO-HANDLES EVERYTHING • 🚀 RUNS ITSELF
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-white/20 p-4 rounded-xl">
+                    <div className="text-3xl mb-2">🗣️</div>
+                    <div className="font-bold">VOICE CONTROL</div>
+                    <div className="text-sm opacity-90">"Show me today's earnings"</div>
+                  </div>
+                  <div className="bg-white/20 p-4 rounded-xl">
+                    <div className="text-3xl mb-2">🤖</div>
+                    <div className="font-bold">AUTO-OPERATIONS</div>
+                    <div className="text-sm opacity-90">Handles bookings automatically</div>
+                  </div>
+                  <div className="bg-white/20 p-4 rounded-xl">
+                    <div className="text-3xl mb-2">🧠</div>
+                    <div className="font-bold">SMART DECISIONS</div>
+                    <div className="text-sm opacity-90">Learns and improves itself</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              
+              {/* Voice Control Features */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="text-2xl">🗣️</div>
+                    Talk to Your Business Like a Person
+                  </CardTitle>
+                  <CardDescription>
+                    Control everything with your voice - the app understands and responds
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  
+                  <div className="space-y-3">
+                    <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                      <div className="font-bold text-blue-800 mb-1">💰 "How much did I earn today?"</div>
+                      <div className="text-sm text-blue-700">
+                        App: "You earned J$15,750 today from 23 completed orders. That's 18% more than yesterday!"
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
+                      <div className="font-bold text-green-800 mb-1">🚚 "Any new pickup requests?"</div>
+                      <div className="text-sm text-green-700">
+                        App: "Yes! 3 new barrel pickups from Kingston Port. Should I accept them all?"
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 bg-purple-50 rounded-lg border-l-4 border-purple-400">
+                      <div className="font-bold text-purple-800 mb-1">📊 "Show me this week's performance"</div>
+                      <div className="text-sm text-purple-700">
+                        App: "This week: J$89,340 earnings, 4.9 rating, 127 deliveries completed. Excellent week!"
+                      </div>
+                    </div>
+
+                    <div className="p-4 bg-amber-50 rounded-lg border-l-4 border-amber-400">
+                      <div className="font-bold text-amber-800 mb-1">⚙️ "Increase my barrel clearing price to J$6,000"</div>
+                      <div className="text-sm text-amber-700">
+                        App: "Done! Barrel service price updated to J$6,000. I'll notify existing customers."
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg border-2 border-emerald-300">
+                    <div className="font-bold text-emerald-800 text-center mb-2">🎯 VOICE CONTROL PERKS:</div>
+                    <div className="text-sm text-emerald-700 text-center">
+                      • Control business while driving<br/>
+                      • Get instant updates anywhere<br/>
+                      • Change prices on the go<br/>
+                      • Monitor everything hands-free
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Autonomous Operations */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="text-2xl">🤖</div>
+                    The App Runs Your Business Automatically
+                  </CardTitle>
+                  <CardDescription>
+                    Set it up once - it handles everything while you focus on service
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  
+                  <div className="space-y-3">
+                    <div className="p-4 bg-blue-50 rounded-lg border">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-2xl">📞</div>
+                        <div className="font-bold text-blue-800">Auto-Accept Bookings</div>
+                      </div>
+                      <div className="text-sm text-blue-700">
+                        App automatically accepts orders that match your criteria and availability
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 bg-green-50 rounded-lg border">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-2xl">💰</div>
+                        <div className="font-bold text-green-800">Smart Pricing</div>
+                      </div>
+                      <div className="text-sm text-green-700">
+                        Adjusts prices based on demand, time, and competition automatically
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 bg-purple-50 rounded-lg border">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-2xl">🗺️</div>
+                        <div className="font-bold text-purple-800">Route Optimization</div>
+                      </div>
+                      <div className="text-sm text-purple-700">
+                        Plans most efficient pickup and delivery routes to save time and fuel
+                      </div>
+                    </div>
+
+                    <div className="p-4 bg-amber-50 rounded-lg border">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-2xl">📊</div>
+                        <div className="font-bold text-amber-800">Auto-Reports</div>
+                      </div>
+                      <div className="text-sm text-amber-700">
+                        Generates daily/weekly earnings and performance reports automatically
+                      </div>
+                    </div>
+
+                    <div className="p-4 bg-red-50 rounded-lg border">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-2xl">💬</div>
+                        <div className="font-bold text-red-800">Customer Communication</div>
+                      </div>
+                      <div className="text-sm text-red-700">
+                        Sends updates, ETAs, and confirmations to customers automatically
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Self-Management Features */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="text-2xl">🧠</div>
+                    Gets Smarter Every Day
+                  </CardTitle>
+                  <CardDescription>
+                    The more you use it, the better it becomes at running your business
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  
+                  <div className="space-y-3">
+                    <div className="p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
+                      <div className="font-semibold text-purple-800">🎯 Learns Your Patterns</div>
+                      <div className="text-sm text-purple-700">Knows your best times, routes, and customer preferences</div>
+                    </div>
+                    
+                    <div className="p-3 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg">
+                      <div className="font-semibold text-green-800">📈 Improves Performance</div>
+                      <div className="text-sm text-green-700">Suggests better prices and strategies to increase earnings</div>
+                    </div>
+                    
+                    <div className="p-3 bg-gradient-to-r from-amber-50 to-green-50 rounded-lg">
+                      <div className="font-semibold text-amber-800">🔧 Self-Maintenance</div>
+                      <div className="text-sm text-amber-700">Updates itself, fixes issues, and stays current automatically</div>
+                    </div>
+
+                    <div className="p-3 bg-gradient-to-r from-red-50 to-amber-50 rounded-lg">
+                      <div className="font-semibold text-red-800">⚠️ Predicts Problems</div>
+                      <div className="text-sm text-red-700">Warns you about potential issues before they happen</div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-gradient-to-br from-purple-100 to-blue-100 rounded-lg border-2 border-purple-300">
+                    <div className="text-center">
+                      <div className="font-bold text-purple-800 text-lg mb-2">🚀 THE RESULT:</div>
+                      <div className="text-sm text-purple-700">
+                        <strong>You focus on service delivery</strong><br/>
+                        <strong>The app handles the business</strong><br/>
+                        <strong>More earnings, less stress!</strong>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Control & Ownership */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="text-2xl">👑</div>
+                    YOU Stay in Complete Control
+                  </CardTitle>
+                  <CardDescription>
+                    The app operates itself, but YOU make all the final decisions
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
+                      <div className="text-2xl">✋</div>
+                      <div>
+                        <div className="font-bold text-emerald-800">Override Anytime</div>
+                        <div className="text-sm text-emerald-700">Stop, change, or redirect any automated action instantly</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                      <div className="text-2xl">⚙️</div>
+                      <div>
+                        <div className="font-bold text-blue-800">Set Your Rules</div>
+                        <div className="text-sm text-blue-700">Define what the app can and cannot do automatically</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg border-l-4 border-purple-400">
+                      <div className="text-2xl">👀</div>
+                      <div>
+                        <div className="font-bold text-purple-800">Monitor Everything</div>
+                        <div className="text-sm text-purple-700">See all actions, decisions, and results in real-time</div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 p-3 bg-amber-50 rounded-lg border-l-4 border-amber-400">
+                      <div className="text-2xl">🔒</div>
+                      <div>
+                        <div className="font-bold text-amber-800">Your Data, Your Rules</div>
+                        <div className="text-sm text-amber-700">Complete ownership of all business data and decisions</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-gradient-to-r from-gold-50 to-yellow-50 rounded-lg border-2 border-yellow-400">
+                    <div className="text-center">
+                      <div className="font-bold text-yellow-800 text-lg mb-2">💎 ULTIMATE FREEDOM:</div>
+                      <div className="text-sm text-yellow-700">
+                        <strong>App handles routine tasks</strong><br/>
+                        <strong>You focus on growing your empire</strong><br/>
+                        <strong>Best of both worlds!</strong>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
           {/* Pricing System Tab */}
