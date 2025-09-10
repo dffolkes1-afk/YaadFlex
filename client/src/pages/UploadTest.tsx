@@ -12,6 +12,11 @@ export default function UploadTest() {
       setIsUploading(true);
       setStatus('Getting upload URL...');
 
+      // Limit file size to prevent browser crashes
+      if (file.size > 50 * 1024 * 1024) { // 50MB limit
+        throw new Error('File too large (max 50MB)');
+      }
+
       // Step 1: Get upload URL
       const response = await fetch('/api/objects/upload', {
         method: 'POST',
@@ -27,24 +32,34 @@ export default function UploadTest() {
       const { uploadURL } = await response.json();
       setStatus('Got upload URL! Uploading file...');
 
-      // Step 2: Upload file
+      // Step 2: Upload file with timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
       const uploadResponse = await fetch(uploadURL, {
         method: 'PUT',
         body: file,
         headers: {
           'Content-Type': file.type
-        }
+        },
+        signal: controller.signal
       });
+
+      clearTimeout(timeoutId);
 
       if (!uploadResponse.ok) {
         throw new Error(`Upload failed: ${uploadResponse.status}`);
       }
 
-      setStatus(`✅ SUCCESS! File "${file.name}" uploaded successfully!`);
+      setStatus(`✅ SUCCESS! File "${file.name}" (${(file.size / 1024 / 1024).toFixed(1)}MB) uploaded successfully!`);
       
     } catch (error) {
       console.error('Upload error:', error);
-      setStatus(`❌ ERROR: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      if (error.name === 'AbortError') {
+        setStatus(`❌ TIMEOUT: Upload took too long (file too big?)`);
+      } else {
+        setStatus(`❌ ERROR: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      }
     } finally {
       setIsUploading(false);
     }

@@ -96,6 +96,12 @@ export function MediaUploader({
       const type = getFileType(file);
       const localUrl = URL.createObjectURL(file);
       
+      // Check file size to prevent crashes (max 50MB)
+      if (file.size > 50 * 1024 * 1024) {
+        console.warn(`File ${file.name} too large (${(file.size / 1024 / 1024).toFixed(1)}MB), skipping`);
+        continue;
+      }
+      
       try {
         // Upload file to object storage
         const storageUrl = await uploadFileToStorage(file);
@@ -108,26 +114,7 @@ export function MediaUploader({
           localUrl // Keep local URL for preview
         };
 
-        // Get duration for video/audio files
-        if (type === 'video' || type === 'audio') {
-          try {
-            const duration = await getMediaDuration(file);
-            mediaFile.duration = duration;
-          } catch (error) {
-            console.warn('Could not get media duration:', error);
-          }
-        }
-
-        // Generate thumbnail for videos
-        if (type === 'video') {
-          try {
-            const thumbnail = await generateVideoThumbnail(file);
-            mediaFile.thumbnail = thumbnail;
-          } catch (error) {
-            console.warn('Could not generate video thumbnail:', error);
-          }
-        }
-
+        // Skip heavy processing for performance - only basic metadata
         newMedia.push(mediaFile);
         
         // Update progress
