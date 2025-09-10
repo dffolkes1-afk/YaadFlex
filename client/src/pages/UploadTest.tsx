@@ -53,12 +53,12 @@ export default function UploadTest() {
 
       setStatus(`✅ SUCCESS! File "${file.name}" (${(file.size / 1024 / 1024).toFixed(1)}MB) uploaded successfully!`);
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('Upload error:', error);
-      if (error.name === 'AbortError') {
+      if (error?.name === 'AbortError') {
         setStatus(`❌ TIMEOUT: Upload took too long (file too big?)`);
       } else {
-        setStatus(`❌ ERROR: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        setStatus(`❌ ERROR: ${error?.message || 'Unknown error'}`);
       }
     } finally {
       setIsUploading(false);
