@@ -60,6 +60,7 @@ import HeritageDelivery from "@/pages/HeritageDelivery";
 import UniversalPaymentPage from "@/pages/UniversalPaymentPage";
 import VoiceControlCenter from "@/pages/VoiceControlCenter";
 import VoiceDemo from "@/pages/VoiceDemo";
+import ErrorDashboard from "@/pages/ErrorDashboard";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -92,6 +93,8 @@ function Router() {
       <Route path="/voice-control" component={VoiceControlCenter} />
       <Route path="/voice-interactive" component={VoiceControlCenter} />
       <Route path="/voice-demo" component={VoiceDemo} />
+      <Route path="/error-dashboard" component={ErrorDashboard} />
+      <Route path="/diagnostics" component={ErrorDashboard} />
       <Route path="/pricing" component={PricingCalculator} />
       <Route path="/book-ride" component={CustomerBooking} />
       <Route path="/travel-booking" component={TravelBooking} />
