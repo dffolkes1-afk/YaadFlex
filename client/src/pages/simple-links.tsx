@@ -3,11 +3,9 @@ import { MapPin, Car, Users, Building, Truck, Phone, CreditCard, Radio } from 'l
 
 export default function SimpleLinksPage() {
   return (
-    <div className="min-h-screen text-[#e6eef6]" style={{
+    <div className="min-h-screen text-white" style={{
       background: `
-        radial-gradient(1200px 600px at 70% -10%, rgba(109,167,255,0.10), transparent 60%),
-        radial-gradient(900px 500px at 10% -10%, rgba(180,197,214,0.08), transparent 60%),
-        #0c1116
+        linear-gradient(180deg, #1a2332 0%, #2d3748 50%, #1a202c 100%)
       `
     }}>
       
@@ -16,119 +14,119 @@ export default function SimpleLinksPage() {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold mb-3">YaadFlex Platform</h1>
-          <p className="text-[#9fb0c2]">Professional transportation and business services</p>
+          <p className="text-gray-300">Professional transportation and business services</p>
         </div>
 
         {/* Services Grid */}
         <div className="grid md:grid-cols-2 gap-4 max-w-3xl mx-auto">
           
           <Link href="/ride-booking">
-            <div className="p-6 border border-[#1b2633] rounded-2xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-all group cursor-pointer">
+            <div className="p-6 border border-gray-600 rounded-2xl bg-gray-800/50 hover:bg-gray-700/50 transition-all group cursor-pointer">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-[#6da7ff] to-[#8ec1ff] flex items-center justify-center">
-                  <MapPin className="h-6 w-6 text-[#06101a]" />
+                <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center">
+                  <MapPin className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg">Book Ride</h3>
-                  <p className="text-[#9fb0c2] text-sm">Professional drivers across Jamaica</p>
+                  <p className="text-gray-300 text-sm">Professional drivers across Jamaica</p>
                 </div>
               </div>
             </div>
           </Link>
 
           <Link href="/driver-registration">
-            <div className="p-6 border border-[#1b2633] rounded-2xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-all group cursor-pointer">
+            <div className="p-6 border border-gray-600 rounded-2xl bg-gray-800/50 hover:bg-gray-700/50 transition-all group cursor-pointer">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-green-600 flex items-center justify-center">
                   <Car className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg">Drive & Earn</h3>
-                  <p className="text-[#9fb0c2] text-sm">Join our driver network - 85% earnings</p>
+                  <p className="text-gray-300 text-sm">Join our driver network - 85% earnings</p>
                 </div>
               </div>
             </div>
           </Link>
 
           <Link href="/business-registration">
-            <div className="p-6 border border-[#1b2633] rounded-2xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-all group cursor-pointer">
+            <div className="p-6 border border-gray-600 rounded-2xl bg-gray-800/50 hover:bg-gray-700/50 transition-all group cursor-pointer">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-gray-600 flex items-center justify-center">
                   <Building className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg">Business Services</h3>
-                  <p className="text-[#9fb0c2] text-sm">Register your business on our platform</p>
+                  <p className="text-gray-300 text-sm">Register your business on our platform</p>
                 </div>
               </div>
             </div>
           </Link>
 
           <Link href="/premium-storefront">
-            <div className="p-6 border border-[#1b2633] rounded-2xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-all group cursor-pointer">
+            <div className="p-6 border border-gray-600 rounded-2xl bg-gray-800/50 hover:bg-gray-700/50 transition-all group cursor-pointer">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-purple-500 to-pink-600 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-slate-600 flex items-center justify-center">
                   <Users className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg">Marketplace</h3>
-                  <p className="text-[#9fb0c2] text-sm">Premium storefronts and vendors</p>
+                  <p className="text-gray-300 text-sm">Premium storefronts and vendors</p>
                 </div>
               </div>
             </div>
           </Link>
 
           <Link href="/contactless">
-            <div className="p-6 border border-[#1b2633] rounded-2xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-all group cursor-pointer">
+            <div className="p-6 border border-gray-600 rounded-2xl bg-gray-800/50 hover:bg-gray-700/50 transition-all group cursor-pointer">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-orange-600 flex items-center justify-center">
                   <Truck className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg">Delivery</h3>
-                  <p className="text-[#9fb0c2] text-sm">Fast and reliable delivery services</p>
+                  <p className="text-gray-300 text-sm">Fast and reliable delivery services</p>
                 </div>
               </div>
             </div>
           </Link>
 
           <Link href="/cb-radio">
-            <div className="p-6 border border-[#1b2633] rounded-2xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-all group cursor-pointer">
+            <div className="p-6 border border-gray-600 rounded-2xl bg-gray-800/50 hover:bg-gray-700/50 transition-all group cursor-pointer">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-600 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-teal-600 flex items-center justify-center">
                   <Radio className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg">Driver Network</h3>
-                  <p className="text-[#9fb0c2] text-sm">Communication and coordination</p>
+                  <p className="text-gray-300 text-sm">Communication and coordination</p>
                 </div>
               </div>
             </div>
           </Link>
 
           <Link href="/banking">
-            <div className="p-6 border border-[#1b2633] rounded-2xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-all group cursor-pointer">
+            <div className="p-6 border border-gray-600 rounded-2xl bg-gray-800/50 hover:bg-gray-700/50 transition-all group cursor-pointer">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-emerald-600 flex items-center justify-center">
                   <CreditCard className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg">Banking</h3>
-                  <p className="text-[#9fb0c2] text-sm">Payments and financial services</p>
+                  <p className="text-gray-300 text-sm">Payments and financial services</p>
                 </div>
               </div>
             </div>
           </Link>
 
           <Link href="/real-estate">
-            <div className="p-6 border border-[#1b2633] rounded-2xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-all group cursor-pointer">
+            <div className="p-6 border border-gray-600 rounded-2xl bg-gray-800/50 hover:bg-gray-700/50 transition-all group cursor-pointer">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-600 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-amber-600 flex items-center justify-center">
                   <Building className="h-6 w-6 text-white" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg">Real Estate</h3>
-                  <p className="text-[#9fb0c2] text-sm">Property listings and services</p>
+                  <p className="text-gray-300 text-sm">Property listings and services</p>
                 </div>
               </div>
             </div>
@@ -137,7 +135,7 @@ export default function SimpleLinksPage() {
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-12 text-[#9fb0c2] text-sm">
+        <div className="text-center mt-12 text-gray-300 text-sm">
           Professional services • Trusted platform • Caribbean innovation
         </div>
 
