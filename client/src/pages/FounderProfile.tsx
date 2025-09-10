@@ -96,10 +96,10 @@ export default function FounderProfile() {
                     <div className="text-gray-700">
                       • <strong className="text-purple-600">MR. LEE'S HOUSE - TOP OF THE HILL</strong><br/>
                       &nbsp;&nbsp;Worked on it as a young kid in the high-class Norbrook area<br/>
-                      • <strong className="text-amber-600">TANKWELL BOSS'S HOUSE - NORBROOK DRIVE</strong><br/>
-                      &nbsp;&nbsp;Good size house next to golf club - Custom hip roof & covered center<br/>
-                      • <strong className="text-green-600">SUPER CENTER - SAVED THE PROJECT</strong><br/>
-                      &nbsp;&nbsp;Part of the drywall team that rescued it when work was going bad<br/>
+                      • <strong className="text-amber-600">TANKWELL BOSS'S HOUSE - NORBROOK DRIVE (1999-2000)</strong><br/>
+                      &nbsp;&nbsp;Good size house next to golf club - Met Eladio & Julian here<br/>
+                      • <strong className="text-green-600">SUPER CENTER - SAVED THE PROJECT (2000)</strong><br/>
+                      &nbsp;&nbsp;Best finishers in Jamaica - rescued project when finishing was bad<br/>
                       • Portmore Commercial Complex - Lead Finisher<br/>
                       • Custom Ceiling Design Innovation - Water Damage Solutions<br/>
                       • Multiple Elite Residences - Norbrook Drive & Terrace<br/>
@@ -175,17 +175,20 @@ export default function FounderProfile() {
                 <div className="flex items-start gap-3">
                   <Heart className="h-6 w-6 text-red-600 mt-1" />
                   <div>
-                    <div className="font-bold text-lg">The Real Journey</div>
+                    <div className="font-bold text-lg">The Real Journey & Timeline</div>
                     <div className="text-gray-700">
+                      • <strong>Early Years (Grade 1-4):</strong> Phillips family era - Beans, Isa, Debbie<br/>
+                      • <strong>Education:</strong> Spanish Town → Swallowfield College → Papine Comprehensive (1997-2000)<br/>
+                      • <strong>1994-1995:</strong> Learned drywall from Trevor Bailey<br/>
+                      • <strong>1999-2000:</strong> Built Tankwell boss's house - Met Eladio & Julian<br/>
+                      • <strong>2000:</strong> First gig with Julian led to saving Super Center<br/>
+                      • <strong>2-3 Years in Cayman:</strong> International experience, traveled back and forth<br/>
                       • Grew up without a father - learned to survive alone<br/>
-                      • Used to chill at Marble Close / Norbrook Close with the Phillips family<br/>
                       • Helped build Mr. Lee's house on top of the hill as a kid<br/>
-                      • Built Tankwell boss's house on Norbrook Drive next to golf club<br/>
                       • Hustled in elite areas - from Norbrook Drive to Norbrook Terrace<br/>
                       • Worked for prominent people left, right, and back<br/>
                       • Hated 9-to-5 jobs and gas station work<br/>
                       • Always searching for something different<br/>
-                      • Grasped knowledge everywhere - streets to books<br/>
                       • From the lower side but refused to stay there<br/>
                       • Son of Tina Bennett, grandson of Hera Buchanan<br/>
                       • "Out of Many, One People" - living proof
@@ -305,7 +308,8 @@ export default function FounderProfile() {
                 <strong className="text-green-600">I. Phillips (Ice/Isa/Aisha)</strong> - Best friend, Jamaican long-distance runner (early 90s)<br/>
                 <span className="italic">"STATHS athlete who ran for Jamaica - stopped running to start working, now overseas"</span><br/>
                 <strong>Bubba (Barber) Phillips</strong> - Ice's father, Errol Phillips' brother<br/><br/>
-                <strong>Trevor Bailey</strong> - Master Mentor & Teacher<br/>
+                <strong>Trevor Bailey</strong> - Master Mentor & Teacher (1994-1995 training)<br/>
+                <strong>Eladio & Julian</strong> - Connected me to Super Center job (2000)<br/>
                 <strong>Dennis Williams</strong> - Prominent Architect & Inspiration<br/>
                 <strong>Louis Aitken</strong> - Early Business Mentor<br/>
                 <strong>The Bailey Family</strong> - Lifelong Friends & Supporters<br/>
