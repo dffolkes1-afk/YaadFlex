@@ -5027,9 +5027,27 @@ P.S. - Early business partners get exclusive territory rights and preferred part
     }
   });
 
-  // Media Hub Routes - Phase 1: Safe placeholders & community content
+  // Media Hub Routes - Phase 1: Heritage content with public domain sources
   app.get('/api/media/channels', async (req, res) => {
     const channels = [
+      {
+        id: "ia-classics",
+        handle: "ia_classics",
+        displayName: "Internet Archive - Classics",
+        about: "Public domain classic films and vintage content from Internet Archive",
+        verified: true,
+        avatarUrl: "/api/placeholder/80/80",
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: "british-pathe",
+        handle: "britishpathe",
+        displayName: "British Pathé",
+        about: "Historic Jamaica newsreels and Caribbean footage from the 1950s-60s",
+        verified: true,
+        avatarUrl: "/api/placeholder/80/80",
+        createdAt: new Date().toISOString()
+      },
       {
         id: "community-hub",
         handle: "community",
@@ -5040,20 +5058,11 @@ P.S. - Early business partners get exclusive territory rights and preferred part
         createdAt: new Date().toISOString()
       },
       {
-        id: "heritage-hub",
-        handle: "heritage",
-        displayName: "Caribbean Heritage",
-        about: "Public domain Caribbean cultural content and historical videos",
+        id: "heritage-adventure",
+        handle: "heritage_adventure",
+        displayName: "Caribbean Adventures",
+        about: "Vintage Caribbean adventure films and island culture documentaries",
         verified: true,
-        avatarUrl: "/api/placeholder/80/80",
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: "music-hub",
-        handle: "music",
-        displayName: "Local Music Scene",
-        about: "Emerging artists and local DJs sharing their music",
-        verified: false,
         avatarUrl: "/api/placeholder/80/80",
         createdAt: new Date().toISOString()
       }
@@ -5067,8 +5076,49 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   });
 
   app.get('/api/media/channels/:channelId/streams', async (req, res) => {
-    // Phase 1: Community content placeholders
-    res.json([]);
+    const { channelId } = req.params;
+    
+    // Heritage content from public domain sources
+    const channelStreams: { [key: string]: any[] } = {
+      "ia-classics": [
+        {
+          id: "jamaica-inn-1939",
+          channelId: "ia-classics",
+          title: "Jamaica Inn (1939) - Classic Hitchcock",
+          streamUrl: "https://archive.org/embed/Jamaica_Inn",
+          provider: "other",
+          posterImage: "https://archive.org/services/img/Jamaica_Inn",
+          isLive: false,
+          createdAt: new Date().toISOString()
+        }
+      ],
+      "british-pathe": [
+        {
+          id: "jamaica-1958-newsreel",
+          channelId: "british-pathe", 
+          title: "Jamaica (1958) - Historic Newsreel",
+          streamUrl: "https://www.youtube.com/watch?v=oKi1fuJEjmQ",
+          provider: "youtube",
+          posterImage: "",
+          isLive: false,
+          createdAt: new Date().toISOString()
+        }
+      ],
+      "heritage-adventure": [
+        {
+          id: "treasure-jamaica-reef",
+          channelId: "heritage-adventure",
+          title: "The Treasure of Jamaica Reef (1975)",
+          streamUrl: "https://archive.org/embed/TheTreasureOfJamaicaReef",
+          provider: "other", 
+          posterImage: "https://archive.org/services/img/TheTreasureOfJamaicaReef",
+          isLive: false,
+          createdAt: new Date().toISOString()
+        }
+      ]
+    };
+    
+    res.json(channelStreams[channelId] || []);
   });
 
   // Initialize observability system

@@ -36,6 +36,11 @@ export default function LiveWindow({ stream }: { stream: Stream }) {
     return <HlsPlayer src={stream.streamUrl} poster={stream.posterImage} title={stream.title} isLive={stream.isLive} />;
   }
 
+  // Internet Archive and other embeds
+  if (stream.provider === "other" && stream.streamUrl.includes("archive.org/embed")) {
+    return <ArchiveOrgPlayer src={stream.streamUrl} title={stream.title} poster={stream.posterImage} />;
+  }
+
   // fallback: open link
   return (
     <div className="rounded-xl overflow-hidden border border-gray-700 p-6 bg-black/90 text-white">
@@ -98,6 +103,31 @@ function extractYouTubeId(url: string) {
   // fallback - extract ID from end of URL
   const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
   return match ? match[1] : url;
+}
+
+function ArchiveOrgPlayer({ src, title, poster }: { src: string; title: string; poster?: string }) {
+  return (
+    <div className="w-full rounded-xl overflow-hidden shadow-2xl bg-black">
+      <div className="flex items-center justify-between p-3 bg-gray-900">
+        <div className="flex items-center gap-3">
+          <Radio className="h-5 w-5 text-green-500" />
+          <span className="font-medium text-white">{title}</span>
+        </div>
+        <span className="text-xs bg-gray-700 px-2 py-1 rounded text-gray-300">
+          Internet Archive
+        </span>
+      </div>
+      <div className="aspect-video w-full">
+        <iframe
+          src={src}
+          title={title}
+          allow="fullscreen"
+          allowFullScreen
+          className="w-full h-full"
+        />
+      </div>
+    </div>
+  );
 }
 
 function HlsPlayer({ src, poster, title, isLive }: { src: string; poster?: string; title: string; isLive: boolean }) {

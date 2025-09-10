@@ -66,8 +66,8 @@ export default function MediaHub() {
               YaadFlex Media Hub
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Community content, local music, and Caribbean heritage videos. 
-              Building our platform with YOU - the community comes first, then the big media houses join us!
+              Classic films, vintage newsreels, and heritage Caribbean content. 
+              Featuring public domain treasures from Internet Archive and historic footage from British Pathé!
             </p>
           </div>
         </div>
@@ -185,13 +185,15 @@ export default function MediaHub() {
 
         {/* Footer */}
         <div className="text-center mt-16 p-8 bg-gray-900 rounded-lg">
-          <h3 className="text-xl font-bold text-green-500 mb-4">Media Partners Welcome</h3>
+          <h3 className="text-xl font-bold text-green-500 mb-4">Building with Heritage & Community</h3>
           <p className="text-gray-400 mb-4">
-            Are you a media house in Jamaica or the Caribbean? Join YaadFlex Media Hub to reach more viewers 
-            and connect with our community. We provide verified profiles and professional streaming tools.
+            Starting with classic public domain content and heritage films, we're building our audience first. 
+            Local creators, DJs, and small media houses are welcome to join our growing platform.
+            When we have the audience power, major media houses will want to partner with us!
           </p>
           <p className="text-sm text-gray-500">
-            Contact us to get your media house verified and start streaming on YaadFlex.
+            All content sourced legally from Internet Archive (public domain) and British Pathé (historic newsreels).
+            Community uploads and local content creators welcome.
           </p>
         </div>
       </div>

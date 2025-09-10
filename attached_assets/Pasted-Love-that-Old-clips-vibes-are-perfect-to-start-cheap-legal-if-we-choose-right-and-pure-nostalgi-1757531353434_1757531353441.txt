@@ -1,0 +1,102 @@
+Love that. Old-clips vibes are perfect to start—cheap, legal (if we choose right), and pure nostalgia. Here’s the cleanest way to do it now:
+
+What to show (safe sources)
+
+1. Public-domain & CC videos (free to use)
+
+
+
+Internet Archive has tons of films and vintage clips you can embed/host from them. Start here: Moving Image Archive. 
+
+Example titles often marked public domain:
+
+“Jamaica Inn” (1939, Hitchcock) – public domain copies on IA. (Not Jamaican, but on-brand for the name.) 
+
+“The Treasure of Jamaica Reef” (1975) – listed as Public Domain on IA. 
+
+Caribbean culture docs/footage (Carnival etc.) with permissive rights on IA. 
+
+
+
+2. Historic newsreels (embed from official channels)
+
+
+
+British Pathé has loads of Jamaica newsreels (1950s–60s). You can embed their YouTube uploads (allowed under YouTube terms) or license from Pathé later. 
+
+
+> ⚠️ Avoid famous Jamaican features like The Harder They Come or Rockers—they’re not public domain.
+
+
+
+How to run it in YardFlex (quick win)
+
+Use your Billboard / Media Hub “one-way display” we just designed.
+
+Seed it with public-domain/CC Internet Archive URLs + Pathé YouTube links.
+
+No re-uploading. Embed their stream pages (or HLS if provided).
+
+
+Sample seed (drop into your DB)
+
+[
+  {
+    "partner": { "name": "Internet Archive – Classics", "handle": "ia_classics", "verified": true },
+    "item": {
+      "title": "Jamaica Inn (1939) – Classic Feature",
+      "synopsis": "Vintage thriller to set the old-movie vibe.",
+      "videoUrl": "https://archive.org/embed/Jamaica_Inn",
+      "provider": "other",
+      "posterImage": "https://archive.org/services/img/Jamaica_Inn",
+      "licenseType": "public_domain",
+      "territories": "*",
+      "tags": "movie,classic,blackandwhite",
+      "weight": 3
+    }
+  },
+  {
+    "partner": { "name": "British Pathé", "handle": "britishpathe", "verified": true },
+    "item": {
+      "title": "Jamaica (1958) – Newsreel",
+      "synopsis": "Historic Jamaica footage from Pathé.",
+      "videoUrl": "https://www.youtube.com/watch?v=oKi1fuJEjmQ",
+      "provider": "youtube",
+      "posterImage": "",
+      "licenseType": "partner",
+      "territories": "*",
+      "tags": "news,history,jamaica",
+      "weight": 2
+    }
+  },
+  {
+    "partner": { "name": "Internet Archive – Adventure", "handle": "ia_adventure", "verified": true },
+    "item": {
+      "title": "The Treasure of Jamaica Reef (1975)",
+      "synopsis": "Retro Caribbean treasure adventure; IA lists as Public Domain.",
+      "videoUrl": "https://archive.org/embed/TheTreasureOfJamaicaReef",
+      "provider": "other",
+      "posterImage": "https://archive.org/services/img/TheTreasureOfJamaicaReef",
+      "licenseType": "public_domain",
+      "territories": "*",
+      "tags": "adventure,caribbean,retro",
+      "weight": 2
+    }
+  }
+]
+
+Fast checklist (so you can move now)
+
+Pick 10–20 clips from Internet Archive with Public Domain or permissible Creative Commons license. (Document the IA page URLs.) 
+
+Add 3–5 British Pathé YouTube newsreels about Jamaica. 
+
+Paste these into your Billboard items via the /api/billboard/items route from the code I gave you.
+
+Turn the Billboard on your Home tab so something is always playing.
+
+Later, when you have traffic, negotiate official partnerships (TVJ/CVM) with revenue-share—no upfront cost.
+
+
+If you want, I’ll package a ready-to-import JSON file with 15 vetted links (IA + Pathé) so you can seed your database in one go.
+
