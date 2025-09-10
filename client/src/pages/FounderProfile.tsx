@@ -94,6 +94,8 @@ export default function FounderProfile() {
                   <div>
                     <div className="font-bold text-lg">Notable Projects</div>
                     <div className="text-gray-700">
+                      • <strong className="text-purple-600">MR. LEE'S HOUSE - TOP OF THE HILL</strong><br/>
+                      &nbsp;&nbsp;Worked on it as a young kid in the high-class Norbrook area<br/>
                       • <strong className="text-green-600">SUPER CENTER - SAVED THE PROJECT</strong><br/>
                       &nbsp;&nbsp;Part of the drywall team that rescued it when work was going bad<br/>
                       • Portmore Commercial Complex - Lead Finisher<br/>
@@ -175,6 +177,8 @@ export default function FounderProfile() {
                     <div className="text-gray-700">
                       • Grew up without a father - learned to survive alone<br/>
                       • Used to chill at Marble Close / Norbrook Close with the Phillips family<br/>
+                      • Helped build Mr. Lee's house on top of the hill as a kid<br/>
+                      • Hustled in high-class areas when it was mostly upper-class residency<br/>
                       • Hated 9-to-5 jobs and gas station work<br/>
                       • Always searching for something different<br/>
                       • Grasped knowledge everywhere - streets to books<br/>
