@@ -5027,6 +5027,50 @@ P.S. - Early business partners get exclusive territory rights and preferred part
     }
   });
 
+  // Media Hub Routes - Phase 1: Safe placeholders & community content
+  app.get('/api/media/channels', async (req, res) => {
+    const channels = [
+      {
+        id: "community-hub",
+        handle: "community",
+        displayName: "YaadFlex Community",
+        about: "User-generated content and community videos from our members",
+        verified: true,
+        avatarUrl: "/api/placeholder/80/80",
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: "heritage-hub",
+        handle: "heritage",
+        displayName: "Caribbean Heritage",
+        about: "Public domain Caribbean cultural content and historical videos",
+        verified: true,
+        avatarUrl: "/api/placeholder/80/80",
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: "music-hub",
+        handle: "music",
+        displayName: "Local Music Scene",
+        about: "Emerging artists and local DJs sharing their music",
+        verified: false,
+        avatarUrl: "/api/placeholder/80/80",
+        createdAt: new Date().toISOString()
+      }
+    ];
+    res.json(channels);
+  });
+
+  app.get('/api/media/streams/live', async (req, res) => {
+    // Phase 1: No live streams yet, building audience first
+    res.json([]);
+  });
+
+  app.get('/api/media/channels/:channelId/streams', async (req, res) => {
+    // Phase 1: Community content placeholders
+    res.json([]);
+  });
+
   // Initialize observability system
   try {
     await observabilityService.initializeSubsystems();

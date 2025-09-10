@@ -68,6 +68,7 @@ import UploadTest from "@/pages/UploadTest";
 import SimpleUpload from "@/pages/SimpleUpload";
 import TinyUpload from "@/pages/TinyUpload";
 import WorldVybz from "@/pages/WorldVybz";
+import MediaHub from "@/pages/MediaHub";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -96,6 +97,9 @@ function Router() {
       <Route path="/world-vybz" component={WorldVybz} />
       <Route path="/global-content" component={WorldVybz} />
       <Route path="/world-content" component={WorldVybz} />
+      <Route path="/media-hub" component={MediaHub} />
+      <Route path="/media" component={MediaHub} />
+      <Route path="/live-tv" component={MediaHub} />
       <Route path="/heritage-delivery" component={HeritageDelivery} />
       <Route path="/delivery-riders" component={HeritageDelivery} />
       <Route path="/universal-payment" component={UniversalPaymentPage} />

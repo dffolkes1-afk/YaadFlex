@@ -66,8 +66,8 @@ export default function MediaHub() {
               YaadFlex Media Hub
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Live streaming from Jamaica's top media houses - TVJ, CVM TV, The Gleaner and more. 
-              Watch live news, entertainment, and events all in one place.
+              Community content, local music, and Caribbean heritage videos. 
+              Building our platform with YOU - the community comes first, then the big media houses join us!
             </p>
           </div>
         </div>
