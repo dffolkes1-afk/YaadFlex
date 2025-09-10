@@ -160,9 +160,10 @@ export default function LogisticsBrokers() {
         </div>
 
         <Tabs defaultValue="find-brokers" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="find-brokers">🔍 Find Brokers</TabsTrigger>
-            <TabsTrigger value="services">📋 Services</TabsTrigger>
+            <TabsTrigger value="pricing-system">💰 Pricing</TabsTrigger>
+            <TabsTrigger value="qr-system">📱 QR System</TabsTrigger>
             <TabsTrigger value="become-broker">👥 Join as Broker</TabsTrigger>
             <TabsTrigger value="track-shipment">📍 Track</TabsTrigger>
           </TabsList>
@@ -287,6 +288,274 @@ export default function LogisticsBrokers() {
                   </CardContent>
                 </Card>
               ))}
+            </div>
+          </TabsContent>
+
+          {/* Pricing System Tab */}
+          <TabsContent value="pricing-system">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <DollarSign className="h-5 w-5" />
+                    💰 Set Your Pricing & Weights
+                  </CardTitle>
+                  <CardDescription>
+                    Create your pricing structure based on weight, distance, and service type
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  
+                  {/* Weight-Based Pricing */}
+                  <div>
+                    <h3 className="font-semibold mb-3">⚖️ Weight-Based Pricing</h3>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm font-semibold mb-2 block">0-10 kg</label>
+                        <Input placeholder="J$2,500" />
+                      </div>
+                      <div>
+                        <label className="text-sm font-semibold mb-2 block">10-25 kg</label>
+                        <Input placeholder="J$4,500" />
+                      </div>
+                      <div>
+                        <label className="text-sm font-semibold mb-2 block">25-50 kg</label>
+                        <Input placeholder="J$7,500" />
+                      </div>
+                      <div>
+                        <label className="text-sm font-semibold mb-2 block">50+ kg</label>
+                        <Input placeholder="J$12,000" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Service Type Pricing */}
+                  <div>
+                    <h3 className="font-semibold mb-3">📦 Service Type Pricing</h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <div className="font-semibold">🚢 Port Clearing</div>
+                          <div className="text-sm text-gray-600">Basic port processing</div>
+                        </div>
+                        <Input className="w-32" placeholder="J$8,500" />
+                      </div>
+                      <div className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <div className="font-semibold">📦 Barrel Service</div>
+                          <div className="text-sm text-gray-600">Barrel clearing + delivery</div>
+                        </div>
+                        <Input className="w-32" placeholder="J$5,500" />
+                      </div>
+                      <div className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <div className="font-semibold">🚗 Vehicle Import</div>
+                          <div className="text-sm text-gray-600">Car clearing + registration</div>
+                        </div>
+                        <Input className="w-32" placeholder="J$25,000" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <Button className="w-full" data-testid="button-save-pricing">
+                    💾 Save Pricing Structure
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>📊 Price Calculator Preview</CardTitle>
+                  <CardDescription>
+                    See how your pricing works for different scenarios
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  
+                  {/* Sample Calculations */}
+                  <div className="bg-blue-50 p-4 rounded-lg">
+                    <div className="font-semibold mb-2">📦 Example: Barrel from Kingston Port</div>
+                    <div className="text-sm space-y-1">
+                      <div>Weight: 15 kg → <span className="font-semibold">J$4,500</span></div>
+                      <div>Barrel Service: <span className="font-semibold">J$5,500</span></div>
+                      <div>Home Delivery: <span className="font-semibold">J$2,000</span></div>
+                      <div className="border-t pt-2 font-bold text-lg">Total: J$12,000</div>
+                      <div className="text-xs text-green-600">You keep: J$10,200 (85%)</div>
+                    </div>
+                  </div>
+
+                  <div className="bg-green-50 p-4 rounded-lg">
+                    <div className="font-semibold mb-2">🚗 Example: Car Import</div>
+                    <div className="text-sm space-y-1">
+                      <div>Vehicle Import: <span className="font-semibold">J$25,000</span></div>
+                      <div>Registration: <span className="font-semibold">J$8,000</span></div>
+                      <div>Port Processing: <span className="font-semibold">J$5,000</span></div>
+                      <div className="border-t pt-2 font-bold text-lg">Total: J$38,000</div>
+                      <div className="text-xs text-green-600">You keep: J$32,300 (85%)</div>
+                    </div>
+                  </div>
+
+                  <div className="bg-purple-50 p-4 rounded-lg">
+                    <div className="font-semibold mb-2">💡 Pro Tip</div>
+                    <div className="text-sm">
+                      Set competitive prices to win more customers. Remember - you keep 85% of everything you earn!
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* QR System Tab */}
+          <TabsContent value="qr-system">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="text-2xl">📱</div>
+                    QR Code Scanning System
+                  </CardTitle>
+                  <CardDescription>
+                    Professional QR codes replace names for privacy and efficiency
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  
+                  {/* QR Code Features */}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-lg border">
+                      <div className="text-3xl">📦</div>
+                      <div>
+                        <div className="font-bold text-blue-800">Barrel QR Codes</div>
+                        <div className="text-sm text-blue-700">Each barrel gets unique QR code - no names written on barrels</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 p-4 bg-green-50 rounded-lg border">
+                      <div className="text-3xl">🚚</div>
+                      <div>
+                        <div className="font-bold text-green-800">Driver Pickup Scanning</div>
+                        <div className="text-sm text-green-700">Riders/drivers scan QR codes to confirm pickups</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 p-4 bg-purple-50 rounded-lg border">
+                      <div className="text-3xl">🏷️</div>
+                      <div>
+                        <div className="font-bold text-purple-800">No Names - Just Numbers</div>
+                        <div className="text-sm text-purple-700">Everything tracked by QR codes and ID numbers for privacy</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold mb-3">📋 Generate QR Code</h3>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-sm font-semibold mb-2 block">Item Type</label>
+                        <Select>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select item type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="barrel">📦 Barrel</SelectItem>
+                            <SelectItem value="package">📮 Package</SelectItem>
+                            <SelectItem value="vehicle">🚗 Vehicle</SelectItem>
+                            <SelectItem value="documents">📄 Documents</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-sm font-semibold mb-2 block">Weight (kg)</label>
+                          <Input placeholder="15.5" />
+                        </div>
+                        <div>
+                          <label className="text-sm font-semibold mb-2 block">Pickup Location</label>
+                          <Input placeholder="Kingston Port" />
+                        </div>
+                      </div>
+
+                      <Button className="w-full" data-testid="button-generate-qr">
+                        📱 Generate QR Code
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>📱 Sample QR Code System</CardTitle>
+                  <CardDescription>
+                    How the QR scanning system works in practice
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  
+                  {/* Sample QR Display */}
+                  <div className="text-center p-6 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                    <div className="text-8xl mb-3">⬛</div>
+                    <div className="font-bold text-lg">QR Code</div>
+                    <div className="text-sm text-gray-600 mt-2">
+                      ID: YF-BRL-789234<br/>
+                      Weight: 15.5 kg<br/>
+                      Type: Barrel
+                    </div>
+                  </div>
+
+                  {/* Scanning Process */}
+                  <div className="space-y-3">
+                    <h3 className="font-semibold">🔄 Scanning Process:</h3>
+                    
+                    <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                      <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
+                      <div>
+                        <div className="font-semibold">Item Arrives at Port</div>
+                        <div className="text-sm text-gray-600">QR code generated automatically</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                      <div className="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">2</div>
+                      <div>
+                        <div className="font-semibold">Driver Scans QR</div>
+                        <div className="text-sm text-gray-600">Confirms pickup with mobile app</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
+                      <div className="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold">3</div>
+                      <div>
+                        <div className="font-semibold">Customer Tracking</div>
+                        <div className="text-sm text-gray-600">Real-time updates via QR code</div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 p-3 bg-amber-50 rounded-lg">
+                      <div className="w-8 h-8 bg-amber-600 text-white rounded-full flex items-center justify-center text-sm font-bold">4</div>
+                      <div>
+                        <div className="font-semibold">Delivery Confirmation</div>
+                        <div className="text-sm text-gray-600">Scan QR at delivery address</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Privacy Benefits */}
+                  <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
+                    <div className="font-bold text-green-800 mb-1">🔒 Privacy & Efficiency Benefits:</div>
+                    <div className="text-sm text-green-700">
+                      • No personal names on packages<br/>
+                      • Faster processing with scanning<br/>
+                      • Reduces errors and mix-ups<br/>
+                      • Professional tracking system
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
 
