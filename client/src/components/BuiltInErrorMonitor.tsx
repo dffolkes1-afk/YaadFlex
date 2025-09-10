@@ -307,11 +307,11 @@ export function BuiltInErrorMonitor() {
 
   const getHealthColor = (status: string) => {
     switch (status) {
-      case 'healthy': return 'bg-green-500';
-      case 'warning': return 'bg-yellow-500';
-      case 'critical': return 'bg-red-500';
-      case 'error': return 'bg-red-500';
-      default: return 'bg-gray-500';
+      case 'healthy': return 'bg-gray-400';
+      case 'warning': return 'bg-amber-400';
+      case 'critical': return 'bg-red-400';
+      case 'error': return 'bg-red-400';
+      default: return 'bg-gray-300';
     }
   };
 
@@ -331,15 +331,15 @@ export function BuiltInErrorMonitor() {
 
   return (
     <>
-      {/* Floating Status Indicator - Always visible like car dashboard warning light */}
+      {/* Sleek Status Indicator */}
       <div className="fixed top-4 right-4 z-50">
         <div 
-          className={`flex items-center gap-2 px-3 py-2 rounded-lg shadow-lg cursor-pointer transition-all ${
+          className={`flex items-center gap-2 px-3 py-2 rounded-md shadow-sm cursor-pointer transition-all border ${
             systemHealth.overall === 'healthy' 
-              ? 'bg-green-500 text-white' 
+              ? 'bg-white border-gray-200 text-gray-700' 
               : systemHealth.overall === 'warning'
-              ? 'bg-yellow-500 text-white animate-pulse'
-              : 'bg-red-500 text-white animate-pulse'
+              ? 'bg-white border-amber-200 text-amber-700'
+              : 'bg-white border-red-200 text-red-700'
           }`}
           onClick={() => setIsVisible(!isVisible)}
         >
@@ -354,17 +354,17 @@ export function BuiltInErrorMonitor() {
             {getHealthText(systemHealth.overall)}
           </span>
           {totalErrors > 0 && (
-            <Badge variant="secondary" className="bg-white text-black text-xs">
+            <Badge variant="secondary" className="bg-gray-100 text-gray-600 text-xs border-0">
               {totalErrors}
             </Badge>
           )}
         </div>
       </div>
 
-      {/* Error Monitor Panel */}
+      {/* Sleek Monitor Panel */}
       {isVisible && (
         <div className="fixed top-16 right-4 w-96 max-h-96 z-50">
-          <Card className="shadow-xl border-2">
+          <Card className="shadow-sm border border-gray-200">
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
@@ -394,7 +394,7 @@ export function BuiltInErrorMonitor() {
               {/* System Status */}
               <div className="grid grid-cols-2 gap-2 mb-4">
                 {Object.entries(systemHealth.components).map(([component, status]) => (
-                  <div key={component} className="flex items-center gap-2 text-xs">
+                  <div key={component} className="flex items-center gap-2 text-xs text-gray-600">
                     <div className={`w-2 h-2 rounded-full ${getHealthColor(status)}`} />
                     <span className="capitalize">{component}</span>
                   </div>
@@ -410,15 +410,15 @@ export function BuiltInErrorMonitor() {
                   </div>
                 ) : (
                   errors.slice(0, 10).map((error) => (
-                    <div key={error.id} className="bg-gray-50 p-2 rounded text-xs">
+                    <div key={error.id} className="bg-gray-50 p-3 rounded border border-gray-100 text-xs">
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-2">
                           {error.type === 'critical' ? (
-                            <XCircle className="h-3 w-3 text-red-500 mt-0.5" />
+                            <XCircle className="h-3 w-3 text-red-400 mt-0.5" />
                           ) : error.type === 'error' ? (
-                            <AlertTriangle className="h-3 w-3 text-orange-500 mt-0.5" />
+                            <AlertTriangle className="h-3 w-3 text-amber-400 mt-0.5" />
                           ) : (
-                            <AlertCircle className="h-3 w-3 text-yellow-500 mt-0.5" />
+                            <AlertCircle className="h-3 w-3 text-gray-400 mt-0.5" />
                           )}
                           <div>
                             <div className="font-medium">{error.component}</div>
@@ -449,7 +449,7 @@ export function BuiltInErrorMonitor() {
                   size="sm" 
                   onClick={performHealthCheck}
                   disabled={isScanning}
-                  className="w-full text-xs"
+                  className="w-full text-xs bg-gray-900 hover:bg-gray-800 text-white"
                 >
                   {isScanning ? (
                     <>

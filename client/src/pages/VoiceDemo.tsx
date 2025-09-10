@@ -248,10 +248,10 @@ export default function VoiceDemo() {
               <Button
                 onClick={isListening ? stopListening : startListening}
                 size="lg"
-                className={`w-20 h-20 rounded-full border-2 transition-all ${
+                className={`w-20 h-20 rounded-full border transition-all ${
                   isListening 
-                    ? 'bg-red-500 hover:bg-red-600 border-red-500 animate-pulse' 
-                    : 'bg-green-500 hover:bg-green-600 border-green-500'
+                    ? 'bg-gray-900 hover:bg-gray-800 border-gray-900' 
+                    : 'bg-gray-800 hover:bg-gray-900 border-gray-800'
                 }`}
                 data-testid="voice-button"
               >
@@ -267,7 +267,7 @@ export default function VoiceDemo() {
                   {isListening ? "Listening..." : "Tap to speak"}
                 </p>
                 {isProcessing && (
-                  <p className="text-xs text-green-600 mt-1">Processing...</p>
+                  <p className="text-xs text-gray-600 mt-1">Processing...</p>
                 )}
               </div>
             </div>
@@ -285,9 +285,9 @@ export default function VoiceDemo() {
             {/* Last Command */}
             {lastCommand && (
               <div className="mt-4">
-                <div className="text-xs text-green-600 mb-2">Action taken:</div>
-                <div className="bg-green-50 p-3 rounded-md border border-green-200">
-                  <p className="text-green-800 text-sm">"{lastCommand}"</p>
+                <div className="text-xs text-gray-600 mb-2">Action taken:</div>
+                <div className="bg-gray-50 p-3 rounded-md border border-gray-200">
+                  <p className="text-gray-800 text-sm">"{lastCommand}"</p>
                 </div>
               </div>
             )}
@@ -305,7 +305,7 @@ export default function VoiceDemo() {
                   variant="outline"
                   size="sm"
                   onClick={() => processVoiceCommand(cmd.command)}
-                  className="justify-start text-left h-auto p-3 border-gray-200 hover:border-green-300 hover:bg-green-50"
+                  className="justify-start text-left h-auto p-3 border-gray-200 hover:border-gray-300 hover:bg-gray-50"
                   data-testid={`quick-command-${index}`}
                 >
                   <div className="flex items-center gap-2">
@@ -359,7 +359,7 @@ export default function VoiceDemo() {
               <input 
                 type="text" 
                 placeholder="Click here, then speak..."
-                className="w-full p-2 border border-gray-200 rounded text-sm focus:border-green-400 focus:outline-none"
+                className="w-full p-2 border border-gray-200 rounded text-sm focus:border-gray-400 focus:outline-none"
                 data-testid="test-input"
               />
             </div>
