@@ -245,7 +245,11 @@ export function MediaUploader({
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        onClick={() => fileInputRef.current?.click()}
+        onClick={() => {
+          if (fileInputRef.current) {
+            fileInputRef.current.click();
+          }
+        }}
       >
         <CardContent className="p-8 text-center">
           <div className="flex flex-col items-center gap-3">

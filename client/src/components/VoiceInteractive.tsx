@@ -126,7 +126,9 @@ export function VoiceInteractive({
     // Voice command recognition - ACTUALLY DOES THINGS!
     if (lowerText.includes('book') && (lowerText.includes('ride') || lowerText.includes('taxi'))) {
       command = { command: 'book_ride', action: 'Navigate to ride booking', params: { destination: extractLocation(lowerText) } };
-      window.location.href = '/ride-booking';
+      if (typeof window !== 'undefined') {
+        window.location.href = '/ride-booking';
+      }
     } 
     else if (lowerText.includes('call') && lowerText.includes('driver')) {
       command = { command: 'call_driver', action: 'Start driver call', params: {} };
@@ -134,23 +136,33 @@ export function VoiceInteractive({
     }
     else if (lowerText.includes('wallet') || lowerText.includes('money') || lowerText.includes('pay')) {
       command = { command: 'open_wallet', action: 'Open YaadWallet', params: {} };
-      window.location.href = '/yaad-wallet';
+      if (typeof window !== 'undefined') {
+        window.location.href = '/yaad-wallet';
+      }
     }
     else if (lowerText.includes('social') || lowerText.includes('post') || lowerText.includes('share')) {
       command = { command: 'open_social', action: 'Open social feed', params: { content: spokenText } };
-      window.location.href = '/social-feed';
+      if (typeof window !== 'undefined') {
+        window.location.href = '/social-feed';
+      }
     }
     else if (lowerText.includes('delivery') || lowerText.includes('package')) {
       command = { command: 'heritage_delivery', action: 'Open Heritage Delivery', params: {} };
-      window.location.href = '/heritage-delivery';
+      if (typeof window !== 'undefined') {
+        window.location.href = '/heritage-delivery';
+      }
     }
     else if (lowerText.includes('payment') || lowerText.includes('pay with card')) {
       command = { command: 'universal_payment', action: 'Open Universal Payment', params: {} };
-      window.location.href = '/universal-payment';
+      if (typeof window !== 'undefined') {
+        window.location.href = '/universal-payment';
+      }
     }
     else if (lowerText.includes('jobs') || lowerText.includes('work')) {
       command = { command: 'global_jobs', action: 'Open Global Jobs', params: {} };
-      window.location.href = '/global-jobs';
+      if (typeof window !== 'undefined') {
+        window.location.href = '/global-jobs';
+      }
     }
     else if (lowerText.includes('music') || lowerText.includes('play')) {
       command = { command: 'play_music', action: 'Start music player', params: { query: spokenText } };
@@ -162,7 +174,9 @@ export function VoiceInteractive({
     }
     else if (lowerText.includes('home') || lowerText.includes('main')) {
       command = { command: 'go_home', action: 'Navigate home', params: {} };
-      window.location.href = '/';
+      if (typeof window !== 'undefined') {
+        window.location.href = '/';
+      }
     }
     else {
       // Generic text input - write what they said
