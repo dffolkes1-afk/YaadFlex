@@ -1099,6 +1099,240 @@ export class DatabaseStorage implements IStorage {
       .returning();
     return user;
   }
+
+  // CEO Dashboard & Autonomous Ops methods
+  async getCeoMetrics(metricType: string): Promise<any> {
+    // Import the new schema tables
+    const { 
+      ceoDashboardMetrics, 
+      autonomousTasks, 
+      walletTransactions,
+      drivers,
+      freelancers
+    } = await import("@shared/schema");
+    
+    switch (metricType) {
+      case 'revenue':
+        // Calculate revenue metrics
+        const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+        const revenue = await db
+          .select({
+            total: sql<number>`COALESCE(SUM(CAST(amount AS DECIMAL)), 0)`
+          })
+          .from(walletTransactions)
+          .where(and(
+            eq(walletTransactions.type, 'commission'),
+            eq(walletTransactions.status, 'completed')
+          ));
+        
+        return {
+          total: revenue[0]?.total || 0,
+          growth: 0.15 // Mock 15% growth
+        };
+      
+      case 'users':
+        // Get user metrics
+        const activeUsers = await db
+          .select({ count: sql<number>`COUNT(*)` })
+          .from(users);
+        
+        return {
+          active: activeUsers[0]?.count || 0,
+          new: Math.floor((activeUsers[0]?.count || 0) * 0.05) // Mock 5% new users
+        };
+      
+      case 'tasks':
+        // Get task metrics
+        const pendingTasks = await db
+          .select({ count: sql<number>`COUNT(*)` })
+          .from(autonomousTasks)
+          .where(eq(autonomousTasks.status, 'pending'));
+        
+        const criticalTasks = await db
+          .select({ count: sql<number>`COUNT(*)` })
+          .from(autonomousTasks)
+          .where(and(
+            eq(autonomousTasks.status, 'pending'),
+            eq(autonomousTasks.priority, 'critical')
+          ));
+        
+        return {
+          pending: pendingTasks[0]?.count || 0,
+          critical: criticalTasks[0]?.count || 0
+        };
+      
+      default:
+        return {};
+    }
+  }
+
+  async getActiveObligations(): Promise<any[]> {
+    const { obligations, vendors } = await import("@shared/schema");
+    
+    const activeObligations = await db
+      .select({
+        id: obligations.id,
+        title: obligations.title,
+        vendor: vendors.name,
+        amount: obligations.amount,
+        currency: obligations.currency,
+        recurrence: obligations.recurrence,
+        nextDueAt: obligations.nextDueAt,
+        autopay: obligations.autopay,
+        category: obligations.category
+      })
+      .from(obligations)
+      .leftJoin(vendors, eq(obligations.vendorId, vendors.id))
+      .where(eq(obligations.isActive, true))
+      .limit(10);
+    
+    return activeObligations;
+  }
+
+  async getRecentPayments(limit: number): Promise<any[]> {
+    const { platformPayments, vendors } = await import("@shared/schema");
+    
+    const payments = await db
+      .select({
+        id: platformPayments.id,
+        vendor: vendors.name,
+        amount: platformPayments.amount,
+        currency: platformPayments.currency,
+        method: platformPayments.method,
+        status: platformPayments.status,
+        createdAt: platformPayments.createdAt
+      })
+      .from(platformPayments)
+      .leftJoin(vendors, eq(platformPayments.vendorId, vendors.id))
+      .orderBy(desc(platformPayments.createdAt))
+      .limit(limit);
+    
+    return payments;
+  }
+
+  async getRecentAgentLogs(limit: number): Promise<any[]> {
+    const { agentLogs } = await import("@shared/schema");
+    
+    const logs = await db
+      .select()
+      .from(agentLogs)
+      .orderBy(desc(agentLogs.createdAt))
+      .limit(limit);
+    
+    return logs;
+  }
+
+  async getComplianceStatus(): Promise<any> {
+    const { obligations, autonomousTasks } = await import("@shared/schema");
+    
+    // Mock compliance items for now
+    const items = [
+      {
+        id: '1',
+        name: 'Business License',
+        description: 'Annual business license renewal',
+        status: 'compliant'
+      },
+      {
+        id: '2',
+        name: 'Tax Filing',
+        description: 'Quarterly tax submissions',
+        status: 'compliant'
+      },
+      {
+        id: '3',
+        name: 'Insurance',
+        description: 'Vehicle and liability insurance',
+        status: 'warning'
+      },
+      {
+        id: '4',
+        name: 'Data Protection',
+        description: 'GDPR and privacy compliance',
+        status: 'compliant'
+      }
+    ];
+    
+    // Get upcoming deadlines
+    const sevenDaysFromNow = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    const deadlines = await db
+      .select({
+        id: obligations.id,
+        title: obligations.title,
+        type: obligations.category,
+        dueDate: obligations.nextDueAt
+      })
+      .from(obligations)
+      .where(and(
+        eq(obligations.isActive, true),
+        sql`${obligations.nextDueAt} <= ${sevenDaysFromNow}`
+      ))
+      .limit(5);
+    
+    // Add days left calculation
+    const deadlinesWithDays = deadlines.map(d => ({
+      ...d,
+      daysLeft: Math.ceil((new Date(d.dueDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+    }));
+    
+    return {
+      score: 85, // Mock compliance score
+      items,
+      deadlines: deadlinesWithDays
+    };
+  }
+
+  async getPendingApprovals(): Promise<any[]> {
+    const { approvals, autonomousTasks, obligations } = await import("@shared/schema");
+    
+    const pendingApprovals = await db
+      .select({
+        id: approvals.id,
+        taskId: approvals.taskId,
+        requiredRole: approvals.requiredRole,
+        task: {
+          id: autonomousTasks.id,
+          title: autonomousTasks.title,
+          description: autonomousTasks.description,
+          amount: obligations.amount,
+          priority: autonomousTasks.priority,
+          dueAt: autonomousTasks.dueAt
+        }
+      })
+      .from(approvals)
+      .innerJoin(autonomousTasks, eq(approvals.taskId, autonomousTasks.id))
+      .leftJoin(obligations, eq(autonomousTasks.obligationId, obligations.id))
+      .where(eq(approvals.status, 'pending'))
+      .limit(10);
+    
+    return pendingApprovals;
+  }
+
+  async processApproval(taskId: string, action: string, userId: string): Promise<void> {
+    const { approvals, autonomousTasks } = await import("@shared/schema");
+    
+    // Update approval status
+    await db
+      .update(approvals)
+      .set({
+        status: action === 'approve' ? 'approved' : 'rejected',
+        actorId: userId,
+        approvedAt: new Date()
+      })
+      .where(eq(approvals.taskId, taskId));
+    
+    // If approved, mark task as ready to execute
+    if (action === 'approve') {
+      await db
+        .update(autonomousTasks)
+        .set({
+          requiresApproval: false,
+          autoExecute: true,
+          updatedAt: new Date()
+        })
+        .where(eq(autonomousTasks.id, taskId));
+    }
+  }
 }
 
 export const storage = new DatabaseStorage();
