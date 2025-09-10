@@ -87,7 +87,7 @@ export default function VoiceDemo() {
         rec.start();
         setTranscript('');
         toast({
-          title: "🎤 Voice Active",
+          title: "Voice Active",
           description: "Listening... Say what you want to do!",
         });
       } catch (error) {
@@ -125,7 +125,7 @@ export default function VoiceDemo() {
     if (lowerText.includes('book') && (lowerText.includes('ride') || lowerText.includes('taxi'))) {
       actionTaken = 'Navigate to ride booking';
       toast({
-        title: "🚗 Booking Ride!",
+        title: "Booking Ride",
         description: "Opening YaadFlex ride booking...",
       });
       setTimeout(() => window.location.href = '/ride-booking', 1000);
@@ -133,14 +133,14 @@ export default function VoiceDemo() {
     else if (lowerText.includes('call') && lowerText.includes('driver')) {
       actionTaken = 'Start driver call';
       toast({
-        title: "📞 Calling Driver!",
+        title: "Calling Driver",
         description: "Connecting to your YaadFlex driver...",
       });
     }
     else if (lowerText.includes('wallet') || lowerText.includes('money') || lowerText.includes('pay')) {
       actionTaken = 'Open YaadWallet';
       toast({
-        title: "💰 Opening Wallet!",
+        title: "Opening Wallet",
         description: "YaadWallet loading...",
       });
       setTimeout(() => window.location.href = '/yaad-wallet', 1000);
@@ -148,7 +148,7 @@ export default function VoiceDemo() {
     else if (lowerText.includes('social') || lowerText.includes('post') || lowerText.includes('share')) {
       actionTaken = 'Open social feed';
       toast({
-        title: "📱 Opening Social!",
+        title: "Opening Social",
         description: "YaadFlex social feed loading...",
       });
       setTimeout(() => window.location.href = '/social-feed', 1000);
@@ -156,7 +156,7 @@ export default function VoiceDemo() {
     else if (lowerText.includes('delivery') || lowerText.includes('package')) {
       actionTaken = 'Open Heritage Delivery';
       toast({
-        title: "🚴‍♂️ Delivery Jobs!",
+        title: "Delivery Jobs",
         description: "Heritage Delivery loading...",
       });
       setTimeout(() => window.location.href = '/heritage-delivery', 1000);
@@ -164,7 +164,7 @@ export default function VoiceDemo() {
     else if (lowerText.includes('payment') || lowerText.includes('pay with card')) {
       actionTaken = 'Open Universal Payment';
       toast({
-        title: "💳 Universal Payment!",
+        title: "Universal Payment",
         description: "Opening payment system...",
       });
       setTimeout(() => window.location.href = '/universal-payment', 1000);
@@ -172,14 +172,14 @@ export default function VoiceDemo() {
     else if (lowerText.includes('music') || lowerText.includes('play')) {
       actionTaken = 'Start music player';
       toast({
-        title: "🎵 Playing Music!",
+        title: "Playing Music",
         description: "YaadFlex music starting...",
       });
     }
     else if (lowerText.includes('home') || lowerText.includes('main')) {
       actionTaken = 'Navigate home';
       toast({
-        title: "🏠 Going Home!",
+        title: "Going Home",
         description: "Navigating to main page...",
       });
       setTimeout(() => window.location.href = '/', 1000);
@@ -189,7 +189,7 @@ export default function VoiceDemo() {
       actionTaken = 'Text recognized and written';
       writeToActiveInput(spokenText);
       toast({
-        title: "✍️ Text Written!",
+        title: "Text Written",
         description: `Wrote: "${spokenText.substring(0, 30)}${spokenText.length > 30 ? '...' : ''}"`,
       });
     }
@@ -221,12 +221,12 @@ export default function VoiceDemo() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Built-in Error Monitor - Always watching like car dashboard */}
       <BuiltInErrorMonitor />
       
       {/* Simple Header */}
-      <div className="bg-white border-b py-8">
+      <div className="bg-gray-50 border-b py-8">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h1 className="text-3xl font-medium text-gray-900 mb-3">
             Voice Interactive
@@ -240,7 +240,7 @@ export default function VoiceDemo() {
       <div className="max-w-4xl mx-auto p-6">
         
         {/* Simple Voice Controller */}
-        <Card className="w-full max-w-xl mx-auto mb-8 shadow-sm">
+        <Card className="w-full max-w-xl mx-auto mb-8 border border-gray-200">
           <CardContent className="p-8">
             
             {/* Clean Voice Button */}
@@ -295,7 +295,7 @@ export default function VoiceDemo() {
         </Card>
 
         {/* Simple Quick Commands */}
-        <Card className="w-full max-w-xl mx-auto mb-8 shadow-sm">
+        <Card className="w-full max-w-xl mx-auto mb-8 border border-gray-200">
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-gray-900 mb-4">Quick Commands</h3>
             <div className="grid grid-cols-2 gap-3">
@@ -319,7 +319,7 @@ export default function VoiceDemo() {
         </Card>
 
         {/* Simple Commands List */}
-        <Card className="w-full max-w-xl mx-auto shadow-sm">
+        <Card className="w-full max-w-xl mx-auto border border-gray-200">
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-gray-900 mb-4">Voice Commands</h3>
             <div className="grid md:grid-cols-2 gap-3 text-xs text-gray-600">
