@@ -4924,7 +4924,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   app.post('/api/ceo/approvals/:taskId/:action', isAuthenticated, async (req, res) => {
     try {
       const { taskId, action } = req.params;
-      const userId = req.user?.claims?.sub;
+      const userId = (req.user as any)?.claims?.sub;
       
       if (action !== 'approve' && action !== 'reject') {
         return res.status(400).json({ message: 'Invalid action' });
@@ -4980,7 +4980,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   // Cash out request
   app.post('/api/payment-tunnel/cash-out', isAuthenticated, async (req, res) => {
     try {
-      const userId = req.user?.claims?.sub;
+      const userId = (req.user as any)?.claims?.sub;
       const { role, amount, currency, method } = req.body;
       const result = await paymentTunnel.processCashOut(
         userId,
@@ -4999,7 +4999,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   // Get wallet summary
   app.get('/api/payment-tunnel/wallet-summary', isAuthenticated, async (req, res) => {
     try {
-      const userId = req.user?.claims?.sub;
+      const userId = (req.user as any)?.claims?.sub;
       const summary = await paymentTunnel.getWalletSummary(userId);
       res.json(summary);
     } catch (error) {
@@ -5011,7 +5011,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   // Get transaction history
   app.get('/api/payment-tunnel/transactions', isAuthenticated, async (req, res) => {
     try {
-      const userId = req.user?.claims?.sub;
+      const userId = (req.user as any)?.claims?.sub;
       const { role, startDate, endDate, limit } = req.query;
       const transactions = await paymentTunnel.getTransactionHistory(
         userId,
