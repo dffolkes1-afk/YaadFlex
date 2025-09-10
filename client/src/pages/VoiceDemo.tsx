@@ -8,6 +8,7 @@ import {
   Phone, Car, Wallet, ShoppingBag, Music, 
   Star, TrendingUp, Globe, Heart
 } from 'lucide-react';
+import { BuiltInErrorMonitor } from '@/components/BuiltInErrorMonitor';
 
 export default function VoiceDemo() {
   const [isListening, setIsListening] = useState(false);
@@ -221,6 +222,8 @@ export default function VoiceDemo() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Built-in Error Monitor - Always watching like car dashboard */}
+      <BuiltInErrorMonitor />
       
       {/* Simple Header */}
       <div className="bg-white border-b py-8">
