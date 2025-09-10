@@ -57,6 +57,7 @@ import SocialFeed from "@/pages/SocialFeed";
 import GlobalJobs from "@/pages/GlobalJobs";
 import YaadWallet from "@/pages/YaadWallet";
 import CompanyDashboard from "@/pages/CompanyDashboard";
+import LogisticsBrokers from "@/pages/LogisticsBrokers";
 import HeritageDelivery from "@/pages/HeritageDelivery";
 import UniversalPaymentPage from "@/pages/UniversalPaymentPage";
 import VoiceControlCenter from "@/pages/VoiceControlCenter";
@@ -118,6 +119,10 @@ function Router() {
       <Route path="/company-dashboard" component={CompanyDashboard} />
       <Route path="/taxi-company" component={CompanyDashboard} />
       <Route path="/business-control" component={CompanyDashboard} />
+      <Route path="/logistics-brokers" component={LogisticsBrokers} />
+      <Route path="/port-clearing" component={LogisticsBrokers} />
+      <Route path="/barrel-service" component={LogisticsBrokers} />
+      <Route path="/brokers" component={LogisticsBrokers} />
       
       {/* Authentication-based routes */}
       {isLoading || !isAuthenticated ? (
