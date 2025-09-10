@@ -12,9 +12,10 @@ export default function FounderProfile() {
       <div className="container mx-auto max-w-6xl">
         
         {/* PRIVATE - NOT PUBLIC YET */}
-        <div className="bg-red-100 border-2 border-red-400 p-4 rounded-lg mb-6 text-center">
-          <div className="text-red-800 font-bold">🔒 PRIVATE PROFILE - FOUNDER'S EYES ONLY</div>
-          <div className="text-red-700">This profile is hidden from public view</div>
+        <div className="bg-black border-4 border-red-600 p-6 rounded-lg mb-6 text-center shadow-2xl">
+          <div className="text-red-500 font-bold text-2xl mb-2">🔒 TOP SECRET - HIDDEN IN THE DARK 🔒</div>
+          <div className="text-red-400 text-lg">This profile stays hidden for 2-3 YEARS</div>
+          <div className="text-amber-400 italic">When the company is BOLDER - then the world will know</div>
         </div>
 
         {/* Executive Header */}
@@ -168,12 +169,29 @@ export default function FounderProfile() {
                 <div className="flex items-start gap-3">
                   <Heart className="h-6 w-6 text-red-600 mt-1" />
                   <div>
-                    <div className="font-bold text-lg">Community Roots</div>
+                    <div className="font-bold text-lg">The Real Journey</div>
                     <div className="text-gray-700">
-                      • Proud son of Tina Bennett<br/>
-                      • Grandson of Hera Buchanan from St. Mary<br/>
-                      • Deep Jamaican heritage and values<br/>
-                      • "Out of Many, One People" philosophy
+                      • Grew up without a father - learned to survive alone<br/>
+                      • Hated 9-to-5 jobs and gas station work<br/>
+                      • Always searching for something different<br/>
+                      • Grasped knowledge everywhere - streets to books<br/>
+                      • From the lower side but refused to stay there<br/>
+                      • Son of Tina Bennett, grandson of Hera Buchanan<br/>
+                      • "Out of Many, One People" - living proof
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <Star className="h-6 w-6 text-amber-600 mt-1" />
+                  <div>
+                    <div className="font-bold text-lg">Childhood Competition Spirit</div>
+                    <div className="text-gray-700">
+                      • Loved Coca-Cola vs Pepsi battles as a kid<br/>
+                      • Sprite competitions, Cool Cat contests<br/>
+                      • Learned about competition and winning<br/>
+                      • Saw the bad in the world, chose to build peace<br/>
+                      • Always making things work with fun
                     </div>
                   </div>
                 </div>
@@ -236,8 +254,8 @@ export default function FounderProfile() {
                 <div className="text-4xl mb-3">🚀</div>
                 <div className="font-bold text-xl mb-2">INNOVATION</div>
                 <div className="text-gray-700">
-                  "From drywall to digital - always learning, 
-                  always building something better"
+                  "From Sprite competitions as a kid to building super-apps - 
+                  always competing, always creating something new"
                 </div>
               </div>
             </div>
@@ -269,6 +287,8 @@ export default function FounderProfile() {
           <CardContent className="pt-6">
             <div className="text-center space-y-4">
               <div className="text-lg">
+                <strong className="text-red-600">O'Neill Phillips & Debbie Phillips</strong> - The MAIN Inspirations<br/>
+                <span className="italic">"They kept me working, kept me learning, gave me the drive to never stop"</span><br/><br/>
                 <strong>Trevor Bailey</strong> - Master Mentor & Teacher<br/>
                 <strong>Dennis Williams</strong> - Prominent Architect & Inspiration<br/>
                 <strong>Louis Aitken</strong> - Early Business Mentor<br/>
