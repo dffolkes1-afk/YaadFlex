@@ -15,6 +15,7 @@ import {
 import YFDCurrency from '@/components/YFDCurrency';
 import YFDCoins from '@/components/YFDCoins';
 import MiniCoinFlip from '@/components/MiniCoinFlip';
+import YaadFlexLogo from '@assets/generated_images/YaadFlex_Bank_logo_09b86b5e.png';
 
 interface Transaction {
   id: string;
@@ -170,6 +171,12 @@ export default function YaadWallet() {
         
         {/* Header */}
         <div className="text-center mb-8">
+          <img 
+            src={YaadFlexLogo} 
+            alt="YaadFlex Bank" 
+            className="w-32 h-32 mx-auto mb-4 rounded-xl shadow-lg"
+            data-testid="img-yaadflex-logo"
+          />
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-green-500 to-purple-600 bg-clip-text text-transparent mb-2">
             💼 YaadFlex Bank
           </h1>
