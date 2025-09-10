@@ -1,191 +1,302 @@
-# YaadFlex - Complete Technical Blueprint
-*Caribbean Super-App with Global Ambitions*
+# YaadFlex – Technical Blueprint
 
-## 🌍 **EXECUTIVE SUMMARY**
-YaadFlex is a comprehensive super-app born in Jamaica that combines ride-sharing, P2P wallet services, marketplace functionality, logistics brokerage, social media, and autonomous operations into a unified platform. Built with fairness at its core - drivers earn 85% of fares, emphasizing "everyone benefits" philosophy.
+**Owner:** Dwayne Ffolkes  
+**Product:** YaadFlex Global Vybz (Caribbean super-app)  
+**Status:** Jamaica-first demo (rides + delivery + wallet) ready to implement; global-ready roadmap below.  
+**Philosophy:** 85% driver/worker earnings, transparent fees, safety-first automation.
 
-## 🏗️ **CORE ARCHITECTURE**
+---
+
+## 1) Product Overview
+
+YaadFlex is an all-in-one platform for:
+- **Mobility:** ride-hailing (red plate urban / curated white plate rural), errands, deliveries.
+- **Workforce:** job marketplace (construction + freelancers) with hiring & payouts.
+- **Commerce:** shops/malls online, equipment rentals, vehicle marketplace.
+- **Communication:** voice UX (accessible), chat/translation, Teen Vybz social layer.
+- **Finance:** multi-currency wallet (JMD/USD/YFX), QR pay, cash-in/out, driver/worker payouts.
+
+**Key Differentiators**
+- Voice-first + accessibility for the blind.
+- Built-in AI translator (chat in your language, others see theirs).
+- Self-healing DevRep agent (observability → propose patch → PR → canary → rollback).
+- Unified payout tunnel (drivers + workers share the same wallet engine).
+
+---
+
+## 2) Architecture (High Level)
 
 ### **Frontend Stack**
-- **Framework**: React 18 + TypeScript + Vite
-- **UI Components**: Radix UI + shadcn/ui + Tailwind CSS
-- **Routing**: Wouter (lightweight client-side routing)
-- **State Management**: TanStack Query v5 + React hooks
-- **3D Graphics**: React Three Fiber for world emblems
-- **Styling**: Ultra-minimal (black/white/gray + green YF branding)
+- **Framework:** React 18 + TypeScript + Vite
+- **UI System:** Ultra-minimal design (black/white/gray + green YF branding only)
+- **Components:** Radix UI + shadcn/ui + Tailwind CSS
+- **Routing:** Wouter (lightweight client-side routing)
+- **State:** TanStack Query v5 + React hooks
+- **Voice:** Speech recognition + text-to-speech integration
+- **3D:** React Three Fiber for world emblems
 
 ### **Backend Stack**
-- **Runtime**: Node.js + Express.js + TypeScript (ESM)
-- **Database**: PostgreSQL (Neon serverless) + Drizzle ORM
-- **Authentication**: Replit Auth (OIDC) + Passport.js
-- **Real-time**: WebSocket server for CB Radio & live tracking
-- **Session Management**: PostgreSQL-backed sessions
+- **Runtime:** Node.js + Express.js + TypeScript (ESM)
+- **Database:** PostgreSQL (Neon serverless) + Drizzle ORM
+- **Auth:** Replit Auth (OIDC) + Passport.js + session management
+- **Real-time:** WebSocket server for CB Radio & live tracking
+- **Payments:** Stripe integration for cards/wallets
+- **Communication:** SendGrid for email, voice APIs for accessibility
 
-### **Key Integrations**
-- **Payments**: Stripe integration (cards, digital wallets)
-- **Email**: SendGrid for communication
-- **Storage**: Object storage for assets
-- **Voice**: AI-powered voice control system
-- **Translation**: Real-time multi-language support
+### **Core Services Architecture**
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Voice Layer   │    │  Frontend App   │    │  Admin Portal   │
+│  (Accessibility)│    │   (Customer)    │    │   (Business)    │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         └───────────────────────┼───────────────────────┘
+                                 │
+              ┌─────────────────────────────────────┐
+              │           API Gateway               │
+              │      (Express.js Routes)            │
+              └─────────────────────────────────────┘
+                                 │
+    ┌────────────┬────────────────┼────────────────┬────────────┐
+    │            │                │                │            │
+┌───▼───┐   ┌───▼───┐        ┌───▼───┐        ┌───▼───┐   ┌───▼───┐
+│ Rides │   │Wallet │        │Social │        │ Jobs  │   │Logistics│
+│Service│   │Service│        │Service│        │Service│   │ Service │
+└───────┘   └───────┘        └───────┘        └───────┘   └─────────┘
+    │            │                │                │            │
+    └────────────┴────────────────┼────────────────┴────────────┘
+                                  │
+              ┌─────────────────────────────────────┐
+              │         PostgreSQL Database         │
+              │       (Neon Serverless)             │
+              └─────────────────────────────────────┘
+```
 
-## 🚀 **CORE FEATURES**
+---
 
-### **1. Ride-Sharing with Fairness**
-- **85% Driver Earnings** - Industry-leading compensation
-- **Smart Earnings Advisor** - Teaches drivers optimal earning zones
-- **Autonomous Dispatch** - AI-powered ride matching
-- **Dashboard Integration** - Professional fleet management
+## 3) Core Features & Implementation
 
-### **2. YaadWallet - Universal Financial System**
-- **Multi-Currency Support**: KWD (Kuwait Dinar) & YFD (YaadFlex Dollars)
-- **Real-time Exchange Rates** with multiple providers
-- **P2P Transfers** with instant settlement
-- **Payment Processing** via Stripe integration
-- **Investment Platform** integrated into wallet
+### **A) Mobility System**
+- **Ride Booking:** Customer app → driver matching → GPS tracking → payment
+- **Red Plate (Urban):** Licensed taxis with professional drivers
+- **White Plate (Curated):** Vetted rural drivers for community transport
+- **Delivery:** Food, packages, errands with real-time tracking
+- **Smart Dispatch:** AI-powered ride assignment based on earnings optimization
 
-### **3. Social Media Platform**
-- **Full Social Feed** with posting, commenting, sharing
-- **Heritage Delivery** - Cultural food/item delivery service
-- **Real-time Translation** for multi-language posts
-- **Voice-First Interface** - Complete voice control
-
-### **4. Logistics Brokers System**
-- **Port Clearing Services** - Full customs/documentation
-- **Barrel Services** - Caribbean shipping logistics
-- **Vehicle Import Management** - Complete import handling
-- **Professional Fleet Dashboard** with GPS tracking
-
-### **5. Autonomous Operations**
-- **Self-Running System** - App operates independently
-- **Voice Command Center** - Complete voice interaction
-- **Auto-Dispatch Algorithm** - Smart ride assignment
-- **System Diagnostics** - Real-time health monitoring
-
-### **6. Business Management**
-- **Company Registration** - Multi-business support
-- **Workforce Management** - Job posting & assignments
-- **Equipment Tracking** - Inventory check-in/out
-- **RBAC Dashboard** - Role-based access control
-
-## 📱 **CURRENT APPLICATION STATE**
-
-### **Live Features (Production Ready)**
-- ✅ Landing Page with YaadFlex branding
-- ✅ Ride booking system with fare calculation
-- ✅ Driver & business registration
-- ✅ YaadWallet with currency conversion
-- ✅ Social media feed with posting
-- ✅ Logistics brokers dashboard
-- ✅ Voice control center
-- ✅ GPS tracking dashboard
-- ✅ Heritage delivery system
-- ✅ CB Radio communication
-- ✅ Real estate marketplace
-- ✅ Car marketplace
-- ✅ Universal payment processing
-
-### **Database Schema**
+### **B) YaadWallet Financial Engine**
 ```typescript
-// Core entities in shared/schema.ts
-- Users (with Replit Auth integration)
-- Rides (bookings, drivers, payments)
-- Wallet (transactions, currencies, balances)
-- Social (posts, comments, likes)
-- Companies (multi-business support)
-- Logistics (brokers, services, tracking)
-- Jobs (workforce management)
+// Multi-currency wallet schema
+interface WalletAccount {
+  userId: string;
+  currencies: {
+    JMD: { balance: number; pending: number };
+    USD: { balance: number; pending: number };
+    YFX: { balance: number; pending: number }; // YaadFlex loyalty currency
+  };
+  transactions: Transaction[];
+  payoutMethods: PayoutMethod[];
+}
 ```
 
-### **API Routes**
-```typescript
-// Backend routes in server/routes.ts
-- /api/auth/* (authentication)
-- /api/rides/* (ride management)
-- /api/wallet/* (financial operations)
-- /api/social/* (social media)
-- /api/companies/* (business management)
-- /api/logistics/* (broker services)
-- /api/voice/* (voice commands)
+**Features:**
+- Real-time currency conversion (JMD ↔ USD ↔ YFX)
+- QR code payments for merchants
+- Cash-in/cash-out at partner locations
+- 85% driver earnings auto-deposit
+- Worker payouts for construction/freelance jobs
+
+### **C) Voice-First Accessibility**
+- **Complete Voice Control:** "Book ride to Half Way Tree"
+- **Screen Reader Integration:** Full accessibility compliance
+- **Hands-Free Operation:** Critical for drivers while driving
+- **Multi-Language:** Voice commands in English, Patois, Spanish
+
+### **D) Social Platform (Teen Vybz)**
+- **Real-time Translation:** Post in Patois, others see English/Spanish
+- **Heritage Delivery:** Cultural food/items with social sharing
+- **Community Features:** Local events, ride sharing, marketplace
+- **Safety:** Moderation tools, reporting system
+
+### **E) Workforce Management**
+- **Job Marketplace:** Construction, freelance, gig work
+- **Skills Verification:** Portfolio, reviews, certifications
+- **Equipment Rental:** Tools, vehicles, machinery
+- **Unified Payouts:** Same wallet system as drivers
+
+---
+
+## 4) Database Schema (Core Tables)
+
+```sql
+-- Users & Authentication
+users (id, replit_user_id, profile_data, created_at)
+user_profiles (user_id, type, skills, verification_status)
+
+-- Mobility
+rides (id, customer_id, driver_id, pickup, destination, fare, status)
+vehicles (id, driver_id, plate_type, verification_docs)
+drivers (user_id, license, background_check, earnings_total)
+
+-- Financial
+wallet_accounts (user_id, currency_balances, payout_methods)
+transactions (id, from_user, to_user, amount, currency, type)
+exchange_rates (from_currency, to_currency, rate, timestamp)
+
+-- Social & Communication
+posts (id, user_id, content, translations, media_urls)
+messages (id, from_user, to_user, content, translated_content)
+
+-- Jobs & Workforce
+job_postings (id, company_id, title, requirements, pay_rate)
+job_applications (job_id, worker_id, status, portfolio)
+equipment_rentals (id, owner_id, item_type, rate, availability)
+
+-- Business Management
+companies (id, owner_id, business_type, verification_status)
+company_vehicles (company_id, vehicle_id, gps_tracking)
 ```
 
-## 🎨 **DESIGN PHILOSOPHY**
+---
 
-### **Ultra-Minimal Interface**
-- **Colors**: ONLY black, white, subtle grays
-- **Accent**: Green YaadFlex branding only
-- **Accessibility**: Voice-first design with screen reader support
-- **Mobile-First**: Responsive across all devices
+## 5) Real-Time Systems
 
-### **Voice-First Interaction**
-- Complete voice command system
-- Real-time speech recognition
-- Text-to-speech responses
-- Hands-free operation for drivers
+### **GPS Tracking & Live Updates**
+- **WebSocket Connection:** Live ride tracking, driver locations
+- **Geofencing:** Pickup/dropoff notifications
+- **Route Optimization:** Traffic-aware routing
+- **Safety Features:** Emergency button, trip sharing
 
-## 🌐 **MULTI-LANGUAGE & CULTURAL**
-- **Real-time Translation** across languages
-- **Cultural Adaptation** per country
-- **Local Currency Support** with live exchange
-- **Regional Service Customization**
+### **CB Radio Network**
+- **Driver Communication:** Channel-based chat for drivers
+- **Translation Layer:** Multi-language driver coordination
+- **Emergency Broadcast:** System-wide alerts
 
-## 🔒 **SECURITY & PRIVACY**
-- **Replit Auth Integration** - OIDC-based authentication
-- **Session Management** - PostgreSQL-backed sessions
-- **API Security** - Request validation with Zod schemas
-- **Data Privacy** - GDPR-compliant data handling
+### **Autonomous Operations**
+- **Self-Healing:** Auto-detection and fixing of system issues
+- **Smart Dispatch:** AI-powered ride assignment
+- **Load Balancing:** Dynamic resource allocation
+- **Monitoring:** Real-time system health dashboard
 
-## 📊 **REAL-TIME SYSTEMS**
-- **Live GPS Tracking** for rides and deliveries
-- **WebSocket Communication** for CB Radio
-- **Real-time Notifications** across platform
-- **Live Currency Exchange** rate updates
-- **Autonomous Operations** monitoring
+---
 
-## 🚗 **DEMO READINESS**
-**Currently preparing for Jamaica taxi company demonstration:**
-- All core features functional
-- Database integration complete
-- Real-time tracking operational
-- Voice system active
-- Payment processing ready
+## 6) Payment & Financial Infrastructure
 
-## 📁 **KEY FILE STRUCTURE**
-```
-├── client/src/
-│   ├── pages/ (All feature pages)
-│   ├── components/ (Reusable UI components)
-│   └── lib/ (Utilities, query client)
-├── server/
-│   ├── routes.ts (API endpoints)
-│   ├── storage.ts (Database interface)
-│   └── index.ts (Express server)
-├── shared/
-│   └── schema.ts (Database & validation schemas)
-└── drizzle/ (Database migrations)
-```
+### **Stripe Integration**
+- **Payment Methods:** Cards, digital wallets, mobile money
+- **Payout System:** Instant driver/worker payments
+- **Fee Structure:** Transparent 15% platform fee (driver keeps 85%)
+- **Multi-Currency:** Support for JMD, USD, YFX conversion
 
-## 🎯 **BUSINESS MODEL**
-- **85% Driver Earnings** - Fair compensation model
-- **Service Fees** from logistics/broker services
-- **Marketplace Commissions** from car/real estate sales
-- **Premium Features** for business accounts
-- **Investment Platform** transaction fees
+### **Cash Economy Integration**
+- **Cash-In Points:** Partner locations for wallet top-ups
+- **Cash-Out Network:** ATM-like withdrawal system
+- **QR Payments:** Merchant payments without cards
+- **Remittance:** International money transfers
 
-## 🌟 **UNIQUE VALUE PROPOSITION**
-1. **Fairness-First** - 85% earnings vs industry 60-70%
-2. **Complete Ecosystem** - Everything in one app
-3. **Voice-Controlled** - Hands-free operation
-4. **Culturally Authentic** - Built for Caribbean, scaled globally
-5. **Autonomous Operations** - App runs itself
+---
 
-## 🔄 **DEVELOPMENT STATUS**
-- **MVP**: Complete and functional
-- **Testing**: Ready for live taxi company demo
-- **Scaling**: Architecture ready for global expansion
-- **Integration**: All payment and communication systems active
+## 7) Security & Compliance
+
+### **Authentication & Authorization**
+- **Replit Auth:** OIDC-based secure authentication
+- **Role-Based Access:** Driver, customer, business, admin roles
+- **Session Management:** PostgreSQL-backed secure sessions
+- **API Security:** Request validation with Zod schemas
+
+### **Data Protection**
+- **Privacy Controls:** GDPR-compliant data handling
+- **Encryption:** End-to-end for sensitive communications
+- **Audit Trails:** Complete transaction and action logging
+- **Backup & Recovery:** Automated data protection
+
+---
+
+## 8) Scalability & Performance
+
+### **Infrastructure**
+- **Serverless Database:** Neon PostgreSQL auto-scaling
+- **CDN Integration:** Global asset delivery
+- **Load Balancing:** Automatic traffic distribution
+- **Caching Strategy:** Redis for session and frequently accessed data
+
+### **Monitoring & Observability**
+- **Real-time Metrics:** System performance tracking
+- **Error Tracking:** Automated issue detection and reporting
+- **User Analytics:** Usage patterns and optimization insights
+- **DevRep Agent:** AI-powered system maintenance
+
+---
+
+## 9) Deployment & DevOps
+
+### **Current Environment**
+- **Platform:** Replit infrastructure
+- **CI/CD:** Automated testing and deployment
+- **Environment Management:** Development, staging, production
+- **Monitoring:** Real-time system health and performance
+
+### **Scaling Strategy**
+- **Geographic Expansion:** Caribbean → North America → Global
+- **Feature Rollout:** Core features → advanced features → AI enhancements
+- **Infrastructure:** Auto-scaling based on demand
+
+---
+
+## 10) Business Model & Economics
+
+### **Revenue Streams**
+- **Ride Commissions:** 15% of ride fares (driver keeps 85%)
+- **Delivery Fees:** Service fees for package/food delivery
+- **Marketplace Commissions:** Vehicle sales, equipment rentals
+- **Premium Features:** Advanced business analytics, priority support
+- **Currency Exchange:** Small spread on multi-currency transactions
+
+### **Unit Economics**
+- **Driver Earnings:** 85% of gross fare (industry-leading)
+- **Platform Fee:** 15% covers operations, support, technology
+- **Customer Acquisition:** Organic growth through driver/worker network
+- **Retention:** High due to superior earnings and user experience
+
+---
+
+## 11) Roadmap & Expansion
+
+### **Phase 1: Jamaica Launch (Current)**
+- Core ride-hailing with red/white plate system
+- Basic wallet with JMD/USD support
+- Heritage delivery service
+- Voice accessibility features
+
+### **Phase 2: Caribbean Expansion**
+- Multi-country deployment (Barbados, Trinidad, Cayman)
+- Local currency integration
+- Regional logistics network
+- Cross-border remittance
+
+### **Phase 3: Global Platform**
+- North American markets
+- Advanced AI features
+- Corporate fleet management
+- International freight coordination
+
+---
+
+## 12) Technical Specifications
+
+### **Performance Requirements**
+- **Response Time:** < 200ms for core API calls
+- **Uptime:** 99.9% availability target
+- **Scalability:** Support 100K+ concurrent users
+- **Real-time:** < 100ms latency for live tracking
+
+### **Compatibility**
+- **Mobile:** iOS 14+, Android 8+
+- **Web:** Modern browsers (Chrome, Firefox, Safari, Edge)
+- **Accessibility:** WCAG 2.1 AA compliance
+- **Languages:** English, Patois, Spanish (expandable)
 
 ---
 
 **YaadFlex represents the next evolution of super-apps: culturally rooted, globally scalable, voice-first, and fundamentally fair to all participants.**
 
-*Tech Stack: React/TypeScript + Express/Node.js + PostgreSQL + Stripe + Replit Infrastructure*
+*Built with React/TypeScript + Express/Node.js + PostgreSQL + Stripe on Replit infrastructure*

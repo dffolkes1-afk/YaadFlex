@@ -1,0 +1,49 @@
+**Environments**
+- `dev` (Replit/local), `staging` (preview deploy + test data), `prod` (locked, approvals required).
+
+---
+
+## 3) Tech Stack
+
+- **Frontend:** React + TypeScript, Vite, shadcn/ui, Tailwind, TanStack Query, React Hook Form + Zod.
+- **Backend:** Node/Express + TypeScript, Drizzle ORM, PostgreSQL (Neon), BullMQ + Redis.
+- **Auth:** OIDC/JWT (Clerk/Auth0/Replit OIDC), RBAC middleware.
+- **Payments:** Internal Wallet (JMD/USD/YFX) + external rails (Stripe/PayPal/Local bank partner).
+- **Realtime:** WebSockets or SSE for live jobs/driver location.
+- **Maps/Geo:** Mapbox or Google Maps SDK, geofencing + pricing zones.
+- **Files:** S3/R2 for images (IDs, vehicle pics, receipts).
+- **Infra:** Replit (dev), Fly.io/Vercel/Render (staging/prod) or Replit Teams Deploy.
+- **Obs/Sec:** OpenTelemetry, Semgrep, Dependabot/Snyk, GitHub Actions CI.
+
+---
+
+## 4) Core Domains & Minimal Schemas (Drizzle-style)
+
+> Tables are simplified; extend as needed.
+
+### 4.1 Users & Roles
+- `users(id, email, displayName, role: "customer|driver|worker|merchant|admin", isActive, createdAt)`
+- `profiles(userId, phone, photoUrl, locale, kycStatus)`
+
+### 4.2 Wallet & Payments
+- `wallets(id, userId, createdAt)`
+- `wallet_balances(walletId, currency, amount, updatedAt)` (PK: walletId+currency)
+- `wallet_tx(id, type, currency, amount, fee, fromWalletId?, toWalletId?, externalRef?, meta, status, createdAt)`
+- `payment_requests(id, merchantWalletId, currency, amount, description, expiresAt, status)`
+- `payout_methods(id, walletId, kind, label, details, isDefault, createdAt)`
+- `fx_rates(pair, rate, updatedAt)`
+- `coin_denominations(code, value, face, theme, artworkUrl)` // YardFlex coins up to 2000
+
+**Commission Flow (Ride = 2000 JMD, 15% fee)**
+1) House → Revenue: 300 JMD  
+2) House → Driver: 1700 JMD
+
+### 4.3 Rides & Delivery
+- `drivers(id, userId, status, rating, carMake, carModel, plateType:"red|white", plateNo, insuranceExp, fitnessExp, docs)`
+- `rides(id, riderId, driverId, pickup, dropoff, distanceKm, eta, priceJMD, status:"requested|accepted|arrived|in_progress|completed|cancelled", createdAt, completedAt)`
+- `ride_events(id, rideId, type, payload, ts)` // audit trail
+- `delivery_orders(id, senderId, courierId, pickup, dropoff, weight, priceJMD, status, createdAt)`
+
+**Pricing Policy**
+- Base fare by zone + per-km + per-minute.
+- Addons: waiting time, extra stops, night fee, “
