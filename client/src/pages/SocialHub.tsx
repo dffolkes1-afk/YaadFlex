@@ -31,6 +31,17 @@ export default function SocialHub() {
             YaadFlex Social Hub
           </h1>
           <div style={{ display: 'flex', gap: '12px' }}>
+            <a href="/social-feed" style={{
+              color: '#10d07a',
+              textDecoration: 'none',
+              fontSize: '14px',
+              padding: '8px 16px',
+              background: 'linear-gradient(135deg, #10d07a, #07a86e)',
+              borderRadius: '8px',
+              fontWeight: 'bold'
+            }} data-testid="link-social-feed">
+              🚀 Join Our Community
+            </a>
             <a href="/" style={{
               color: '#cbd6df',
               textDecoration: 'none',
@@ -51,6 +62,71 @@ export default function SocialHub() {
         margin: '0 auto',
         padding: '40px 20px'
       }}>
+        {/* YaadFlex Social Community */}
+        <div style={{
+          background: 'linear-gradient(135deg, #1e40af, #7c3aed)',
+          border: '2px solid #10d07a',
+          borderRadius: '20px',
+          padding: '32px',
+          textAlign: 'center',
+          marginBottom: '32px',
+          boxShadow: '0 20px 40px rgba(16, 208, 122, 0.2)'
+        }}>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>🌟</div>
+          <h2 style={{ 
+            margin: '0 0 16px', 
+            fontSize: '28px', 
+            background: 'linear-gradient(135deg, #10d07a, #fbbf24)',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            color: 'transparent',
+            fontWeight: 'bold'
+          }}>
+            Join YaadFlex Social Community!
+          </h2>
+          <p style={{ margin: '0 0 24px', color: '#e2e8f0', fontSize: '18px', lineHeight: '1.6' }}>
+            Share your driver stories, connect with customers, post your business updates, and be part of the Caribbean's most vibrant community. Just like TikTok and Facebook - but for the YaadFlex family! 🇯🇲
+          </p>
+          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <a 
+              href="/social-signup" 
+              style={{
+                display: 'inline-block',
+                background: 'linear-gradient(135deg, #10d07a, #07a86e)',
+                color: '#000',
+                textDecoration: 'none',
+                padding: '16px 32px',
+                borderRadius: '12px',
+                fontSize: '18px',
+                fontWeight: 'bold',
+                boxShadow: '0 8px 20px rgba(16, 208, 122, 0.4)',
+                transition: 'all 0.3s ease'
+              }}
+              data-testid="button-join-social"
+            >
+              🚀 Join Community
+            </a>
+            <a 
+              href="/social-feed" 
+              style={{
+                display: 'inline-block',
+                background: 'rgba(255,255,255,0.1)',
+                color: '#e2e8f0',
+                textDecoration: 'none',
+                padding: '16px 32px',
+                border: '2px solid rgba(255,255,255,0.2)',
+                borderRadius: '12px',
+                fontSize: '18px',
+                fontWeight: 'bold',
+                transition: 'all 0.3s ease'
+              }}
+              data-testid="button-browse-social"
+            >
+              👀 Browse Posts
+            </a>
+          </div>
+        </div>
+
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',

@@ -52,6 +52,8 @@ import DeliveryPersonnelDashboard from "@/pages/delivery-personnel-dashboard";
 import DeliveryBooking from "@/pages/delivery-booking";
 import LiveDeliveryTracking from "@/pages/live-delivery-tracking";
 import DemoShowcase from "@/pages/demo-showcase";
+import SocialSignup from "@/pages/SocialSignup";
+import SocialFeed from "@/pages/SocialFeed";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -125,6 +127,8 @@ function Router() {
       )}
       <Route path="/secure-login" component={TimeAuthLogin} />
       <Route path="/demo" component={DemoShowcase} />
+      <Route path="/social-signup" component={SocialSignup} />
+      <Route path="/social-feed" component={SocialFeed} />
       <Route component={NotFound} />
     </Switch>
   );
