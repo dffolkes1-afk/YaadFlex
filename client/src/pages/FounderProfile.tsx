@@ -185,7 +185,7 @@ export default function FounderProfile() {
                   <div>
                     <div className="font-bold text-lg">The Real Journey & Timeline</div>
                     <div className="text-gray-700">
-                      • <strong>Early Years (Grade 1-4):</strong> Phillips family era - Beans, Isa, Debbie<br/>
+                      • <strong>Early Years (Grade 1-4):</strong> Phillips family era - Bings, Isa, Debbie<br/>
                       • <strong>Education:</strong> Spanish Town → Swallowfield College → Papine Comprehensive (1997-2000)<br/>
                       • <strong>1994-1995:</strong> Learned drywall from Trevor Bailey<br/>
                       • <strong>1999-2000:</strong> Built Tankwell boss's house - Met Eladio & Julian<br/>
@@ -311,7 +311,7 @@ export default function FounderProfile() {
               <div className="text-lg">
                 <strong className="text-red-600">O'Neill Phillips & Debbie Phillips</strong> - The MAIN Inspirations<br/>
                 <span className="italic">"From Norbrook Close - They kept me working, kept me learning, gave me the drive to never stop"</span><br/>
-                <strong className="text-blue-600">Bings (Beans)</strong> - Great childhood friend from the Phillips family<br/>
+                <strong className="text-blue-600">Bings (Bingi)</strong> - Great childhood friend from the Phillips family<br/>
                 <span className="italic">"Drew my attention to the family - we were all that"</span><br/>
                 <strong className="text-green-600">I. Phillips (Ice/Isa/Aisha)</strong> - Best friend, Jamaican long-distance runner (early 90s)<br/>
                 <span className="italic">"STATHS athlete who ran for Jamaica - stopped running to start working, now overseas"</span><br/>
