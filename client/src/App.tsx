@@ -54,6 +54,7 @@ import LiveDeliveryTracking from "@/pages/live-delivery-tracking";
 import DemoShowcase from "@/pages/demo-showcase";
 import SocialSignup from "@/pages/SocialSignup";
 import SocialFeed from "@/pages/SocialFeed";
+import GlobalJobs from "@/pages/GlobalJobs";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -130,6 +131,8 @@ function Router() {
       <Route path="/demo" component={DemoShowcase} />
       <Route path="/social-signup" component={SocialSignup} />
       <Route path="/social-feed" component={SocialFeed} />
+      <Route path="/global-jobs" component={GlobalJobs} />
+      <Route path="/jobs" component={GlobalJobs} />
       <Route component={NotFound} />
     </Switch>
   );

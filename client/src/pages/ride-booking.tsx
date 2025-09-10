@@ -20,8 +20,11 @@ import {
   Navigation,
   Users,
   CheckCircle2,
-  AlertTriangle
+  AlertTriangle,
+  MessageCircle,
+  Phone
 } from 'lucide-react';
+import { LiveChat } from '@/components/LiveChat';
 
 type Vehicle = {
   id: string;
@@ -355,12 +358,37 @@ export default function RideBooking() {
               </CardContent>
             </Card>
 
+            {/* Live Chat & Calling - Global Communication */}
+            {currentTrips.length > 0 && currentTrips.some(trip => trip.status === 'accepted' || trip.status === 'in_progress') && (
+              <Card className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-300">
+                    <MessageCircle className="h-5 w-5" />
+                    🌍 Talk to Your Driver - No Phone Numbers!
+                  </CardTitle>
+                  <CardDescription>
+                    Call and chat through YaadFlex - Works worldwide, private and secure
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <LiveChat 
+                    rideId={currentTrips.find(trip => trip.status === 'in_progress' || trip.status === 'accepted')?.id}
+                    otherUser={{
+                      id: 'driver_123',
+                      name: 'Marcus Thompson',
+                      role: 'driver'
+                    }}
+                  />
+                </CardContent>
+              </Card>
+            )}
+
             {/* YaadFlex Benefits */}
             <Card className="bg-gradient-to-br from-green-50 to-yellow-50 dark:from-green-950/20 dark:to-yellow-950/20">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-green-700 dark:text-green-300">
                   <CheckCircle2 className="h-5 w-5" />
-                  🇯🇲 YaadFlex Benefits
+                  🇯🇲 YaadFlex Global Benefits
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -369,12 +397,16 @@ export default function RideBooking() {
                   <span>Drivers keep most of the fare</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <Badge variant="outline" className="text-blue-600">24/7</Badge>
-                  <span>Available across all Jamaica</span>
+                  <Badge variant="outline" className="text-blue-600">Global</Badge>
+                  <span>Expanding to 3/4 of every country</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
-                  <Badge variant="outline" className="text-yellow-600">Safe</Badge>
-                  <span>Real-time tracking & security</span>
+                  <Badge variant="outline" className="text-purple-600">Voice Calls</Badge>
+                  <span>Talk directly through the app</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <Badge variant="outline" className="text-yellow-600">Jobs</Badge>
+                  <span>Work opportunities for everyone</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Badge variant="outline" className="text-red-600">Fair</Badge>
