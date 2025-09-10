@@ -258,11 +258,11 @@ export default function VoiceDemo() {
               </Button>
 
               <div className="text-center">
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-black">
                   {isListening ? "Listening..." : "Tap to speak"}
                 </p>
                 {isProcessing && (
-                  <p className="text-xs text-gray-600 mt-1">Processing...</p>
+                  <p className="text-xs text-black mt-1">Processing...</p>
                 )}
               </div>
             </div>
@@ -270,7 +270,7 @@ export default function VoiceDemo() {
             {/* Live Transcript */}
             {transcript && (
               <div className="mt-6">
-                <div className="text-xs text-gray-500 mb-2">You said:</div>
+                <div className="text-xs text-black mb-2">You said:</div>
                 <div className="p-3">
                   <p className="text-black text-sm">{transcript}</p>
                 </div>
@@ -280,7 +280,7 @@ export default function VoiceDemo() {
             {/* Last Command */}
             {lastCommand && (
               <div className="mt-4">
-                <div className="text-xs text-gray-600 mb-2">Action taken:</div>
+                <div className="text-xs text-black mb-2">Action taken:</div>
                 <div className="p-3">
                   <p className="text-black text-sm">"{lastCommand}"</p>
                 </div>
@@ -290,7 +290,7 @@ export default function VoiceDemo() {
 
         {/* Simple Quick Commands */}
         <div className="w-full max-w-xl mx-auto mb-8 p-6">
-            <h3 className="text-sm font-medium text-gray-900 mb-4">Quick Commands</h3>
+            <h3 className="text-sm font-normal text-black mb-4">Quick Commands</h3>
             <div className="grid grid-cols-2 gap-3">
               {quickCommands.map((cmd, index) => (
                 <Button
@@ -312,31 +312,31 @@ export default function VoiceDemo() {
 
         {/* Simple Commands List */}
         <div className="w-full max-w-xl mx-auto p-6">
-            <h3 className="text-sm font-medium text-gray-900 mb-4">Voice Commands</h3>
-            <div className="grid md:grid-cols-2 gap-3 text-xs text-gray-600">
+            <h3 className="text-sm font-normal text-black mb-4">Voice Commands</h3>
+            <div className="grid md:grid-cols-2 gap-3 text-xs text-black">
               <div>
-                <div className="font-medium mb-2 text-gray-800">Rides</div>
+                <div className="font-normal mb-2 text-black">Rides</div>
                 <ul className="space-y-1">
                   <li>"Book a ride"</li>
                   <li>"Call my driver"</li>
                 </ul>
               </div>
               <div>
-                <div className="font-medium mb-2 text-gray-800">Money</div>
+                <div className="font-normal mb-2 text-black">Money</div>
                 <ul className="space-y-1">
                   <li>"Open my wallet"</li>
                   <li>"Pay with card"</li>
                 </ul>
               </div>
               <div>
-                <div className="font-medium mb-2 text-gray-800">Social</div>
+                <div className="font-normal mb-2 text-black">Social</div>
                 <ul className="space-y-1">
                   <li>"Post to social"</li>
                   <li>"Open social feed"</li>
                 </ul>
               </div>
               <div>
-                <div className="font-medium mb-2 text-gray-800">Work</div>
+                <div className="font-normal mb-2 text-black">Work</div>
                 <ul className="space-y-1">
                   <li>"Show delivery jobs"</li>
                   <li>"Find work"</li>
@@ -346,7 +346,7 @@ export default function VoiceDemo() {
             
             {/* Test Input Field */}
             <div className="mt-6 pt-4 border-t border-gray-200">
-              <div className="text-xs text-gray-500 mb-2">Test voice-to-text:</div>
+              <div className="text-xs text-black mb-2">Test voice-to-text:</div>
               <input 
                 type="text" 
                 placeholder="Click here, then speak..."
