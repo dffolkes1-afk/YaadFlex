@@ -96,12 +96,14 @@ export default function FounderProfile() {
                     <div className="text-gray-700">
                       • <strong className="text-purple-600">MR. LEE'S HOUSE - TOP OF THE HILL</strong><br/>
                       &nbsp;&nbsp;Worked on it as a young kid in the high-class Norbrook area<br/>
+                      • <strong className="text-amber-600">BOSS'S MANSION - NORBROOK DRIVE</strong><br/>
+                      &nbsp;&nbsp;Next to the golf club - Custom hip roof & covered center design<br/>
                       • <strong className="text-green-600">SUPER CENTER - SAVED THE PROJECT</strong><br/>
                       &nbsp;&nbsp;Part of the drywall team that rescued it when work was going bad<br/>
                       • Portmore Commercial Complex - Lead Finisher<br/>
                       • Custom Ceiling Design Innovation - Water Damage Solutions<br/>
-                      • Multiple High-End Residential Projects<br/>
-                      • International Projects in Grand Cayman
+                      • Multiple Elite Residences - Norbrook Drive & Terrace<br/>
+                      • International Projects in Grand Cayman - Macross Company
                     </div>
                   </div>
                 </div>
@@ -178,7 +180,9 @@ export default function FounderProfile() {
                       • Grew up without a father - learned to survive alone<br/>
                       • Used to chill at Marble Close / Norbrook Close with the Phillips family<br/>
                       • Helped build Mr. Lee's house on top of the hill as a kid<br/>
-                      • Hustled in high-class areas when it was mostly upper-class residency<br/>
+                      • Built boss's mansion on Norbrook Drive next to golf club<br/>
+                      • Hustled in elite areas - from Norbrook Drive to Norbrook Terrace<br/>
+                      • Worked for prominent people left, right, and back<br/>
                       • Hated 9-to-5 jobs and gas station work<br/>
                       • Always searching for something different<br/>
                       • Grasped knowledge everywhere - streets to books<br/>
@@ -297,7 +301,10 @@ export default function FounderProfile() {
                 <strong className="text-red-600">O'Neill Phillips & Debbie Phillips</strong> - The MAIN Inspirations<br/>
                 <span className="italic">"From Norbrook Close - They kept me working, kept me learning, gave me the drive to never stop"</span><br/>
                 <strong className="text-blue-600">Bings (Beans)</strong> - Great childhood friend from the Phillips family<br/>
-                <span className="italic">"Drew my attention to the family - we were all that"</span><br/><br/>
+                <span className="italic">"Drew my attention to the family - we were all that"</span><br/>
+                <strong className="text-green-600">Ice Phillips</strong> - Best friend, Jamaican long-distance runner<br/>
+                <span className="italic">"Charlotte School & Stats athlete - now overseas, different paths but same vision"</span><br/>
+                <strong>Bubba (Barber) Phillips</strong> - Ice's father, Errol Phillips' brother<br/><br/>
                 <strong>Trevor Bailey</strong> - Master Mentor & Teacher<br/>
                 <strong>Dennis Williams</strong> - Prominent Architect & Inspiration<br/>
                 <strong>Louis Aitken</strong> - Early Business Mentor<br/>
@@ -307,8 +314,9 @@ export default function FounderProfile() {
               
               <div className="p-4 bg-gradient-to-r from-gold-50 to-yellow-50 rounded-lg">
                 <div className="font-bold text-amber-800">
-                  "To everyone who believed in me when I had nothing but skills and dreams - 
-                  YaadFlex is our victory."
+                  "To the Phillips family who taught me to hustle with heart,<br/>
+                  To everyone who believed when I had nothing but skills and dreams -<br/>
+                  YaadFlex is OUR victory. From Norbrook to the WORLD!"
                 </div>
               </div>
             </div>
