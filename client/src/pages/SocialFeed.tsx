@@ -231,29 +231,44 @@ export default function SocialFeed() {
   return (
     <div className="min-h-screen bg-gray-50">
       
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-4xl mx-auto px-4 py-3">
+      {/* Header - Better than TikTok, Twitter, Facebook! */}
+      <header className="bg-gradient-to-r from-purple-600 via-pink-500 to-blue-600 text-white border-b border-gray-200 sticky top-0 z-50">
+        <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <h1 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                YaadFlex Social
-              </h1>
+              <div>
+                <h1 className="text-xl font-bold flex items-center gap-2">
+                  🎵 YaadFlex Social 
+                  <Fire className="h-5 w-5 text-yellow-300" />
+                </h1>
+                <p className="text-xs opacity-90">
+                  Better Music than TikTok • Better Community than Twitter • Better Features than Facebook
+                </p>
+              </div>
             </div>
             
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
                 size="icon"
-                className="relative"
-                data-testid="button-search"
+                className="text-white hover:bg-white/20"
+                data-testid="button-trending"
               >
-                <Search className="h-5 w-5" />
+                <TrendingUp className="h-5 w-5" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-white hover:bg-white/20"
+                data-testid="button-music"
+              >
+                <Music className="h-5 w-5" />
               </Button>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setShowCreatePost(true)}
+                className="text-white hover:bg-white/20"
                 data-testid="button-create-post"
               >
                 <Plus className="h-5 w-5" />
@@ -261,6 +276,7 @@ export default function SocialFeed() {
               <Button
                 variant="ghost"
                 size="icon"
+                className="text-white hover:bg-white/20"
                 data-testid="button-profile"
               >
                 <User className="h-5 w-5" />
@@ -284,12 +300,21 @@ export default function SocialFeed() {
                 </Avatar>
                 <div className="flex-1 space-y-3">
                   <Textarea
-                    placeholder="What's happening in your YaadFlex journey?"
+                    placeholder="Share your music, video, or story! Better than TikTok 🎵"
                     value={newPost.content}
                     onChange={(e) => setNewPost(prev => ({ ...prev, content: e.target.value }))}
                     className="min-h-[100px] resize-none border-0 text-lg placeholder-gray-500 focus-visible:ring-0"
                     data-testid="textarea-post-content"
                   />
+                  
+                  {/* Media Uploader */}
+                  <div className="mt-3">
+                    <MediaUploader 
+                      onMediaSelect={setSelectedMedia}
+                      maxFiles={3}
+                      showPreview={false}
+                    />
+                  </div>
                   
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">

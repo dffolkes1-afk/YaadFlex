@@ -78,7 +78,8 @@ function Router() {
       <Route path="/emblem" component={WorldEmblemPage} />
       <Route path="/contact" component={ContactForm} />
       <Route path="/signup" component={ContactForm} />
-      <Route path="/social" component={SocialHub} />
+      <Route path="/social" component={SocialFeed} />
+      <Route path="/social-feed" component={SocialFeed} />
       <Route path="/social-hub" component={SocialHub} />
       <Route path="/pricing" component={PricingCalculator} />
       <Route path="/book-ride" component={CustomerBooking} />
