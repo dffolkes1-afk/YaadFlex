@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
+import { apiRequest } from '@/lib/queryClient';
 import { 
   AlertTriangle, XCircle, CheckCircle, RefreshCw, 
   Activity, Zap, Eye, Settings, AlertCircle, Wifi, Server
@@ -201,6 +202,24 @@ export function BuiltInErrorMonitor() {
       description: `${error.component}: ${error.message}`,
       variant: error.type === 'critical' || error.type === 'error' ? "destructive" : "default",
     });
+
+    // Also log to database
+    logErrorToDatabase(error);
+  };
+
+  const logErrorToDatabase = async (error: LiveError) => {
+    try {
+      await apiRequest('POST', '/api/observability/errors', {
+        subsystemName: 'frontend',
+        errorType: error.type,
+        component: error.component,
+        message: error.message,
+        location: error.location,
+        metadata: { timestamp: error.timestamp, count: error.count }
+      });
+    } catch (dbError) {
+      console.log('Failed to log error to database:', dbError);
+    }
   };
 
   const startLiveMonitoring = () => {

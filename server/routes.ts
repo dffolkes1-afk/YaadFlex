@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
+import { observabilityService } from "./observabilityService";
 import { CBRadioWebSocketServer } from "./cbRadioWebSocket";
 import timeAuthRoutes from "./auth/time-auth-routes";
 import { requireCEOAccess } from "./auth/time-guard";
@@ -4666,6 +4667,122 @@ P.S. - Early business partners get exclusive territory rights and preferred part
       res.status(500).json({ message: "Failed to update commission rate" });
     }
   });
+
+  // ============================================================
+  // OBSERVABILITY & ERROR MONITORING API ENDPOINTS
+  // ============================================================
+
+  // Get system health summary
+  app.get('/api/observability/health', async (req, res) => {
+    try {
+      const healthSummary = await observabilityService.getSystemHealthSummary();
+      res.json(healthSummary);
+    } catch (error) {
+      console.error('Error fetching system health:', error);
+      res.status(500).json({ message: 'Failed to fetch system health' });
+    }
+  });
+
+  // Get recent errors
+  app.get('/api/observability/errors', async (req, res) => {
+    try {
+      const { subsystem, limit } = req.query;
+      const errors = await observabilityService.getRecentErrors(
+        subsystem as string, 
+        parseInt(limit as string) || 20
+      );
+      res.json(errors);
+    } catch (error) {
+      console.error('Error fetching errors:', error);
+      res.status(500).json({ message: 'Failed to fetch errors' });
+    }
+  });
+
+  // Get error statistics
+  app.get('/api/observability/stats', async (req, res) => {
+    try {
+      const stats = await observabilityService.getErrorStats();
+      res.json(stats);
+    } catch (error) {
+      console.error('Error fetching error stats:', error);
+      res.status(500).json({ message: 'Failed to fetch error statistics' });
+    }
+  });
+
+  // Log a new error (for frontend to report errors)
+  app.post('/api/observability/errors', async (req, res) => {
+    try {
+      const { subsystemName, errorType, component, message, location, stackTrace, metadata } = req.body;
+      
+      if (!subsystemName || !errorType || !component || !message) {
+        return res.status(400).json({ message: 'Missing required error fields' });
+      }
+
+      const errorId = await observabilityService.logError({
+        subsystemName,
+        errorType,
+        component,
+        message,
+        location,
+        stackTrace,
+        metadata
+      });
+
+      res.json({ errorId, message: 'Error logged successfully' });
+    } catch (error) {
+      console.error('Error logging error:', error);
+      res.status(500).json({ message: 'Failed to log error' });
+    }
+  });
+
+  // Mark error as resolved
+  app.patch('/api/observability/errors/:errorId/resolve', async (req, res) => {
+    try {
+      const { errorId } = req.params;
+      const success = await observabilityService.markErrorResolved(errorId);
+      
+      if (success) {
+        res.json({ message: 'Error marked as resolved' });
+      } else {
+        res.status(500).json({ message: 'Failed to mark error as resolved' });
+      }
+    } catch (error) {
+      console.error('Error resolving error:', error);
+      res.status(500).json({ message: 'Failed to resolve error' });
+    }
+  });
+
+  // Log health check (for system components to report their status)
+  app.post('/api/observability/health', async (req, res) => {
+    try {
+      const { subsystemName, status, responseTime, uptime, details } = req.body;
+      
+      if (!subsystemName || !status) {
+        return res.status(400).json({ message: 'Missing required health check fields' });
+      }
+
+      const healthCheckId = await observabilityService.logHealthCheck({
+        subsystemName,
+        status,
+        responseTime,
+        uptime,
+        details
+      });
+
+      res.json({ healthCheckId, message: 'Health check logged successfully' });
+    } catch (error) {
+      console.error('Error logging health check:', error);
+      res.status(500).json({ message: 'Failed to log health check' });
+    }
+  });
+
+  // Initialize observability system
+  try {
+    await observabilityService.initializeSubsystems();
+    console.log('🔍 Observability system initialized');
+  } catch (error) {
+    console.log('⚠️ Observability system will initialize when database is ready');
+  }
 
   const httpServer = createServer(app);
   

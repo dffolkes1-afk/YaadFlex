@@ -337,6 +337,49 @@ export const cbChannelSubscriptions = pgTable("cb_channel_subscriptions", {
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
 
+// Observability and Error Monitoring Schema
+export const subsystems = pgTable("subsystems", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  name: varchar("name", { length: 64 }).notNull(), // e.g. "payments", "wallet", "rides", "voice", "auth"
+  description: text("description"),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow()
+});
+
+export const systemErrors = pgTable("system_errors", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  subsystemId: varchar("subsystem_id", { length: 36 }).references(() => subsystems.id),
+  errorType: varchar("error_type", { length: 32 }).notNull(), // 'critical', 'error', 'warning', 'info'
+  component: varchar("component", { length: 128 }).notNull(),
+  message: text("message").notNull(),
+  location: text("location"), // File path and line number
+  stackTrace: text("stack_trace"),
+  metadata: jsonb("metadata"), // Additional error context
+  count: integer("count").default(1),
+  isResolved: boolean("is_resolved").default(false),
+  firstOccurred: timestamp("first_occurred").defaultNow(),
+  lastOccurred: timestamp("last_occurred").defaultNow(),
+  resolvedAt: timestamp("resolved_at")
+});
+
+export const systemHealthChecks = pgTable("system_health_checks", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  subsystemId: varchar("subsystem_id", { length: 36 }).references(() => subsystems.id),
+  status: varchar("status", { length: 16 }).notNull(), // 'healthy', 'warning', 'error', 'offline'
+  responseTime: integer("response_time"), // in milliseconds
+  uptime: varchar("uptime", { length: 16 }),
+  details: text("details"),
+  checkedAt: timestamp("checked_at").defaultNow()
+});
+
+export type Subsystem = typeof subsystems.$inferSelect;
+export type InsertSubsystem = typeof subsystems.$inferInsert;
+export type SystemError = typeof systemErrors.$inferSelect;
+export type InsertSystemError = typeof systemErrors.$inferInsert;
+export type SystemHealthCheck = typeof systemHealthChecks.$inferSelect;
+export type InsertSystemHealthCheck = typeof systemHealthChecks.$inferInsert;
+
 // =============================================================
 // YAADLEX ULTIMATE AI VEHICLE VALUATOR + OBD SYSTEM
 // Revolutionary honest pricing engine to prevent dealership lowballs
