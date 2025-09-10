@@ -220,212 +220,146 @@ export default function VoiceDemo() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-green-50">
+    <div className="min-h-screen bg-gray-50">
       
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 text-white py-16">
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <div className="mb-6">
-            <Mic className="h-16 w-16 mx-auto mb-4 text-yellow-300" />
-            <h1 className="text-5xl font-bold mb-4">
-              🎤 YaadFlex Voice Interactive Demo
-            </h1>
-            <p className="text-xl opacity-90 mb-6">
-              Talk to your app - it writes what you say AND does what you want! 🚀
-            </p>
-            <p className="text-lg opacity-80 max-w-3xl mx-auto">
-              Better than TalkBack - real interactive voice that actually takes action. 
-              No login required for this demo!
-            </p>
-          </div>
-          
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <Badge variant="secondary" className="bg-yellow-400 text-black text-lg px-4 py-2">
-              <Zap className="h-4 w-4 mr-1" />
-              Faster than TalkBack
-            </Badge>
-            <Badge variant="secondary" className="bg-green-400 text-black text-lg px-4 py-2">
-              <Volume2 className="h-4 w-4 mr-1" />
-              Actually Does Things
-            </Badge>
-            <Badge variant="secondary" className="bg-blue-400 text-white text-lg px-4 py-2">
-              <MessageSquare className="h-4 w-4 mr-1" />
-              Writes What You Say
-            </Badge>
-          </div>
+      {/* Simple Header */}
+      <div className="bg-white border-b py-8">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h1 className="text-3xl font-medium text-gray-900 mb-3">
+            Voice Interactive
+          </h1>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Talk to your app - it writes what you say and does what you want. Better than TalkBack.
+          </p>
         </div>
       </div>
 
       <div className="max-w-4xl mx-auto p-6">
         
-        {/* Main Voice Controller */}
-        <Card className="w-full max-w-2xl mx-auto mb-8">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-3">
-              <Zap className="h-6 w-6 text-yellow-500" />
-              🎤 Voice Interactive - Better than TalkBack!
-            </CardTitle>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">
-                Talk and I'll write what you say + DO what you want!
-              </span>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setVoiceEnabled(!voiceEnabled)}
-                className="text-gray-500"
-              >
-                {voiceEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        {/* Simple Voice Controller */}
+        <Card className="w-full max-w-xl mx-auto mb-8 shadow-sm">
+          <CardContent className="p-8">
             
-            {/* Voice Controls */}
-            <div className="flex items-center justify-center gap-4">
+            {/* Clean Voice Button */}
+            <div className="flex flex-col items-center space-y-6">
               <Button
                 onClick={isListening ? stopListening : startListening}
                 size="lg"
-                className={`w-24 h-24 rounded-full ${
+                className={`w-20 h-20 rounded-full border-2 transition-all ${
                   isListening 
-                    ? 'bg-red-500 hover:bg-red-600 animate-pulse' 
-                    : 'bg-blue-500 hover:bg-blue-600'
+                    ? 'bg-red-500 hover:bg-red-600 border-red-500 animate-pulse' 
+                    : 'bg-green-500 hover:bg-green-600 border-green-500'
                 }`}
                 data-testid="voice-button"
               >
                 {isListening ? (
-                  <MicOff className="h-8 w-8 text-white" />
+                  <MicOff className="h-6 w-6 text-white" />
                 ) : (
-                  <Mic className="h-8 w-8 text-white" />
+                  <Mic className="h-6 w-6 text-white" />
                 )}
               </Button>
-            </div>
 
-            <div className="text-center">
-              <Badge variant={isListening ? "destructive" : "secondary"}>
-                {isListening ? "🎤 Listening..." : "🔇 Tap to talk"}
-              </Badge>
-              {isProcessing && (
-                <Badge variant="default" className="ml-2 bg-yellow-500">
-                  ⚡ Processing...
-                </Badge>
-              )}
+              <div className="text-center">
+                <p className="text-sm text-gray-600">
+                  {isListening ? "Listening..." : "Tap to speak"}
+                </p>
+                {isProcessing && (
+                  <p className="text-xs text-green-600 mt-1">Processing...</p>
+                )}
+              </div>
             </div>
 
             {/* Live Transcript */}
             {transcript && (
-              <Card>
-                <CardContent className="p-4">
-                  <div className="text-sm text-gray-600 mb-2">📝 You said:</div>
-                  <div className="bg-gray-50 p-3 rounded-lg">
-                    <p className="text-gray-800">{transcript}</p>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="mt-6">
+                <div className="text-xs text-gray-500 mb-2">You said:</div>
+                <div className="bg-gray-100 p-3 rounded-md">
+                  <p className="text-gray-900 text-sm">{transcript}</p>
+                </div>
+              </div>
             )}
 
             {/* Last Command */}
             {lastCommand && (
-              <Card>
-                <CardContent className="p-4">
-                  <div className="text-sm text-green-600 mb-2">✅ Last action:</div>
-                  <div className="bg-green-50 p-3 rounded-lg">
-                    <p className="text-green-800">"{lastCommand}"</p>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="mt-4">
+                <div className="text-xs text-green-600 mb-2">Action taken:</div>
+                <div className="bg-green-50 p-3 rounded-md border border-green-200">
+                  <p className="text-green-800 text-sm">"{lastCommand}"</p>
+                </div>
+              </div>
             )}
-
-            {/* Quick Commands */}
-            <div>
-              <div className="text-sm font-medium mb-3">🚀 Quick Voice Commands:</div>
-              <div className="grid grid-cols-2 gap-2">
-                {quickCommands.map((cmd, index) => (
-                  <Button
-                    key={index}
-                    variant="outline"
-                    size="sm"
-                    onClick={() => processVoiceCommand(cmd.command)}
-                    className="justify-start text-left h-auto p-3"
-                    data-testid={`quick-command-${index}`}
-                  >
-                    <div className="flex items-center gap-2">
-                      {cmd.icon}
-                      <div>
-                        <div className="font-medium text-xs">{cmd.text}</div>
-                        <div className="text-xs text-gray-500">"{cmd.command}"</div>
-                      </div>
-                    </div>
-                  </Button>
-                ))}
-              </div>
-            </div>
           </CardContent>
         </Card>
 
-        {/* Voice Commands Help */}
-        <Card className="bg-blue-50">
+        {/* Simple Quick Commands */}
+        <Card className="w-full max-w-xl mx-auto mb-8 shadow-sm">
           <CardContent className="p-6">
-            <div className="text-lg font-bold text-blue-800 mb-4 flex items-center gap-2">
-              <Star className="h-6 w-6" />
-              🗣️ What you can say:
-            </div>
-            <div className="grid md:grid-cols-2 gap-4 text-sm text-blue-700">
-              <div>
-                <div className="font-bold mb-2">🚗 Transportation</div>
-                <ul className="space-y-1">
-                  <li>• "Book a ride to [destination]"</li>
-                  <li>• "Call my driver"</li>
-                  <li>• "Where's my ride?"</li>
-                </ul>
-              </div>
-              <div>
-                <div className="font-bold mb-2">💰 Money & Payments</div>
-                <ul className="space-y-1">
-                  <li>• "Open my wallet"</li>
-                  <li>• "Pay with my card"</li>
-                  <li>• "Send money"</li>
-                </ul>
-              </div>
-              <div>
-                <div className="font-bold mb-2">📱 Social & Communication</div>
-                <ul className="space-y-1">
-                  <li>• "Post to social"</li>
-                  <li>• "Share this photo"</li>
-                  <li>• "Open social feed"</li>
-                </ul>
-              </div>
-              <div>
-                <div className="font-bold mb-2">🚴‍♂️ Work & Delivery</div>
-                <ul className="space-y-1">
-                  <li>• "Show delivery jobs"</li>
-                  <li>• "Find work"</li>
-                  <li>• "Track my package"</li>
-                </ul>
-              </div>
-            </div>
-            <div className="mt-4 p-3 bg-yellow-100 rounded-lg">
-              <div className="text-yellow-800 font-medium">✨ Or just talk and I'll write what you say!</div>
-              <div className="text-yellow-700 text-sm">Click in any text field first, then say something - I'll type it for you!</div>
+            <h3 className="text-sm font-medium text-gray-900 mb-4">Quick Commands</h3>
+            <div className="grid grid-cols-2 gap-3">
+              {quickCommands.map((cmd, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => processVoiceCommand(cmd.command)}
+                  className="justify-start text-left h-auto p-3 border-gray-200 hover:border-green-300 hover:bg-green-50"
+                  data-testid={`quick-command-${index}`}
+                >
+                  <div className="flex items-center gap-2">
+                    {cmd.icon}
+                    <span className="text-xs">{cmd.text}</span>
+                  </div>
+                </Button>
+              ))}
             </div>
           </CardContent>
         </Card>
 
-        {/* Test Input Field */}
-        <Card className="mt-6">
-          <CardHeader>
-            <CardTitle>🧪 Test Voice-to-Text Here</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <input 
-              type="text" 
-              placeholder="Click here, then use voice - I'll write what you say!"
-              className="w-full p-3 border rounded-lg text-lg"
-              data-testid="test-input"
-            />
-            <p className="text-sm text-gray-600 mt-2">
-              👆 Click in this text field, then tap the microphone and speak. Watch me write exactly what you say!
-            </p>
+        {/* Simple Commands List */}
+        <Card className="w-full max-w-xl mx-auto shadow-sm">
+          <CardContent className="p-6">
+            <h3 className="text-sm font-medium text-gray-900 mb-4">Voice Commands</h3>
+            <div className="grid md:grid-cols-2 gap-3 text-xs text-gray-600">
+              <div>
+                <div className="font-medium mb-2 text-gray-800">Rides</div>
+                <ul className="space-y-1">
+                  <li>"Book a ride"</li>
+                  <li>"Call my driver"</li>
+                </ul>
+              </div>
+              <div>
+                <div className="font-medium mb-2 text-gray-800">Money</div>
+                <ul className="space-y-1">
+                  <li>"Open my wallet"</li>
+                  <li>"Pay with card"</li>
+                </ul>
+              </div>
+              <div>
+                <div className="font-medium mb-2 text-gray-800">Social</div>
+                <ul className="space-y-1">
+                  <li>"Post to social"</li>
+                  <li>"Open social feed"</li>
+                </ul>
+              </div>
+              <div>
+                <div className="font-medium mb-2 text-gray-800">Work</div>
+                <ul className="space-y-1">
+                  <li>"Show delivery jobs"</li>
+                  <li>"Find work"</li>
+                </ul>
+              </div>
+            </div>
+            
+            {/* Test Input Field */}
+            <div className="mt-6 pt-4 border-t">
+              <div className="text-xs text-gray-600 mb-2">Test voice-to-text:</div>
+              <input 
+                type="text" 
+                placeholder="Click here, then speak..."
+                className="w-full p-2 border border-gray-200 rounded text-sm focus:border-green-400 focus:outline-none"
+                data-testid="test-input"
+              />
+            </div>
           </CardContent>
         </Card>
       </div>
