@@ -116,12 +116,30 @@ export default function LogisticsBrokers() {
               <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-green-500 to-purple-600 bg-clip-text text-transparent">
                 🚢 Logistics Brokers
               </h1>
+              <div className="text-lg text-amber-700 font-semibold mb-2">
+                📅 <strong>A Vision 60+ Years in the Making</strong> - Since Jamaica Independence Era 1962
+              </div>
               <p className="text-xl text-gray-600">
-                Port clearing, barrels, cars & delivery services
+                The dream our ancestors had - true economic independence through fair logistics.
+                <br/><span className="text-green-700 font-semibold">Finally bringing justice to our people's work!</span>
               </p>
             </div>
           </div>
           
+          {/* Historical Legacy Banner */}
+          <div className="bg-gradient-to-r from-amber-50 to-green-50 dark:from-amber-950 dark:to-green-950 p-6 rounded-2xl border-2 border-amber-400 shadow-lg mb-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-amber-800 mb-2">
+                🏛️ FROM INDEPENDENCE TO ECONOMIC FREEDOM 🏛️
+              </div>
+              <div className="text-lg text-amber-700">
+                <strong>1962:</strong> Jamaica gained independence - the dream began<br/>
+                <strong>1960s-2020s:</strong> Generations worked for others' profits<br/>
+                <strong>2024:</strong> YaadFlex finally delivers on the promise - <span className="text-green-700 font-bold">85% EARNINGS TO THE PEOPLE!</span>
+              </div>
+            </div>
+          </div>
+
           {/* Service Overview Banner */}
           <div className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950 dark:to-green-950 p-4 rounded-2xl border-2 border-blue-300 shadow-lg mb-6">
             <div className="text-lg font-bold text-blue-800 dark:text-blue-200">
