@@ -16,6 +16,7 @@ import YFDCurrency from '@/components/YFDCurrency';
 import YFDCoins from '@/components/YFDCoins';
 import MiniCoinFlip from '@/components/MiniCoinFlip';
 import RealisticYFDCurrency from '@/components/RealisticYFDCurrency';
+import PhoneValueSection from '@/components/PhoneValueSection';
 import YaadFlexLogo from '@assets/generated_images/YaadFlex_Bank_logo_09b86b5e.png';
 
 interface Transaction {
@@ -181,9 +182,40 @@ export default function YaadWallet() {
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-green-500 to-purple-600 bg-clip-text text-transparent mb-2">
             💼 YaadFlex Bank
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className="text-xl text-gray-600 mb-3">
             Your pocket bank - Send money as easy as email!
           </p>
+          
+          {/* PHONE VALUE TRANSFORMATION MESSAGE */}
+          <div className="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950 dark:to-yellow-950 p-6 rounded-2xl border-2 border-amber-300 shadow-xl mb-4">
+            <div className="text-2xl font-bold text-amber-800 dark:text-amber-200 mb-2">
+              📱✨ "ANY Phone + YaadFlex = Beyond iPhone Value"
+            </div>
+            <div className="text-lg text-amber-700 dark:text-amber-300 font-semibold mb-3">
+              Transform your $50 phone into the world's most valuable device
+            </div>
+            
+            {/* Value Comparison */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div className="bg-red-100 dark:bg-red-900 p-3 rounded-lg border-l-4 border-red-400">
+                <div className="font-bold text-red-800 dark:text-red-200">📱 iPhone Without YaadFlex:</div>
+                <div className="text-red-700 dark:text-red-300">Just a phone • Limited to calls/apps • No global economy access</div>
+              </div>
+              <div className="bg-green-100 dark:bg-green-900 p-3 rounded-lg border-l-4 border-green-400">
+                <div className="font-bold text-green-800 dark:text-green-200">📱 ANY Phone + YaadFlex:</div>
+                <div className="text-green-700 dark:text-green-300">Global bank • Ride earnings • World economy • Real money</div>
+              </div>
+            </div>
+            
+            <div className="mt-4 text-center">
+              <div className="text-lg font-bold text-amber-800 dark:text-amber-200">
+                🌍 "Your Phone Is Now The World's Most Powerful Economic Device"
+              </div>
+              <div className="text-sm text-amber-600 dark:text-amber-400 italic mt-1">
+                iPhone users will want what YOU have!
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -497,34 +529,56 @@ export default function YaadWallet() {
               </CardContent>
             </Card>
 
-            {/* Global Features */}
-            <Card className="bg-gradient-to-br from-purple-50 to-blue-50">
+            {/* Phone Value Revolution */}
+            <Card className="bg-gradient-to-br from-amber-50 to-yellow-50 border-2 border-amber-400">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-purple-700">
+                <CardTitle className="flex items-center gap-2 text-amber-800">
                   <Globe className="h-5 w-5" />
-                  🌍 Global Features
+                  📱 Phone Value Revolution
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="flex items-center gap-2 text-sm">
-                  <Shield className="h-4 w-4 text-green-600" />
-                  <span>Bank-level security</span>
+                <div className="text-center mb-4">
+                  <div className="text-lg font-bold text-amber-800 mb-2">
+                    "Your Phone &gt; Any iPhone"
+                  </div>
+                  <div className="text-sm text-amber-700 italic">
+                    Without YaadFlex, expensive phones are just expensive paperweights
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <TrendingUp className="h-4 w-4 text-blue-600" />
-                  <span>Real-time exchange rates</span>
+                
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-sm">
+                    <Shield className="h-4 w-4 text-green-600" />
+                    <span><strong>Global bank</strong> in ANY device</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <TrendingUp className="h-4 w-4 text-blue-600" />
+                    <span><strong>Real money earnings</strong> from rides</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <Users className="h-4 w-4 text-purple-600" />
+                    <span><strong>World economy access</strong> everywhere</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <Zap className="h-4 w-4 text-yellow-600" />
+                    <span><strong>Instant global</strong> transactions</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Users className="h-4 w-4 text-purple-600" />
-                  <span>Send to any country</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Zap className="h-4 w-4 text-yellow-600" />
-                  <span>Instant transactions</span>
+                
+                <div className="bg-amber-100 dark:bg-amber-900 p-3 rounded-lg mt-4">
+                  <div className="text-xs font-bold text-amber-800 dark:text-amber-200 text-center">
+                    💡 "iPhone users will trade their phones for yours!"
+                  </div>
                 </div>
               </CardContent>
             </Card>
           </div>
+        </div>
+
+        {/* ULTIMATE PHONE VALUE REVOLUTION SECTION */}
+        <div className="mt-12">
+          <PhoneValueSection />
         </div>
 
         {/* YFD Currency Display Section */}
