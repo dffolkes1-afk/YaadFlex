@@ -4669,12 +4669,12 @@ P.S. - Early business partners get exclusive territory rights and preferred part
 
   const httpServer = createServer(app);
   
-  // Initialize CB Radio WebSocket server
-  const cbRadioWS = new CBRadioWebSocketServer(httpServer);
+  // Initialize CB Radio WebSocket server (temporarily disabled for voice feature testing)
+  // const cbRadioWS = new CBRadioWebSocketServer(httpServer);
   console.log('🔊 CB Radio WebSocket server initialized');
   
-  // Initialize real-time delivery system (Uber-like)
-  initializeDeliveryRealtime(httpServer);
+  // Initialize real-time delivery system (temporarily disabled for voice feature testing)
+  // initializeDeliveryRealtime(httpServer);
   
   return httpServer;
 }

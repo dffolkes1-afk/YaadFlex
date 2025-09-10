@@ -13,7 +13,7 @@ import { MediaUploader } from '@/components/MediaUploader';
 import { 
   Heart, MessageCircle, Share2, Camera, Video, Smile, Send, 
   MoreHorizontal, MapPin, Star, Zap, Home, Search, Plus, User,
-  Music, Play, Volume2, TrendingUp, Fire, Globe, Headphones
+  Music, Play, Volume2, TrendingUp, Flame, Globe, Headphones
 } from 'lucide-react';
 
 interface Post {
@@ -239,7 +239,7 @@ export default function SocialFeed() {
               <div>
                 <h1 className="text-xl font-bold flex items-center gap-2">
                   🎵 YaadFlex Social 
-                  <Fire className="h-5 w-5 text-yellow-300" />
+                  <Flame className="h-5 w-5 text-yellow-300" />
                 </h1>
                 <p className="text-xs opacity-90">
                   Better Music than TikTok • Better Community than Twitter • Better Features than Facebook
@@ -429,7 +429,7 @@ export default function SocialFeed() {
                         <div className="flex items-center gap-2">
                           <span className="font-semibold text-sm">{post.fullName}</span>
                           {post.isVerified && <Star className="h-3 w-3 text-yellow-500 fill-current" />}
-                          {post.isTrending && <Fire className="h-3 w-3 text-red-500" />}
+                          {post.isTrending && <Flame className="h-3 w-3 text-red-500" />}
                         </div>
                         <div className="text-xs text-gray-500">@{post.username} • {post.createdAt}</div>
                         {post.location && (
