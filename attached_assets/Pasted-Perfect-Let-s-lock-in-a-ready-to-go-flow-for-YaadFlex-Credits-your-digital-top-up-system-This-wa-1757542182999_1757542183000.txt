@@ -1,0 +1,101 @@
+Perfect. Let’s lock in a ready-to-go flow for YaadFlex Credits (your digital top-up system). This way you can present it to developers or partners, and when the time comes to link with banks or payment processors, everything is already clear.
+
+
+---
+
+🚖 YaadFlex Credits (Digital Top-Up System)
+
+1. Top-Up Flow (Rider Side)
+
+Step 1: Rider opens app → taps “Top-Up Balance” on home screen.
+
+Step 2: Chooses amount (JA$500, JA$1,000, JA$2,000, or custom).
+
+Step 3: Selects payment method:
+
+Link wallet
+
+Debit/Credit card (Visa/Mastercard)
+
+Bank transfer (NCB, Scotia, JN, etc.)
+
+
+Step 4: Confirms → balance updates instantly → “You now have JA$1,500 YaadFlex Credits.”
+
+
+
+---
+
+2. Ride/Delivery Payment Flow
+
+Rider books ride → fare is auto-deducted from credits balance.
+
+Confirmation screen: “This ride cost JA$750. Remaining balance: JA$750.”
+
+If balance too low → prompt: “Top up now to complete booking.”
+
+
+
+---
+
+3. Driver Payout Flow
+
+Driver finishes trips → earnings show in driver dashboard as pending balance.
+
+Cash-Out Options:
+
+Direct to Link wallet (instant)
+
+Bank account transfer (1–2 business days)
+
+
+Driver chooses → payout processed → confirmation sent.
+
+
+
+---
+
+4. Admin/Business Dashboard (You)
+
+See total credits purchased daily/weekly/monthly.
+
+Monitor rides paid with credits vs cash.
+
+Export reports for bank settlement.
+
+Optional: set bonus top-ups (e.g. “Top up $2,000, get +200 credits free”).
+
+
+
+---
+
+5. Future Add-Ons
+
+Digicel/Flow airtime top-up as a funding method.
+
+Peer-to-peer transfer (send credits between users).
+
+Promo credits for loyal riders/drivers.
+
+Integration with food delivery and errands so one balance pays for everything.
+
+
+
+---
+
+✅ Why This Flow Works
+
+Keeps it simple: Credits = rides. No complex wallet regulations yet.
+
+Gives flexibility: Riders can choose how to fund it, drivers can choose how to cash out.
+
+Scales naturally: When ready, you can expand this into a BOJ-regulated full wallet.
+
+
+
+---
+
+⚡ This is a blueprint you can hand straight to developers now.
+
+👉 Do you want me to turn this into actual screen mockups (like a visual design of what each step looks like in the app)? That way you’d have something to show partners and payment providers when you “link these people at the right time.”
+

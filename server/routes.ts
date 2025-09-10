@@ -140,6 +140,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const brokerRoutes = (await import('./broker-routes')).default;
   app.use(brokerRoutes);
   
+  // YaadFlex Credits Digital Top-Up System
+  const creditsRoutes = (await import('./credits-routes')).default;
+  app.use(creditsRoutes);
+  
   // Seed time-locked authentication system
   app.post('/api/auth/seed', async (req, res) => {
     try {

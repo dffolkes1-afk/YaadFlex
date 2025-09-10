@@ -5839,6 +5839,100 @@ export const regSLA = pgTable("reg_sla", {
   breached: boolean("breached").default(false),
 });
 
+// ========== YAADFLEX CREDITS DIGITAL TOP-UP SYSTEM ==========
+// Complete cashless payment system for rides, deliveries, and services
+
+export const creditWallets = pgTable("credit_wallets", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().unique(), // Links to auth system
+  balanceJMD: decimal("balance_jmd", { precision: 10, scale: 2 }).notNull().default("0.00"),
+  bonusCreditsJMD: decimal("bonus_credits_jmd", { precision: 10, scale: 2 }).default("0.00"),
+  totalTopUps: decimal("total_top_ups", { precision: 12, scale: 2 }).default("0.00"),
+  totalSpent: decimal("total_spent", { precision: 12, scale: 2 }).default("0.00"),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const creditTopUps = pgTable("credit_top_ups", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  walletId: varchar("wallet_id").notNull().references(() => creditWallets.id),
+  amountJMD: decimal("amount_jmd", { precision: 10, scale: 2 }).notNull(),
+  bonusJMD: decimal("bonus_jmd", { precision: 10, scale: 2 }).default("0.00"),
+  paymentMethod: varchar("payment_method").notNull(), // 'link_wallet'|'visa'|'mastercard'|'ncb'|'scotia'|'jn'|'digicel'|'flow'
+  providerRefId: varchar("provider_ref_id"), // External payment provider reference
+  status: varchar("status").default("pending"), // 'pending'|'processing'|'completed'|'failed'|'refunded'
+  meta: jsonb("meta"), // Payment provider response data
+  createdAt: timestamp("created_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+});
+
+export const creditTransactions = pgTable("credit_transactions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  walletId: varchar("wallet_id").notNull().references(() => creditWallets.id),
+  type: varchar("type").notNull(), // 'top_up'|'ride_payment'|'delivery_payment'|'service_payment'|'refund'|'bonus'|'transfer_in'|'transfer_out'
+  amountJMD: decimal("amount_jmd", { precision: 10, scale: 2 }).notNull(),
+  balanceBeforeJMD: decimal("balance_before_jmd", { precision: 10, scale: 2 }).notNull(),
+  balanceAfterJMD: decimal("balance_after_jmd", { precision: 10, scale: 2 }).notNull(),
+  referenceType: varchar("reference_type"), // 'ride'|'delivery'|'top_up'|'payout'|'transfer'
+  referenceId: varchar("reference_id"), // ID of related ride/delivery/top-up
+  description: text("description"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const driverPayouts = pgTable("driver_payouts", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  driverId: varchar("driver_id").notNull(), // Driver user ID
+  amountJMD: decimal("amount_jmd", { precision: 10, scale: 2 }).notNull(),
+  method: varchar("method").notNull(), // 'link_wallet'|'bank_transfer'
+  bankAccount: varchar("bank_account"), // Encrypted bank details if bank transfer
+  status: varchar("status").default("pending"), // 'pending'|'processing'|'completed'|'failed'
+  providerRefId: varchar("provider_ref_id"),
+  processedAt: timestamp("processed_at"),
+  meta: jsonb("meta"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const creditPromotions = pgTable("credit_promotions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  code: varchar("code").notNull().unique(), // 'TOPUP2000'
+  name: varchar("name").notNull(),
+  type: varchar("type").notNull(), // 'top_up_bonus'|'first_ride'|'referral'
+  minTopUpJMD: decimal("min_top_up_jmd", { precision: 10, scale: 2 }),
+  bonusAmountJMD: decimal("bonus_amount_jmd", { precision: 10, scale: 2 }),
+  bonusPercent: integer("bonus_percent"), // Alternative to fixed amount
+  validFrom: timestamp("valid_from").defaultNow(),
+  validUntil: timestamp("valid_until"),
+  maxUses: integer("max_uses"),
+  currentUses: integer("current_uses").default(0),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const creditTransfers = pgTable("credit_transfers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  fromWalletId: varchar("from_wallet_id").notNull().references(() => creditWallets.id),
+  toWalletId: varchar("to_wallet_id").notNull().references(() => creditWallets.id),
+  amountJMD: decimal("amount_jmd", { precision: 10, scale: 2 }).notNull(),
+  reason: text("reason"),
+  status: varchar("status").default("completed"), // 'pending'|'completed'|'reversed'
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const paymentMethodConfigs = pgTable("payment_method_configs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  method: varchar("method").notNull().unique(), // 'link_wallet'|'ncb'|'scotia'|etc
+  displayName: varchar("display_name").notNull(),
+  provider: varchar("provider"), // 'stripe'|'link'|'ncb_api'|etc
+  isActive: boolean("is_active").default(true),
+  minAmountJMD: decimal("min_amount_jmd", { precision: 10, scale: 2 }).default("100"),
+  maxAmountJMD: decimal("max_amount_jmd", { precision: 10, scale: 2 }).default("50000"),
+  processingTimeHours: integer("processing_time_hours").default(0), // 0 for instant
+  fees: jsonb("fees"), // Fee structure
+  config: jsonb("config"), // Provider-specific config
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // AUTONOMOUS OPS AGENT TYPES
 // ==========================
 
@@ -5978,6 +6072,44 @@ export const insertRegSLASchema = createInsertSchema(regSLA).omit({
   id: true,
 });
 
+// YaadFlex Credits Insert Schemas
+export const insertCreditWalletSchema = createInsertSchema(creditWallets).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertCreditTopUpSchema = createInsertSchema(creditTopUps).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertCreditTransactionSchema = createInsertSchema(creditTransactions).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertDriverPayoutSchema = createInsertSchema(driverPayouts).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertCreditPromotionSchema = createInsertSchema(creditPromotions).omit({
+  id: true,
+  createdAt: true,
+  currentUses: true,
+});
+
+export const insertCreditTransferSchema = createInsertSchema(creditTransfers).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertPaymentMethodConfigSchema = createInsertSchema(paymentMethodConfigs).omit({
+  id: true,
+  createdAt: true,
+});
+
 // Select Types
 export type Freelancer = typeof freelancers.$inferSelect;
 export type InsertFreelancer = z.infer<typeof insertFreelancerSchema>;
@@ -6031,3 +6163,19 @@ export type RegPayout = typeof regPayouts.$inferSelect;
 export type InsertRegPayout = z.infer<typeof insertRegPayoutSchema>;
 export type RegSLA = typeof regSLA.$inferSelect;
 export type InsertRegSLA = z.infer<typeof insertRegSLASchema>;
+
+// YaadFlex Credits Types
+export type CreditWallet = typeof creditWallets.$inferSelect;
+export type InsertCreditWallet = z.infer<typeof insertCreditWalletSchema>;
+export type CreditTopUp = typeof creditTopUps.$inferSelect;
+export type InsertCreditTopUp = z.infer<typeof insertCreditTopUpSchema>;
+export type CreditTransaction = typeof creditTransactions.$inferSelect;
+export type InsertCreditTransaction = z.infer<typeof insertCreditTransactionSchema>;
+export type DriverPayout = typeof driverPayouts.$inferSelect;
+export type InsertDriverPayout = z.infer<typeof insertDriverPayoutSchema>;
+export type CreditPromotion = typeof creditPromotions.$inferSelect;
+export type InsertCreditPromotion = z.infer<typeof insertCreditPromotionSchema>;
+export type CreditTransfer = typeof creditTransfers.$inferSelect;
+export type InsertCreditTransfer = z.infer<typeof insertCreditTransferSchema>;
+export type PaymentMethodConfig = typeof paymentMethodConfigs.$inferSelect;
+export type InsertPaymentMethodConfig = z.infer<typeof insertPaymentMethodConfigSchema>;
