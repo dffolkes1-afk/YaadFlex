@@ -5439,6 +5439,155 @@ export const deliveryReviews = pgTable("delivery_reviews", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// ==========================
+// AUTONOMOUS OPS AGENT TABLES
+// ==========================
+
+// Freelancers/Workers table for unified payment tunnel
+export const freelancers = pgTable("freelancers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  displayName: varchar("display_name").notNull(),
+  skills: jsonb("skills"), // Array of skill strings
+  hourlyRate: decimal("hourly_rate", { precision: 8, scale: 2 }),
+  balance: decimal("balance", { precision: 12, scale: 2 }).notNull().default('0.00'),
+  currency: varchar("currency", { length: 3 }).notNull().default('USD'),
+  status: varchar("status").notNull().default('active'), // 'active', 'inactive', 'suspended'
+  totalEarnings: decimal("total_earnings", { precision: 12, scale: 2 }).default('0.00'),
+  lastPayoutAt: timestamp("last_payout_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Enhanced wallet transactions for unified payment tunnel
+export const walletTransactions = pgTable("wallet_transactions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  role: varchar("role").notNull(), // 'driver', 'worker', 'customer', 'app'
+  amount: decimal("amount", { precision: 12, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).notNull().default('USD'),
+  type: varchar("type").notNull(), // 'deposit', 'withdrawal', 'commission', 'payout', 'refund'
+  status: varchar("status").notNull().default('pending'), // 'pending', 'processing', 'completed', 'failed'
+  referenceId: varchar("reference_id"), // Links to ride, delivery, job, etc.
+  referenceType: varchar("reference_type"), // 'ride', 'delivery', 'job', 'obligation'
+  description: text("description"),
+  metadata: jsonb("metadata"), // Additional transaction details
+  processedAt: timestamp("processed_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Obligations table for tracking taxes, fees, insurance
+export const obligations = pgTable("obligations", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  vendorId: varchar("vendor_id").references(() => vendors.id).notNull(),
+  title: varchar("title").notNull(),
+  description: text("description"),
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).notNull().default('USD'),
+  recurrence: varchar("recurrence"), // 'monthly', 'yearly', 'quarterly', 'one-time'
+  nextDueAt: timestamp("next_due_at").notNull(),
+  lastPaidAt: timestamp("last_paid_at"),
+  priority: varchar("priority").notNull().default('medium'), // 'critical', 'high', 'medium', 'low'
+  autopay: boolean("autopay").default(false),
+  category: varchar("category"), // 'tax', 'insurance', 'license', 'subscription', 'regulatory'
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Vendors table for managing external entities
+export const vendors = pgTable("vendors", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name").notNull(),
+  type: varchar("type").notNull(), // 'government', 'insurance', 'saas', 'contractor', 'utility'
+  contactEmail: varchar("contact_email"),
+  contactPhone: varchar("contact_phone"),
+  website: varchar("website"),
+  accountNumber: varchar("account_number"),
+  paymentMethod: varchar("payment_method"), // 'ach', 'wire', 'credit_card', 'check'
+  paymentDetails: jsonb("payment_details"), // Encrypted payment information
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Tasks table for autonomous operations
+export const autonomousTasks = pgTable("autonomous_tasks", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  obligationId: varchar("obligation_id").references(() => obligations.id),
+  kind: varchar("kind").notNull(), // 'payment', 'renewal', 'filing', 'notification', 'compliance'
+  title: varchar("title").notNull(),
+  description: text("description"),
+  dueAt: timestamp("due_at").notNull(),
+  status: varchar("status").notNull().default('pending'), // 'pending', 'in_progress', 'completed', 'failed', 'cancelled'
+  priority: varchar("priority").notNull().default('medium'),
+  requiresApproval: boolean("requires_approval").default(false),
+  autoExecute: boolean("auto_execute").default(false),
+  executedAt: timestamp("executed_at"),
+  executedBy: varchar("executed_by"), // 'system', 'ceo', user_id
+  retryCount: integer("retry_count").default(0),
+  maxRetries: integer("max_retries").default(3),
+  lastError: text("last_error"),
+  metadata: jsonb("metadata"),
+  createdBy: varchar("created_by").notNull().default('system'),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Approvals table for CEO/admin approval workflow
+export const approvals = pgTable("approvals", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  taskId: varchar("task_id").references(() => autonomousTasks.id).notNull(),
+  requiredRole: varchar("required_role").notNull(), // 'ceo', 'cfo', 'admin'
+  status: varchar("status").notNull().default('pending'), // 'pending', 'approved', 'rejected', 'expired'
+  actorId: varchar("actor_id").references(() => users.id),
+  comments: text("comments"),
+  approvedAt: timestamp("approved_at"),
+  expiresAt: timestamp("expires_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Payments table for tracking all platform payments
+export const platformPayments = pgTable("platform_payments", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  taskId: varchar("task_id").references(() => autonomousTasks.id),
+  vendorId: varchar("vendor_id").references(() => vendors.id),
+  amount: decimal("amount", { precision: 12, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).notNull().default('USD'),
+  method: varchar("method").notNull(), // 'stripe', 'ach', 'wire', 'crypto', 'manual'
+  status: varchar("status").notNull().default('pending'), // 'pending', 'processing', 'completed', 'failed', 'reversed'
+  externalRef: varchar("external_ref"), // Stripe payment ID, bank reference, etc.
+  processedAt: timestamp("processed_at"),
+  failureReason: text("failure_reason"),
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// CEO Dashboard metrics table
+export const ceoDashboardMetrics = pgTable("ceo_dashboard_metrics", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  metricType: varchar("metric_type").notNull(), // 'revenue', 'expenses', 'compliance', 'efficiency'
+  value: decimal("value", { precision: 12, scale: 2 }).notNull(),
+  unit: varchar("unit"), // 'USD', 'percentage', 'count'
+  period: varchar("period").notNull(), // 'daily', 'weekly', 'monthly', 'quarterly', 'yearly'
+  periodStart: timestamp("period_start").notNull(),
+  periodEnd: timestamp("period_end").notNull(),
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Autonomous agent logs for monitoring
+export const agentLogs = pgTable("agent_logs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  agentType: varchar("agent_type").notNull(), // 'payment', 'compliance', 'scheduler', 'monitor'
+  action: varchar("action").notNull(),
+  status: varchar("status").notNull(), // 'success', 'failure', 'warning'
+  message: text("message"),
+  taskId: varchar("task_id").references(() => autonomousTasks.id),
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Universal Delivery Insert Schemas
 export const insertDeliveryPersonnelSchema = createInsertSchema(deliveryPersonnel).omit({
   id: true,
