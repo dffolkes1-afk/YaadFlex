@@ -56,6 +56,7 @@ import SocialSignup from "@/pages/SocialSignup";
 import SocialFeed from "@/pages/SocialFeed";
 import GlobalJobs from "@/pages/GlobalJobs";
 import YaadWallet from "@/pages/YaadWallet";
+import HeritageDelivery from "@/pages/HeritageDelivery";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -81,6 +82,8 @@ function Router() {
       <Route path="/social" component={SocialFeed} />
       <Route path="/social-feed" component={SocialFeed} />
       <Route path="/social-hub" component={SocialHub} />
+      <Route path="/heritage-delivery" component={HeritageDelivery} />
+      <Route path="/delivery-riders" component={HeritageDelivery} />
       <Route path="/pricing" component={PricingCalculator} />
       <Route path="/book-ride" component={CustomerBooking} />
       <Route path="/travel-booking" component={TravelBooking} />
