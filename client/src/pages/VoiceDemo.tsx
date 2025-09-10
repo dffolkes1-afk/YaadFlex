@@ -226,7 +226,7 @@ export default function VoiceDemo() {
       <BuiltInErrorMonitor />
       
       {/* Simple Header */}
-      <div className="bg-gray-50 border-b py-8">
+      <div className="bg-white border-b border-gray-100 py-8">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h1 className="text-3xl font-medium text-gray-900 mb-3">
             Voice Interactive
@@ -240,7 +240,7 @@ export default function VoiceDemo() {
       <div className="max-w-4xl mx-auto p-6">
         
         {/* Simple Voice Controller */}
-        <Card className="w-full max-w-xl mx-auto mb-8 border border-gray-200">
+        <Card className="w-full max-w-xl mx-auto mb-8 border-0 bg-gray-50">
           <CardContent className="p-8">
             
             {/* Clean Voice Button */}
@@ -276,8 +276,8 @@ export default function VoiceDemo() {
             {transcript && (
               <div className="mt-6">
                 <div className="text-xs text-gray-500 mb-2">You said:</div>
-                <div className="bg-gray-100 p-3 rounded-md">
-                  <p className="text-gray-900 text-sm">{transcript}</p>
+                <div className="bg-white p-3 rounded">
+                  <p className="text-gray-800 text-sm">{transcript}</p>
                 </div>
               </div>
             )}
@@ -286,8 +286,8 @@ export default function VoiceDemo() {
             {lastCommand && (
               <div className="mt-4">
                 <div className="text-xs text-gray-600 mb-2">Action taken:</div>
-                <div className="bg-gray-50 p-3 rounded-md border border-gray-200">
-                  <p className="text-gray-800 text-sm">"{lastCommand}"</p>
+                <div className="bg-white p-3 rounded">
+                  <p className="text-gray-700 text-sm">"{lastCommand}"</p>
                 </div>
               </div>
             )}
@@ -295,7 +295,7 @@ export default function VoiceDemo() {
         </Card>
 
         {/* Simple Quick Commands */}
-        <Card className="w-full max-w-xl mx-auto mb-8 border border-gray-200">
+        <Card className="w-full max-w-xl mx-auto mb-8 border-0 bg-gray-50">
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-gray-900 mb-4">Quick Commands</h3>
             <div className="grid grid-cols-2 gap-3">
@@ -305,7 +305,7 @@ export default function VoiceDemo() {
                   variant="outline"
                   size="sm"
                   onClick={() => processVoiceCommand(cmd.command)}
-                  className="justify-start text-left h-auto p-3 border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                  className="justify-start text-left h-auto p-3 border-0 bg-white hover:bg-gray-100"
                   data-testid={`quick-command-${index}`}
                 >
                   <div className="flex items-center gap-2">
@@ -319,7 +319,7 @@ export default function VoiceDemo() {
         </Card>
 
         {/* Simple Commands List */}
-        <Card className="w-full max-w-xl mx-auto border border-gray-200">
+        <Card className="w-full max-w-xl mx-auto border-0 bg-gray-50">
           <CardContent className="p-6">
             <h3 className="text-sm font-medium text-gray-900 mb-4">Voice Commands</h3>
             <div className="grid md:grid-cols-2 gap-3 text-xs text-gray-600">
@@ -354,12 +354,12 @@ export default function VoiceDemo() {
             </div>
             
             {/* Test Input Field */}
-            <div className="mt-6 pt-4 border-t">
-              <div className="text-xs text-gray-600 mb-2">Test voice-to-text:</div>
+            <div className="mt-6 pt-4 border-t border-gray-200">
+              <div className="text-xs text-gray-500 mb-2">Test voice-to-text:</div>
               <input 
                 type="text" 
                 placeholder="Click here, then speak..."
-                className="w-full p-2 border border-gray-200 rounded text-sm focus:border-gray-400 focus:outline-none"
+                className="w-full p-3 border-0 bg-white rounded text-sm focus:outline-none"
                 data-testid="test-input"
               />
             </div>
