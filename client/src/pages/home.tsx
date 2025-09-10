@@ -342,8 +342,11 @@ export default function Home() {
               <p className="text-xl md:text-2xl font-semibold mb-2" data-testid="text-hero-subtitle">
                 🇯🇲🇨🇦 JAMAICA & CANADA TO THE MOON 🚀🌙
               </p>
-              <p className="text-lg md:text-xl" data-testid="text-hero-description">
+              <p className="text-lg md:text-xl mb-3" data-testid="text-hero-description">
                 One App. Two Countries. Infinite Possibilities. Universal Success.
+              </p>
+              <p className="text-2xl md:text-4xl font-bold text-yellow-300 animate-pulse" data-testid="text-fair-alternative">
+                ⚖️ THE FAIR ALTERNATIVE ⚖️
               </p>
             </div>
           </div>
@@ -1144,7 +1147,7 @@ export default function Home() {
             <CardHeader className="relative z-10 pb-8">
               <CardTitle className="text-center space-y-6">
                 <div className="text-4xl md:text-8xl font-black text-green-400 animate-pulse leading-tight">
-                  ⚖️ FAIR TAXI PRICING! ⚖️
+                  ⚖️ THE FAIR ALTERNATIVE! ⚖️
                 </div>
                 <div className="text-2xl md:text-6xl font-black text-yellow-300 animate-bounce leading-tight">
                   JUSTICE FOR DRIVERS & PASSENGERS!

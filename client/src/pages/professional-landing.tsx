@@ -19,12 +19,12 @@ export default function ProfessionalLanding() {
       metaDescription.name = 'description';
       document.head.appendChild(metaDescription);
     }
-    metaDescription.content = "YaadFlex Global Vybz — delivery, jobs, rides, and services. Built in Jamaica for the world. Workers keep up to 85%.";
+    metaDescription.content = "YaadFlex Global Vybz — The Fair Alternative. Delivery, jobs, rides, and services. Built in Jamaica for the world. Workers keep up to 85%.";
 
     // Add Open Graph tags
     const ogTags = [
       { property: 'og:title', content: 'YaadFlex Global Vybz' },
-      { property: 'og:description', content: 'One app. One world. Workers keep up to 85%.' },
+      { property: 'og:description', content: 'The Fair Alternative. One app. One world. Workers keep up to 85%.' },
       { property: 'og:type', content: 'website' },
       { name: 'twitter:card', content: 'summary_large_image' }
     ];
