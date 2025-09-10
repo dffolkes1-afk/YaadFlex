@@ -328,6 +328,10 @@ export default function FounderProfile() {
                 <strong>Alvin Watkins</strong> - Sunday church work partner<br/>
                 <strong>Wesley</strong> - First friend in Cayman, helped get work permit<br/>
                 <strong>Junior & Margaret (Mom)</strong> - Close Macross family friends<br/>
+                <strong>Randy & Cousin Trina</strong> - Good friends from Raccoon area<br/>
+                <strong>Super Dave & Andy</strong> - Hung out at Raccoon together<br/>
+                <strong>Ms. Lynn</strong> - Official woman from Raccoon, always sea fishing<br/>
+                <strong>Thomas</strong> - Junior's brother (Charles Jr.), lives by Prospect<br/>
               </div>
               
               <div className="p-4 bg-gradient-to-r from-gold-50 to-yellow-50 rounded-lg">
