@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Coins } from 'lucide-react';
+import CoinFlipAnimation from './CoinFlipAnimation';
 
 // YFD Coin System - The "DINAR" is the supreme denomination
 const coinDesigns = [
@@ -137,75 +138,81 @@ export default function YFDCoins() {
 
       {!showAll ? (
         <>
-          {/* Single Coin Display */}
+          {/* Single Coin Display with Flip Animation */}
           <div className="relative flex justify-center items-center min-h-[400px]">
-            <div className="relative">
-              {/* Coin */}
-              <div
-                className={`${currentCoin.size} relative cursor-pointer transform transition-all duration-500 hover:scale-110`}
-                onClick={() => setIsFlipped(!isFlipped)}
-                style={{ transformStyle: 'preserve-3d', transform: isFlipped ? 'rotateY(180deg)' : '' }}
-              >
-                {/* Front Side */}
-                <div className={`
-                  absolute inset-0 rounded-full shadow-2xl
-                  bg-gradient-to-br ${currentCoin.color}
-                  border-4 border-gray-300
-                  flex flex-col items-center justify-center
-                  ${isFlipped ? 'invisible' : ''}
-                `}>
-                  {/* Outer Ring */}
-                  <div className="absolute inset-2 rounded-full border-2 border-white/30"></div>
-                  
-                  {/* Center Circle */}
+            <div className="relative transform transition-all duration-300 hover:scale-110">
+              <CoinFlipAnimation
+                size={currentCoin.size}
+                flipDuration={0.8}
+                className="drop-shadow-2xl"
+                frontContent={
                   <div className={`
-                    w-3/4 h-3/4 rounded-full
-                    bg-gradient-to-br ${currentCoin.centerColor}
+                    w-full h-full rounded-full shadow-2xl
+                    bg-gradient-to-br ${currentCoin.color}
+                    border-4 border-gray-300
                     flex flex-col items-center justify-center
-                    border-2 border-white/20
+                    animate-pulse-slow
                   `}>
-                    <div className="text-4xl mb-1">{currentCoin.emblem}</div>
-                    <div className="text-white font-bold text-lg">{currentCoin.name}</div>
-                    <div className="text-white/80 text-xs">{currentCoin.symbol}</div>
+                    {/* Outer Ring */}
+                    <div className="absolute inset-2 rounded-full border-2 border-white/30"></div>
+                    
+                    {/* Center Circle */}
+                    <div className={`
+                      w-3/4 h-3/4 rounded-full
+                      bg-gradient-to-br ${currentCoin.centerColor}
+                      flex flex-col items-center justify-center
+                      border-2 border-white/20
+                    `}>
+                      <div className="text-4xl mb-1 animate-bounce-slow">{currentCoin.emblem}</div>
+                      <div className="text-white font-bold text-lg">{currentCoin.name}</div>
+                      <div className="text-white/80 text-xs">{currentCoin.symbol}</div>
+                    </div>
+                    
+                    {/* Edge Pattern */}
+                    <div className="absolute inset-0 rounded-full">
+                      {Array.from({ length: 36 }).map((_, i) => (
+                        <div
+                          key={i}
+                          className="absolute w-0.5 h-2 bg-white/20"
+                          style={{
+                            top: '4px',
+                            left: '50%',
+                            transform: `rotate(${i * 10}deg) translateX(-50%)`,
+                            transformOrigin: 'center 56px'
+                          }}
+                        />
+                      ))}
+                    </div>
                   </div>
-                  
-                  {/* Edge Pattern */}
-                  <div className="absolute inset-0 rounded-full">
-                    {Array.from({ length: 36 }).map((_, i) => (
-                      <div
-                        key={i}
-                        className="absolute w-0.5 h-2 bg-white/20"
-                        style={{
-                          top: '4px',
-                          left: '50%',
-                          transform: `rotate(${i * 10}deg) translateX(-50%)`,
-                          transformOrigin: 'center 56px'
-                        }}
-                      />
-                    ))}
+                }
+                backContent={
+                  <div className={`
+                    w-full h-full rounded-full shadow-2xl
+                    bg-gradient-to-br ${currentCoin.color}
+                    border-4 border-gray-300
+                    flex flex-col items-center justify-center
+                  `}>
+                    <div className="text-white text-center px-4">
+                      <div className="font-bold text-lg mb-2">{currentCoin.description}</div>
+                      <div className="text-sm opacity-90 mb-2">{currentCoin.metal}</div>
+                      <div className="text-xs opacity-80">Edge: {currentCoin.edge}</div>
+                      <div className="text-xs opacity-80 mt-2 italic">
+                        {currentCoin.historicalPlace}
+                      </div>
+                      <div className="mt-3 space-y-1">
+                        {currentCoin.features.map((feature, idx) => (
+                          <div key={idx} className="text-xs opacity-75">• {feature}</div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
-
-                {/* Back Side */}
-                <div className={`
-                  absolute inset-0 rounded-full shadow-2xl
-                  bg-gradient-to-br ${currentCoin.color}
-                  border-4 border-gray-300
-                  flex flex-col items-center justify-center
-                  ${!isFlipped ? 'invisible' : ''}
-                  rotate-y-180
-                `}>
-                  <div className="text-white text-center px-4">
-                    <div className="font-bold text-sm mb-2">{currentCoin.description}</div>
-                    <div className="text-xs opacity-80">{currentCoin.metal}</div>
-                    <div className="text-xs opacity-80 mt-1">Edge: {currentCoin.edge}</div>
-                  </div>
-                </div>
-              </div>
-
+                }
+                onClick={() => setIsFlipped(!isFlipped)}
+              />
+              
               {/* Shadow */}
               <div className={`
-                ${currentCoin.size} absolute top-2 rounded-full opacity-20 bg-black blur-xl
+                ${currentCoin.size} absolute top-2 -z-10 rounded-full opacity-20 bg-black blur-xl
               `}></div>
             </div>
 
