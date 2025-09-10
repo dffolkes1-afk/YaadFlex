@@ -247,13 +247,13 @@ export default function VoiceDemo() {
               <Button
                 onClick={isListening ? stopListening : startListening}
                 size="lg"
-                className="w-20 h-20 rounded-full bg-black hover:bg-gray-900 transition-all border-0"
+                className="w-20 h-20 rounded-full bg-black hover:bg-gray-900 transition-all border-0 flex items-center justify-center"
                 data-testid="voice-button"
               >
                 {isListening ? (
                   <MicOff className="h-6 w-6 text-white" />
                 ) : (
-                  <Mic className="h-6 w-6 text-white" />
+                  <span className="text-green-500 font-bold text-xl">YF</span>
                 )}
               </Button>
 
