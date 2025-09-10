@@ -279,8 +279,9 @@ export default function FounderProfile() {
                 <div className="text-4xl mb-3">🚀</div>
                 <div className="font-bold text-xl mb-2">INNOVATION</div>
                 <div className="text-gray-700">
-                  "From Sprite competitions as a kid to building super-apps - 
-                  always competing, always creating something new"
+                  "Not just one man inside - QUADRUPLE or more. 
+                  From Sprite competitions to super-apps - 
+                  always competing, always creating"
                 </div>
               </div>
             </div>
@@ -295,6 +296,7 @@ export default function FounderProfile() {
                   A movement where hard-working people finally get their fair share.<br/>
                   Where technology serves humanity, not the other way around.<br/>
                   Where every driver, every broker, every worker becomes an owner.<br/><br/>
+                  <strong>I'm not just one man inside - I'm QUADRUPLE or even MORE inside.</strong><br/>
                   <strong>This is my life's work - from Fletcher's Land to the world.</strong>"
                 </div>
               </div>
