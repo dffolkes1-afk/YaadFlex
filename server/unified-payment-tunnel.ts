@@ -1,8 +1,6 @@
 import { db } from './db';
 import {
   walletTransactions,
-  drivers,
-  freelancers,
   userWallets,
   platformPayments,
   type InsertWalletTransaction,

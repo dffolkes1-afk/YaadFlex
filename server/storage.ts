@@ -1107,7 +1107,6 @@ export class DatabaseStorage implements IStorage {
       ceoDashboardMetrics, 
       autonomousTasks, 
       walletTransactions,
-      drivers,
       freelancers
     } = await import("@shared/schema");
     
