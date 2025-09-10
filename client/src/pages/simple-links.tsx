@@ -1,5 +1,5 @@
 import { Link } from 'wouter';
-import { MapPin, Car, Users, Building, Truck, Phone, CreditCard, Radio } from 'lucide-react';
+import { MapPin, Car, Users, Building, Truck, Phone, CreditCard, Radio, Wallet, Briefcase, MessageCircle } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function SimpleLinksPage() {
@@ -17,8 +17,8 @@ export default function SimpleLinksPage() {
           <div className="flex justify-center mb-4">
             <ThemeToggle />
           </div>
-          <h1 className="text-3xl font-bold mb-3">YaadFlex Platform</h1>
-          <p className="text-gray-300">Professional transportation and business services</p>
+          <h1 className="text-3xl font-bold mb-3">🇯🇲 YaadFlex Super-App</h1>
+          <p className="text-gray-300">Your pocket bank, global jobs, rides & social network</p>
         </div>
 
         {/* Services Grid */}
@@ -108,15 +108,43 @@ export default function SimpleLinksPage() {
             </div>
           </Link>
 
-          <Link href="/banking">
+          <Link href="/wallet">
             <div className="p-6 border border-gray-600 rounded-2xl bg-gray-800/50 hover:bg-gray-700/50 transition-all group cursor-pointer">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-emerald-600 flex items-center justify-center">
-                  <CreditCard className="h-6 w-6 text-white" />
+                  <Wallet className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-lg">Banking</h3>
-                  <p className="text-gray-300 text-sm">Payments and financial services</p>
+                  <h3 className="font-semibold text-lg">💼 YaadFlex Bank</h3>
+                  <p className="text-gray-300 text-sm">Send money like email - Your pocket bank</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/global-jobs">
+            <div className="p-6 border border-gray-600 rounded-2xl bg-gray-800/50 hover:bg-gray-700/50 transition-all group cursor-pointer">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-purple-600 flex items-center justify-center">
+                  <Briefcase className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">🌍 Global Jobs</h3>
+                  <p className="text-gray-300 text-sm">Work opportunities in 3/4 of every country</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/social-feed">
+            <div className="p-6 border border-gray-600 rounded-2xl bg-gray-800/50 hover:bg-gray-700/50 transition-all group cursor-pointer">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center">
+                  <MessageCircle className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">Social Network</h3>
+                  <p className="text-gray-300 text-sm">100% independent YaadFlex community</p>
                 </div>
               </div>
             </div>
@@ -140,7 +168,7 @@ export default function SimpleLinksPage() {
 
         {/* Footer */}
         <div className="text-center mt-12 text-gray-300 text-sm">
-          Professional services • Trusted platform • Caribbean innovation
+          🌍 Expanding to 3/4 of every country • 💰 Your money as easy as email • 🚗 85% driver earnings
         </div>
 
       </div>
