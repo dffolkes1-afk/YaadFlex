@@ -121,8 +121,8 @@ export default function FounderProfile() {
                       • Then discovered by Charles Russell Jr. - took me to complete jobs<br/>
                       • Charles Russell Jr. got me work permit - "I want your permit"<br/>
                       • Freelance work - Skill overcame everything, permit didn't matter<br/>
-                      • <strong className="text-red-600">HURRICANE IVAN HERO</strong> - Repaired 70-78 CHURCHES after Ivan<br/>
-                      &nbsp;&nbsp;Churches approached ME - worked Sundays, God was with me<br/>
+                      • <strong className="text-red-600">HURRICANE IVAN HERO</strong> - Repair work on 70-78 CHURCHES after Ivan<br/>
+                      &nbsp;&nbsp;Churches approached ME for repairs - worked Sundays, God was with me<br/>
                       • Sunday church work with Alvin Watkins<br/>
                       • Worked at Kmart too - but stayed freelance on both permits<br/>
                       • God blessed me to work like a freelancer - don't know how but HE was there<br/>
