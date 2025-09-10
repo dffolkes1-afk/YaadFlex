@@ -123,11 +123,11 @@ export function InteractiveMap({
   };
 
   return (
-    <div className={`relative bg-white dark:bg-gray-900 rounded-2xl overflow-hidden border-2 border-blue-200 dark:border-gray-700 shadow-xl ${className}`}>
+    <div className={`relative bg-white rounded-2xl overflow-hidden border-2 border-blue-200 shadow-xl ${className}`}>
       {/* Map Container - Uber-style clean design */}
       <div 
         ref={mapRef}
-        className="relative w-full h-96 bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-800 dark:to-gray-900 cursor-move select-none"
+        className="relative w-full h-96 bg-gradient-to-br from-blue-50 via-white to-blue-50 cursor-move select-none"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -140,7 +140,7 @@ export function InteractiveMap({
           <svg width="100%" height="100%" className="opacity-20">
             <defs>
               <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#374151" strokeWidth="0.5"/>
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#94a3b8" strokeWidth="0.5"/>
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#grid)" />
@@ -156,28 +156,28 @@ export function InteractiveMap({
                 y1={street.from.y}
                 x2={street.to.x}
                 y2={street.to.y}
-                stroke={street.type === 'major' ? '#E5E7EB' : '#F3F4F6'}
+                stroke={street.type === 'major' ? '#cbd5e1' : '#e2e8f0'}
                 strokeWidth={street.type === 'major' ? '4' : '2'}
-                className="opacity-90 dark:opacity-40"
+                className="opacity-90"
               />
               <line
                 x1={street.from.x}
                 y1={street.from.y}
                 x2={street.to.x}
                 y2={street.to.y}
-                stroke={street.type === 'major' ? '#3B82F6' : '#6B7280'}
+                stroke={street.type === 'major' ? '#2563eb' : '#475569'}
                 strokeWidth={street.type === 'major' ? '2' : '1'}
-                className="opacity-50 dark:opacity-80"
+                className="opacity-70"
               />
               {/* Street name labels - cleaner typography */}
               <text
                 x={(street.from.x + street.to.x) / 2}
                 y={(street.from.y + street.to.y) / 2}
-                fill="#374151"
+                fill="#1f2937"
                 fontSize="11"
-                fontWeight="500"
+                fontWeight="600"
                 textAnchor="middle"
-                className="opacity-70 pointer-events-none dark:fill-gray-300"
+                className="opacity-80 pointer-events-none"
               >
                 {currentZoom > 13 && street.name}
               </text>
@@ -199,7 +199,7 @@ export function InteractiveMap({
               'bg-orange-500'
             } shadow-lg`} />
             {currentZoom > 12 && (
-              <div className="absolute top-4 left-1/2 transform -translate-x-1/2 text-xs text-gray-300 bg-black/80 px-2 py-1 rounded whitespace-nowrap">
+              <div className="absolute top-4 left-1/2 transform -translate-x-1/2 text-xs text-gray-700 bg-white/95 border border-gray-200 px-2 py-1 rounded shadow-sm whitespace-nowrap">
                 {landmark.name}
               </div>
             )}
@@ -231,7 +231,7 @@ export function InteractiveMap({
             </div>
             
             {currentZoom > 14 && (
-              <div className="absolute top-7 left-1/2 transform -translate-x-1/2 text-xs font-medium text-gray-800 dark:text-white bg-white/95 dark:bg-black/90 px-3 py-1.5 rounded-lg whitespace-nowrap border border-gray-200 dark:border-gray-600 shadow-lg backdrop-blur-sm">
+              <div className="absolute top-7 left-1/2 transform -translate-x-1/2 text-xs font-medium text-gray-800 bg-white/95 px-3 py-1.5 rounded-lg whitespace-nowrap border border-gray-200 shadow-lg backdrop-blur-sm">
                 {driver.name} • {driver.status === 'available' ? '🟢 Available' : driver.status === 'busy' ? '🟡 On Trip' : '⚫ Offline'}
               </div>
             )}
@@ -251,28 +251,28 @@ export function InteractiveMap({
       <div className="absolute top-4 right-4 flex flex-col gap-1">
         <button
           onClick={handleZoomIn}
-          className="w-12 h-12 bg-white/95 dark:bg-black/90 border border-gray-200 dark:border-gray-600 rounded-xl flex items-center justify-center text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-black/95 transition-all shadow-lg backdrop-blur-sm"
+          className="w-12 h-12 bg-white/95 border border-gray-200 rounded-xl flex items-center justify-center text-gray-700 hover:bg-gray-50 transition-all shadow-lg backdrop-blur-sm"
         >
           <Plus className="w-5 h-5" />
         </button>
         <button
           onClick={handleZoomOut}
-          className="w-12 h-12 bg-white/95 dark:bg-black/90 border border-gray-200 dark:border-gray-600 rounded-xl flex items-center justify-center text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-black/95 transition-all shadow-lg backdrop-blur-sm"
+          className="w-12 h-12 bg-white/95 border border-gray-200 rounded-xl flex items-center justify-center text-gray-700 hover:bg-gray-50 transition-all shadow-lg backdrop-blur-sm"
         >
           <Minus className="w-5 h-5" />
         </button>
       </div>
 
       {/* Map Info - Modern design */}
-      <div className="absolute bottom-4 left-4 bg-white/95 dark:bg-black/90 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 shadow-lg backdrop-blur-sm">
-        <div className="text-sm text-gray-700 dark:text-gray-300">
+      <div className="absolute bottom-4 left-4 bg-white/95 border border-gray-200 rounded-xl px-4 py-3 shadow-lg backdrop-blur-sm">
+        <div className="text-sm text-gray-700">
           <div className="flex items-center gap-2 mb-2">
             <Navigation className="w-4 h-4 text-blue-500" />
-            <span className="font-semibold text-blue-600 dark:text-blue-400">Kingston, Jamaica</span>
+            <span className="font-semibold text-blue-600">Kingston, Jamaica</span>
           </div>
-          <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-3">
+          <div className="text-xs text-gray-500 flex items-center gap-3">
             <span>Zoom: {currentZoom}</span>
-            <span className="text-green-600 dark:text-green-400 font-medium">
+            <span className="text-green-600 font-medium">
               {liveDrivers.filter(d => d.status === 'available').length} Available Drivers
             </span>
           </div>
@@ -280,8 +280,8 @@ export function InteractiveMap({
       </div>
 
       {/* Legend - Cleaner Caribbean style */}
-      <div className="absolute top-4 left-4 bg-white/95 dark:bg-black/90 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 shadow-lg backdrop-blur-sm">
-        <div className="text-xs text-gray-700 dark:text-gray-300 space-y-2">
+      <div className="absolute top-4 left-4 bg-white/95 border border-gray-200 rounded-xl px-4 py-3 shadow-lg backdrop-blur-sm">
+        <div className="text-xs text-gray-700 space-y-2">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full shadow-sm" />
             <span className="font-medium">Available</span>
