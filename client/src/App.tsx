@@ -55,6 +55,7 @@ import DemoShowcase from "@/pages/demo-showcase";
 import SocialSignup from "@/pages/SocialSignup";
 import SocialFeed from "@/pages/SocialFeed";
 import GlobalJobs from "@/pages/GlobalJobs";
+import YaadWallet from "@/pages/YaadWallet";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -133,6 +134,9 @@ function Router() {
       <Route path="/social-feed" component={SocialFeed} />
       <Route path="/global-jobs" component={GlobalJobs} />
       <Route path="/jobs" component={GlobalJobs} />
+      <Route path="/wallet" component={YaadWallet} />
+      <Route path="/bank" component={YaadWallet} />
+      <Route path="/money" component={YaadWallet} />
       <Route component={NotFound} />
     </Switch>
   );
