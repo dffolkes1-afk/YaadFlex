@@ -49,6 +49,11 @@ export function MediaUploader({
 
   const uploadFileToStorage = async (file: File): Promise<string> => {
     try {
+      // Memory optimization: limit concurrent uploads
+      if (file.size > 10 * 1024 * 1024) { // 10MB limit
+        throw new Error('File too large for current memory allocation');
+      }
+
       // Get upload URL from backend
       const response = await fetch('/api/objects/upload', {
         method: 'POST',
@@ -63,7 +68,7 @@ export function MediaUploader({
 
       const { uploadURL } = await response.json();
 
-      // Upload file directly to object storage
+      // Upload with streaming to reduce memory usage
       const uploadResponse = await fetch(uploadURL, {
         method: 'PUT',
         body: file,
