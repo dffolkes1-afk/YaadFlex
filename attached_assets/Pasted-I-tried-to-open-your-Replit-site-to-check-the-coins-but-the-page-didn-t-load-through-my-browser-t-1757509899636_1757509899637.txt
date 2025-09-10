@@ -1,0 +1,383 @@
+I tried to open your Replit site to “check the coins,” but the page didn’t load through my browser tool (likely because of how Replit serves the app). No stress—I’ll still give you a complete Wallet + Payments Blueprint that includes your “YardFlex coins” up to 2,000, plus a unified driver/worker payout tunnel. You can copy-paste this directly into your project.
+
+
+---
+
+🧱 Drizzle schema – src/db/schema.wallet.ts
+
+// src/db/schema.wallet.ts
+import {
+  pgTable, varchar, text, boolean, integer, timestamp, decimal, jsonb, unique, primaryKey
+} from "drizzle-orm/pg-core";
+
+// Core identity (you may already have users table elsewhere)
+export const users = pgTable("users", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  email: varchar("email", { length: 160 }).notNull(),
+  displayName: varchar("displayName", { length: 120 }),
+  role: varchar("role", { length: 24 }).default("customer"), // "driver" | "worker" | "merchant" | "admin"
+  isActive: boolean("isActive").default(true),
+  createdAt: timestamp("createdAt").defaultNow()
+}, (t) => ({
+  emailUnique: unique("users_email_unique").on(t.email)
+}));
+
+// One wallet per user (multi-currency)
+export const wallets = pgTable("wallets", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  userId: varchar("userId", { length: 36 }).notNull(),
+  createdAt: timestamp("createdAt").defaultNow()
+});
+
+// Per-currency balance (e.g., JMD, USD, and your local YardCoin units)
+export const walletBalances = pgTable("wallet_balances", {
+  walletId: varchar("walletId", { length: 36 }).notNull(),
+  currency: varchar("currency", { length: 8 }).notNull(), // "JMD" | "USD" | "YFX" (YardCoin)
+  amount: decimal("amount", { precision: 16, scale: 2 }).default("0.00"),
+  updatedAt: timestamp("updatedAt").defaultNow()
+}, (t) => ({
+  pk: primaryKey({ columns: [t.walletId, t.currency] })
+}));
+
+// Idempotency for safe transfers / deposits
+export const idempotency = pgTable("idempotency", {
+  key: varchar("key", { length: 64 }).primaryKey(),
+  createdAt: timestamp("createdAt").defaultNow()
+});
+
+// Transactions (double-entry modeled in a single row with references)
+export const walletTx = pgTable("wallet_tx", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  type: varchar("type", { length: 24 }).notNull(), // "deposit" | "transfer" | "payout" | "refund" | "payment"
+  currency: varchar("currency", { length: 8 }).notNull(), // JMD/USD/YFX
+  amount: decimal("amount", { precision: 16, scale: 2 }).notNull(),
+  fee: decimal("fee", { precision: 12, scale: 2 }).default("0.00"),
+  fromWalletId: varchar("fromWalletId", { length: 36 }), // null for deposit
+  toWalletId: varchar("toWalletId", { length: 36 }),     // null for cash-out
+  externalRef: varchar("externalRef", { length: 128 }),  // processor ref / bank ref
+  meta: jsonb("meta"),                                   // {rideId, jobId, orderId, note}
+  status: varchar("status", { length: 16 }).default("pending"), // "pending" | "succeeded" | "failed"
+  createdAt: timestamp("createdAt").defaultNow(),
+  updatedAt: timestamp("updatedAt").defaultNow()
+});
+
+// Payment Requests (QR / links)
+export const paymentRequests = pgTable("payment_requests", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  merchantWalletId: varchar("merchantWalletId", { length: 36 }).notNull(),
+  currency: varchar("currency", { length: 8 }).notNull(),
+  amount: decimal("amount", { precision: 16, scale: 2 }).notNull(),
+  description: text("description"),
+  expiresAt: timestamp("expiresAt"),
+  status: varchar("status", { length: 16 }).default("open"), // "open" | "paid" | "expired" | "cancelled"
+  createdAt: timestamp("createdAt").defaultNow()
+});
+
+// KYC / Compliance
+export const kycVerifications = pgTable("kyc_verifications", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  userId: varchar("userId", { length: 36 }).notNull(),
+  tier: varchar("tier", { length: 16 }).default("basic"), // "basic" | "plus" | "pro"
+  status: varchar("status", { length: 16 }).default("pending"),
+  data: jsonb("data"), // {idType, idNumber, selfieRef, addressProofRef}
+  reviewedBy: varchar("reviewedBy", { length: 36 }),
+  reviewedAt: timestamp("reviewedAt"),
+  createdAt: timestamp("createdAt").defaultNow()
+});
+
+// Payout destinations (bank, card, wallet)
+export const payoutMethods = pgTable("payout_methods", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  walletId: varchar("walletId", { length: 36 }).notNull(),
+  kind: varchar("kind", { length: 24 }).notNull(), // "bank_transfer" | "card" | "mobile_money"
+  label: varchar("label", { length: 80 }),
+  details: jsonb("details"), // masked account/card info
+  isDefault: boolean("isDefault").default(false),
+  createdAt: timestamp("createdAt").defaultNow()
+});
+
+// FX rates if you go multi-currency
+export const fxRates = pgTable("fx_rates", {
+  pair: varchar("pair", { length: 16 }).primaryKey(), // "USD/JMD", "JMD/YFX"
+  rate: decimal("rate", { precision: 16, scale: 8 }).notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow()
+});
+
+// YardFlex coin model (denominations up to 2000)
+export const coinDenominations = pgTable("coin_denominations", {
+  code: varchar("code", { length: 8 }).primaryKey(), // e.g. "1","5","10","20","50","100","500","1000","2000"
+  value: integer("value").notNull(),                 // integer units of YFX (or map to JMD if you want 1:1)
+  face: varchar("face", { length: 64 }),             // "Ackee", "Doctor Bird", or a person name
+  theme: varchar("theme", { length: 64 }),           // "National Hero", "Reggae Icon", etc.
+  artworkUrl: text("artworkUrl")                     // optional image url
+});
+
+// Reward points (optional)
+export const rewardPoints = pgTable("reward_points", {
+  walletId: varchar("walletId", { length: 36 }).primaryKey(),
+  points: integer("points").default(0),
+  updatedAt: timestamp("updatedAt").defaultNow()
+});
+
+
+---
+
+🔌 Express routes – src/server/routes.wallet.ts
+
+// src/server/routes.wallet.ts
+import express from "express";
+import crypto from "node:crypto";
+import { db } from "../drizzle/db";
+import {
+  users, wallets, walletBalances, walletTx, idempotency,
+  payoutMethods, paymentRequests, kycVerifications, coinDenominations, fxRates
+} from "../db/schema.wallet";
+import { eq, and } from "drizzle-orm";
+
+export const walletRouter = express.Router();
+
+// helper
+const uid = () => crypto.randomUUID();
+
+// Ensure a balance row exists
+async function ensureBalance(walletId: string, currency: string) {
+  const [row] = await db.select().from(walletBalances)
+    .where(and(eq(walletBalances.walletId, walletId), eq(walletBalances.currency, currency)));
+  if (!row) {
+    await db.insert(walletBalances).values({ walletId, currency, amount: "0.00" });
+  }
+}
+
+// Create wallet for a user
+walletRouter.post("/api/wallets", async (req, res) => {
+  const id = uid();
+  await db.insert(wallets).values({ id, userId: req.body.userId });
+  await ensureBalance(id, "JMD");
+  await ensureBalance(id, "YFX"); // YardCoin
+  res.json({ id });
+});
+
+// Deposit (e.g., via card/bank processor webhook → simulate here)
+walletRouter.post("/api/wallets/:walletId/deposit", async (req, res) => {
+  const { walletId } = req.params;
+  const { currency = "JMD", amount, idemKey } = req.body;
+  if (idemKey) {
+    const exists = await db.select().from(idempotency).where(eq(idempotency.key, idemKey));
+    if (exists.length) return res.json({ ok: true, duplicate: true });
+    await db.insert(idempotency).values({ key: idemKey });
+  }
+  await ensureBalance(walletId, currency);
+  const [tx] = await db.insert(walletTx).values({
+    id: uid(), type: "deposit", currency, amount, toWalletId: walletId, status: "succeeded", meta: { source: "manual" }
+  }).returning();
+
+  // increment balance
+  await db.execute(`update wallet_balances set amount = (amount::numeric + ${amount})::text, "updatedAt" = now()
+                    where "walletId" = '${walletId}' and currency = '${currency}'`);
+  res.json(tx);
+});
+
+// Transfer (P2P or pay a merchant QR)
+walletRouter.post("/api/wallets/transfer", async (req, res) => {
+  const { fromWalletId, toWalletId, currency = "JMD", amount, fee = "0.00", idemKey } = req.body;
+  if (idemKey) {
+    const exists = await db.select().from(idempotency).where(eq(idempotency.key, idemKey));
+    if (exists.length) return res.json({ ok: true, duplicate: true });
+    await db.insert(idempotency).values({ key: idemKey });
+  }
+  await ensureBalance(fromWalletId, currency);
+  await ensureBalance(toWalletId, currency);
+
+  // check balance
+  const [fromBal] = await db.select().from(walletBalances)
+    .where(and(eq(walletBalances.walletId, fromWalletId), eq(walletBalances.currency, currency)));
+  if (!fromBal || Number(fromBal.amount) < Number(amount) + Number(fee)) {
+    return res.status(400).json({ error: "Insufficient funds" });
+  }
+
+  const id = uid();
+  const [tx] = await db.insert(walletTx).values({
+    id, type: "transfer", currency, amount, fee,
+    fromWalletId, toWalletId, status: "succeeded"
+  }).returning();
+
+  // apply debits/credits
+  await db.execute(`update wallet_balances set amount = (amount::numeric - ${amount} - ${fee})::text, "updatedAt" = now()
+                    where "walletId" = '${fromWalletId}' and currency = '${currency}'`);
+  await db.execute(`update wallet_balances set amount = (amount::numeric + ${amount})::text, "updatedAt" = now()
+                    where "walletId" = '${toWalletId}' and currency = '${currency}'`);
+
+  res.json(tx);
+});
+
+// Create a payment request (QR)
+walletRouter.post("/api/payment-requests", async (req, res) => {
+  const [row] = await db.insert(paymentRequests).values({
+    id: uid(),
+    merchantWalletId: req.body.merchantWalletId,
+    currency: req.body.currency || "JMD",
+    amount: req.body.amount,
+    description: req.body.description,
+    expiresAt: req.body.expiresAt
+  }).returning();
+  res.json(row);
+});
+
+// Pay a payment request
+walletRouter.post("/api/payment-requests/:id/pay", async (req, res) => {
+  const { id } = req.params;
+  const payerWalletId = req.body.payerWalletId;
+  const [pr] = await db.select().from(paymentRequests).where(eq(paymentRequests.id, id));
+  if (!pr || pr.status !== "open") return res.status(404).json({ error: "Not available" });
+  // use transfer
+  const r = await fetch(req.protocol + "://" + req.get("host") + "/api/wallets/transfer", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      fromWalletId: payerWalletId,
+      toWalletId: pr.merchantWalletId,
+      currency: pr.currency,
+      amount: pr.amount,
+      idemKey: `pr_${id}_${payerWalletId}`
+    })
+  });
+  const tx = await r.json();
+  if (tx.error) return res.status(400).json(tx);
+  await db.execute(`update payment_requests set status='paid' where id='${id}'`);
+  res.json({ ok: true, tx });
+});
+
+// List balances
+walletRouter.get("/api/wallets/:walletId/balances", async (req, res) => {
+  const rows = await db.select().from(walletBalances).where(eq(walletBalances.walletId, req.params.walletId));
+  res.json(rows);
+});
+
+// List transactions
+walletRouter.get("/api/wallets/:walletId/tx", async (req, res) => {
+  const rows = await db.select().from(walletTx)
+    .where(
+      // crude filter (either direction)
+      (eq(walletTx.fromWalletId, req.params.walletId) as any).or(eq(walletTx.toWalletId, req.params.walletId) as any)
+    )
+    .orderBy(walletTx.createdAt as any);
+  res.json(rows);
+});
+
+
+---
+
+🌟 Driver/Worker payout policy (same tunnel)
+
+How it works
+
+All fares/jobs → land in merchant/house wallet.
+
+App takes commission (e.g., 15%) as a transfer to the revenue wallet.
+
+Net amount is credited to driver/worker wallet.
+
+Cash-out = transfer to their payout method (bank/card/mobile money).
+
+
+Where to put rules
+
+Add a service layer for ride/job completion that calls /transfer twice:
+
+1. House → Revenue (commission)
+
+
+2. House → Driver/Worker (net)
+
+
+
+
+Fees
+
+You can set dynamic fee in transfer for wait-time, extra stops, etc.
+
+
+
+---
+
+🌐 Seed — coin denominations up to 2000 – scripts/seed.coins.ts
+
+// scripts/seed.coins.ts
+import { db } from "../drizzle/db";
+import { coinDenominations } from "../src/db/schema.wallet";
+
+const COINS = [
+  { code: "1",    value: 1,    face: "Doctor Bird",    theme: "National Icon", artworkUrl: "" },
+  { code: "5",    value: 5,    face: "Ackee",          theme: "National Fruit", artworkUrl: "" },
+  { code: "10",   value: 10,   face: "Blue Mahoe",     theme: "National Tree",  artworkUrl: "" },
+  { code: "20",   value: 20,   face: "Reggae Legend",  theme: "Music",          artworkUrl: "" },
+  { code: "50",   value: 50,   face: "Maroon Leader",  theme: "Heritage",       artworkUrl: "" },
+  { code: "100",  value: 100,  face: "National Hero",  theme: "Heroes",         artworkUrl: "" },
+  { code: "500",  value: 500,  face: "Caribbean Coral",theme: "Nature",         artworkUrl: "" },
+  { code: "1000", value: 1000, face: "Kingston Skyline",theme: "City",          artworkUrl: "" },
+  { code: "2000", value: 2000, face: "YaadFlex Emblem", theme: "Innovation",    artworkUrl: "" }
+];
+
+async function run() {
+  for (const c of COINS) {
+    await db.insert(coinDenominations).values(c).onConflictDoNothing();
+  }
+  console.log("Seeded YardFlex coin denominations.");
+  process.exit(0);
+}
+
+run().catch(e => { console.error(e); process.exit(1); });
+
+
+---
+
+🧪 Quick test (cURL)
+
+# Create wallet for user A and B (replace IDs with your real users)
+curl -X POST http://localhost:4000/api/wallets -H "content-type: application/json" -d '{"userId":"user-driver-1"}'
+# → { "id": "WALLET_A" }
+
+curl -X POST http://localhost:4000/api/wallets -H "content-type: application/json" -d '{"userId":"user-worker-1"}'
+# → { "id": "WALLET_B" }
+
+# Top up house wallet with JMD 10000
+curl -X POST http://localhost:4000/api/wallets/WALLET_HOUSE/deposit \
+ -H "content-type: application/json" -d '{"currency":"JMD","amount":"10000","idemKey":"house_topup_1"}'
+
+# Commission 15% on a 2000 JMD fare:
+# (1) House → Revenue (300)
+curl -X POST http://localhost:4000/api/wallets/transfer -H "content-type: application/json" \
+ -d '{"fromWalletId":"WALLET_HOUSE","toWalletId":"WALLET_REVENUE","currency":"JMD","amount":"300","idemKey":"ride_123_commission"}'
+
+# (2) House → Driver (1700)
+curl -X POST http://localhost:4000/api/wallets/transfer -H "content-type: application/json" \
+ -d '{"fromWalletId":"WALLET_HOUSE","toWalletId":"WALLET_A","currency":"JMD","amount":"1700","idemKey":"ride_123_driver"}'
+
+# Check driver balance
+curl http://localhost:4000/api/wallets/WALLET_A/balances
+
+
+---
+
+📌 Notes for Cuba / worldwide
+
+Start Jamaica-first with JMD + YardCoin (YFX) internal units.
+
+Add FX table + rates to show multi-currency balances later.
+
+For legal payouts, integrate a licensed processor (e.g., Stripe Connect, PayPal Payouts, or a local mobile-money partner). Same tunnel works for drivers/workers.
+
+
+
+---
+
+If you want, I can also generate migration SQL and a tiny React screen that:
+
+shows balances,
+
+creates a QR payment request,
+
+and pays it from another wallet.
+
+
+Do you want that UI mock as well?
+

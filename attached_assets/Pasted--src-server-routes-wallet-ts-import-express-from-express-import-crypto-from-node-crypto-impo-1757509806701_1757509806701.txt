@@ -1,0 +1,138 @@
+// src/server/routes.wallet.ts
+import express from "express";
+import crypto from "node:crypto";
+import { db } from "../drizzle/db";
+import {
+  users, wallets, walletBalances, walletTx, idempotency,
+  payoutMethods, paymentRequests, kycVerifications, coinDenominations, fxRates
+} from "../db/schema.wallet";
+import { eq, and } from "drizzle-orm";
+
+export const walletRouter = express.Router();
+
+// helper
+const uid = () => crypto.randomUUID();
+
+// Ensure a balance row exists
+async function ensureBalance(walletId: string, currency: string) {
+  const [row] = await db.select().from(walletBalances)
+    .where(and(eq(walletBalances.walletId, walletId), eq(walletBalances.currency, currency)));
+  if (!row) {
+    await db.insert(walletBalances).values({ walletId, currency, amount: "0.00" });
+  }
+}
+
+// Create wallet for a user
+walletRouter.post("/api/wallets", async (req, res) => {
+  const id = uid();
+  await db.insert(wallets).values({ id, userId: req.body.userId });
+  await ensureBalance(id, "JMD");
+  await ensureBalance(id, "YFX"); // YardCoin
+  res.json({ id });
+});
+
+// Deposit (e.g., via card/bank processor webhook → simulate here)
+walletRouter.post("/api/wallets/:walletId/deposit", async (req, res) => {
+  const { walletId } = req.params;
+  const { currency = "JMD", amount, idemKey } = req.body;
+  if (idemKey) {
+    const exists = await db.select().from(idempotency).where(eq(idempotency.key, idemKey));
+    if (exists.length) return res.json({ ok: true, duplicate: true });
+    await db.insert(idempotency).values({ key: idemKey });
+  }
+  await ensureBalance(walletId, currency);
+  const [tx] = await db.insert(walletTx).values({
+    id: uid(), type: "deposit", currency, amount, toWalletId: walletId, status: "succeeded", meta: { source: "manual" }
+  }).returning();
+
+  // increment balance
+  await db.execute(`update wallet_balances set amount = (amount::numeric + ${amount})::text, "updatedAt" = now()
+                    where "walletId" = '${walletId}' and currency = '${currency}'`);
+  res.json(tx);
+});
+
+// Transfer (P2P or pay a merchant QR)
+walletRouter.post("/api/wallets/transfer", async (req, res) => {
+  const { fromWalletId, toWalletId, currency = "JMD", amount, fee = "0.00", idemKey } = req.body;
+  if (idemKey) {
+    const exists = await db.select().from(idempotency).where(eq(idempotency.key, idemKey));
+    if (exists.length) return res.json({ ok: true, duplicate: true });
+    await db.insert(idempotency).values({ key: idemKey });
+  }
+  await ensureBalance(fromWalletId, currency);
+  await ensureBalance(toWalletId, currency);
+
+  // check balance
+  const [fromBal] = await db.select().from(walletBalances)
+    .where(and(eq(walletBalances.walletId, fromWalletId), eq(walletBalances.currency, currency)));
+  if (!fromBal || Number(fromBal.amount) < Number(amount) + Number(fee)) {
+    return res.status(400).json({ error: "Insufficient funds" });
+  }
+
+  const id = uid();
+  const [tx] = await db.insert(walletTx).values({
+    id, type: "transfer", currency, amount, fee,
+    fromWalletId, toWalletId, status: "succeeded"
+  }).returning();
+
+  // apply debits/credits
+  await db.execute(`update wallet_balances set amount = (amount::numeric - ${amount} - ${fee})::text, "updatedAt" = now()
+                    where "walletId" = '${fromWalletId}' and currency = '${currency}'`);
+  await db.execute(`update wallet_balances set amount = (amount::numeric + ${amount})::text, "updatedAt" = now()
+                    where "walletId" = '${toWalletId}' and currency = '${currency}'`);
+
+  res.json(tx);
+});
+
+// Create a payment request (QR)
+walletRouter.post("/api/payment-requests", async (req, res) => {
+  const [row] = await db.insert(paymentRequests).values({
+    id: uid(),
+    merchantWalletId: req.body.merchantWalletId,
+    currency: req.body.currency || "JMD",
+    amount: req.body.amount,
+    description: req.body.description,
+    expiresAt: req.body.expiresAt
+  }).returning();
+  res.json(row);
+});
+
+// Pay a payment request
+walletRouter.post("/api/payment-requests/:id/pay", async (req, res) => {
+  const { id } = req.params;
+  const payerWalletId = req.body.payerWalletId;
+  const [pr] = await db.select().from(paymentRequests).where(eq(paymentRequests.id, id));
+  if (!pr || pr.status !== "open") return res.status(404).json({ error: "Not available" });
+  // use transfer
+  const r = await fetch(req.protocol + "://" + req.get("host") + "/api/wallets/transfer", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      fromWalletId: payerWalletId,
+      toWalletId: pr.merchantWalletId,
+      currency: pr.currency,
+      amount: pr.amount,
+      idemKey: `pr_${id}_${payerWalletId}`
+    })
+  });
+  const tx = await r.json();
+  if (tx.error) return res.status(400).json(tx);
+  await db.execute(`update payment_requests set status='paid' where id='${id}'`);
+  res.json({ ok: true, tx });
+});
+
+// List balances
+walletRouter.get("/api/wallets/:walletId/balances", async (req, res) => {
+  const rows = await db.select().from(walletBalances).where(eq(walletBalances.walletId, req.params.walletId));
+  res.json(rows);
+});
+
+// List transactions
+walletRouter.get("/api/wallets/:walletId/tx", async (req, res) => {
+  const rows = await db.select().from(walletTx)
+    .where(
+      // crude filter (either direction)
+      (eq(walletTx.fromWalletId, req.params.walletId) as any).or(eq(walletTx.toWalletId, req.params.walletId) as any)
+    )
+    .orderBy(walletTx.createdAt as any);
+  res.json(rows);
+});

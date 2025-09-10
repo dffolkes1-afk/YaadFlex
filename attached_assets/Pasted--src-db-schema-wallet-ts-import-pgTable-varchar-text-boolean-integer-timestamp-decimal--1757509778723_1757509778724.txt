@@ -1,0 +1,113 @@
+// src/db/schema.wallet.ts
+import {
+  pgTable, varchar, text, boolean, integer, timestamp, decimal, jsonb, unique, primaryKey
+} from "drizzle-orm/pg-core";
+
+// Core identity (you may already have users table elsewhere)
+export const users = pgTable("users", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  email: varchar("email", { length: 160 }).notNull(),
+  displayName: varchar("displayName", { length: 120 }),
+  role: varchar("role", { length: 24 }).default("customer"), // "driver" | "worker" | "merchant" | "admin"
+  isActive: boolean("isActive").default(true),
+  createdAt: timestamp("createdAt").defaultNow()
+}, (t) => ({
+  emailUnique: unique("users_email_unique").on(t.email)
+}));
+
+// One wallet per user (multi-currency)
+export const wallets = pgTable("wallets", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  userId: varchar("userId", { length: 36 }).notNull(),
+  createdAt: timestamp("createdAt").defaultNow()
+});
+
+// Per-currency balance (e.g., JMD, USD, and your local YardCoin units)
+export const walletBalances = pgTable("wallet_balances", {
+  walletId: varchar("walletId", { length: 36 }).notNull(),
+  currency: varchar("currency", { length: 8 }).notNull(), // "JMD" | "USD" | "YFX" (YardCoin)
+  amount: decimal("amount", { precision: 16, scale: 2 }).default("0.00"),
+  updatedAt: timestamp("updatedAt").defaultNow()
+}, (t) => ({
+  pk: primaryKey({ columns: [t.walletId, t.currency] })
+}));
+
+// Idempotency for safe transfers / deposits
+export const idempotency = pgTable("idempotency", {
+  key: varchar("key", { length: 64 }).primaryKey(),
+  createdAt: timestamp("createdAt").defaultNow()
+});
+
+// Transactions (double-entry modeled in a single row with references)
+export const walletTx = pgTable("wallet_tx", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  type: varchar("type", { length: 24 }).notNull(), // "deposit" | "transfer" | "payout" | "refund" | "payment"
+  currency: varchar("currency", { length: 8 }).notNull(), // JMD/USD/YFX
+  amount: decimal("amount", { precision: 16, scale: 2 }).notNull(),
+  fee: decimal("fee", { precision: 12, scale: 2 }).default("0.00"),
+  fromWalletId: varchar("fromWalletId", { length: 36 }), // null for deposit
+  toWalletId: varchar("toWalletId", { length: 36 }),     // null for cash-out
+  externalRef: varchar("externalRef", { length: 128 }),  // processor ref / bank ref
+  meta: jsonb("meta"),                                   // {rideId, jobId, orderId, note}
+  status: varchar("status", { length: 16 }).default("pending"), // "pending" | "succeeded" | "failed"
+  createdAt: timestamp("createdAt").defaultNow(),
+  updatedAt: timestamp("updatedAt").defaultNow()
+});
+
+// Payment Requests (QR / links)
+export const paymentRequests = pgTable("payment_requests", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  merchantWalletId: varchar("merchantWalletId", { length: 36 }).notNull(),
+  currency: varchar("currency", { length: 8 }).notNull(),
+  amount: decimal("amount", { precision: 16, scale: 2 }).notNull(),
+  description: text("description"),
+  expiresAt: timestamp("expiresAt"),
+  status: varchar("status", { length: 16 }).default("open"), // "open" | "paid" | "expired" | "cancelled"
+  createdAt: timestamp("createdAt").defaultNow()
+});
+
+// KYC / Compliance
+export const kycVerifications = pgTable("kyc_verifications", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  userId: varchar("userId", { length: 36 }).notNull(),
+  tier: varchar("tier", { length: 16 }).default("basic"), // "basic" | "plus" | "pro"
+  status: varchar("status", { length: 16 }).default("pending"),
+  data: jsonb("data"), // {idType, idNumber, selfieRef, addressProofRef}
+  reviewedBy: varchar("reviewedBy", { length: 36 }),
+  reviewedAt: timestamp("reviewedAt"),
+  createdAt: timestamp("createdAt").defaultNow()
+});
+
+// Payout destinations (bank, card, wallet)
+export const payoutMethods = pgTable("payout_methods", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  walletId: varchar("walletId", { length: 36 }).notNull(),
+  kind: varchar("kind", { length: 24 }).notNull(), // "bank_transfer" | "card" | "mobile_money"
+  label: varchar("label", { length: 80 }),
+  details: jsonb("details"), // masked account/card info
+  isDefault: boolean("isDefault").default(false),
+  createdAt: timestamp("createdAt").defaultNow()
+});
+
+// FX rates if you go multi-currency
+export const fxRates = pgTable("fx_rates", {
+  pair: varchar("pair", { length: 16 }).primaryKey(), // "USD/JMD", "JMD/YFX"
+  rate: decimal("rate", { precision: 16, scale: 8 }).notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow()
+});
+
+// YardFlex coin model (denominations up to 2000)
+export const coinDenominations = pgTable("coin_denominations", {
+  code: varchar("code", { length: 8 }).primaryKey(), // e.g. "1","5","10","20","50","100","500","1000","2000"
+  value: integer("value").notNull(),                 // integer units of YFX (or map to JMD if you want 1:1)
+  face: varchar("face", { length: 64 }),             // "Ackee", "Doctor Bird", or a person name
+  theme: varchar("theme", { length: 64 }),           // "National Hero", "Reggae Icon", etc.
+  artworkUrl: text("artworkUrl")                     // optional image url
+});
+
+// Reward points (optional)
+export const rewardPoints = pgTable("reward_points", {
+  walletId: varchar("walletId", { length: 36 }).primaryKey(),
+  points: integer("points").default(0),
+  updatedAt: timestamp("updatedAt").defaultNow()
+});
