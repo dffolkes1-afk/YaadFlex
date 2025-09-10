@@ -692,61 +692,64 @@ export default function LogisticsBrokers() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   
-                  <div className="p-4 bg-red-50 rounded-lg border-l-4 border-red-400">
-                    <div className="font-bold text-red-800 mb-2">🚫 DON'T Use Phone While Driving!</div>
-                    <div className="text-sm text-red-700">
-                      Park your phone safely - Use dashboard display for all business operations
+                  <div className="p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg border-l-4 border-green-400">
+                    <div className="font-bold text-green-800 mb-2">✅ SIMPLE AS THAT - Sign In & GO!</div>
+                    <div className="text-sm text-green-700">
+                      • Just sign yourself in - BOOM - off and running!<br/>
+                      • Phone still works if you want<br/>
+                      • But dashboard is BEST for safety<br/>
+                      • Your choice - we keep it SIMPLE!
                     </div>
                   </div>
 
                   <div className="space-y-3">
                     <div className="p-4 bg-blue-50 rounded-lg border">
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="text-2xl">🖥️</div>
-                        <div className="font-bold text-blue-800">Dashboard Integration</div>
+                        <div className="text-2xl">📱</div>
+                        <div className="font-bold text-blue-800">Phone STILL Works!</div>
                       </div>
                       <div className="text-sm text-blue-700">
-                        • Connect to your car's display system<br/>
-                        • Run YaadFlex directly on dashboard<br/>
-                        • Touch controls while parked only<br/>
-                        • Voice commands while driving
+                        • YES - you can still use your phone<br/>
+                        • Your choice - phone or dashboard<br/>
+                        • We recommend dashboard for safety<br/>
+                        • But we keep it FLEXIBLE for you!
                       </div>
                     </div>
                     
                     <div className="p-4 bg-green-50 rounded-lg border">
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="text-2xl">💻</div>
-                        <div className="font-bold text-green-800">Laptop/Tablet Option</div>
+                        <div className="text-2xl">🖥️</div>
+                        <div className="font-bold text-green-800">Dashboard Display (BEST Option)</div>
                       </div>
                       <div className="text-sm text-green-700">
+                        • Connect to car's display system<br/>
                         • Mount laptop/tablet on dashboard<br/>
-                        • Business management interface<br/>
-                        • Two places at once - car + office<br/>
-                        • Full control from anywhere
+                        • SAFER - hands on wheel<br/>
+                        • BIGGER screen - easier to see
                       </div>
                     </div>
 
                     <div className="p-4 bg-purple-50 rounded-lg border">
                       <div className="flex items-center gap-2 mb-2">
-                        <div className="text-2xl">📱</div>
-                        <div className="font-bold text-purple-800">Screen Sharing</div>
+                        <div className="text-2xl">⚡</div>
+                        <div className="font-bold text-purple-800">SIMPLE Sign-In Process</div>
                       </div>
                       <div className="text-sm text-purple-700">
-                        • Share phone screen to dashboard<br/>
-                        • No app download needed on car system<br/>
-                        • Works with any car display<br/>
-                        • Wireless connection available
+                        • Sign yourself in - that's it!<br/>
+                        • BOOM - off and running!<br/>
+                        • Works on phone OR dashboard<br/>
+                        • Simple as that - no complications!
                       </div>
                     </div>
                   </div>
 
                   <div className="p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg border-2 border-emerald-300">
-                    <div className="font-bold text-emerald-800 text-center mb-2">🎯 DASHBOARD BENEFITS:</div>
+                    <div className="font-bold text-emerald-800 text-center mb-2">🎯 THE BOTTOM LINE:</div>
                     <div className="text-sm text-emerald-700 text-center">
-                      • SAFER driving - hands on wheel<br/>
-                      • BIGGER screen - easier to see<br/>
-                      • PROFESSIONAL look for customers<br/>
-                      • DUAL setup - car + office control
+                      <strong>• Phone still works if you want it!</strong><br/>
+                      <strong>• Dashboard is BEST for safety</strong><br/>
+                      <strong>• Sign in - BOOM - off and running!</strong><br/>
+                      <strong>• SIMPLE AS THAT!</strong>
                     </div>
                   </div>
                 </CardContent>
