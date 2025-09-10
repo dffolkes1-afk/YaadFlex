@@ -8,41 +8,47 @@ import {
 
 export default function FounderProfile() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gold-50 via-white to-emerald-50 py-8 px-4">
-      <div className="container mx-auto max-w-6xl">
+    <div className="min-h-screen bg-white dark:bg-slate-950 py-12 px-4">
+      <div className="container mx-auto max-w-5xl">
         
         {/* PRIVATE - NOT PUBLIC YET */}
-        <div className="bg-black border-4 border-red-600 p-6 rounded-lg mb-6 text-center shadow-2xl">
-          <div className="text-red-500 font-bold text-2xl mb-2">🔒 TOP SECRET - HIDDEN IN THE DARK 🔒</div>
-          <div className="text-red-400 text-lg">This profile stays hidden for 2-3 YEARS</div>
-          <div className="text-amber-400 italic">When the company is BOLDER - then the world will know</div>
+        <div className="bg-slate-900 border border-slate-300 p-6 rounded-lg mb-8 text-center shadow-sm">
+          <div className="text-slate-100 font-semibold text-lg mb-2">Confidential Executive Profile</div>
+          <div className="text-slate-300 text-sm">Internal document - restricted access for 2-3 years</div>
+          <div className="text-slate-400 text-xs italic mt-1">Strategic release pending company maturity</div>
         </div>
 
         {/* Executive Header */}
-        <div className="text-center mb-8">
-          <div className="inline-block p-1 bg-gradient-to-r from-gold-400 to-emerald-400 rounded-full mb-4">
-            <div className="bg-white rounded-full p-6">
-              <div className="text-6xl">👑</div>
+        <div className="text-center mb-12">
+          <div className="inline-block p-1 bg-slate-100 dark:bg-slate-800 rounded-full mb-6">
+            <div className="bg-white dark:bg-slate-900 rounded-full p-8">
+              <div className="w-16 h-16 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center">
+                <Building className="h-8 w-8 text-slate-600 dark:text-slate-300" />
+              </div>
             </div>
           </div>
           
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-gold-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent mb-2">
-            THE VISIONARY
+          <h1 className="text-4xl font-semibold text-slate-900 dark:text-slate-100 mb-3">
+            Chief Executive Officer
           </h1>
           
-          <div className="text-2xl font-semibold text-gray-800 mb-4">
-            Founder & CEO of YaadFlex Global
+          <div className="text-xl font-medium text-slate-700 dark:text-slate-300 mb-2">
+            Founder & CEO, YaadFlex Global
           </div>
           
-          <div className="flex flex-wrap justify-center gap-3 mb-6">
-            <Badge className="px-4 py-2 text-lg bg-gold-100 text-gold-800">
-              🏗️ Master Craftsman
+          <div className="text-lg text-slate-600 dark:text-slate-400 mb-6 max-w-2xl mx-auto">
+            Transforming Caribbean commerce through innovative technology solutions and sustainable business practices
+          </div>
+          
+          <div className="flex flex-wrap justify-center gap-3">
+            <Badge variant="outline" className="px-3 py-1 text-sm border-slate-300 text-slate-700">
+              Master Craftsman
             </Badge>
-            <Badge className="px-4 py-2 text-lg bg-emerald-100 text-emerald-800">
-              💡 Tech Innovator
+            <Badge variant="outline" className="px-3 py-1 text-sm border-slate-300 text-slate-700">
+              Technology Leader
             </Badge>
-            <Badge className="px-4 py-2 text-lg bg-blue-100 text-blue-800">
-              🌍 Global Visionary
+            <Badge variant="outline" className="px-3 py-1 text-sm border-slate-300 text-slate-700">
+              Global Vision
             </Badge>
           </div>
         </div>
@@ -51,14 +57,14 @@ export default function FounderProfile() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           
           {/* Master Craftsman Legacy */}
-          <Card className="border-2 border-gold-300 shadow-xl">
-            <CardHeader className="bg-gradient-to-r from-gold-50 to-amber-50">
-              <CardTitle className="flex items-center gap-2 text-2xl">
-                <Hammer className="h-8 w-8 text-gold-600" />
-                Master Drywall Specialist & Finisher
+          <Card className="border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
+            <CardHeader className="bg-slate-50 dark:bg-slate-800/50">
+              <CardTitle className="flex items-center gap-3 text-xl font-semibold">
+                <Hammer className="h-5 w-5 text-slate-600 dark:text-slate-400" />
+                Professional Construction Experience
               </CardTitle>
-              <CardDescription className="text-lg">
-                Elite Craftsman | Interior Design Expert | Texture Specialist
+              <CardDescription className="text-slate-600 dark:text-slate-400">
+                Elite craftsman with specialized expertise in commercial and residential construction
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 pt-6">
@@ -132,9 +138,9 @@ export default function FounderProfile() {
                 </div>
               </div>
 
-              <div className="p-4 bg-gradient-to-r from-gold-50 to-amber-50 rounded-lg border-2 border-gold-300">
-                <div className="font-bold text-gold-800 mb-2">🏆 Professional Philosophy:</div>
-                <div className="text-gold-700 italic">
+              <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
+                <div className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Professional Philosophy</div>
+                <div className="text-slate-700 dark:text-slate-300 italic">
                   "Excellence in craftsmanship taught me that true value comes from 
                   dedication, skill, and treating every project as a masterpiece. 
                   This same philosophy now drives YaadFlex."
@@ -143,15 +149,15 @@ export default function FounderProfile() {
             </CardContent>
           </Card>
 
-          {/* Tech Visionary */}
-          <Card className="border-2 border-emerald-300 shadow-xl">
-            <CardHeader className="bg-gradient-to-r from-emerald-50 to-green-50">
-              <CardTitle className="flex items-center gap-2 text-2xl">
-                <Award className="h-8 w-8 text-emerald-600" />
-                Revolutionary Tech Leader
+          {/* Tech Leadership */}
+          <Card className="border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
+            <CardHeader className="bg-slate-50 dark:bg-slate-800/50">
+              <CardTitle className="flex items-center gap-3 text-xl font-semibold">
+                <Award className="h-5 w-5 text-slate-600 dark:text-slate-400" />
+                Technology Leadership
               </CardTitle>
-              <CardDescription className="text-lg">
-                From Craftsman to Tech CEO | Building Jamaica's Future
+              <CardDescription className="text-slate-600 dark:text-slate-400">
+                Strategic transformation from construction expertise to technology innovation
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 pt-6">
@@ -235,12 +241,12 @@ export default function FounderProfile() {
                 </div>
               </div>
 
-              <div className="p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg border-2 border-emerald-300">
-                <div className="font-bold text-emerald-800 mb-2">💚 Life Mission:</div>
-                <div className="text-emerald-700 italic">
+              <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
+                <div className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Strategic Vision</div>
+                <div className="text-slate-700 dark:text-slate-300 italic">
                   "From learning trades to building technology - my journey proves 
                   that with determination, anyone can transform their world. YaadFlex 
-                  is my gift to Jamaica and the world."
+                  is my contribution to Jamaica and the global community."
                 </div>
               </div>
             </CardContent>
@@ -248,56 +254,61 @@ export default function FounderProfile() {
         </div>
 
         {/* Leadership Philosophy */}
-        <Card className="border-2 border-purple-300 shadow-xl mb-8">
-          <CardHeader className="bg-gradient-to-r from-purple-50 to-blue-50">
-            <CardTitle className="text-3xl text-center">
-              🌟 Leadership Philosophy & Vision
+        <Card className="border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900 mb-8">
+          <CardHeader className="bg-slate-50 dark:bg-slate-800/50">
+            <CardTitle className="text-2xl text-center font-semibold text-slate-900 dark:text-slate-100">
+              Leadership Philosophy
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               
-              <div className="text-center p-4 bg-gradient-to-br from-gold-50 to-amber-50 rounded-lg">
-                <div className="text-4xl mb-3">🛠️</div>
-                <div className="font-bold text-xl mb-2">CRAFTSMANSHIP</div>
-                <div className="text-gray-700">
+              <div className="text-center p-6 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
+                <div className="text-slate-600 dark:text-slate-400 mb-3">
+                  <Wrench className="h-8 w-8 mx-auto" />
+                </div>
+                <div className="font-semibold text-lg mb-3 text-slate-900 dark:text-slate-100">Excellence</div>
+                <div className="text-slate-700 dark:text-slate-300 text-sm">
                   "Every line of code like every wall I finished - 
                   perfect, precise, built to last generations"
                 </div>
               </div>
 
-              <div className="text-center p-4 bg-gradient-to-br from-emerald-50 to-green-50 rounded-lg">
-                <div className="text-4xl mb-3">🤝</div>
-                <div className="font-bold text-xl mb-2">FAIRNESS</div>
-                <div className="text-gray-700">
-                  "85% to the workers because I know what it's like 
-                  to work hard and barely survive"
+              <div className="text-center p-6 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
+                <div className="text-slate-600 dark:text-slate-400 mb-3">
+                  <Heart className="h-8 w-8 mx-auto" />
+                </div>
+                <div className="font-semibold text-lg mb-3 text-slate-900 dark:text-slate-100">Equity</div>
+                <div className="text-slate-700 dark:text-slate-300 text-sm">
+                  "85% to the workers because I understand 
+                  the value of fair compensation"
                 </div>
               </div>
 
-              <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg">
-                <div className="text-4xl mb-3">🚀</div>
-                <div className="font-bold text-xl mb-2">INNOVATION</div>
-                <div className="text-gray-700">
-                  "Not just one man inside - QUADRUPLE or more. 
-                  From Sprite competitions to super-apps - 
-                  always competing, always creating"
+              <div className="text-center p-6 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
+                <div className="text-slate-600 dark:text-slate-400 mb-3">
+                  <Globe className="h-8 w-8 mx-auto" />
+                </div>
+                <div className="font-semibold text-lg mb-3 text-slate-900 dark:text-slate-100">Innovation</div>
+                <div className="text-slate-700 dark:text-slate-300 text-sm">
+                  "Multi-dimensional leadership approach - 
+                  combining traditional craftsmanship with modern technology"
                 </div>
               </div>
             </div>
 
-            <div className="mt-8 p-6 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg border-2 border-purple-300">
+            <div className="mt-8 p-6 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
               <div className="text-center">
-                <div className="text-2xl font-bold text-purple-800 mb-3">
-                  🌍 THE YAADFLEX PROMISE
+                <div className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">
+                  Corporate Mission Statement
                 </div>
-                <div className="text-xl text-purple-700">
-                  "I built YaadFlex not just as an app, but as a movement.<br/>
-                  A movement where hard-working people finally get their fair share.<br/>
-                  Where technology serves humanity, not the other way around.<br/>
-                  Where every driver, every broker, every worker becomes an owner.<br/><br/>
-                  <strong>I'm not just one man inside - I'm QUADRUPLE or even MORE inside.</strong><br/>
-                  <strong>This is my life's work - from Fletcher's Land to the world.</strong>"
+                <div className="text-slate-700 dark:text-slate-300 leading-relaxed">
+                  "YaadFlex represents a paradigm shift in technology-driven commerce,
+                  ensuring equitable compensation for all stakeholders.
+                  Our platform leverages innovative solutions to democratize opportunity
+                  and create sustainable value for workers, businesses, and communities.<br/><br/>
+                  <strong>Multi-faceted leadership enables comprehensive strategic vision.</strong><br/>
+                  <strong>This represents a lifelong commitment to transformative impact.</strong>"
                 </div>
               </div>
             </div>
@@ -305,10 +316,10 @@ export default function FounderProfile() {
         </Card>
 
         {/* Professional Network */}
-        <Card className="border-2 border-amber-300 shadow-xl">
-          <CardHeader className="bg-gradient-to-r from-amber-50 to-gold-50">
-            <CardTitle className="text-2xl text-center">
-              🏆 Professional Network & Acknowledgments
+        <Card className="border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
+          <CardHeader className="bg-slate-50 dark:bg-slate-800/50">
+            <CardTitle className="text-xl text-center font-semibold text-slate-900 dark:text-slate-100">
+              Professional Network & Key Relationships
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
@@ -336,11 +347,11 @@ export default function FounderProfile() {
                 <strong>Thomas</strong> - Junior's brother (Charles Jr.), lives by Prospect<br/>
               </div>
               
-              <div className="p-4 bg-gradient-to-r from-gold-50 to-yellow-50 rounded-lg">
-                <div className="font-bold text-amber-800">
-                  "To the Phillips family who taught me to hustle with heart,<br/>
-                  To everyone who believed when I had nothing but skills and dreams -<br/>
-                  YaadFlex is OUR victory. From Norbrook to the WORLD!"
+              <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
+                <div className="font-medium text-slate-900 dark:text-slate-100 text-center">
+                  "Gratitude to mentors, colleagues, and supporters who contributed to this journey.<br/>
+                  YaadFlex represents a collective vision for sustainable economic development.<br/>
+                  From local communities to global markets - building bridges for shared prosperity."
                 </div>
               </div>
             </div>
