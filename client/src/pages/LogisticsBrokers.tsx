@@ -123,12 +123,38 @@ export default function LogisticsBrokers() {
           </div>
           
           {/* Service Overview Banner */}
-          <div className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950 dark:to-green-950 p-4 rounded-2xl border-2 border-blue-300 shadow-lg">
+          <div className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950 dark:to-green-950 p-4 rounded-2xl border-2 border-blue-300 shadow-lg mb-6">
             <div className="text-lg font-bold text-blue-800 dark:text-blue-200">
               🎯 Professional Port Clearing & Logistics Services
             </div>
             <div className="text-sm text-blue-700 dark:text-blue-300">
               Clear barrels, cars & goods at ports • Direct home delivery • Customs assistance
+            </div>
+          </div>
+
+          {/* Broker Platform Benefits Banner */}
+          <div className="bg-gradient-to-r from-emerald-50 to-yellow-50 dark:from-emerald-950 dark:to-yellow-950 p-6 rounded-2xl border-2 border-emerald-400 shadow-lg">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-emerald-800 dark:text-emerald-200 mb-2">
+                🚀 RUN YOUR OWN PLATFORM WITH YAADFLEX! 
+              </div>
+              <div className="text-lg font-semibold text-emerald-700 dark:text-emerald-300 mb-3">
+                ⚡ 85% EARNINGS TO YOU • 15% Platform Fee • SET YOUR OWN STANDARDS!
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow">
+                  <div className="font-bold text-emerald-600">💰 Keep 85% of Earnings</div>
+                  <div className="text-gray-700 dark:text-gray-300">Only 15% to YaadFlex - You keep the rest!</div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow">
+                  <div className="font-bold text-blue-600">⚙️ Set Your Own Standards</div>
+                  <div className="text-gray-700 dark:text-gray-300">Your rules, your prices, your service quality</div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow">
+                  <div className="font-bold text-purple-600">🏢 Your Own Platform</div>
+                  <div className="text-gray-700 dark:text-gray-300">Operate like you own the business - because you do!</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -343,6 +369,41 @@ export default function LogisticsBrokers() {
 
           {/* Become a Broker Tab */}
           <TabsContent value="become-broker">
+            {/* Massive Benefits Banner */}
+            <div className="bg-gradient-to-br from-emerald-600 to-green-600 text-white p-8 rounded-3xl shadow-2xl mb-8">
+              <div className="text-center">
+                <h2 className="text-4xl font-bold mb-4">🚀 RUN YOUR OWN LOGISTICS EMPIRE!</h2>
+                <div className="text-2xl font-semibold mb-6">
+                  ⚡ KEEP 85% OF ALL EARNINGS ⚡ SET YOUR OWN STANDARDS ⚡
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+                  <div className="bg-white/20 p-4 rounded-xl">
+                    <div className="text-3xl mb-2">💰</div>
+                    <div className="font-bold">85% YOURS</div>
+                    <div className="text-sm opacity-90">Only 15% platform fee</div>
+                  </div>
+                  <div className="bg-white/20 p-4 rounded-xl">
+                    <div className="text-3xl mb-2">⚙️</div>
+                    <div className="font-bold">YOUR RULES</div>
+                    <div className="text-sm opacity-90">Set your own standards</div>
+                  </div>
+                  <div className="bg-white/20 p-4 rounded-xl">
+                    <div className="text-3xl mb-2">🏢</div>
+                    <div className="font-bold">OWN PLATFORM</div>
+                    <div className="text-sm opacity-90">Like owning your business</div>
+                  </div>
+                  <div className="bg-white/20 p-4 rounded-xl">
+                    <div className="text-3xl mb-2">📈</div>
+                    <div className="font-bold">UNLIMITED</div>
+                    <div className="text-sm opacity-90">Growth potential</div>
+                  </div>
+                </div>
+                <Button className="mt-6 bg-white text-green-600 hover:bg-gray-100 text-xl px-8 py-4 font-bold" size="lg">
+                  🚀 START YOUR EMPIRE NOW!
+                </Button>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <Card>
                 <CardHeader>
@@ -351,7 +412,7 @@ export default function LogisticsBrokers() {
                     Join as a Logistics Broker
                   </CardTitle>
                   <CardDescription>
-                    Grow your business by connecting with customers who need logistics services
+                    <span className="text-green-600 font-bold">85% earnings to you!</span> Grow your business by connecting with customers who need logistics services
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -400,42 +461,70 @@ export default function LogisticsBrokers() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>🎯 Why Join YaadFlex Brokers?</CardTitle>
+                  <CardTitle>💎 TREMENDOUS BENEFITS - RUN YOUR OWN PLATFORM!</CardTitle>
                   <CardDescription>
-                    Benefits of joining our logistics network
+                    <span className="text-emerald-600 font-bold text-lg">Why YaadFlex Brokers Earn More & Control Everything!</span>
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
-                      <CheckCircle className="h-5 w-5 text-green-600" />
+                    <div className="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg border-l-4 border-emerald-400">
+                      <div className="text-2xl">💰</div>
                       <div>
-                        <div className="font-semibold text-green-800">Direct Customer Access</div>
-                        <div className="text-sm text-green-700">Connect with customers needing your services</div>
+                        <div className="font-bold text-emerald-800">85% EARNINGS TO YOU!</div>
+                        <div className="text-sm text-emerald-700">Keep 85% of every transaction - Only 15% platform fee vs 25-30% elsewhere!</div>
                       </div>
                     </div>
                     
-                    <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                      <Star className="h-5 w-5 text-blue-600" />
+                    <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                      <div className="text-2xl">⚙️</div>
                       <div>
-                        <div className="font-semibold text-blue-800">Build Your Reputation</div>
-                        <div className="text-sm text-blue-700">Customer reviews and ratings system</div>
+                        <div className="font-bold text-blue-800">SET YOUR OWN STANDARDS</div>
+                        <div className="text-sm text-blue-700">Your prices, your rules, your service quality - Total control!</div>
                       </div>
                     </div>
                     
-                    <div className="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
-                      <Shield className="h-5 w-5 text-purple-600" />
+                    <div className="flex items-center gap-3 p-4 bg-purple-50 rounded-lg border-l-4 border-purple-400">
+                      <div className="text-2xl">🏢</div>
                       <div>
-                        <div className="font-semibold text-purple-800">Verified Badge</div>
-                        <div className="text-sm text-purple-700">Get verified status for trust</div>
+                        <div className="font-bold text-purple-800">RUN YOUR OWN PLATFORM</div>
+                        <div className="text-sm text-purple-700">Operate like you OWN the business - because you practically do!</div>
                       </div>
                     </div>
                     
-                    <div className="flex items-center gap-3 p-3 bg-amber-50 rounded-lg">
-                      <DollarSign className="h-5 w-5 text-amber-600" />
+                    <div className="flex items-center gap-3 p-4 bg-amber-50 rounded-lg border-l-4 border-amber-400">
+                      <div className="text-2xl">📈</div>
                       <div>
-                        <div className="font-semibold text-amber-800">Grow Your Business</div>
-                        <div className="text-sm text-amber-700">Reach more customers across Jamaica</div>
+                        <div className="font-bold text-amber-800">UNLIMITED GROWTH</div>
+                        <div className="text-sm text-amber-700">Build your logistics empire - No limits on earnings or customers!</div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
+                      <div className="text-2xl">🌍</div>
+                      <div>
+                        <div className="font-bold text-green-800">GLOBAL REACH</div>
+                        <div className="text-sm text-green-700">Access customers worldwide, not just locally - YaadFlex goes global!</div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 p-4 bg-red-50 rounded-lg border-l-4 border-red-400">
+                      <div className="text-2xl">🚫</div>
+                      <div>
+                        <div className="font-bold text-red-800">NO CORPORATE CONTROL</div>
+                        <div className="text-sm text-red-700">Unlike other platforms - YOU control your business, not some corporation!</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 p-4 bg-gradient-to-r from-emerald-100 to-green-100 rounded-lg border-2 border-emerald-300">
+                    <div className="text-center">
+                      <div className="font-bold text-emerald-800 text-lg mb-2">
+                        🎯 THE BOTTOM LINE: TREMENDOUS BENEFITS!
+                      </div>
+                      <div className="text-sm text-emerald-700">
+                        <strong>Other platforms:</strong> 25-30% fees, corporate rules, limited control<br/>
+                        <strong>YaadFlex:</strong> 15% fee, YOUR rules, YOUR platform, UNLIMITED growth!
                       </div>
                     </div>
                   </div>
