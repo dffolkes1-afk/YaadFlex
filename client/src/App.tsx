@@ -63,6 +63,7 @@ import VoiceDemo from "@/pages/VoiceDemo";
 import ErrorDashboard from "@/pages/ErrorDashboard";
 import UploadTest from "@/pages/UploadTest";
 import SimpleUpload from "@/pages/SimpleUpload";
+import TinyUpload from "@/pages/TinyUpload";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -98,6 +99,7 @@ function Router() {
       <Route path="/error-dashboard" component={ErrorDashboard} />
       <Route path="/upload-test" component={UploadTest} />
       <Route path="/simple-upload" component={SimpleUpload} />
+      <Route path="/tiny-upload" component={TinyUpload} />
       <Route path="/diagnostics" component={ErrorDashboard} />
       <Route path="/pricing" component={PricingCalculator} />
       <Route path="/book-ride" component={CustomerBooking} />
