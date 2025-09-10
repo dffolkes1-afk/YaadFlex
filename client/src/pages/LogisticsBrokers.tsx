@@ -160,11 +160,12 @@ export default function LogisticsBrokers() {
         </div>
 
         <Tabs defaultValue="find-brokers" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7 text-xs">
+          <TabsList className="grid w-full grid-cols-8 text-xs">
             <TabsTrigger value="find-brokers">🔍 Find</TabsTrigger>
+            <TabsTrigger value="earnings-advisor">💡 Advisor</TabsTrigger>
             <TabsTrigger value="autonomous-ops">🤖 Auto</TabsTrigger>
-            <TabsTrigger value="dashboard-system">🚗 Dashboard</TabsTrigger>
-            <TabsTrigger value="pricing-system">💰 Pricing</TabsTrigger>
+            <TabsTrigger value="dashboard-system">🚗 Dash</TabsTrigger>
+            <TabsTrigger value="pricing-system">💰 Price</TabsTrigger>
             <TabsTrigger value="qr-system">📱 QR</TabsTrigger>
             <TabsTrigger value="become-broker">👥 Join</TabsTrigger>
             <TabsTrigger value="track-shipment">📍 Track</TabsTrigger>
@@ -383,6 +384,321 @@ export default function LogisticsBrokers() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Smart Earnings Advisor Tab */}
+          <TabsContent value="earnings-advisor">
+            {/* Hero Section */}
+            <div className="bg-gradient-to-br from-purple-600 via-blue-600 to-green-600 text-white p-8 rounded-3xl shadow-2xl mb-8">
+              <div className="text-center">
+                <h2 className="text-4xl font-bold mb-4">💡 WE TEACH YOU WHERE TO EARN MORE!</h2>
+                <div className="text-2xl font-semibold mb-6">
+                  🧠 APP KNOWS WHAT WORKS FOR YOU • 📈 SHOWS BEST OPPORTUNITIES • 💰 MAXIMIZE EARNINGS
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-white/20 p-4 rounded-xl">
+                    <div className="text-3xl mb-2">🎯</div>
+                    <div className="font-bold">PERSONALIZED</div>
+                    <div className="text-sm opacity-90">App learns what works best for YOU</div>
+                  </div>
+                  <div className="bg-white/20 p-4 rounded-xl">
+                    <div className="text-3xl mb-2">📚</div>
+                    <div className="font-bold">TEACHES</div>
+                    <div className="text-sm opacity-90">Shows you new ways to earn</div>
+                  </div>
+                  <div className="bg-white/20 p-4 rounded-xl">
+                    <div className="text-3xl mb-2">🚀</div>
+                    <div className="font-bold">GROWS</div>
+                    <div className="text-sm opacity-90">Helps you expand into more services</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              
+              {/* Smart Recommendations */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="text-2xl">🧠</div>
+                    App KNOWS What Works Best For You!
+                  </CardTitle>
+                  <CardDescription>
+                    We analyze your patterns and show you where to earn MORE
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  
+                  <div className="space-y-3">
+                    <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                      <div className="font-bold text-blue-800 mb-2">📍 LOCATION-BASED OPPORTUNITIES</div>
+                      <div className="text-sm text-blue-700">
+                        • "Kingston Port area is HOT for barrel services!"<br/>
+                        • "Airport runs peak at 5-8 AM - great earnings!"<br/>
+                        • "New Mall area needs more food delivery"<br/>
+                        • "Tourist hotels looking for trusted drivers"
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
+                      <div className="font-bold text-green-800 mb-2">💼 NEW SERVICES YOU CAN ADD</div>
+                      <div className="text-sm text-green-700">
+                        • "You're already at the airport - add customs clearance!"<br/>
+                        • "Your route passes 3 schools - morning school runs?"<br/>
+                        • "Medical transport pays 2x regular rides"<br/>
+                        • "Corporate contracts available in your area"
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 bg-purple-50 rounded-lg border-l-4 border-purple-400">
+                      <div className="font-bold text-purple-800 mb-2">📊 YOUR EARNING POTENTIAL</div>
+                      <div className="text-sm text-purple-700">
+                        • "Current: J$8,000/day with rides only"<br/>
+                        • "Add barrel service: +J$4,000/day"<br/>
+                        • "Add school runs: +J$3,500/day"<br/>
+                        • "Total potential: J$15,500/day!"
+                      </div>
+                    </div>
+
+                    <div className="p-4 bg-amber-50 rounded-lg border-l-4 border-amber-400">
+                      <div className="font-bold text-amber-800 mb-2">⏰ BEST TIMES FOR EACH SERVICE</div>
+                      <div className="text-sm text-amber-700">
+                        • "Morning: School runs + airport trips"<br/>
+                        • "Midday: Barrel pickups + deliveries"<br/>
+                        • "Evening: Food delivery + rides"<br/>
+                        • "Weekend: Tourism + events"
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Multiple Income Streams */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="text-2xl">💰</div>
+                    Don't Just Drive - Do EVERYTHING!
+                  </CardTitle>
+                  <CardDescription>
+                    One app, multiple ways to earn - we show you how
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  
+                  <div className="space-y-3">
+                    <div className="p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="text-xl">🚗</div>
+                        <div className="font-semibold text-purple-800">TAXI/RIDES</div>
+                      </div>
+                      <div className="text-sm text-purple-700">
+                        Regular rides, airport runs, corporate accounts
+                      </div>
+                    </div>
+                    
+                    <div className="p-3 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg">
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="text-xl">📦</div>
+                        <div className="font-semibold text-green-800">LOGISTICS/DELIVERY</div>
+                      </div>
+                      <div className="text-sm text-green-700">
+                        Barrel service, port clearing, package delivery
+                      </div>
+                    </div>
+                    
+                    <div className="p-3 bg-gradient-to-r from-amber-50 to-green-50 rounded-lg">
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="text-xl">🍕</div>
+                        <div className="font-semibold text-amber-800">FOOD/GROCERY</div>
+                      </div>
+                      <div className="text-sm text-amber-700">
+                        Restaurant delivery, grocery shopping, meal pickup
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-gradient-to-r from-red-50 to-amber-50 rounded-lg">
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="text-xl">🎒</div>
+                        <div className="font-semibold text-red-800">SCHOOL TRANSPORT</div>
+                      </div>
+                      <div className="text-sm text-red-700">
+                        Morning/afternoon runs, field trips, after-school
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-gradient-to-r from-purple-50 to-red-50 rounded-lg">
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="text-xl">🏥</div>
+                        <div className="font-semibold text-purple-800">MEDICAL/PHARMACY</div>
+                      </div>
+                      <div className="text-sm text-purple-700">
+                        Hospital trips, prescription delivery, elderly care
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="text-xl">🏖️</div>
+                        <div className="font-semibold text-blue-800">TOURISM</div>
+                      </div>
+                      <div className="text-sm text-blue-700">
+                        Hotel transfers, island tours, cruise ship pickups
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg border-2 border-emerald-300">
+                    <div className="font-bold text-emerald-800 text-center mb-2">🎯 THE KEY:</div>
+                    <div className="text-sm text-emerald-700 text-center">
+                      • Mix services throughout the day<br/>
+                      • Never have idle time<br/>
+                      • App tells you what's hot RIGHT NOW<br/>
+                      • Earn from MULTIPLE streams daily!
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Learning & Growth */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="text-2xl">📚</div>
+                    We TEACH You How to Succeed
+                  </CardTitle>
+                  <CardDescription>
+                    Never kick you off - always show you better ways
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  
+                  <div className="space-y-3">
+                    <div className="p-4 bg-blue-50 rounded-lg border">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-2xl">🎓</div>
+                        <div className="font-bold text-blue-800">In-App Training</div>
+                      </div>
+                      <div className="text-sm text-blue-700">
+                        • Quick videos on new services<br/>
+                        • Tips from top earners<br/>
+                        • Best practices for each area<br/>
+                        • Safety and customer service guides
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 bg-green-50 rounded-lg border">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-2xl">💡</div>
+                        <div className="font-bold text-green-800">Smart Suggestions</div>
+                      </div>
+                      <div className="text-sm text-green-700">
+                        • "Try barrel service - you're already at the port!"<br/>
+                        • "School run would fit your morning schedule"<br/>
+                        • "Medical transport needs drivers like you"<br/>
+                        • "Tourism pays extra on weekends"
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 bg-purple-50 rounded-lg border">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="text-2xl">🏆</div>
+                        <div className="font-bold text-purple-800">Success Stories</div>
+                      </div>
+                      <div className="text-sm text-purple-700">
+                        • "John added delivery - now earns 40% more!"<br/>
+                        • "Mary does school runs - steady morning income"<br/>
+                        • "Paul combines taxi + barrels - J$20K days!"<br/>
+                        • "Lisa focuses on medical - premium rates"
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-gradient-to-br from-purple-100 to-blue-100 rounded-lg border-2 border-purple-300">
+                    <div className="text-center">
+                      <div className="font-bold text-purple-800 text-lg mb-2">❤️ OUR PROMISE:</div>
+                      <div className="text-sm text-purple-700">
+                        <strong>We NEVER kick you off</strong><br/>
+                        <strong>We TEACH you to earn more</strong><br/>
+                        <strong>We SHOW you what works</strong><br/>
+                        <strong>We HELP you grow!</strong>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Area Intelligence */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="text-2xl">🗺️</div>
+                    Know Your Area - Own Your Zone!
+                  </CardTitle>
+                  <CardDescription>
+                    App tells you exactly what works in YOUR area
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  
+                  <div className="space-y-3">
+                    <div className="p-4 bg-red-50 rounded-lg border-l-4 border-red-400">
+                      <div className="font-bold text-red-800 mb-2">🔥 HOT ZONES RIGHT NOW</div>
+                      <div className="text-sm text-red-700">
+                        • "Downtown Kingston - High demand for rides"<br/>
+                        • "Montego Bay Airport - Need more drivers"<br/>
+                        • "Spanish Town - Barrel service shortage"<br/>
+                        • "New Kingston - Corporate lunch delivery"
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 bg-amber-50 rounded-lg border-l-4 border-amber-400">
+                      <div className="font-bold text-amber-800 mb-2">📈 TRENDING SERVICES</div>
+                      <div className="text-sm text-amber-700">
+                        • "School transport up 300% this month"<br/>
+                        • "Medical delivery growing fast"<br/>
+                        • "Tourism bookings increasing"<br/>
+                        • "Corporate accounts expanding"
+                      </div>
+                    </div>
+
+                    <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-400">
+                      <div className="font-bold text-green-800 mb-2">💎 HIDDEN OPPORTUNITIES</div>
+                      <div className="text-sm text-green-700">
+                        • "Early morning airport runs - no competition"<br/>
+                        • "Sunday church pickups - steady income"<br/>
+                        • "Late night pharmacy runs - premium rates"<br/>
+                        • "Weekend event transport - big tips!"
+                      </div>
+                    </div>
+
+                    <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
+                      <div className="font-bold text-blue-800 mb-2">🎯 YOUR PERFECT FIT</div>
+                      <div className="text-sm text-blue-700">
+                        Based on your location, vehicle, and schedule:<br/>
+                        <strong>• Morning: School runs (J$3,500)</strong><br/>
+                        <strong>• Midday: Barrel service (J$4,000)</strong><br/>
+                        <strong>• Evening: Food delivery (J$3,000)</strong><br/>
+                        <strong>• Total daily potential: J$10,500+</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-gradient-to-r from-gold-50 to-yellow-50 rounded-lg border-2 border-yellow-400">
+                    <div className="text-center">
+                      <div className="font-bold text-yellow-800 text-lg mb-2">🌟 BOTTOM LINE:</div>
+                      <div className="text-sm text-yellow-700">
+                        <strong>The app KNOWS your area</strong><br/>
+                        <strong>SHOWS you opportunities</strong><br/>
+                        <strong>TEACHES you to maximize</strong><br/>
+                        <strong>You EARN MORE every day!</strong>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
           {/* Autonomous Operations Tab */}
