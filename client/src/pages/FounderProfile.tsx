@@ -302,8 +302,8 @@ export default function FounderProfile() {
                 <span className="italic">"From Norbrook Close - They kept me working, kept me learning, gave me the drive to never stop"</span><br/>
                 <strong className="text-blue-600">Bings (Beans)</strong> - Great childhood friend from the Phillips family<br/>
                 <span className="italic">"Drew my attention to the family - we were all that"</span><br/>
-                <strong className="text-green-600">Ice Phillips</strong> - Best friend, Jamaican runner (early 90s)<br/>
-                <span className="italic">"Charlotte School & Stats athlete - now overseas, different paths but same vision"</span><br/>
+                <strong className="text-green-600">I. Phillips (Ice/Isa/Aisha)</strong> - Best friend, Jamaican long-distance runner (early 90s)<br/>
+                <span className="italic">"Stats athlete who ran for Jamaica - stopped running to start working, now overseas"</span><br/>
                 <strong>Bubba (Barber) Phillips</strong> - Ice's father, Errol Phillips' brother<br/><br/>
                 <strong>Trevor Bailey</strong> - Master Mentor & Teacher<br/>
                 <strong>Dennis Williams</strong> - Prominent Architect & Inspiration<br/>
