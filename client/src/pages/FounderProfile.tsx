@@ -174,7 +174,7 @@ export default function FounderProfile() {
                     <div className="font-bold text-lg">The Real Journey</div>
                     <div className="text-gray-700">
                       • Grew up without a father - learned to survive alone<br/>
-                      • Used to chill at 6 Marble Close / 6 Norbrook Close with the Phillips family<br/>
+                      • Used to chill at Marble Close / Norbrook Close with the Phillips family<br/>
                       • Hated 9-to-5 jobs and gas station work<br/>
                       • Always searching for something different<br/>
                       • Grasped knowledge everywhere - streets to books<br/>
@@ -291,7 +291,7 @@ export default function FounderProfile() {
             <div className="text-center space-y-4">
               <div className="text-lg">
                 <strong className="text-red-600">O'Neill Phillips & Debbie Phillips</strong> - The MAIN Inspirations<br/>
-                <span className="italic">"From 6 Norbrook Close - They kept me working, kept me learning, gave me the drive to never stop"</span><br/>
+                <span className="italic">"From Norbrook Close - They kept me working, kept me learning, gave me the drive to never stop"</span><br/>
                 <strong className="text-blue-600">Bings (Beans)</strong> - Great childhood friend from the Phillips family<br/>
                 <span className="italic">"Drew my attention to the family - we were all that"</span><br/><br/>
                 <strong>Trevor Bailey</strong> - Master Mentor & Teacher<br/>
