@@ -13,9 +13,85 @@ interface ContentItem {
 }
 
 const globalContent: ContentItem[] = [
-  // African Content
+  // Shopping & Home Improvement
   {
     id: '1',
+    title: 'Creative Wall Finishes - DIY Home Makeover',
+    description: 'Amazing creative wall finishing techniques that transform any home beautifully',
+    type: 'youtube',
+    url: 'https://www.youtube.com/results?search_query=creative+wall+finishes+diy+home+makeover',
+    country: 'Global 🌍',
+    category: 'Creative Finishes',
+    views: '4.2M views'
+  },
+  {
+    id: '2',
+    title: 'Beautiful Floor Designs - Home Shopping Style',
+    description: 'Gorgeous flooring ideas and designs for every room - shopping channel style',
+    type: 'youtube',
+    url: 'https://www.youtube.com/results?search_query=beautiful+floor+designs+home+shopping',
+    country: 'Global 🌍',
+    category: 'Home Shopping',
+    views: '3.8M views'
+  },
+  
+  // Natural Herbs & Health
+  {
+    id: '3',
+    title: 'Ghana Healing Herbs - Traditional Medicine',
+    description: 'Powerful healing herbs from Ghana that keep you healthy naturally',
+    type: 'youtube',
+    url: 'https://www.youtube.com/results?search_query=ghana+healing+herbs+traditional+medicine',
+    country: 'Ghana 🇬🇭',
+    category: 'Natural Health',
+    views: '1.9M views'
+  },
+  {
+    id: '4',
+    title: 'African Herbal Remedies - Natural Healing',
+    description: 'Ancient African herbs and natural remedies used for centuries',
+    type: 'youtube',
+    url: 'https://www.youtube.com/results?search_query=african+herbal+remedies+natural+healing',
+    country: 'Pan-Africa 🌍',
+    category: 'Natural Health',
+    views: '2.5M views'
+  },
+  {
+    id: '5',
+    title: 'Jamaican Bush Medicine - Island Herbs',
+    description: 'Traditional Jamaican bush medicine and healing herbs from the island',
+    type: 'youtube',
+    url: 'https://www.youtube.com/results?search_query=jamaican+bush+medicine+healing+herbs',
+    country: 'Jamaica 🇯🇲',
+    category: 'Natural Health',
+    views: '870K views'
+  },
+
+  // Garden & Outdoor Beauty
+  {
+    id: '6',
+    title: 'Beautiful Garden Designs - Outdoor Paradise',
+    description: 'Stunning garden ideas that make your outdoor space absolutely beautiful',
+    type: 'youtube',
+    url: 'https://www.youtube.com/results?search_query=beautiful+garden+designs+outdoor+paradise',
+    country: 'Global 🌍',
+    category: 'Garden & Outdoor',
+    views: '5.1M views'
+  },
+  {
+    id: '7',
+    title: 'Home Decoration Shopping - Interior Style',
+    description: 'Beautiful home decoration ideas - shopping channel style interior design',
+    type: 'youtube',
+    url: 'https://www.youtube.com/results?search_query=home+decoration+shopping+interior+design',
+    country: 'Global 🌍',
+    category: 'Home Shopping',
+    views: '6.3M views'
+  },
+
+  // African Culture & Business
+  {
+    id: '8',
     title: 'Lagos Street Food Culture - Amazing Jollof Rice',
     description: 'See how authentic Jollof rice is made on Lagos streets - the real African way',
     type: 'youtube',
@@ -25,7 +101,27 @@ const globalContent: ContentItem[] = [
     views: '2.3M views'
   },
   {
-    id: '2',
+    id: '9',
+    title: 'Natural Health Products - Herbal Shopping',
+    description: 'Amazing natural health products and herbal supplements from around the world',
+    type: 'youtube',
+    url: 'https://www.youtube.com/results?search_query=natural+health+products+herbal+shopping',
+    country: 'Global 🌍',
+    category: 'Health Shopping',
+    views: '3.4M views'
+  },
+  {
+    id: '10',
+    title: 'Creative Home Finishes - Professional Tips',
+    description: 'Professional creative finishing techniques that make homes look expensive',
+    type: 'youtube',
+    url: 'https://www.youtube.com/results?search_query=creative+home+finishes+professional+tips',
+    country: 'Global 🌍',
+    category: 'Creative Finishes',
+    views: '2.7M views'
+  },
+  {
+    id: '11',
     title: 'Accra Gold Mines - Real Mining Operations',
     description: 'Live footage from Ghana gold mining operations - see the real work happening',
     type: 'youtube',
@@ -109,7 +205,37 @@ const globalContent: ContentItem[] = [
     views: '920K views'
   },
   {
-    id: '10',
+    id: '12',
+    title: 'Home Shopping Network Style - Beautiful Products',
+    description: 'Shopping channel style home products that make your space beautiful',
+    type: 'youtube',
+    url: 'https://www.youtube.com/results?search_query=home+shopping+network+beautiful+products',
+    country: 'Global 🌍',
+    category: 'Home Shopping',
+    views: '4.8M views'
+  },
+  {
+    id: '13',
+    title: 'Traditional African Medicines - Natural Healing',
+    description: 'Educational content about traditional African medicines and natural healing',
+    type: 'youtube',
+    url: 'https://www.youtube.com/results?search_query=traditional+african+medicines+natural+healing',
+    country: 'Pan-Africa 🌍',
+    category: 'Health Education',
+    views: '1.6M views'
+  },
+  {
+    id: '14',
+    title: 'Beautiful Room Makeovers - Creative Inspiration',
+    description: 'Inspiring room makeover ideas with creative finishes and beautiful designs',
+    type: 'youtube',
+    url: 'https://www.youtube.com/results?search_query=beautiful+room+makeovers+creative+inspiration',
+    country: 'Global 🌍',
+    category: 'Home Inspiration',
+    views: '7.2M views'
+  },
+  {
+    id: '15',
     title: 'Morocco Marrakech Markets - Trading Culture',
     description: 'The famous souks of Marrakech - traditional trading and craftsmanship',
     type: 'youtube',
@@ -131,14 +257,14 @@ export default function WorldVybz() {
             World Vybz
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Real content from around the world - Africa, Caribbean, Asia, and beyond. 
-            See what's naturally happening in different cultures and countries.
+            Shopping-style content, creative finishes, natural herbs, beautiful home designs, and health education. 
+            Real attractive content from Ghana, Jamaica, Africa and around the world - just like TV shopping programs!
           </p>
         </div>
 
         {/* Categories */}
         <div className="flex flex-wrap justify-center gap-4 mb-8">
-          {['Culture & Food', 'Business & Mining', 'Transport & Culture', 'Fashion & Style', 'Island Life', 'Markets & Trade'].map((category) => (
+          {['Creative Finishes', 'Home Shopping', 'Natural Health', 'Garden & Outdoor', 'Health Shopping', 'Culture & Food', 'Business & Mining', 'Home Inspiration', 'Health Education'].map((category) => (
             <span 
               key={category}
               className="px-4 py-2 bg-gray-800 rounded-full text-sm hover:bg-gray-700 cursor-pointer transition-colors"
@@ -204,14 +330,15 @@ export default function WorldVybz() {
 
         {/* Footer */}
         <div className="text-center mt-12 p-8 bg-gray-900 rounded-lg">
-          <h3 className="text-xl font-bold text-green-500 mb-4">Discover More</h3>
+          <h3 className="text-xl font-bold text-green-500 mb-4">More Shopping & Lifestyle Content</h3>
           <p className="text-gray-400 mb-4">
-            This is just the beginning! We're constantly adding more interesting content from around the world.
-            From African business success stories to Caribbean culture, Asian innovations to global entrepreneurship.
+            Just like your favorite TV shopping programs! We're adding more creative finishes, natural herbs from Ghana, 
+            beautiful home designs, garden ideas, and health education content. From African herbal medicine to 
+            creative home makeovers - everything that's attractive and inspirational!
           </p>
           <p className="text-sm text-gray-500">
-            All links open safely in new windows to YouTube, Google, and other trusted platforms.
-            Explore cultures, learn about different countries, and see what's happening naturally around the world.
+            All links open safely to YouTube and trusted platforms - perfect for browsing beautiful content, 
+            learning about natural health, and getting inspired by creative home ideas from around the world.
           </p>
         </div>
       </div>
