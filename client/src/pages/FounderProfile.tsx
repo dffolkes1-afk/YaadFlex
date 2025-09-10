@@ -96,8 +96,8 @@ export default function FounderProfile() {
                     <div className="text-gray-700">
                       • <strong className="text-purple-600">MR. LEE'S HOUSE - TOP OF THE HILL</strong><br/>
                       &nbsp;&nbsp;Worked on it as a young kid in the high-class Norbrook area<br/>
-                      • <strong className="text-amber-600">BOSS'S MANSION - NORBROOK DRIVE</strong><br/>
-                      &nbsp;&nbsp;Next to the golf club - Custom hip roof & covered center design<br/>
+                      • <strong className="text-amber-600">TANKWELL BOSS'S HOUSE - NORBROOK DRIVE</strong><br/>
+                      &nbsp;&nbsp;Good size house next to golf club - Custom hip roof & covered center<br/>
                       • <strong className="text-green-600">SUPER CENTER - SAVED THE PROJECT</strong><br/>
                       &nbsp;&nbsp;Part of the drywall team that rescued it when work was going bad<br/>
                       • Portmore Commercial Complex - Lead Finisher<br/>
@@ -180,7 +180,7 @@ export default function FounderProfile() {
                       • Grew up without a father - learned to survive alone<br/>
                       • Used to chill at Marble Close / Norbrook Close with the Phillips family<br/>
                       • Helped build Mr. Lee's house on top of the hill as a kid<br/>
-                      • Built boss's mansion on Norbrook Drive next to golf club<br/>
+                      • Built Tankwell boss's house on Norbrook Drive next to golf club<br/>
                       • Hustled in elite areas - from Norbrook Drive to Norbrook Terrace<br/>
                       • Worked for prominent people left, right, and back<br/>
                       • Hated 9-to-5 jobs and gas station work<br/>
@@ -302,7 +302,7 @@ export default function FounderProfile() {
                 <span className="italic">"From Norbrook Close - They kept me working, kept me learning, gave me the drive to never stop"</span><br/>
                 <strong className="text-blue-600">Bings (Beans)</strong> - Great childhood friend from the Phillips family<br/>
                 <span className="italic">"Drew my attention to the family - we were all that"</span><br/>
-                <strong className="text-green-600">Ice Phillips</strong> - Best friend, Jamaican long-distance runner<br/>
+                <strong className="text-green-600">Ice Phillips</strong> - Best friend, Jamaican runner (early 90s)<br/>
                 <span className="italic">"Charlotte School & Stats athlete - now overseas, different paths but same vision"</span><br/>
                 <strong>Bubba (Barber) Phillips</strong> - Ice's father, Errol Phillips' brother<br/><br/>
                 <strong>Trevor Bailey</strong> - Master Mentor & Teacher<br/>
