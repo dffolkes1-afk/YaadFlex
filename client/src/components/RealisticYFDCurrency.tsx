@@ -191,8 +191,33 @@ export default function RealisticYFDCurrency() {
           <div className={`
             absolute inset-0 w-full h-full rounded-2xl overflow-hidden backface-hidden
             bg-gradient-to-br ${currentBill.color}
-            border-4 border-yellow-400 shadow-2xl
-          `}>
+            border-4 border-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 shadow-2xl
+            bg-opacity-90 backdrop-blur-sm
+          `} style={{
+            background: `linear-gradient(135deg, 
+              rgba(255,215,0,0.9) 0%, 
+              rgba(255,193,7,0.95) 25%, 
+              rgba(255,235,59,0.9) 50%, 
+              rgba(255,193,7,0.95) 75%, 
+              rgba(255,215,0,0.9) 100%), 
+              url("data:image/svg+xml,${encodeURIComponent(`
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                  <defs>
+                    <pattern id="money-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                      <circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.1)"/>
+                      <text x="10" y="15" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.05)">💎</text>
+                    </pattern>
+                  </defs>
+                  <rect width="100" height="100" fill="url(#money-pattern)"/>
+                </svg>
+              `)}")`,
+            boxShadow: `
+              0 0 30px rgba(255,215,0,0.5),
+              0 0 60px rgba(255,193,7,0.3),
+              inset 0 1px 0 rgba(255,255,255,0.3),
+              inset 0 -1px 0 rgba(0,0,0,0.2)
+            `
+          }}>
             {/* Background Pattern */}
             <div className={`
               absolute inset-0 opacity-20
@@ -230,13 +255,41 @@ export default function RealisticYFDCurrency() {
                 </div>
               </div>
 
-              {/* Center Hero Section */}
-              <div className="text-center">
-                <div className="w-20 h-20 mx-auto mb-2 rounded-full bg-white/20 flex items-center justify-center border-2 border-white/30">
-                  <div className="text-2xl">🎭</div>
+              {/* Center Hero Section - LUXURY PORTRAIT */}
+              <div className="text-center relative">
+                {/* Gold Portrait Frame */}
+                <div className="w-24 h-24 mx-auto mb-3 relative">
+                  {/* Outer Gold Ring */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-300 via-amber-400 to-yellow-600 p-1 shadow-lg">
+                    {/* Inner Portrait */}
+                    <div className="w-full h-full rounded-full bg-gradient-to-br from-amber-100 to-yellow-200 flex items-center justify-center border-2 border-amber-300 relative overflow-hidden">
+                      {/* Hero "Photo" Effect */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-amber-800 to-yellow-900 opacity-80"></div>
+                      <div className="relative text-3xl font-bold text-white drop-shadow-lg z-10">
+                        {currentBill.value === 1 ? '🎵' : 
+                         currentBill.value === 5 ? '⭐' : 
+                         currentBill.value === 10 ? '🎬' : 
+                         currentBill.value === 20 ? '✊' : 
+                         currentBill.value === 50 ? '👑' : '📚'}
+                      </div>
+                      {/* Photo Shine Effect */}
+                      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/30 via-transparent to-transparent rounded-full"></div>
+                    </div>
+                  </div>
+                  {/* Diamond Corner Accents */}
+                  <div className="absolute -top-1 -right-1 text-xs">💎</div>
+                  <div className="absolute -bottom-1 -left-1 text-xs">💎</div>
                 </div>
-                <div className="font-bold text-lg">{currentBill.primaryHero}</div>
-                <div className="text-xs opacity-90">{currentBill.jamaicaSymbol}</div>
+                
+                {/* Hero Name with Gold Text */}
+                <div className="font-bold text-lg text-yellow-100 drop-shadow-md mb-1"
+                     style={{textShadow: '0 0 10px rgba(255,215,0,0.8), 0 2px 4px rgba(0,0,0,0.5)'}}>
+                  {currentBill.primaryHero}
+                </div>
+                <div className="text-xs opacity-90 text-yellow-200">{currentBill.jamaicaSymbol}</div>
+                
+                {/* Holographic Security Strip */}
+                <div className="absolute right-2 top-2 w-1 h-16 bg-gradient-to-b from-cyan-400 via-purple-500 to-pink-400 rounded opacity-70 animate-pulse"></div>
               </div>
 
               {/* Bottom Section */}
@@ -260,12 +313,36 @@ export default function RealisticYFDCurrency() {
             </div>
           </div>
 
-          {/* Back Side */}
+          {/* Back Side - EGYPTIAN LUXURY */}
           <div className={`
             absolute inset-0 w-full h-full rounded-2xl overflow-hidden backface-hidden rotate-y-180
-            bg-gradient-to-br from-indigo-700 via-purple-600 to-pink-700
-            border-4 border-amber-400 shadow-2xl
-          `}>
+            bg-gradient-to-br from-purple-900 via-indigo-800 to-blue-900
+            border-4 border-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 shadow-2xl
+          `} style={{
+            background: `linear-gradient(135deg, 
+              rgba(75,0,130,0.95) 0%, 
+              rgba(25,25,112,0.9) 25%, 
+              rgba(72,61,139,0.95) 50%, 
+              rgba(106,90,205,0.9) 75%, 
+              rgba(138,43,226,0.95) 100%), 
+              url("data:image/svg+xml,${encodeURIComponent(`
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                  <defs>
+                    <pattern id="egyptian-pattern" x="0" y="0" width="25" height="25" patternUnits="userSpaceOnUse">
+                      <polygon points="12.5,5 20,20 5,20" fill="rgba(255,215,0,0.1)"/>
+                      <circle cx="12.5" cy="12.5" r="1" fill="rgba(255,215,0,0.05)"/>
+                    </pattern>
+                  </defs>
+                  <rect width="100" height="100" fill="url(#egyptian-pattern)"/>
+                </svg>
+              `)}")`,
+            boxShadow: `
+              0 0 40px rgba(138,43,226,0.6),
+              0 0 80px rgba(75,0,130,0.4),
+              inset 0 1px 0 rgba(255,255,255,0.2),
+              inset 0 -1px 0 rgba(0,0,0,0.3)
+            `
+          }}>
             {/* Egyptian/World Heritage Back */}
             <div className="absolute inset-0 opacity-30">
               {/* Egyptian Pattern */}
@@ -287,27 +364,80 @@ export default function RealisticYFDCurrency() {
             </div>
 
             <div className="relative z-10 p-6 h-full flex flex-col justify-between text-white">
-              {/* Top Section */}
-              <div className="text-center">
-                <div className="text-4xl mb-2">{currentBill.backDesign.symbol}</div>
-                <div className="font-bold text-lg">{currentBill.backDesign.god}</div>
-                <div className="text-sm opacity-90">{currentBill.backDesign.theme}</div>
+              {/* Top Section - EGYPTIAN GOD LUXURY */}
+              <div className="text-center relative">
+                {/* Golden God Frame */}
+                <div className="w-16 h-16 mx-auto mb-2 relative">
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-amber-300 via-yellow-400 to-amber-500 p-1 shadow-xl">
+                    <div className="w-full h-full rounded-full bg-gradient-to-br from-purple-900 to-indigo-800 flex items-center justify-center border border-amber-300">
+                      <div className="text-2xl">{currentBill.backDesign.symbol}</div>
+                    </div>
+                  </div>
+                  {/* Divine Light Rays */}
+                  <div className="absolute -inset-2 opacity-50">
+                    {Array.from({ length: 8 }).map((_, i) => (
+                      <div
+                        key={i}
+                        className="absolute w-0.5 h-4 bg-gradient-to-t from-amber-400 to-transparent"
+                        style={{
+                          top: '-8px',
+                          left: '50%',
+                          transform: `rotate(${i * 45}deg) translateX(-50%)`,
+                          transformOrigin: 'center 32px'
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="font-bold text-lg text-amber-200 drop-shadow-lg mb-1"
+                     style={{textShadow: '0 0 15px rgba(255,191,0,0.9), 0 2px 4px rgba(0,0,0,0.7)'}}>
+                  {currentBill.backDesign.god}
+                </div>
+                <div className="text-xs opacity-90 text-amber-300">{currentBill.backDesign.theme}</div>
               </div>
 
-              {/* Center Pyramid */}
-              <div className="text-center">
-                <div className="text-6xl text-amber-300 animate-pulse">🔺</div>
-                <div className="text-sm font-semibold mt-2">{currentBill.backDesign.heritage}</div>
+              {/* Center MEGA PYRAMID */}
+              <div className="text-center relative">
+                {/* Pyramid with Golden Capstone */}
+                <div className="relative">
+                  <div className="text-8xl text-amber-400 drop-shadow-2xl animate-pulse" 
+                       style={{textShadow: '0 0 30px rgba(255,191,0,0.8), 0 4px 8px rgba(0,0,0,0.6)'}}>
+                    🔺
+                  </div>
+                  {/* Golden Capstone */}
+                  <div className="absolute top-2 left-1/2 transform -translate-x-1/2 text-yellow-300 text-lg animate-ping">
+                    💎
+                  </div>
+                  {/* Eye of Horus */}
+                  <div className="absolute top-8 left-1/2 transform -translate-x-1/2 text-cyan-300 text-xl">
+                    👁️
+                  </div>
+                </div>
+                <div className="text-sm font-bold text-amber-200 mt-3 drop-shadow">{currentBill.backDesign.heritage}</div>
+                
+                {/* Hieroglyphic Border */}
+                <div className="flex justify-center space-x-2 mt-2 opacity-60">
+                  <span className="text-amber-400">𓂀</span>
+                  <span className="text-amber-400">𓁢</span>
+                  <span className="text-amber-400">𓅃</span>
+                  <span className="text-amber-400">𓋹</span>
+                  <span className="text-amber-400">𓎡</span>
+                </div>
               </div>
 
-              {/* Quote Section */}
-              <div className="text-center border-t border-white/20 pt-3">
-                <div className="text-xs italic opacity-90 mb-2">
+              {/* Quote Section with Golden Border */}
+              <div className="text-center border-t-2 border-amber-400/30 pt-3 relative">
+                <div className="text-xs italic opacity-90 mb-2 text-amber-100">
                   "{currentBill.heroQuote}"
                 </div>
-                <div className="text-xs opacity-80">
+                <div className="text-xs opacity-80 text-amber-200 font-semibold">
                   YaadFlex: Global Unity Through Heritage
                 </div>
+                
+                {/* Corner Ankh Symbols */}
+                <div className="absolute -top-1 left-0 text-amber-400 text-xs">☥</div>
+                <div className="absolute -top-1 right-0 text-amber-400 text-xs">☥</div>
               </div>
             </div>
           </div>
