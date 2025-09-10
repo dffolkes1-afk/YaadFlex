@@ -228,11 +228,11 @@ export default function VoiceDemo() {
       {/* Simple Header */}
       <div className="bg-white py-8">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-3xl font-medium text-gray-900 mb-3">
+          <h1 className="text-2xl font-light text-gray-800 mb-2">
             Voice Interactive
           </h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Talk to your app - it writes what you say and does what you want. Better than TalkBack.
+          <p className="text-gray-500 text-sm max-w-2xl mx-auto">
+            Talk to your app - it writes what you say and does what you want.
           </p>
         </div>
       </div>
@@ -240,8 +240,7 @@ export default function VoiceDemo() {
       <div className="max-w-4xl mx-auto p-6">
         
         {/* Simple Voice Controller */}
-        <Card className="w-full max-w-xl mx-auto mb-8 border-0 bg-white shadow-none">
-          <CardContent className="p-8">
+        <div className="w-full max-w-xl mx-auto mb-8 bg-white rounded p-8">
             
             {/* Clean Voice Button */}
             <div className="flex flex-col items-center space-y-6">
@@ -287,12 +286,10 @@ export default function VoiceDemo() {
                 </div>
               </div>
             )}
-          </CardContent>
-        </Card>
+        </div>
 
         {/* Simple Quick Commands */}
-        <Card className="w-full max-w-xl mx-auto mb-8 border-0 bg-white shadow-none">
-          <CardContent className="p-6">
+        <div className="w-full max-w-xl mx-auto mb-8 bg-white rounded p-6">
             <h3 className="text-sm font-medium text-gray-900 mb-4">Quick Commands</h3>
             <div className="grid grid-cols-2 gap-3">
               {quickCommands.map((cmd, index) => (
@@ -311,12 +308,10 @@ export default function VoiceDemo() {
                 </Button>
               ))}
             </div>
-          </CardContent>
-        </Card>
+        </div>
 
         {/* Simple Commands List */}
-        <Card className="w-full max-w-xl mx-auto border-0 bg-white shadow-none">
-          <CardContent className="p-6">
+        <div className="w-full max-w-xl mx-auto bg-white rounded p-6">
             <h3 className="text-sm font-medium text-gray-900 mb-4">Voice Commands</h3>
             <div className="grid md:grid-cols-2 gap-3 text-xs text-gray-600">
               <div>
@@ -359,8 +354,7 @@ export default function VoiceDemo() {
                 data-testid="test-input"
               />
             </div>
-          </CardContent>
-        </Card>
+        </div>
       </div>
     </div>
   );
