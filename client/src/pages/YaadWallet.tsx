@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import YFDCurrency from '@/components/YFDCurrency';
 import YFDCoins from '@/components/YFDCoins';
+import MiniCoinFlip from '@/components/MiniCoinFlip';
 
 interface Transaction {
   id: string;
@@ -201,8 +202,16 @@ export default function YaadWallet() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold mb-2">
-                  {showBalance ? `${balances.YFD.toLocaleString()} YFD` : '••••••'}
+                <div className="flex items-center gap-3 mb-2">
+                  <MiniCoinFlip 
+                    value={balances.YFD.toLocaleString()} 
+                    currency="YFD"
+                    color="from-green-500 to-yellow-500"
+                    size="w-20 h-20"
+                  />
+                  <div className="text-3xl font-bold">
+                    {showBalance ? `${balances.YFD.toLocaleString()} YFD` : '••••••'}
+                  </div>
                 </div>
                 <div className="text-lg opacity-90 mb-4">
                   Worth: ${yfdValueInUSD} USD • J${yfdValueInJMD} JMD
