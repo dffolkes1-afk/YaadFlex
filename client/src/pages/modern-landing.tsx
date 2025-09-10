@@ -3,6 +3,7 @@ import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { MapPin, Car, Users, Globe, Sparkles } from 'lucide-react';
 import { InteractiveMap } from '@/components/InteractiveMap';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function ModernLanding() {
   return (
@@ -30,7 +31,8 @@ export default function ModernLanding() {
           <h1 className="text-lg font-bold tracking-wider">YaadFlex Global Vybz</h1>
         </div>
         
-        <div className="flex gap-3">
+        <div className="flex gap-3 items-center">
+          <ThemeToggle />
           <Button 
             className="bg-gradient-to-r from-[#6da7ff] to-[#8ec1ff] text-[#06101a] font-bold border-0 hover:shadow-lg" 
             asChild

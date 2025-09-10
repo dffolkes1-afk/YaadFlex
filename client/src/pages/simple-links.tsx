@@ -1,5 +1,6 @@
 import { Link } from 'wouter';
 import { MapPin, Car, Users, Building, Truck, Phone, CreditCard, Radio } from 'lucide-react';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function SimpleLinksPage() {
   return (
@@ -13,6 +14,9 @@ export default function SimpleLinksPage() {
         
         {/* Header */}
         <div className="text-center mb-12">
+          <div className="flex justify-center mb-4">
+            <ThemeToggle />
+          </div>
           <h1 className="text-3xl font-bold mb-3">YaadFlex Platform</h1>
           <p className="text-gray-300">Professional transportation and business services</p>
         </div>
