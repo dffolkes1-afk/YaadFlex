@@ -62,6 +62,31 @@ export default function CompanyDashboard() {
               Your drivers keep more money = Happier drivers = Better business!
             </div>
           </div>
+
+          {/* Preview Feature Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border shadow-md hover:shadow-lg transition-all">
+              <div className="text-center">
+                <div className="text-4xl mb-2">🚕</div>
+                <div className="font-semibold text-blue-800">Real-Time Tracking</div>
+                <div className="text-sm text-blue-600">Live GPS & Route Optimization</div>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border shadow-md hover:shadow-lg transition-all">
+              <div className="text-center">
+                <div className="text-4xl mb-2">💰</div>
+                <div className="font-semibold text-green-800">YFD Currency</div>
+                <div className="text-sm text-green-600">Global Digital Money</div>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl border shadow-md hover:shadow-lg transition-all">
+              <div className="text-center">
+                <div className="text-4xl mb-2">📱</div>
+                <div className="font-semibold text-purple-800">Any Phone Works</div>
+                <div className="text-sm text-purple-600">No iPhone Required</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
@@ -137,17 +162,20 @@ export default function CompanyDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="text-center p-4 bg-green-50 rounded-lg">
+                  <div className="text-center p-4 bg-green-50 rounded-lg border hover:shadow-lg transition-all">
+                    <div className="text-5xl mb-3">💵</div>
                     <div className="text-3xl font-bold text-green-600 mb-2">J$45,750</div>
                     <div className="text-sm text-green-700">Total Revenue</div>
                     <div className="text-xs text-green-600 mt-1">↗️ +12% vs yesterday</div>
                   </div>
-                  <div className="text-center p-4 bg-blue-50 rounded-lg">
+                  <div className="text-center p-4 bg-blue-50 rounded-lg border hover:shadow-lg transition-all">
+                    <div className="text-5xl mb-3">👨‍💼</div>
                     <div className="text-3xl font-bold text-blue-600 mb-2">J$38,888</div>
                     <div className="text-sm text-blue-700">Driver Earnings (85%)</div>
                     <div className="text-xs text-blue-600 mt-1">🎯 Higher than competitors!</div>
                   </div>
-                  <div className="text-center p-4 bg-purple-50 rounded-lg">
+                  <div className="text-center p-4 bg-purple-50 rounded-lg border hover:shadow-lg transition-all">
+                    <div className="text-5xl mb-3">🏢</div>
                     <div className="text-3xl font-bold text-purple-600 mb-2">J$6,862</div>
                     <div className="text-sm text-purple-700">Company Share (15%)</div>
                     <div className="text-xs text-purple-600 mt-1">💼 Sustainable profit</div>
@@ -221,26 +249,35 @@ export default function CompanyDashboard() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg border-l-4 border-green-400">
-                      <div>
-                        <div className="font-semibold">Your YaadFlex Rate</div>
-                        <div className="text-sm text-gray-600">J${baseRate}/km • {commissionRate}% commission</div>
+                    <div className="flex justify-between items-center p-4 bg-green-50 rounded-lg border-l-4 border-green-400 hover:shadow-lg transition-all">
+                      <div className="flex items-center gap-3">
+                        <div className="text-3xl">🏆</div>
+                        <div>
+                          <div className="font-semibold">Your YaadFlex Rate</div>
+                          <div className="text-sm text-gray-600">J${baseRate}/km • {commissionRate}% commission</div>
+                        </div>
                       </div>
                       <Badge className="bg-green-600">✅ Best</Badge>
                     </div>
                     
-                    <div className="flex justify-between items-center p-3 bg-red-50 rounded-lg border-l-4 border-red-400">
-                      <div>
-                        <div className="font-semibold">Competitor A</div>
-                        <div className="text-sm text-gray-600">J$180/km • 25% commission</div>
+                    <div className="flex justify-between items-center p-4 bg-red-50 rounded-lg border-l-4 border-red-400 hover:shadow-lg transition-all">
+                      <div className="flex items-center gap-3">
+                        <div className="text-3xl">😞</div>
+                        <div>
+                          <div className="font-semibold">Competitor A (Uber)</div>
+                          <div className="text-sm text-gray-600">J$180/km • 25% commission</div>
+                        </div>
                       </div>
                       <Badge variant="destructive">Higher costs</Badge>
                     </div>
                     
-                    <div className="flex justify-between items-center p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-400">
-                      <div>
-                        <div className="font-semibold">Competitor B</div>
-                        <div className="text-sm text-gray-600">J$165/km • 25% commission</div>
+                    <div className="flex justify-between items-center p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-400 hover:shadow-lg transition-all">
+                      <div className="flex items-center gap-3">
+                        <div className="text-3xl">⚠️</div>
+                        <div>
+                          <div className="font-semibold">Competitor B (InDrive)</div>
+                          <div className="text-sm text-gray-600">J$165/km • 25% commission</div>
+                        </div>
                       </div>
                       <Badge className="bg-yellow-600">Still higher</Badge>
                     </div>
@@ -343,36 +380,45 @@ export default function CompanyDashboard() {
                   <div>
                     <h3 className="text-lg font-semibold mb-4">📊 Driver Performance Today</h3>
                     <div className="space-y-3">
-                      <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-                        <div>
-                          <div className="font-semibold">Marcus Johnson</div>
-                          <div className="text-sm text-gray-600">License: TAX-001 • Toyota Corolla</div>
+                      <div className="flex justify-between items-center p-4 bg-green-50 rounded-lg border hover:shadow-lg transition-all">
+                        <div className="flex items-center gap-3">
+                          <div className="text-3xl">🏆</div>
+                          <div>
+                            <div className="font-semibold">Marcus Johnson</div>
+                            <div className="text-sm text-gray-600">License: TAX-001 • Toyota Corolla 🚗</div>
+                          </div>
                         </div>
                         <div className="text-right">
                           <div className="font-bold text-green-600">J$3,250</div>
-                          <div className="text-xs text-gray-500">24 trips</div>
+                          <div className="text-xs text-gray-500">24 trips 🎯</div>
                         </div>
                       </div>
                       
-                      <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
-                        <div>
-                          <div className="font-semibold">Sarah Williams</div>
-                          <div className="text-sm text-gray-600">License: TAX-002 • Honda Civic</div>
+                      <div className="flex justify-between items-center p-4 bg-blue-50 rounded-lg border hover:shadow-lg transition-all">
+                        <div className="flex items-center gap-3">
+                          <div className="text-3xl">⭐</div>
+                          <div>
+                            <div className="font-semibold">Sarah Williams</div>
+                            <div className="text-sm text-gray-600">License: TAX-002 • Honda Civic 🚙</div>
+                          </div>
                         </div>
                         <div className="text-right">
                           <div className="font-bold text-blue-600">J$2,890</div>
-                          <div className="text-xs text-gray-500">19 trips</div>
+                          <div className="text-xs text-gray-500">19 trips 💪</div>
                         </div>
                       </div>
                       
-                      <div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
-                        <div>
-                          <div className="font-semibold">Devon Brown</div>
-                          <div className="text-sm text-gray-600">License: TAX-003 • Nissan Versa</div>
+                      <div className="flex justify-between items-center p-4 bg-purple-50 rounded-lg border hover:shadow-lg transition-all">
+                        <div className="flex items-center gap-3">
+                          <div className="text-3xl">🚀</div>
+                          <div>
+                            <div className="font-semibold">Devon Brown</div>
+                            <div className="text-sm text-gray-600">License: TAX-003 • Nissan Versa 🚘</div>
+                          </div>
                         </div>
                         <div className="text-right">
                           <div className="font-bold text-purple-600">J$2,150</div>
-                          <div className="text-xs text-gray-500">16 trips</div>
+                          <div className="text-xs text-gray-500">16 trips 📈</div>
                         </div>
                       </div>
                     </div>
