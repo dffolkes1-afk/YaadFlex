@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Coins } from 'lucide-react';
 import CoinFlipAnimation from './CoinFlipAnimation';
 
-// YFD Coin System - The "DINAR" is the supreme denomination
+// YFD Coin System - Global Unity Currency
 const coinDesigns = [
   {
     value: 1,
@@ -19,7 +19,12 @@ const coinDesigns = [
     description: 'Doctor Bird - National Symbol',
     edge: 'Smooth',
     features: ['Lignum Vitae Flower', 'National Bird', 'Unity Symbol'],
-    historicalPlace: 'Hope Botanical Gardens'
+    historicalPlace: 'Hope Botanical Gardens',
+    // Global Hero on Back
+    backHero: 'Mahatma Gandhi',
+    backCountry: 'India 🇮🇳',
+    backEmblem: '🕊️',
+    backMessage: 'Peace & Non-Violence'
   },
   {
     value: 5,
@@ -33,7 +38,12 @@ const coinDesigns = [
     description: 'National Fruit',
     edge: 'Reeded',
     features: ['Ackee Tree', 'Agricultural Heritage', 'Nourishment Symbol'],
-    historicalPlace: 'St. Elizabeth Breadbasket'
+    historicalPlace: 'St. Elizabeth Breadbasket',
+    // Global Hero on Back
+    backHero: 'Martin Luther King Jr.',
+    backCountry: 'USA 🇺🇸',
+    backEmblem: '✊',
+    backMessage: 'Freedom & Equality'
   },
   {
     value: 10,
@@ -47,7 +57,12 @@ const coinDesigns = [
     description: 'Blue Mountain Peak',
     edge: 'Grooved',
     features: ['Mountain Range', 'Coffee Heritage', 'Natural Beauty'],
-    historicalPlace: 'Blue Mountain Coffee Estate'
+    historicalPlace: 'Blue Mountain Coffee Estate',
+    // Global Hero on Back
+    backHero: 'Wangari Maathai',
+    backCountry: 'Kenya 🇰🇪',
+    backEmblem: '🌳',
+    backMessage: 'Environmental Champion'
   },
   {
     value: 25,
@@ -61,7 +76,12 @@ const coinDesigns = [
     description: 'Historic Port City',
     edge: 'Inscribed',
     features: ['Pirate History', 'Maritime Heritage', 'Trading Post'],
-    historicalPlace: 'Sunken City of Port Royal'
+    historicalPlace: 'Sunken City of Port Royal',
+    // Global Hero on Back
+    backHero: 'Benazir Bhutto',
+    backCountry: 'Pakistan 🇵🇰',
+    backEmblem: '👑',
+    backMessage: 'Leadership & Democracy'
   },
   {
     value: 50,
@@ -75,7 +95,12 @@ const coinDesigns = [
     description: 'Freedom Fighters Legacy',
     edge: 'Alternating',
     features: ['Accompong Town', 'Freedom Trail', 'Warrior Spirit'],
-    historicalPlace: 'Nanny Town, Moore Town'
+    historicalPlace: 'Nanny Town, Moore Town',
+    // Global Hero on Back
+    backHero: 'Frida Kahlo',
+    backCountry: 'Mexico 🇲🇽',
+    backEmblem: '🎨',
+    backMessage: 'Art & Resilience'
   },
   {
     value: 100,
@@ -89,7 +114,12 @@ const coinDesigns = [
     description: 'The Supreme Dinar',
     edge: 'Security Ridge',
     features: ['Marcus Garvey Star', 'African Unity', 'Supreme Value'],
-    historicalPlace: 'National Heroes Park'
+    historicalPlace: 'National Heroes Park',
+    // Global Hero on Back
+    backHero: 'Sun Yat-sen',
+    backCountry: 'China 🇨🇳',
+    backEmblem: '🌅',
+    backMessage: 'Revolution & Progress'
   },
   {
     value: 500,
@@ -103,7 +133,12 @@ const coinDesigns = [
     description: 'Royal Authority',
     edge: 'Diamond Cut',
     features: ['Rastafari Symbol', 'Royal Seal', 'Divine Protection'],
-    historicalPlace: 'Nine Mile, Trench Town'
+    historicalPlace: 'Nine Mile, Trench Town',
+    // Global Hero on Back
+    backHero: 'Simón Bolívar',
+    backCountry: 'Venezuela 🇻🇪',
+    backEmblem: '⚔️',
+    backMessage: 'Liberation & Unity'
   }
 ];
 
@@ -188,21 +223,23 @@ export default function YFDCoins() {
                 backContent={
                   <div className={`
                     w-full h-full rounded-full shadow-2xl
-                    bg-gradient-to-br ${currentCoin.color}
+                    bg-gradient-to-br from-blue-600 to-purple-700
                     border-4 border-gray-300
                     flex flex-col items-center justify-center
                   `}>
+                    {/* Global Hero Side */}
                     <div className="text-white text-center px-4">
-                      <div className="font-bold text-lg mb-2">{currentCoin.description}</div>
-                      <div className="text-sm opacity-90 mb-2">{currentCoin.metal}</div>
-                      <div className="text-xs opacity-80">Edge: {currentCoin.edge}</div>
-                      <div className="text-xs opacity-80 mt-2 italic">
-                        {currentCoin.historicalPlace}
+                      <div className="text-3xl mb-2 animate-pulse">{currentCoin.backEmblem}</div>
+                      <div className="font-bold text-lg mb-1">{currentCoin.backHero}</div>
+                      <div className="text-sm opacity-90 mb-2">{currentCoin.backCountry}</div>
+                      <div className="text-xs font-semibold text-yellow-300 mb-2">
+                        {currentCoin.backMessage}
                       </div>
-                      <div className="mt-3 space-y-1">
-                        {currentCoin.features.map((feature, idx) => (
-                          <div key={idx} className="text-xs opacity-75">• {feature}</div>
-                        ))}
+                      <div className="text-xs opacity-80 italic border-t border-white/20 pt-2">
+                        "Global Unity Through YaadFlex"
+                      </div>
+                      <div className="text-xs opacity-70 mt-1">
+                        Front: Jamaica 🇯🇲 • Back: {currentCoin.backCountry}
                       </div>
                     </div>
                   </div>
@@ -325,19 +362,29 @@ export default function YFDCoins() {
 
       {/* Information Card */}
       <Card className="mt-8 p-6 bg-gradient-to-r from-yellow-50 to-green-50 dark:from-yellow-950 dark:to-green-950">
-        <h3 className="text-xl font-bold mb-3">The Dinar System</h3>
-        <div className="space-y-2 text-sm">
+        <h3 className="text-xl font-bold mb-3">🌍 Global Unity Currency System</h3>
+        <div className="space-y-3 text-sm">
           <p>
-            <strong>The Dinar:</strong> Our supreme denomination, representing the highest value in the YaadFlex economy.
-            1 Dinar = 100 cents, making it both prestigious and practical.
+            <strong>Front Side - Jamaica 🇯🇲:</strong> Each coin celebrates our Jamaican heritage with real places like 
+            Hope Gardens, Blue Mountains, Port Royal, and Trench Town. Our identity, our history, our pride.
           </p>
           <p>
-            <strong>Real Places, Real History:</strong> Each coin features actual Jamaican historical sites -
-            from Hope Gardens to Port Royal, Blue Mountains to Trench Town. These aren't just symbols, they're our story.
+            <strong>Back Side - Global Heroes 🌍:</strong> Every coin honors heroes from different countries - 
+            Gandhi (India), MLK (USA), Wangari Maathai (Kenya), Benazir Bhutto (Pakistan), Frida Kahlo (Mexico), 
+            Sun Yat-sen (China), and Simón Bolívar (Venezuela).
           </p>
           <p>
-            <strong>Surreal Design:</strong> Elegant metallic gradients with embedded cultural emblems,
-            creating coins that feel both ancient and futuristic - uniquely YaadFlex.
+            <strong>Why This Matters:</strong> People from around the world see their heroes respected on YaadFlex currency.
+            This creates global appeal while keeping Jamaica at the center. Everyone feels included and valued.
+          </p>
+          <p className="bg-blue-100 dark:bg-blue-900 p-3 rounded">
+            <strong>🎯 Strategic Genius:</strong> When someone from India sees Gandhi on our 1-cent coin, 
+            they feel connected to YaadFlex. When someone from Mexico sees Frida Kahlo on our 50-cent coin, 
+            they want to use our currency. This attracts users from every nation!
+          </p>
+          <p>
+            <strong>The Dinar System:</strong> Our highest denominations (1 Dinar = 100 cents) represent supreme value 
+            while honoring both local heritage and global unity.
           </p>
         </div>
       </Card>
