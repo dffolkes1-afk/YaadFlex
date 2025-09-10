@@ -132,6 +132,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Universal Delivery Network routes
   app.use(deliveryRoutes);
   
+  // Vehicle Registration System for Delaware Insurance Business
+  const vehicleRegistrationRoutes = (await import('./vehicle-registration-routes')).default;
+  app.use(vehicleRegistrationRoutes);
+  
   // Seed time-locked authentication system
   app.post('/api/auth/seed', async (req, res) => {
     try {

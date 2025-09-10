@@ -1,0 +1,368 @@
+Got you. Here’s a ready-to-drop Car Registration module for YardFlex—Drizzle schema + Express routes + sample requests. It’s Jamaica-first (VIN/engine, red-plate flow, insurance, TAJ/Transport Authority steps), but portable to other islands.
+
+
+---
+
+1) Drizzle schema — drizzle/schema.vehicle.ts
+
+// drizzle/schema.vehicle.ts
+import {
+  pgTable, varchar, text, boolean, timestamp, integer, decimal, jsonb
+} from "drizzle-orm/pg-core";
+
+/** Core owners (use your existing users table if you have one) */
+export const vehicleOwners = pgTable("vehicle_owners", {
+  id: varchar("id", { length: 36 }).primaryKey(),           // userId
+  fullName: varchar("fullName", { length: 160 }).notNull(),
+  email: varchar("email", { length: 160 }).notNull(),
+  phone: varchar("phone", { length: 40 }),
+  trn: varchar("trn", { length: 20 }),                       // Jamaica TRN (optional at start)
+  address: text("address"),
+  createdAt: timestamp("createdAt").defaultNow()
+});
+
+/** Vehicles registered through YardFlex */
+export const vehicles = pgTable("vehicles", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  ownerId: varchar("ownerId", { length: 36 }).notNull(),
+  vin: varchar("vin", { length: 32 }).notNull(),             // VIN/Chassis
+  engineNo: varchar("engineNo", { length: 32 }).notNull(),
+  make: varchar("make", { length: 64 }).notNull(),
+  model: varchar("model", { length: 64 }).notNull(),
+  year: integer("year").notNull(),
+  color: varchar("color", { length: 32 }),
+  plateNumber: varchar("plateNumber", { length: 16 }),       // assigned once approved
+  plateType: varchar("plateType", { length: 16 }),           // 'red' | 'white' | 'ppv' | 'commercial'
+  isActive: boolean("isActive").default(false),
+  createdAt: timestamp("createdAt").defaultNow(),
+  updatedAt: timestamp("updatedAt").defaultNow()
+});
+
+/** All supporting documents (scans/photos/links) */
+export const vehicleDocuments = pgTable("vehicle_documents", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  vehicleId: varchar("vehicleId", { length: 36 }).notNull(),
+  type: varchar("type", { length: 32 }).notNull(),           // 'purchase_receipt'|'id'|'fitness'|'registration'|'insurance'|'customs'|'road_licence'
+  title: varchar("title", { length: 160 }),
+  url: text("url").notNull(),                                // S3/GCS link
+  verified: boolean("verified").default(false),
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").defaultNow()
+});
+
+/** Insurance linkage (policy proof) */
+export const insurancePolicies = pgTable("insurance_policies", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  vehicleId: varchar("vehicleId", { length: 36 }).notNull(),
+  insurer: varchar("insurer", { length: 120 }).notNull(),    // e.g. Sagicor, GK, Advantage General
+  policyNumber: varchar("policyNumber", { length: 64 }).notNull(),
+  startDate: timestamp("startDate").notNull(),
+  endDate: timestamp("endDate").notNull(),
+  coverage: text("coverage"),                                 // JSON/string summary
+  isValid: boolean("isValid").default(true),
+  createdAt: timestamp("createdAt").defaultNow()
+});
+
+/** Fitness/inspection */
+export const inspections = pgTable("inspections", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  vehicleId: varchar("vehicleId", { length: 36 }).notNull(),
+  inspectorName: varchar("inspectorName", { length: 120 }),
+  station: varchar("station", { length: 160 }),
+  passed: boolean("passed").default(false),
+  reportUrl: text("reportUrl"),
+  inspectedAt: timestamp("inspectedAt"),
+  createdAt: timestamp("createdAt").defaultNow()
+});
+
+/** Registration application workflow */
+export const registrationApplications = pgTable("registration_applications", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  vehicleId: varchar("vehicleId", { length: 36 }).notNull(),
+  ownerId: varchar("ownerId", { length: 36 }).notNull(),
+  desiredPlateType: varchar("desiredPlateType", { length: 16 }).notNull(), // 'red'|'white'|'ppv'|'commercial'
+  status: varchar("status", { length: 24 }).notNull().default("draft"),    // 'draft'|'submitted'|'pending_verification'|'approved'|'rejected'|'issued'
+  remarks: text("remarks"),
+  submittedAt: timestamp("submittedAt"),
+  decidedAt: timestamp("decidedAt"),
+  createdAt: timestamp("createdAt").defaultNow(),
+  updatedAt: timestamp("updatedAt").defaultNow()
+});
+
+/** Payments (Stripe/PayPal/etc.) */
+export const regPayments = pgTable("reg_payments", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+  applicationId: varchar("applicationId", { length: 36 }).notNull(),
+  provider: varchar("provider", { length: 24 }).notNull(),                // 'stripe'
+  providerIntentId: varchar("providerIntentId", { length: 80 }),
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),      // USD or JMD via currency
+  currency: varchar("currency", { length: 8 }).notNull().default("USD"),
+  status: varchar("status", { length: 24 }).default("pending"),          // 'pending'|'succeeded'|'failed'|'refunded'
+  meta: jsonb("meta"),
+  createdAt: timestamp("createdAt").defaultNow()
+});
+
+
+---
+
+2) Express routes — server/routes.vehicle.ts
+
+// server/routes.vehicle.ts
+import express from "express";
+import crypto from "node:crypto";
+import { eq } from "drizzle-orm";
+import { db } from "../drizzle/db";
+import {
+  vehicleOwners, vehicles, vehicleDocuments, insurancePolicies,
+  inspections, registrationApplications, regPayments
+} from "../drizzle/schema.vehicle";
+
+const router = express.Router();
+
+/** Helpers */
+const id = () => crypto.randomUUID();
+
+/** 1) Owner create/update */
+router.post("/api/owners", async (req, res) => {
+  const [row] = await db.insert(vehicleOwners).values({
+    id: req.body.id || id(),
+    fullName: req.body.fullName,
+    email: req.body.email,
+    phone: req.body.phone,
+    trn: req.body.trn,
+    address: req.body.address
+  }).onConflictDoUpdate({
+    target: vehicleOwners.id,
+    set: { fullName: req.body.fullName, email: req.body.email, phone: req.body.phone, trn: req.body.trn, address: req.body.address }
+  }).returning();
+  res.json(row);
+});
+
+/** 2) Vehicle register (initial) */
+router.post("/api/vehicles", async (req, res) => {
+  const [row] = await db.insert(vehicles).values({
+    id: id(),
+    ownerId: req.body.ownerId,
+    vin: req.body.vin,
+    engineNo: req.body.engineNo,
+    make: req.body.make,
+    model: req.body.model,
+    year: req.body.year,
+    color: req.body.color,
+    plateType: req.body.plateType // optional at this stage
+  }).returning();
+  res.json(row);
+});
+
+/** 3) Upload supporting document (store in S3/GCS; save URL here) */
+router.post("/api/vehicles/:vehicleId/documents", async (req, res) => {
+  const [row] = await db.insert(vehicleDocuments).values({
+    id: id(),
+    vehicleId: req.params.vehicleId,
+    type: req.body.type,          // 'purchase_receipt', 'id', 'fitness', 'insurance', etc.
+    title: req.body.title,
+    url: req.body.url
+  }).returning();
+  res.json(row);
+});
+
+/** 4) Insurance link */
+router.post("/api/vehicles/:vehicleId/insurance", async (req, res) => {
+  const [row] = await db.insert(insurancePolicies).values({
+    id: id(),
+    vehicleId: req.params.vehicleId,
+    insurer: req.body.insurer,
+    policyNumber: req.body.policyNumber,
+    startDate: req.body.startDate,
+    endDate: req.body.endDate,
+    coverage: req.body.coverage
+  }).returning();
+  res.json(row);
+});
+
+/** 5) Fitness/inspection record */
+router.post("/api/vehicles/:vehicleId/inspection", async (req, res) => {
+  const [row] = await db.insert(inspections).values({
+    id: id(),
+    vehicleId: req.params.vehicleId,
+    inspectorName: req.body.inspectorName,
+    station: req.body.station,
+    passed: !!req.body.passed,
+    reportUrl: req.body.reportUrl,
+    inspectedAt: req.body.inspectedAt
+  }).returning();
+  res.json(row);
+});
+
+/** 6) Submit registration application (for red plate / ppv etc.) */
+router.post("/api/registration/submit", async (req, res) => {
+  const now = new Date();
+  const [row] = await db.insert(registrationApplications).values({
+    id: id(),
+    vehicleId: req.body.vehicleId,
+    ownerId: req.body.ownerId,
+    desiredPlateType: req.body.desiredPlateType,   // 'red' | 'white' | 'ppv' | 'commercial'
+    status: "submitted",
+    submittedAt: now
+  }).returning();
+  res.json(row);
+});
+
+/** 7) Admin/Authority: move status (pending_verification -> approved/rejected -> issued) */
+router.post("/api/registration/:id/status", async (req, res) => {
+  const [row] = await db.update(registrationApplications)
+    .set({ status: req.body.status, remarks: req.body.remarks || null, decidedAt: new Date() })
+    .where(eq(registrationApplications.id, req.params.id))
+    .returning();
+  res.json(row[0] || null);
+});
+
+/** 8) Assign plate (upon approved/issued) */
+router.post("/api/vehicles/:vehicleId/assign-plate", async (req, res) => {
+  const [row] = await db.update(vehicles)
+    .set({ plateNumber: req.body.plateNumber, plateType: req.body.plateType, isActive: true, updatedAt: new Date() })
+    .where(eq(vehicles.id, req.params.vehicleId))
+    .returning();
+  res.json(row[0] || null);
+});
+
+/** 9) Payments for registration fees (Stripe intent id stored) */
+router.post("/api/registration/:applicationId/payments", async (req, res) => {
+  const [row] = await db.insert(regPayments).values({
+    id: id(),
+    applicationId: req.params.applicationId,
+    provider: req.body.provider || "stripe",
+    providerIntentId: req.body.providerIntentId,             // from Stripe PaymentIntent
+    amount: req.body.amount,
+    currency: req.body.currency || "USD",
+    status: "pending",
+    meta: req.body.meta || {}
+  }).returning();
+  res.json(row);
+});
+
+/** 10) List my vehicles + application status */
+router.get("/api/owners/:ownerId/vehicles", async (req, res) => {
+  const rows = await db.query.vehicles.findMany({
+    where: (v, { eq }) => eq(v.ownerId, req.params.ownerId)
+  });
+  res.json(rows);
+});
+
+export default router;
+
+> Add to your server bootstrap:
+
+
+
+// server/index.ts
+import vehicleRoutes from "./routes.vehicle";
+app.use(vehicleRoutes);
+
+
+---
+
+3) Stripe wiring (minimal)
+
+Create a PaymentIntent from your frontend (/create-payment-intent) and then store the intent id via /api/registration/:applicationId/payments.
+
+Add a webhook /webhooks/stripe to update regPayments.status to succeeded/failed on events.
+
+
+(If you want, I’ll drop the Stripe route + webhook snippet next.)
+
+
+---
+
+4) Sample requests (quick test)
+
+# 1. Create owner
+curl -X POST http://localhost:4000/api/owners -H "content-type: application/json" -d '{
+  "id": "user-001",
+  "fullName": "Dwayne Ffolkes",
+  "email": "dwayne@yardflex.com",
+  "phone": "+1-876-555-0000",
+  "trn": "123-456-789",
+  "address": "Kingston, Jamaica"
+}'
+
+# 2. Register vehicle
+curl -X POST http://localhost:4000/api/vehicles -H "content-type: application/json" -d '{
+  "ownerId": "user-001",
+  "vin": "JMK1234567890XYZ1",
+  "engineNo": "ENG998877",
+  "make": "Toyota",
+  "model": "Axio",
+  "year": 2016,
+  "color": "Silver",
+  "plateType": "red"
+}'
+
+# 3. Upload purchase receipt doc
+curl -X POST http://localhost:4000/api/vehicles/<VEHICLE_ID>/documents -H "content-type: application/json" -d '{
+  "type": "purchase_receipt",
+  "title": "Dealer Invoice",
+  "url": "https://your-cdn/receipts/invoice-123.pdf"
+}'
+
+# 4. Link insurance
+curl -X POST http://localhost:4000/api/vehicles/<VEHICLE_ID>/insurance -H "content-type: application/json" -d '{
+  "insurer": "Sagicor",
+  "policyNumber": "POL-ABC-123",
+  "startDate": "2025-09-01T00:00:00Z",
+  "endDate": "2026-09-01T00:00:00Z",
+  "coverage": "Comprehensive"
+}'
+
+# 5. Inspection result
+curl -X POST http://localhost:4000/api/vehicles/<VEHICLE_ID>/inspection -H "content-type: application/json" -d '{
+  "inspectorName": "JVIP Station 7",
+  "station": "Kingston",
+  "passed": true,
+  "reportUrl": "https://your-cdn/fitness/fit-777.pdf",
+  "inspectedAt": "2025-09-10T12:00:00Z"
+}'
+
+# 6. Submit application for red plate
+curl -X POST http://localhost:4000/api/registration/submit -H "content-type: application/json" -d '{
+  "vehicleId": "<VEHICLE_ID>",
+  "ownerId": "user-001",
+  "desiredPlateType": "red"
+}'
+
+# 7. (Admin) Approve
+curl -X POST http://localhost:4000/api/registration/<APP_ID>/status -H "content-type: application/json" -d '{
+  "status": "approved",
+  "remarks": "All checks passed"
+}'
+
+# 8. Assign plate
+curl -X POST http://localhost:4000/api/vehicles/<VEHICLE_ID>/assign-plate -H "content-type: application/json" -d '{
+  "plateNumber": "PPV-1234",
+  "plateType": "red"
+}'
+
+
+---
+
+5) How this maps to your big plan
+
+Delaware → Bank → Stripe → YardFlex: all registration payments (govt fees, processing, inspection bookings) flow via your Delaware entity and payment processors.
+
+Jamaica compliance: your API/data model captures everything TAJ/Transport Authority need. When you’re ready, create partner endpoints or secure exports to share with authorities.
+
+Scale-out: other islands can reuse the same flow—just add local plate types & fields.
+
+
+
+---
+
+If you want, I can:
+
+add a Stripe PaymentIntent route + webhook,
+
+add an “Authority Portal” view for approving applications,
+
+or pack this into a single PDF like we’ve done before.
+
+

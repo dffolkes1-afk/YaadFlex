@@ -5652,6 +5652,105 @@ export type DeliveryReview = typeof deliveryReviews.$inferSelect;
 export type InsertDeliveryReview = z.infer<typeof insertDeliveryReviewSchema>;
 
 // ==========================
+// ========== VEHICLE REGISTRATION SYSTEM FOR DELAWARE INSURANCE ==========
+// Complete vehicle registration workflow for insurance business
+
+export const vehicleOwners = pgTable("vehicle_owners", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id), // Link to authenticated user
+  fullName: varchar("full_name").notNull(),
+  email: varchar("email").notNull(),
+  phone: varchar("phone"),
+  trn: varchar("trn"), // Jamaica TRN
+  address: text("address"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const registrationVehicles = pgTable("registration_vehicles", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  ownerId: varchar("owner_id").notNull().references(() => vehicleOwners.id),
+  vin: varchar("vin").notNull(), // VIN/Chassis
+  engineNo: varchar("engine_no").notNull(),
+  make: varchar("make").notNull(),
+  model: varchar("model").notNull(),
+  year: integer("year").notNull(),
+  color: varchar("color"),
+  plateNumber: varchar("plate_number"), // assigned once approved
+  plateType: varchar("plate_type"), // 'red' | 'white' | 'ppv' | 'commercial'
+  isActive: boolean("is_active").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const vehicleDocuments = pgTable("vehicle_documents", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  vehicleId: varchar("vehicle_id").notNull().references(() => registrationVehicles.id),
+  type: varchar("type").notNull(), // 'purchase_receipt'|'id'|'fitness'|'registration'|'insurance'|'customs'
+  title: varchar("title"),
+  url: text("url").notNull(), // S3/GCS link
+  verified: boolean("verified").default(false),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insurancePolicies = pgTable("insurance_policies", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  vehicleId: varchar("vehicle_id").notNull().references(() => registrationVehicles.id),
+  insurer: varchar("insurer").notNull(), // Sagicor, GK, Advantage General, YaadFlex Insurance
+  policyNumber: varchar("policy_number").notNull(),
+  startDate: timestamp("start_date").notNull(),
+  endDate: timestamp("end_date").notNull(),
+  coverage: text("coverage"), // JSON/string summary
+  monthlyPremium: decimal("monthly_premium", { precision: 10, scale: 2 }),
+  isValid: boolean("is_valid").default(true),
+  managedByYaadFlex: boolean("managed_by_yaad_flex").default(false), // Your Delaware insurance
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const vehicleInspections = pgTable("vehicle_inspections", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  vehicleId: varchar("vehicle_id").notNull().references(() => registrationVehicles.id),
+  inspectorName: varchar("inspector_name"),
+  station: varchar("station"),
+  passed: boolean("passed").default(false),
+  reportUrl: text("report_url"),
+  conditionScore: integer("condition_score"), // 0-100 from AI evaluation
+  evaluatorId: varchar("evaluator_id").references(() => users.id), // YaadFlex evaluator
+  evaluatorNotes: text("evaluator_notes"),
+  photos: jsonb("photos"), // Array of photo URLs
+  inspectedAt: timestamp("inspected_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const registrationApplications = pgTable("registration_applications", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  vehicleId: varchar("vehicle_id").notNull().references(() => registrationVehicles.id),
+  ownerId: varchar("owner_id").notNull().references(() => vehicleOwners.id),
+  desiredPlateType: varchar("desired_plate_type").notNull(), // 'red'|'white'|'ppv'|'commercial'
+  status: varchar("status").notNull().default("draft"), // 'draft'|'submitted'|'pending_verification'|'approved'|'rejected'|'issued'
+  insuranceProvider: varchar("insurance_provider"), // Which insurance covering
+  estimatedValue: decimal("estimated_value", { precision: 12, scale: 2 }), // AI valuation
+  approvedBy: varchar("approved_by").references(() => users.id), // Delaware admin
+  remarks: text("remarks"),
+  submittedAt: timestamp("submitted_at"),
+  decidedAt: timestamp("decided_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const registrationPayments = pgTable("registration_payments", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  applicationId: varchar("application_id").notNull().references(() => registrationApplications.id),
+  provider: varchar("provider").notNull(), // 'stripe'
+  providerIntentId: varchar("provider_intent_id"),
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency").notNull().default("USD"),
+  status: varchar("status").default("pending"), // 'pending'|'succeeded'|'failed'|'refunded'
+  paymentType: varchar("payment_type").notNull(), // 'registration_fee'|'inspection_fee'|'insurance_premium'
+  meta: jsonb("meta"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // AUTONOMOUS OPS AGENT TYPES
 // ==========================
 
@@ -5712,6 +5811,44 @@ export const insertAgentLogSchema = createInsertSchema(agentLogs).omit({
   createdAt: true,
 });
 
+// Vehicle Registration Insert Schemas
+export const insertVehicleOwnerSchema = createInsertSchema(vehicleOwners).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertRegistrationVehicleSchema = createInsertSchema(registrationVehicles).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertVehicleDocumentSchema = createInsertSchema(vehicleDocuments).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertInsurancePolicySchema = createInsertSchema(insurancePolicies).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertVehicleInspectionSchema = createInsertSchema(vehicleInspections).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertRegistrationApplicationSchema = createInsertSchema(registrationApplications).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertRegistrationPaymentSchema = createInsertSchema(registrationPayments).omit({
+  id: true,
+  createdAt: true,
+});
+
 // Select Types
 export type Freelancer = typeof freelancers.$inferSelect;
 export type InsertFreelancer = z.infer<typeof insertFreelancerSchema>;
@@ -5731,3 +5868,19 @@ export type CeoDashboardMetric = typeof ceoDashboardMetrics.$inferSelect;
 export type InsertCeoDashboardMetric = z.infer<typeof insertCeoDashboardMetricSchema>;
 export type AgentLog = typeof agentLogs.$inferSelect;
 export type InsertAgentLog = z.infer<typeof insertAgentLogSchema>;
+
+// Vehicle Registration Types
+export type VehicleOwner = typeof vehicleOwners.$inferSelect;
+export type InsertVehicleOwner = z.infer<typeof insertVehicleOwnerSchema>;
+export type RegistrationVehicle = typeof registrationVehicles.$inferSelect;
+export type InsertRegistrationVehicle = z.infer<typeof insertRegistrationVehicleSchema>;
+export type VehicleDocument = typeof vehicleDocuments.$inferSelect;
+export type InsertVehicleDocument = z.infer<typeof insertVehicleDocumentSchema>;
+export type InsurancePolicy = typeof insurancePolicies.$inferSelect;
+export type InsertInsurancePolicy = z.infer<typeof insertInsurancePolicySchema>;
+export type VehicleInspection = typeof vehicleInspections.$inferSelect;
+export type InsertVehicleInspection = z.infer<typeof insertVehicleInspectionSchema>;
+export type RegistrationApplication = typeof registrationApplications.$inferSelect;
+export type InsertRegistrationApplication = z.infer<typeof insertRegistrationApplicationSchema>;
+export type RegistrationPayment = typeof registrationPayments.$inferSelect;
+export type InsertRegistrationPayment = z.infer<typeof insertRegistrationPaymentSchema>;
