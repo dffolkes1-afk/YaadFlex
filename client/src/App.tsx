@@ -57,6 +57,7 @@ import SocialFeed from "@/pages/SocialFeed";
 import GlobalJobs from "@/pages/GlobalJobs";
 import YaadWallet from "@/pages/YaadWallet";
 import HeritageDelivery from "@/pages/HeritageDelivery";
+import UniversalPaymentPage from "@/pages/UniversalPaymentPage";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -84,6 +85,8 @@ function Router() {
       <Route path="/social-hub" component={SocialHub} />
       <Route path="/heritage-delivery" component={HeritageDelivery} />
       <Route path="/delivery-riders" component={HeritageDelivery} />
+      <Route path="/universal-payment" component={UniversalPaymentPage} />
+      <Route path="/link-payment" component={UniversalPaymentPage} />
       <Route path="/pricing" component={PricingCalculator} />
       <Route path="/book-ride" component={CustomerBooking} />
       <Route path="/travel-booking" component={TravelBooking} />
