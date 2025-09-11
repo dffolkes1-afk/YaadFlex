@@ -80,6 +80,7 @@ import MagicDrop from "@/pages/MagicDrop";
 import SurpriseLanding from "@/pages/SurpriseLanding";
 import ContactMagic from "@/pages/ContactMagic";
 import WorldTakeover from "@/pages/WorldTakeover";
+import YaadParty from "@/pages/YaadParty";
 
 function Router() {
   // BYPASS AUTHENTICATION - UNLOCK ALL ACCESS FOR OWNER
@@ -169,6 +170,9 @@ function Router() {
       <Route path="/world" component={WorldTakeover} />
       <Route path="/world-takeover" component={WorldTakeover} />
       <Route path="/global" component={WorldTakeover} />
+      <Route path="/party" component={YaadParty} />
+      <Route path="/fun" component={YaadParty} />
+      <Route path="/yaad-party" component={YaadParty} />
       
       {/* Hidden Founder Profile - Private */}
       <Route path="/founder-vision-2024" component={FounderProfile} />
