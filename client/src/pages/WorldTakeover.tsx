@@ -10,8 +10,8 @@ export default function WorldTakeover() {
   const { toast } = useToast();
   
   const countries = [
-    { name: 'Jamaica 🇯🇲', code: 'JM', status: 'LIVE', users: '250K+' },
-    { name: 'Canada 🇨🇦', code: 'CA', status: 'LIVE', users: '180K+' },
+    { name: 'Jamaica 🇯🇲', code: 'JM', status: 'HEADQUARTERS', users: '500K+' },
+    { name: 'Canada 🇨🇦', code: 'CA', status: 'EXPANDING', users: '180K+' },
     { name: 'USA 🇺🇸', code: 'US', status: 'LAUNCHING', users: '500K waiting' },
     { name: 'UK 🇬🇧', code: 'GB', status: 'LAUNCHING', users: '200K waiting' },
     { name: 'Nigeria 🇳🇬', code: 'NG', status: 'COMING', users: 'Pre-launch' },
@@ -51,11 +51,11 @@ export default function WorldTakeover() {
           >
             <Globe className="h-16 w-16 text-primary" />
           </motion.div>
-          <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 bg-clip-text text-transparent">
-            YAADFLEX WORLD TAKEOVER
+          <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-green-500 via-yellow-500 to-black bg-clip-text text-transparent">
+            JAMAICA TO THE WORLD
           </h1>
           <p className="text-xl text-muted-foreground">
-            From Jamaica & Canada to the ENTIRE WORLD
+            YaadFlex - Jamaica Taking Over The ENTIRE WORLD 🇯🇲
           </p>
         </div>
 
@@ -101,8 +101,8 @@ export default function WorldTakeover() {
         {/* Country Grid */}
         <Card className="mb-8">
           <CardHeader>
-            <CardTitle>Global Launch Status</CardTitle>
-            <CardDescription>YaadFlex is taking over, one country at a time</CardDescription>
+            <CardTitle>Jamaica's Global Expansion</CardTitle>
+            <CardDescription>From Jamaica to every corner of the world</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -114,8 +114,12 @@ export default function WorldTakeover() {
                 >
                   <Card 
                     className={`cursor-pointer transition-all ${
-                      country.status === 'LIVE' 
+                      country.status === 'HEADQUARTERS' 
                         ? 'border-green-500 bg-green-50/50 dark:bg-green-900/20' 
+                        : country.status === 'LIVE' 
+                        ? 'border-green-500 bg-green-50/50 dark:bg-green-900/20' 
+                        : country.status === 'EXPANDING'
+                        ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-900/20'
                         : country.status === 'LAUNCHING'
                         ? 'border-yellow-500 bg-yellow-50/50 dark:bg-yellow-900/20'
                         : 'border-gray-300'
@@ -125,7 +129,9 @@ export default function WorldTakeover() {
                     <CardContent className="p-4 text-center">
                       <p className="text-2xl mb-2">{country.name}</p>
                       <p className={`text-sm font-bold mb-1 ${
+                        country.status === 'HEADQUARTERS' ? 'text-green-600' :
                         country.status === 'LIVE' ? 'text-green-600' :
+                        country.status === 'EXPANDING' ? 'text-blue-600' :
                         country.status === 'LAUNCHING' ? 'text-yellow-600' :
                         'text-gray-600'
                       }`}>
@@ -146,23 +152,23 @@ export default function WorldTakeover() {
             <CardContent className="p-6">
               <h3 className="font-bold text-lg mb-3 flex items-center gap-2">
                 <Plane className="h-5 w-5" />
-                Jamaica & Canada Leading
+                Jamaica Leading The World
               </h3>
               <p className="text-sm text-muted-foreground mb-4">
-                The revolution started here - now we're taking it global
+                From the heart of Jamaica - spreading to every nation
               </p>
               <Button
-                className="w-full bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 hover:opacity-90"
+                className="w-full bg-gradient-to-r from-green-500 via-yellow-500 to-black hover:opacity-90"
                 size="lg"
                 onClick={() => {
                   toast({
-                    title: "Jamaica & Canada STRONG! 💪",
-                    description: "Leading the global revolution!",
+                    title: "JAMAICA STRONG! 🇯🇲💪",
+                    description: "Taking over the world!",
                   });
                 }}
-                data-testid="button-jamaica-canada"
+                data-testid="button-jamaica-power"
               >
-                Jamaica + Canada Power
+                Jamaica World Power 🇯🇲
               </Button>
             </CardContent>
           </Card>
@@ -221,7 +227,7 @@ export default function WorldTakeover() {
                 <Button
                   variant="outline"
                   onClick={() => {
-                    const text = `YaadFlex - THE FAIR ALTERNATIVE! 🌍 From Jamaica & Canada to the WORLD! Join the revolution: ${window.location.origin}`;
+                    const text = `YaadFlex - Jamaica taking over the WORLD! 🇯🇲🌍 THE FAIR ALTERNATIVE! Join us: ${window.location.origin}`;
                     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
                   }}
                   data-testid="button-whatsapp"
@@ -248,13 +254,13 @@ export default function WorldTakeover() {
         <div className="text-center mt-8 p-6 bg-gradient-to-r from-primary/10 to-purple-500/10 rounded-lg">
           <h2 className="text-2xl font-bold mb-3">THE MISSION</h2>
           <p className="text-lg">
-            From the heart of Jamaica 🇯🇲 and the strength of Canada 🇨🇦
+            From the heart of JAMAICA 🇯🇲
           </p>
           <p className="text-lg mt-2">
-            YaadFlex is taking on the ENTIRE WORLD 🌍
+            YaadFlex is taking over the ENTIRE WORLD 🌍
           </p>
           <p className="text-sm text-muted-foreground mt-4">
-            No tricks. No gimmicks. Just the BEST app spreading naturally.
+            Jamaica to the world - spreading naturally, taking over globally!
           </p>
         </div>
       </motion.div>
