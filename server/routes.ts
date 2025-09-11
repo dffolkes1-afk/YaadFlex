@@ -4849,10 +4849,17 @@ P.S. - Early business partners get exclusive territory rights and preferred part
   // FILE UPLOAD & OBJECT STORAGE ENDPOINTS
   // ============================================================
 
-  // Get upload URL for file uploads
+  // Get upload URL for file uploads - SECURED
   app.post('/api/objects/upload', async (req, res) => {
     try {
       const { fileName } = req.body;
+      
+      // Security validation
+      const { validateFileUpload } = await import('./security-patch');
+      const validation = validateFileUpload(fileName);
+      if (!validation.valid) {
+        return res.status(400).json({ error: validation.error });
+      }
       const { ObjectStorageService } = await import('./objectStorage');
       const objectStorageService = new ObjectStorageService();
       const uploadURL = await objectStorageService.getObjectEntityUploadURL(fileName);
@@ -4863,9 +4870,14 @@ P.S. - Early business partners get exclusive territory rights and preferred part
     }
   });
 
-  // Serve uploaded files
+  // Serve uploaded files - SECURED
   app.get('/objects/:objectPath(*)', async (req, res) => {
     try {
+      // Prevent path traversal
+      const path = req.params.objectPath;
+      if (path.includes('..') || path.includes('//')) {
+        return res.status(400).json({ error: 'Invalid path' });
+      }
       const { ObjectStorageService, ObjectNotFoundError } = await import('./objectStorage');
       const objectStorageService = new ObjectStorageService();
       const objectFile = await objectStorageService.getObjectEntityFile(req.path);
@@ -4879,10 +4891,15 @@ P.S. - Early business partners get exclusive territory rights and preferred part
     }
   });
 
-  // Serve public files from object storage
+  // Serve public files from object storage - SECURED
   app.get('/public-objects/:filePath(*)', async (req, res) => {
     try {
       const filePath = req.params.filePath;
+      
+      // Security: Prevent path traversal
+      if (filePath.includes('..') || filePath.includes('//')) {
+        return res.status(400).json({ error: 'Invalid file path' });
+      }
       const { ObjectStorageService } = await import('./objectStorage');
       const objectStorageService = new ObjectStorageService();
       const file = await objectStorageService.searchPublicObject(filePath);
