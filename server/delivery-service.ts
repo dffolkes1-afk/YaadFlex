@@ -143,7 +143,7 @@ function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: numbe
   return R * c;
 }
 
-// Auto-assign order to best available delivery personnel
+// Auto-assign order to best available delivery personnel - NEVER REJECT ORDERS!
 export async function autoAssignOrder(orderId: string): Promise<string | null> {
   const [order] = await db.select()
     .from(deliveryOrders)
@@ -159,8 +159,11 @@ export async function autoAssignOrder(orderId: string): Promise<string | null> {
     Number(order.pickupLng)
   );
 
+  // ACCEPT ALL ORDERS - Even with no drivers available!
   if (availablePersonnel.length === 0) {
-    return null; // No available personnel
+    // Keep order in pending status - NEVER REJECT!
+    console.log(`Order ${orderId} queued - No drivers available but ORDER ACCEPTED!`);
+    return 'QUEUED'; // Return special status to indicate queued but accepted
   }
 
   // Assign to the best-ranked personnel

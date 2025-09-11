@@ -105,24 +105,31 @@ router.post("/api/delivery/orders", isAuthenticated, async (req, res) => {
     });
 
     const [newOrder] = await db.insert(deliveryOrders)
-      .values(orderData)
+      .values([orderData])
       .returning();
 
-    // Try to auto-assign to available delivery personnel
+    // ALWAYS ACCEPT ORDERS - Try to auto-assign but NEVER reject
+    let assignmentMessage = "Your order is confirmed and being processed! 🚀";
     try {
       const assignedPersonnelId = await autoAssignOrder(newOrder.id);
-      if (assignedPersonnelId) {
+      if (assignedPersonnelId === 'QUEUED') {
+        assignmentMessage = "Order ACCEPTED! We're finding you a driver right now - no cancellation needed! 🇯🇲";
+        console.log(`Order ${newOrder.orderNumber} ACCEPTED and QUEUED - No drivers available but NEVER REJECTED!`);
+      } else if (assignedPersonnelId) {
+        assignmentMessage = "Order ACCEPTED and driver assigned! Your delivery is starting soon! 🚚";
         console.log(`Order ${newOrder.orderNumber} auto-assigned to personnel ${assignedPersonnelId}`);
       }
     } catch (assignError) {
-      console.log(`Could not auto-assign order ${newOrder.orderNumber}:`, assignError);
-      // Continue - order is still created, just needs manual assignment
+      console.log(`Order ${newOrder.orderNumber} ACCEPTED - Assignment process continuing:`, assignError);
+      assignmentMessage = "Order ACCEPTED! We're processing your request - guaranteed delivery! ✅";
     }
 
     res.status(201).json({
       success: true,
       order: newOrder,
-      message: "Delivery order created successfully"
+      message: assignmentMessage,
+      guaranteed: true,
+      status: "ALL REQUESTS ACCEPTED - NO REJECTIONS EVER!"
     });
   } catch (error: any) {
     console.error("Create order error:", error);

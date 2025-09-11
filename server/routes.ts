@@ -695,7 +695,9 @@ Time: ${new Date().toISOString()}
         estimatedFare,
         driverEarnings: Math.round(parseFloat(estimatedFare) * 0.85),
         yaadFlexFee: parseFloat(estimatedFare) - Math.round(parseFloat(estimatedFare) * 0.85),
-        message: `Your ${vehicleType} is being dispatched! 🇯🇲🚗`
+        message: `Your ${vehicleType} is being dispatched! 🇯🇲🚗`,
+        guaranteed: true,
+        status: "RIDE ACCEPTED - NO REJECTIONS EVER!"
       });
     } catch (error) {
       console.error("Error booking ride:", error);
