@@ -127,6 +127,54 @@ function KWDWalletSection() {
           <p className="text-sm text-gray-600 mt-2">Access Instagram, TikTok, Uber, PayPal & more - wrapped in YardFlex</p>
         </div>
 
+        {/* Quick Access Dashboard Links */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-4">
+          <Link to="/fleet-owner">
+            <Button variant="outline" className="w-full text-sm" data-testid="button-fleet-owner">
+              🚗 Fleet Owner
+            </Button>
+          </Link>
+          <Link to="/ceo-dashboard">
+            <Button variant="outline" className="w-full text-sm" data-testid="button-ceo-dashboard">
+              👔 CEO Dashboard
+            </Button>
+          </Link>
+          <Link to="/company-dashboard">
+            <Button variant="outline" className="w-full text-sm" data-testid="button-company-dashboard">
+              🏢 Company
+            </Button>
+          </Link>
+          <Link to="/business-dashboard">
+            <Button variant="outline" className="w-full text-sm" data-testid="button-business-dashboard">
+              💼 Business
+            </Button>
+          </Link>
+          <Link to="/trading-dashboard">
+            <Button variant="outline" className="w-full text-sm" data-testid="button-trading-dashboard">
+              📈 Trading
+            </Button>
+          </Link>
+          <Link to="/wallet">
+            <Button variant="outline" className="w-full text-sm" data-testid="button-wallet">
+              💰 Wallet
+            </Button>
+          </Link>
+        </div>
+
+        {/* Payment & Booking Links */}
+        <div className="grid grid-cols-2 gap-2 mb-4">
+          <Link to="/pricing-calculator">
+            <Button variant="secondary" className="w-full text-sm" data-testid="button-pricing-calculator">
+              🧮 Pricing Calculator
+            </Button>
+          </Link>
+          <Link to="/customer-booking">
+            <Button variant="secondary" className="w-full text-sm" data-testid="button-customer-booking">
+              🚕 Book a Ride
+            </Button>
+          </Link>
+        </div>
+
         {/* Wallet Balances */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="glass-card p-4 rounded-lg premium-glow">
@@ -596,7 +644,7 @@ export default function Home() {
                 
                 <div className="text-center">
                   <Button 
-                    onClick={() => setLocation('/business-signup')}
+                    onClick={() => setLocation('/business-registration')}
                     className="bg-gradient-to-r from-green-600 to-yellow-600 hover:from-green-700 hover:to-yellow-700 text-white text-3xl px-12 py-6 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-green-400/80"
                     data-testid="button-join-yardflex-business"
                   >
@@ -630,14 +678,14 @@ export default function Home() {
                 </div>
                 <div className="flex space-x-3">
                   <Button 
-                    onClick={() => setLocation('/wholesale')}
+                    onClick={() => setLocation('/service-marketplace')}
                     className="bg-yellow-600 text-black hover:bg-yellow-700 font-bold"
                     data-testid="button-access-wholesale"
                   >
                     🏭 B2B WHOLESALE
                   </Button>
                   <Button 
-                    onClick={() => setLocation('/dropshipping')}
+                    onClick={() => setLocation('/service-marketplace')}
                     className="bg-green-600 text-white hover:bg-green-700 font-bold"
                     data-testid="button-access-dropshipping"
                   >
@@ -862,7 +910,7 @@ export default function Home() {
                 
                 <div className="text-center">
                   <Button 
-                    onClick={() => setLocation('/email-campaign')}
+                    onClick={() => setLocation('/email-assistant')}
                     className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white text-3xl px-12 py-6 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-red-400/80"
                     data-testid="button-launch-email-campaign"
                   >
@@ -1002,7 +1050,7 @@ export default function Home() {
                 
                 <div className="text-center">
                   <Button 
-                    onClick={() => setLocation('/global-deployment')}
+                    onClick={() => setLocation('/super-app')}
                     className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-3xl px-12 py-6 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-blue-400/80"
                     data-testid="button-deploy-global"
                   >
@@ -1136,7 +1184,7 @@ export default function Home() {
                 
                 <div className="text-center">
                   <Button 
-                    onClick={() => setLocation('/ai-assistant')}
+                    onClick={() => setLocation('/voice-control')}
                     className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white text-3xl px-12 py-6 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-cyan-400/80"
                     data-testid="button-ai-assistant"
                   >
@@ -1309,7 +1357,7 @@ export default function Home() {
                 
                 <div className="text-center">
                   <Button 
-                    onClick={() => setLocation('/taxi-pricing')}
+                    onClick={() => setLocation('/pricing-calculator')}
                     className="bg-gradient-to-r from-green-600 to-yellow-600 hover:from-green-700 hover:to-yellow-700 text-white text-3xl px-12 py-6 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-green-400/80"
                     data-testid="button-fair-taxi-pricing"
                   >
@@ -1400,7 +1448,7 @@ export default function Home() {
                 
                 <div className="text-center">
                   <Button 
-                    onClick={() => setLocation('/bookings')}
+                    onClick={() => setLocation('/customer-booking')}
                     className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-3xl px-12 py-6 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-purple-400/80"
                     data-testid="button-enter-booking-platform"
                   >
