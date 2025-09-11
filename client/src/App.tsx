@@ -70,6 +70,7 @@ import SimpleUpload from "@/pages/SimpleUpload";
 import TinyUpload from "@/pages/TinyUpload";
 import WorldVybz from "@/pages/WorldVybz";
 import MediaHub from "@/pages/MediaHub";
+import RipleyTest from "@/pages/ripley-test";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -77,6 +78,9 @@ function Router() {
   return (
     <Switch>
       {/* Public routes - accessible to everyone */}
+      <Route path="/ripley" component={RipleyTest} />
+      <Route path="/ripley-test" component={RipleyTest} />
+      <Route path="/voice-test" component={RipleyTest} />
       <Route path="/portal" component={GalacticPortalPage} />
       <Route path="/real-estate" component={RealEstatePage} />
       <Route path="/car-marketplace" component={CarMarketplacePage} />
