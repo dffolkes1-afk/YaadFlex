@@ -45,18 +45,18 @@ export function validateFileUpload(fileName: string, fileSize?: number): { valid
   return { valid: true };
 }
 
-// Rate limiting for API endpoints
+// Rate limiting DISABLED - Unlimited requests allowed
 export const apiRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.'
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 999999, // Essentially unlimited requests
+  message: 'Rate limit disabled - unlimited requests allowed.'
 });
 
-// Strict rate limiting for file uploads
+// File upload rate limiting DISABLED - Unlimited uploads allowed
 export const uploadRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // Only 10 uploads per 15 minutes
-  message: 'Upload limit exceeded. Please try again later.'
+  windowMs: 1 * 60 * 1000, // 1 minute  
+  max: 999999, // Essentially unlimited uploads
+  message: 'Upload rate limit disabled - unlimited uploads allowed.'
 });
 
 // Authentication middleware for production
