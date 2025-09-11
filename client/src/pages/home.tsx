@@ -394,9 +394,20 @@ export default function Home() {
               )}
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-muted-foreground" data-testid="user-welcome">
-                Welcome to the Global Economy
-              </span>
+              {/* User Profile Display */}
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm border-2 border-white shadow-lg" data-testid="user-avatar">
+                  {user?.firstName?.[0]}{user?.lastName?.[0]}
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-semibold text-foreground" data-testid="user-name">
+                    {user?.firstName} {user?.lastName}
+                  </span>
+                  <span className="text-xs text-muted-foreground" data-testid="user-welcome">
+                    Owner • Global Economy
+                  </span>
+                </div>
+              </div>
               <Button 
                 variant="outline" 
                 onClick={() => setLocation("/wallet")} 
