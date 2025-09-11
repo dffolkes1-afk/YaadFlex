@@ -74,7 +74,9 @@ import RipleyTest from "@/pages/ripley-test";
 import DrivingCoach from "@/pages/DrivingCoach";
 
 function Router() {
-  const { isAuthenticated, isLoading } = useAuth();
+  // BYPASS AUTHENTICATION - UNLOCK ALL ACCESS FOR OWNER
+  const isAuthenticated = true; // Force authentication bypass
+  const isLoading = false; // No loading blocks
 
   return (
     <Switch>
@@ -145,40 +147,32 @@ function Router() {
       {/* Hidden Founder Profile - Private */}
       <Route path="/founder-vision-2024" component={FounderProfile} />
       
-      {/* Authentication-based routes */}
-      {isLoading || !isAuthenticated ? (
-        <>
-          <Route path="/" component={ModernLanding} />
-          <Route path="/old-landing" component={ProfessionalLanding} />
-          <Route path="/original-landing" component={Landing} />
-        </>
-      ) : (
-        <>
-          <Route path="/" component={ModernLanding} />
-          <Route path="/home" component={Home} />
-          <Route path="/tracking" component={RealTimeTracking} />
-          <Route path="/cb-radio" component={CBRadio} />
-          <Route path="/secure-browser" component={SecureBrowser} />
-          <Route path="/social-commerce" component={SocialCommerce} />
-          <Route path="/rental-empire" component={RentalEmpire} />
-          <Route path="/wallet" component={Wallet} />
-          <Route path="/translator" component={TranslatorDemoPage} />
-          <Route path="/timeless-core" component={TimelessDashboardPage} />
-          <Route path="/workforce" component={WorkforceDashboard} />
-          <Route path="/post-job" component={JobPosting} />
-          <Route path="/duo-world" component={DuoWonTheWorld3D} />
-          <Route path="/business-dashboard" component={BusinessDashboard} />
-          <Route path="/trading-dashboard" component={TradingDashboard} />
-          <Route path="/ceo-dashboard" component={CeoDashboard} />
-          <Route path="/vendor-management" component={VendorManagement} />
-          <Route path="/secure-login" component={TimeAuthLogin} />
-          <Route path="/rbac-dashboard" component={RBACDashboard} />
-          <Route path="/delivery-dashboard" component={DeliveryPersonnelDashboard} />
-          <Route path="/book-delivery" component={DeliveryBooking} />
-          <Route path="/track-delivery" component={LiveDeliveryTracking} />
-          <Route path="/demo" component={DemoShowcase} />
-        </>
-      )}
+      {/* ALL ROUTES NOW UNLOCKED - NO AUTHENTICATION BLOCKS */}
+      <Route path="/" component={ModernLanding} />
+      <Route path="/old-landing" component={ProfessionalLanding} />
+      <Route path="/original-landing" component={Landing} />
+      <Route path="/home" component={Home} />
+      <Route path="/tracking" component={RealTimeTracking} />
+      <Route path="/cb-radio" component={CBRadio} />
+      <Route path="/secure-browser" component={SecureBrowser} />
+      <Route path="/social-commerce" component={SocialCommerce} />
+      <Route path="/rental-empire" component={RentalEmpire} />
+      <Route path="/wallet" component={Wallet} />
+      <Route path="/translator" component={TranslatorDemoPage} />
+      <Route path="/timeless-core" component={TimelessDashboardPage} />
+      <Route path="/workforce" component={WorkforceDashboard} />
+      <Route path="/post-job" component={JobPosting} />
+      <Route path="/duo-world" component={DuoWonTheWorld3D} />
+      <Route path="/business-dashboard" component={BusinessDashboard} />
+      <Route path="/trading-dashboard" component={TradingDashboard} />
+      <Route path="/ceo-dashboard" component={CeoDashboard} />
+      <Route path="/vendor-management" component={VendorManagement} />
+      <Route path="/secure-login" component={TimeAuthLogin} />
+      <Route path="/rbac-dashboard" component={RBACDashboard} />
+      <Route path="/delivery-dashboard" component={DeliveryPersonnelDashboard} />
+      <Route path="/book-delivery" component={DeliveryBooking} />
+      <Route path="/track-delivery" component={LiveDeliveryTracking} />
+      <Route path="/demo" component={DemoShowcase} />
       <Route path="/secure-login" component={TimeAuthLogin} />
       <Route path="/demo" component={DemoShowcase} />
       <Route path="/social-signup" component={SocialSignup} />
