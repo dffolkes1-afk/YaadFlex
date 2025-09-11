@@ -2,15 +2,17 @@ import { useQuery } from "@tanstack/react-query";
 import { getQueryFn } from "@/lib/queryClient";
 
 export function useAuth() {
-  const { data: user, isLoading } = useQuery({
-    queryKey: ["/api/auth/user"],
-    queryFn: getQueryFn({ on401: "returnNull" }),
-    retry: false,
-  });
+  // FULL AUTHENTICATION BYPASS FOR OWNER ACCESS
+  const mockUser = {
+    id: "owner-bypass",
+    email: "owner@yaadflex.com",
+    firstName: "Owner",
+    lastName: "YaadFlex"
+  };
 
   return {
-    user,
-    isLoading,
-    isAuthenticated: !!user,
+    user: mockUser,
+    isLoading: false,
+    isAuthenticated: true, // ALWAYS AUTHENTICATED
   };
 }
