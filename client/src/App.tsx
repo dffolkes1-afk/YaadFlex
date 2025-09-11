@@ -72,6 +72,8 @@ import WorldVybz from "@/pages/WorldVybz";
 import MediaHub from "@/pages/MediaHub";
 import RipleyTest from "@/pages/ripley-test";
 import DrivingCoach from "@/pages/DrivingCoach";
+import SuperAppWrapper from "@/pages/SuperAppWrapper";
+import ServiceWrapper from "@/pages/ServiceWrapper";
 
 function Router() {
   // BYPASS AUTHENTICATION - UNLOCK ALL ACCESS FOR OWNER
@@ -118,6 +120,9 @@ function Router() {
       <Route path="/driving-coach" component={DrivingCoach} />
       <Route path="/learn-driving" component={DrivingCoach} />
       <Route path="/driving-lessons" component={DrivingCoach} />
+      <Route path="/super-app" component={SuperAppWrapper} />
+      <Route path="/apps" component={SuperAppWrapper} />
+      <Route path="/wrapper/:service" component={ServiceWrapper} />
       <Route path="/error-dashboard" component={ErrorDashboard} />
       <Route path="/upload-test" component={UploadTest} />
       <Route path="/simple-upload" component={SimpleUpload} />
