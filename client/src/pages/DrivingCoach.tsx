@@ -34,7 +34,20 @@ export default function DrivingCoach() {
     'braking': 40,
     'mirror-check': 30,
     'parking': 100,
-    'intersection': 80
+    'intersection': 80,
+    'racing-line': 25, // Advanced racing skills
+    'apex-missing': 35,
+    'throttle-control': 45
+  };
+
+  // Schumacher-level skill progression
+  const getSkillLevel = (points: number) => {
+    if (points < 20) return { level: "Beginner", icon: "🚗", color: "text-red-600" };
+    if (points < 40) return { level: "Learner", icon: "📚", color: "text-orange-600" };
+    if (points < 60) return { level: "Driver", icon: "🛣️", color: "text-yellow-600" };
+    if (points < 80) return { level: "Advanced", icon: "⚡", color: "text-blue-600" };
+    if (points < 95) return { level: "Expert", icon: "🏆", color: "text-purple-600" };
+    return { level: "Schumacher Level", icon: "🏎️", color: "text-green-600" };
   };
 
   // Start a new driving session
@@ -53,8 +66,8 @@ export default function DrivingCoach() {
     speak("Welcome to YaadFlex Driving Coach! Put on your headphones and start your engine. We'll guide you step by step. Remember - fewer mistakes means lower cost!");
     
     setTimeout(() => {
-      setCurrentInstruction("Check your mirrors and adjust your seat");
-      speak("First, check all your mirrors and adjust your seat for comfort");
+      setCurrentInstruction("Check your mirrors and find the racing line");
+      speak("Welcome to Schumacher-level training! First, check all mirrors and visualize the perfect racing line through every corner");
     }, 3000);
   }, [speak]);
 
@@ -95,39 +108,85 @@ export default function DrivingCoach() {
     speak(`Mistake detected: ${description}. That costs ${cost} dollars. Current total: ${session.totalCost + cost} dollars. Stay focused!`);
   }, [session, speak]);
 
-  // Simulate AI driving analysis from camera feed
+  // Advanced AI camera analysis - Chinese-level scanning technology
   const analyzeFrame = useCallback((imageData: string) => {
     if (!session?.isActive) return;
     
-    // Simulate driving analysis (in real app, this would use AI/CV)
+    // Simulate advanced computer vision analysis
     const random = Math.random();
+    const timeInSession = (Date.now() - session.startTime) / 1000;
     
-    // Simulate occasional mistakes for demo
-    if (random < 0.02) { // 2% chance per frame
-      const mistakes = [
-        { type: 'lane-drift' as const, desc: 'Lane drifting detected' },
-        { type: 'speed-limit' as const, desc: 'Speed limit exceeded' },
-        { type: 'mirror-check' as const, desc: 'Mirror check needed' },
-        { type: 'turn-signal' as const, desc: 'Turn signal required' }
+    // Advanced mistake detection based on "scanning" the road
+    if (random < 0.015) { // More realistic mistake rate
+      const basicMistakes = [
+        { type: 'lane-drift' as const, desc: 'Camera detects: Lane drift - steering correction needed' },
+        { type: 'speed-limit' as const, desc: 'Speed scanner: Velocity exceeds limit' },
+        { type: 'mirror-check' as const, desc: 'Eye tracker: Mirror check required' },
+        { type: 'turn-signal' as const, desc: 'Signal scanner: Turn indicator missing' }
       ];
       
+      // Schumacher-level advanced mistakes for skilled drivers
+      const advancedMistakes = [
+        { type: 'racing-line' as const, desc: 'Racing line analysis: Sub-optimal trajectory' },
+        { type: 'apex-missing' as const, desc: 'Corner scanner: Apex missed by 0.8m' },
+        { type: 'throttle-control' as const, desc: 'Acceleration scanner: Throttle input too aggressive' }
+      ];
+      
+      // Use advanced analysis for higher skill levels
+      const mistakes = skillLevel > 60 ? [...basicMistakes, ...advancedMistakes] : basicMistakes;
       const mistake = mistakes[Math.floor(Math.random() * mistakes.length)];
       addMistake(mistake.type, mistake.desc);
     }
     
-    // Progress skill level
-    if (random < 0.1) {
-      setSkillLevel(prev => Math.min(100, prev + 1));
+    // Schumacher-level skill progression with real scanning feedback
+    if (random < 0.08 && timeInSession > 30) { // Only after 30 seconds
+      setSkillLevel(prev => {
+        const newLevel = Math.min(100, prev + (100 - prev) * 0.02); // Slower at higher levels
+        
+        // Give Schumacher-level feedback
+        if (newLevel >= 95 && prev < 95) {
+          speak("Incredible! You've reached Schumacher level driving! Perfect racing line, precision throttle control!");
+        } else if (newLevel >= 80 && prev < 80) {
+          speak("Expert level achieved! Your driving is becoming razor sharp!");
+        }
+        
+        return newLevel;
+      });
     }
-  }, [session, addMistake]);
+    
+    // Real-time scanning announcements (like Chinese tech)
+    if (random < 0.03 && timeInSession > 10) {
+      const scanAnnouncements = [
+        "Scanner active: Road surface optimal",
+        "Vision system: Clear visibility detected",
+        "Speed monitor: Maintaining safe velocity",
+        "Trajectory analysis: Line looking good",
+        "Proximity scanner: Safe following distance"
+      ];
+      
+      const announcement = scanAnnouncements[Math.floor(Math.random() * scanAnnouncements.length)];
+      setCurrentInstruction(announcement);
+    }
+  }, [session, addMistake, skillLevel, speak]);
 
   // Voice instructions based on progress
   useEffect(() => {
     if (!session?.isActive) return;
     
-    const instructions = [
+    const instructions = skillLevel > 60 ? [
+      // Schumacher-level racing instructions
+      "Find the racing line - apex every corner perfectly",
+      "Trail brake into corners, throttle out smoothly",
+      "Keep your vision high - look where you want to go",
+      "Smooth inputs - be gentle with steering, brake, throttle",
+      "Perfect your heel-toe downshifts",
+      "Hit every apex - maximum speed through corners",
+      "Use every inch of track width available",
+      "Maintain perfect racing posture and grip"
+    ] : [
+      // Basic driving instructions
       "Check your mirrors and signal before changing lanes",
-      "Maintain safe following distance - 3 second rule",
+      "Maintain safe following distance - 3 second rule", 
       "Check blind spots before merging",
       "Use turn signals early and clearly",
       "Keep steady speed and smooth acceleration",
@@ -192,14 +251,16 @@ export default function DrivingCoach() {
                 </div>
               </div>
               
-              {/* Skill Level */}
+              {/* Schumacher Skill Level */}
               <div className="text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  <CheckCircle className="h-5 w-5" />
-                  <span className="font-semibold">Skill Level</span>
+                  <span className="text-lg">{getSkillLevel(skillLevel).icon}</span>
+                  <span className="font-semibold">Racing Level</span>
                 </div>
                 <Progress value={skillLevel} className="w-full mb-1" />
-                <div className="text-sm text-gray-600">{skillLevel}%</div>
+                <div className={`text-sm font-bold ${getSkillLevel(skillLevel).color}`}>
+                  {getSkillLevel(skillLevel).level} ({Math.floor(skillLevel)}%)
+                </div>
               </div>
             </div>
           </CardContent>

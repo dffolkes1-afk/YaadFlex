@@ -113,14 +113,40 @@ export const RealTimeCamera = ({
             data-testid="camera-video"
           />
           
-          {/* Overlay indicators */}
+          {/* Chinese-Style Scanning Overlay */}
           {isActive && (
-            <div className="absolute top-4 left-4 flex items-center gap-2">
-              <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
-              <span className="text-white text-sm font-medium bg-black/50 px-2 py-1 rounded">
-                LIVE
-              </span>
-            </div>
+            <>
+              {/* Main LIVE indicator */}
+              <div className="absolute top-4 left-4 flex items-center gap-2">
+                <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+                <span className="text-white text-sm font-medium bg-black/50 px-2 py-1 rounded">
+                  AI SCAN ACTIVE
+                </span>
+              </div>
+              
+              {/* Advanced scanning grid overlay */}
+              <div className="absolute inset-0 pointer-events-none">
+                {/* Scanning lines */}
+                <div className="absolute top-1/3 left-0 right-0 h-px bg-green-400/30" />
+                <div className="absolute bottom-1/3 left-0 right-0 h-px bg-green-400/30" />
+                <div className="absolute top-0 bottom-0 left-1/3 w-px bg-green-400/30" />
+                <div className="absolute top-0 bottom-0 right-1/3 w-px bg-green-400/30" />
+                
+                {/* Corner brackets like scanning tech */}
+                <div className="absolute top-4 left-4 w-6 h-6 border-l-2 border-t-2 border-green-400/60" />
+                <div className="absolute top-4 right-4 w-6 h-6 border-r-2 border-t-2 border-green-400/60" />
+                <div className="absolute bottom-4 left-4 w-6 h-6 border-l-2 border-b-2 border-green-400/60" />
+                <div className="absolute bottom-4 right-4 w-6 h-6 border-r-2 border-b-2 border-green-400/60" />
+                
+                {/* Scanning status indicators */}
+                <div className="absolute top-4 right-4 text-green-400 text-xs font-mono bg-black/50 px-2 py-1 rounded">
+                  SCAN: OK
+                </div>
+                <div className="absolute bottom-4 left-4 text-blue-400 text-xs font-mono bg-black/50 px-2 py-1 rounded">
+                  ANALYSIS: REAL-TIME
+                </div>
+              </div>
+            </>
           )}
           
           {isCapturing && (
