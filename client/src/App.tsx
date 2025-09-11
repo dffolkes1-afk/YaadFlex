@@ -71,6 +71,7 @@ import TinyUpload from "@/pages/TinyUpload";
 import WorldVybz from "@/pages/WorldVybz";
 import MediaHub from "@/pages/MediaHub";
 import RipleyTest from "@/pages/ripley-test";
+import DrivingCoach from "@/pages/DrivingCoach";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -112,6 +113,9 @@ function Router() {
       <Route path="/voice-control" component={VoiceControlCenter} />
       <Route path="/voice-interactive" component={VoiceControlCenter} />
       <Route path="/voice-demo" component={VoiceDemo} />
+      <Route path="/driving-coach" component={DrivingCoach} />
+      <Route path="/learn-driving" component={DrivingCoach} />
+      <Route path="/driving-lessons" component={DrivingCoach} />
       <Route path="/error-dashboard" component={ErrorDashboard} />
       <Route path="/upload-test" component={UploadTest} />
       <Route path="/simple-upload" component={SimpleUpload} />
