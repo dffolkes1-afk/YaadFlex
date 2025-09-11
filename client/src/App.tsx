@@ -76,6 +76,8 @@ import SuperAppWrapper from "@/pages/SuperAppWrapper";
 import ServiceWrapper from "@/pages/ServiceWrapper";
 import FleetOwnerDashboard from "@/pages/FleetOwnerDashboard";
 import ShareApp from "@/pages/ShareApp";
+import MagicDrop from "@/pages/MagicDrop";
+import SurpriseLanding from "@/pages/SurpriseLanding";
 
 function Router() {
   // BYPASS AUTHENTICATION - UNLOCK ALL ACCESS FOR OWNER
@@ -156,6 +158,9 @@ function Router() {
       <Route path="/share" component={ShareApp} />
       <Route path="/share-app" component={ShareApp} />
       <Route path="/send-link" component={ShareApp} />
+      <Route path="/magic" component={MagicDrop} />
+      <Route path="/magic-drop" component={MagicDrop} />
+      <Route path="/surprise/:code" component={SurpriseLanding} />
       
       {/* Hidden Founder Profile - Private */}
       <Route path="/founder-vision-2024" component={FounderProfile} />
