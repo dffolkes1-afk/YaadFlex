@@ -74,6 +74,7 @@ import RipleyTest from "@/pages/ripley-test";
 import DrivingCoach from "@/pages/DrivingCoach";
 import SuperAppWrapper from "@/pages/SuperAppWrapper";
 import ServiceWrapper from "@/pages/ServiceWrapper";
+import FleetOwnerDashboard from "@/pages/FleetOwnerDashboard";
 
 function Router() {
   // BYPASS AUTHENTICATION - UNLOCK ALL ACCESS FOR OWNER
@@ -148,6 +149,9 @@ function Router() {
       <Route path="/port-clearing" component={LogisticsBrokers} />
       <Route path="/barrel-service" component={LogisticsBrokers} />
       <Route path="/brokers" component={LogisticsBrokers} />
+      <Route path="/fleet-owner" component={FleetOwnerDashboard} />
+      <Route path="/car-owner" component={FleetOwnerDashboard} />
+      <Route path="/vehicle-owner" component={FleetOwnerDashboard} />
       
       {/* Hidden Founder Profile - Private */}
       <Route path="/founder-vision-2024" component={FounderProfile} />
