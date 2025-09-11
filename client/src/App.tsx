@@ -78,6 +78,7 @@ import FleetOwnerDashboard from "@/pages/FleetOwnerDashboard";
 import ShareApp from "@/pages/ShareApp";
 import MagicDrop from "@/pages/MagicDrop";
 import SurpriseLanding from "@/pages/SurpriseLanding";
+import ContactMagic from "@/pages/ContactMagic";
 
 function Router() {
   // BYPASS AUTHENTICATION - UNLOCK ALL ACCESS FOR OWNER
@@ -161,6 +162,9 @@ function Router() {
       <Route path="/magic" component={MagicDrop} />
       <Route path="/magic-drop" component={MagicDrop} />
       <Route path="/surprise/:code" component={SurpriseLanding} />
+      <Route path="/contacts" component={ContactMagic} />
+      <Route path="/contact-magic" component={ContactMagic} />
+      <Route path="/contact-share" component={ContactMagic} />
       
       {/* Hidden Founder Profile - Private */}
       <Route path="/founder-vision-2024" component={FounderProfile} />
