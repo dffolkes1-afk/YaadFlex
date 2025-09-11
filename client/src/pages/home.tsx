@@ -73,14 +73,8 @@ function KWDWalletSection() {
     },
     onError: (error) => {
       if (isUnauthorizedError(error)) {
-        toast({
-          title: "Unauthorized",
-          description: "You are logged out. Logging in again...",
-          variant: "destructive",
-        });
-        setTimeout(() => {
-          window.location.href = "/api/login";
-        }, 500);
+        // NO REDIRECT - STAY ON PAGE
+        console.log("Auth bypass - staying on page");
         return;
       }
       toast({
@@ -264,14 +258,8 @@ export default function Home() {
     },
     onError: (error) => {
       if (isUnauthorizedError(error)) {
-        toast({
-          title: "Unauthorized",
-          description: "You are logged out. Logging in again...",
-          variant: "destructive",
-        });
-        setTimeout(() => {
-          window.location.href = "/api/login";
-        }, 500);
+        // NO REDIRECT - STAY ON PAGE
+        console.log("Auth bypass - staying on page");
         return;
       }
       toast({
@@ -299,14 +287,8 @@ export default function Home() {
     },
     onError: (error) => {
       if (isUnauthorizedError(error)) {
-        toast({
-          title: "Unauthorized",
-          description: "You are logged out. Logging in again...",
-          variant: "destructive",
-        });
-        setTimeout(() => {
-          window.location.href = "/api/login";
-        }, 500);
+        // NO REDIRECT - STAY ON PAGE
+        console.log("Auth bypass - staying on page");
         return;
       }
       toast({
