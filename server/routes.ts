@@ -174,20 +174,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Serve YaadFlex Landing Page - Main Link for Facebook/Social Media
   app.get('/yaadflex', (req, res) => {
-    try {
-      const htmlPath = path.resolve('yardflex-landing.html');
-      console.log('Trying to serve YaadFlex from:', htmlPath);
-      console.log('File exists:', fs.existsSync(htmlPath));
-      
-      if (fs.existsSync(htmlPath)) {
-        res.sendFile(htmlPath);
-      } else {
-        res.status(404).send('YaadFlex page not found at: ' + htmlPath);
-      }
-    } catch (error) {
-      console.error('Error serving YaadFlex page:', error);
-      res.status(500).send('Server error: ' + (error instanceof Error ? error.message : 'Unknown error'));
-    }
+    // FIXED: Redirect to main app instead of missing file
+    res.redirect('/');
   });
 
   // Let the frontend handle routing
