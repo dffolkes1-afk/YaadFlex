@@ -79,6 +79,7 @@ import ShareApp from "@/pages/ShareApp";
 import MagicDrop from "@/pages/MagicDrop";
 import SurpriseLanding from "@/pages/SurpriseLanding";
 import ContactMagic from "@/pages/ContactMagic";
+import WorldTakeover from "@/pages/WorldTakeover";
 
 function Router() {
   // BYPASS AUTHENTICATION - UNLOCK ALL ACCESS FOR OWNER
@@ -165,6 +166,9 @@ function Router() {
       <Route path="/contacts" component={ContactMagic} />
       <Route path="/contact-magic" component={ContactMagic} />
       <Route path="/contact-share" component={ContactMagic} />
+      <Route path="/world" component={WorldTakeover} />
+      <Route path="/world-takeover" component={WorldTakeover} />
+      <Route path="/global" component={WorldTakeover} />
       
       {/* Hidden Founder Profile - Private */}
       <Route path="/founder-vision-2024" component={FounderProfile} />
