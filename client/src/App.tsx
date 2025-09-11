@@ -83,6 +83,7 @@ import WorldTakeover from "@/pages/WorldTakeover";
 import YaadParty from "@/pages/YaadParty";
 import VoiceControl from "@/components/VoiceControl";
 import LiveStatusIndicator from "@/components/LiveStatusIndicator";
+import DashboardButton from "@/components/DashboardButton";
 
 function Router() {
   // BYPASS AUTHENTICATION - UNLOCK ALL ACCESS FOR OWNER
@@ -226,6 +227,7 @@ function App() {
       <TooltipProvider>
         <Toaster />
         <LiveStatusIndicator />
+        <DashboardButton />
         <Router />
         <RipleyControls />
         <VoiceControl />
