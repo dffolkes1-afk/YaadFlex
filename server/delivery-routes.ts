@@ -145,7 +145,7 @@ router.get("/api/delivery/my-orders", isAuthenticated, async (req, res) => {
 
     let whereClause = eq(deliveryOrders.customerId, user.claims.sub);
     if (status && typeof status === 'string') {
-      whereClause = and(whereClause, eq(deliveryOrders.status, status)) || whereClause;
+      whereClause = and(whereClause, eq(deliveryOrders.status, status)) ?? whereClause;
     }
 
     const orders = await db.select({
@@ -295,7 +295,7 @@ router.get("/api/delivery/personnel/orders", isAuthenticated, async (req, res) =
 
     let whereClause = eq(deliveryOrders.deliveryPersonnelId, personnel.id);
     if (status && typeof status === 'string') {
-      whereClause = and(whereClause, eq(deliveryOrders.status, status)) || whereClause;
+      whereClause = and(whereClause, eq(deliveryOrders.status, status)) ?? whereClause;
     }
 
     const orders = await db.select({

@@ -778,11 +778,7 @@ Time: ${new Date().toISOString()}
         services: services || ''
       };
 
-      const business = await storage.createServiceProvider({
-        ...providerData,
-        profileImageUrl: null,
-        socialLinks: null,
-      });
+      const business = await storage.createServiceProvider(providerData);
 
       // Log business registration for transparency
       await storage.logSecurityEvent({
@@ -824,8 +820,8 @@ Time: ${new Date().toISOString()}
       if (parish) {
         filteredBusinesses = businesses.filter(business => {
           try {
-            const contactInfo = JSON.parse((business.contactInfo as string) || '{}');
-            return contactInfo.parish === parish;
+            const businessDesc = business.description || '';
+            return businessDesc.includes(parish as string);
           } catch {
             return false;
           }
@@ -918,34 +914,13 @@ Time: ${new Date().toISOString()}
 
       const vehicle = await storage.createVehicle(vehicleData);
 
-      // Create driver profile with bank details (encrypted storage)
+      // Create driver profile 
       const driverProfile = await storage.createDriverCbProfile({
         driverId: userId,
         callSign: `${fullName.split(' ')[0]}${vehicle.id.slice(-4)}`, // First name + vehicle ID
         preferredChannels: JSON.stringify(['1', '19']), // Default CB channels
         isOnline: false,
-        statusMessage: `New YaadFlex driver with ${vehicleType}`,
-        // Store bank details securely (in real app, this would be encrypted)
-          fullName,
-          licenseNumber,
-          phone,
-          email,
-          address,
-          parish,
-          emergencyContact,
-          emergencyPhone,
-          bankDetails: {
-            bankName,
-            accountHolderName,
-            accountNumber: `****${accountNumber.slice(-4)}`, // Only store masked version
-            routingNumber,
-            verified: false // Will be verified before first payout
-          },
-          registrationDate: new Date().toISOString(),
-          payoutPercentage: 85, // Driver gets 85%
-          totalEarnings: 0,
-          totalTrips: 0
-        })
+        lastActivity: new Date()
       });
 
       // Log driver registration for security
@@ -996,12 +971,9 @@ Time: ${new Date().toISOString()}
       
       // Get driver profile with earnings data
       const driverProfile = await storage.getDriverCbProfile(userId);
-      if (!driverProfile || !driverProfile.metadata) {
+      if (!driverProfile) {
         return res.status(404).json({ message: "Driver profile not found" });
       }
-
-      const metadata = JSON.parse(driverProfile.metadata);
-      const bankDetails = metadata.bankDetails;
 
       // Get recent trips for earnings calculation
       const recentTrips = await storage.getUserTrips(userId);
@@ -1019,9 +991,9 @@ Time: ${new Date().toISOString()}
 
       res.json({
         success: true,
-        driverName: metadata.fullName,
-        bankAccount: `${bankDetails.bankName} ****${bankDetails.accountNumber}`,
-        payoutPercentage: metadata.payoutPercentage || 85,
+        driverName: driverProfile.callSign || 'Driver',
+        bankAccount: `YaadFlex Wallet ****`,
+        payoutPercentage: 85,
         totalTrips: completedTrips.length,
         totalFares: Math.round(totalFares),
         totalEarnings: Math.round(totalEarnings),
