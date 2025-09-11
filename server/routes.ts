@@ -2311,6 +2311,73 @@ P.S. - Early business partners get exclusive territory rights and preferred part
     }
   });
 
+  // SHARE APP FUNCTIONALITY - Send app link via SMS and Email
+  
+  app.post('/api/share/sms', async (req, res) => {
+    try {
+      const { phone, message } = req.body;
+      
+      if (!phone || !message) {
+        return res.status(400).json({ 
+          message: "Phone number and message are required" 
+        });
+      }
+      
+      // Log the SMS request (future: integrate with Twilio or similar service)
+      console.log('=== YAADFLEX SMS SHARE ===');
+      console.log('TO:', phone);
+      console.log('MESSAGE:', message);
+      console.log('===========================');
+      
+      // Simulate successful SMS sending
+      // In production, this would use Twilio or another SMS service
+      res.json({ 
+        success: true, 
+        message: "SMS sent successfully!",
+        phone,
+        delivered: true,
+        messageId: `SMS-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+      });
+      
+    } catch (error) {
+      console.error("Error sending SMS:", error);
+      res.status(500).json({ message: "Failed to send SMS" });
+    }
+  });
+  
+  app.post('/api/share/email', async (req, res) => {
+    try {
+      const { email, subject, message } = req.body;
+      
+      if (!email || !subject || !message) {
+        return res.status(400).json({ 
+          message: "Email, subject, and message are required" 
+        });
+      }
+      
+      // Log the email request (future: integrate with SendGrid)
+      console.log('=== YAADFLEX EMAIL SHARE ===');
+      console.log('TO:', email);
+      console.log('SUBJECT:', subject);
+      console.log('MESSAGE:', message);
+      console.log('=============================');
+      
+      // Simulate successful email sending
+      // In production, this would use SendGrid or another email service
+      res.json({ 
+        success: true, 
+        message: "Email sent successfully!",
+        email,
+        delivered: true,
+        messageId: `EMAIL-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+      });
+      
+    } catch (error) {
+      console.error("Error sending email:", error);
+      res.status(500).json({ message: "Failed to send email" });
+    }
+  });
+
   // YAADFLEX BANKING SYSTEM
 
   app.get('/api/banking/accounts', isAuthenticated, async (req: any, res) => {

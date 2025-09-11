@@ -75,6 +75,7 @@ import DrivingCoach from "@/pages/DrivingCoach";
 import SuperAppWrapper from "@/pages/SuperAppWrapper";
 import ServiceWrapper from "@/pages/ServiceWrapper";
 import FleetOwnerDashboard from "@/pages/FleetOwnerDashboard";
+import ShareApp from "@/pages/ShareApp";
 
 function Router() {
   // BYPASS AUTHENTICATION - UNLOCK ALL ACCESS FOR OWNER
@@ -152,6 +153,9 @@ function Router() {
       <Route path="/fleet-owner" component={FleetOwnerDashboard} />
       <Route path="/car-owner" component={FleetOwnerDashboard} />
       <Route path="/vehicle-owner" component={FleetOwnerDashboard} />
+      <Route path="/share" component={ShareApp} />
+      <Route path="/share-app" component={ShareApp} />
+      <Route path="/send-link" component={ShareApp} />
       
       {/* Hidden Founder Profile - Private */}
       <Route path="/founder-vision-2024" component={FounderProfile} />
