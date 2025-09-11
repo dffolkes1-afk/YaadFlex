@@ -81,6 +81,7 @@ import SurpriseLanding from "@/pages/SurpriseLanding";
 import ContactMagic from "@/pages/ContactMagic";
 import WorldTakeover from "@/pages/WorldTakeover";
 import YaadParty from "@/pages/YaadParty";
+import VoiceControl from "@/components/VoiceControl";
 
 function Router() {
   // BYPASS AUTHENTICATION - UNLOCK ALL ACCESS FOR OWNER
@@ -225,6 +226,7 @@ function App() {
         <Toaster />
         <Router />
         <RipleyControls />
+        <VoiceControl />
       </TooltipProvider>
     </QueryClientProvider>
   );
