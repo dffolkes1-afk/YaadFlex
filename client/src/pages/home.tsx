@@ -6,6 +6,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { useLocation, Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { VoiceButton } from "@/components/VoiceButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -1909,9 +1910,15 @@ export default function Home() {
 
         {/* Security Status Dashboard */}
         <div className="mb-8">
-          <h1 className="text-4xl font-black text-premium text-glow floating mb-6" data-testid="dashboard-title">
-            Global Command Center
-          </h1>
+          <div className="flex items-center gap-4 mb-6">
+            <h1 className="text-4xl font-black text-premium text-glow floating" data-testid="dashboard-title">
+              Global Command Center
+            </h1>
+            <VoiceButton 
+              text="Welcome to YaadFlex Global Command Center! The fair alternative where drivers earn 85 percent. Check your secure wallet, make transactions, or track rides in real-time."
+              size="default"
+            />
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <Card className="card-ultra premium-glow floating" data-testid="stat-countries">
