@@ -780,8 +780,6 @@ Time: ${new Date().toISOString()}
 
       const business = await storage.createServiceProvider({
         ...providerData,
-        averageRating: '0',
-        totalReviews: 0,
         profileImageUrl: null,
         socialLinks: null,
       });
@@ -801,7 +799,7 @@ Time: ${new Date().toISOString()}
         businessId: business.id,
         businessName: business.businessName,
         message: `Welcome to YaadFlex! ${businessName} has been registered and will be reviewed within 24 hours.`,
-        category: business.category,
+        category: category,
         status: 'pending_verification'
       });
 
@@ -826,7 +824,7 @@ Time: ${new Date().toISOString()}
       if (parish) {
         filteredBusinesses = businesses.filter(business => {
           try {
-            const contactInfo = JSON.parse(business.contactInfo || '{}');
+            const contactInfo = JSON.parse((business.contactInfo as string) || '{}');
             return contactInfo.parish === parish;
           } catch {
             return false;
@@ -926,12 +924,8 @@ Time: ${new Date().toISOString()}
         callSign: `${fullName.split(' ')[0]}${vehicle.id.slice(-4)}`, // First name + vehicle ID
         preferredChannels: JSON.stringify(['1', '19']), // Default CB channels
         isOnline: false,
-        currentLatitude: '17.9712',
-        currentLongitude: '-76.7936',
-        lastSeen: new Date(),
         statusMessage: `New YaadFlex driver with ${vehicleType}`,
         // Store bank details securely (in real app, this would be encrypted)
-        metadata: JSON.stringify({
           fullName,
           licenseNumber,
           phone,

@@ -145,7 +145,7 @@ router.get("/api/delivery/my-orders", isAuthenticated, async (req, res) => {
 
     let whereClause = eq(deliveryOrders.customerId, user.claims.sub);
     if (status && typeof status === 'string') {
-      whereClause = and(whereClause, eq(deliveryOrders.status, status));
+      whereClause = and(whereClause, eq(deliveryOrders.status, status)) || whereClause;
     }
 
     const orders = await db.select({
@@ -295,7 +295,7 @@ router.get("/api/delivery/personnel/orders", isAuthenticated, async (req, res) =
 
     let whereClause = eq(deliveryOrders.deliveryPersonnelId, personnel.id);
     if (status && typeof status === 'string') {
-      whereClause = and(whereClause, eq(deliveryOrders.status, status));
+      whereClause = and(whereClause, eq(deliveryOrders.status, status)) || whereClause;
     }
 
     const orders = await db.select({
@@ -427,17 +427,20 @@ router.get("/api/delivery/personnel/earnings", isAuthenticated, async (req, res)
     if (period === 'today') {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      whereClause = and(whereClause, sql`${deliveryEarnings.earnedAt} >= ${today.toISOString()}`);
+      const dateCondition = sql`${deliveryEarnings.earnedAt} >= ${today.toISOString()}`;
+      whereClause = and(whereClause, dateCondition) ?? whereClause;
     } else if (period === 'week') {
       const weekStart = new Date();
       weekStart.setDate(weekStart.getDate() - weekStart.getDay());
       weekStart.setHours(0, 0, 0, 0);
-      whereClause = and(whereClause, sql`${deliveryEarnings.earnedAt} >= ${weekStart.toISOString()}`);
+      const dateCondition = sql`${deliveryEarnings.earnedAt} >= ${weekStart.toISOString()}`;
+      whereClause = and(whereClause, dateCondition) ?? whereClause;
     } else if (period === 'month') {
       const monthStart = new Date();
       monthStart.setDate(1);
       monthStart.setHours(0, 0, 0, 0);
-      whereClause = and(whereClause, sql`${deliveryEarnings.earnedAt} >= ${monthStart.toISOString()}`);
+      const dateCondition = sql`${deliveryEarnings.earnedAt} >= ${monthStart.toISOString()}`;
+      whereClause = and(whereClause, dateCondition) ?? whereClause;
     }
 
     const earnings = await db.select()
