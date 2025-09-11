@@ -122,6 +122,16 @@ import { aiAdvisoryService } from "./ai-advisory";
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
   await setupAuth(app);
+
+  // Health check endpoint - for status monitoring
+  app.get("/api/health", (req, res) => {
+    res.json({ 
+      status: "ok", 
+      timestamp: new Date().toISOString(),
+      server: "running",
+      public: req.hostname.includes('.replit.app') || req.hostname.includes('.repl.co')
+    });
+  });
   
   // Time-locked authentication routes
   app.use(timeAuthRoutes);

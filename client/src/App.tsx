@@ -82,6 +82,7 @@ import ContactMagic from "@/pages/ContactMagic";
 import WorldTakeover from "@/pages/WorldTakeover";
 import YaadParty from "@/pages/YaadParty";
 import VoiceControl from "@/components/VoiceControl";
+import LiveStatusIndicator from "@/components/LiveStatusIndicator";
 
 function Router() {
   // BYPASS AUTHENTICATION - UNLOCK ALL ACCESS FOR OWNER
@@ -224,6 +225,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
+        <LiveStatusIndicator />
         <Router />
         <RipleyControls />
         <VoiceControl />
