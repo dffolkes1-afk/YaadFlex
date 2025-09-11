@@ -119,6 +119,20 @@ function KWDWalletSection() {
       </CardHeader>
       <CardContent className="space-y-6">
         
+        {/* SUPER-APP ACCESS - MAIN NAVIGATION BUTTON */}
+        <div className="text-center mb-6">
+          <Link to="/super-app">
+            <Button 
+              size="lg" 
+              className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold px-8 py-3 rounded-lg transform hover:scale-105 transition-all duration-200 shadow-lg"
+              data-testid="button-super-app-hub"
+            >
+              🌴 Super-App Hub - All Your Apps Here!
+            </Button>
+          </Link>
+          <p className="text-sm text-gray-600 mt-2">Access Instagram, TikTok, Uber, PayPal & more - wrapped in YardFlex</p>
+        </div>
+
         {/* Wallet Balances */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="glass-card p-4 rounded-lg premium-glow">
@@ -406,6 +420,14 @@ export default function Home() {
                 data-testid="button-trading-dashboard"
               >
                 📈 Trading
+              </Button>
+              <Button 
+                variant="outline" 
+                onClick={() => setLocation("/super-app")} 
+                className="bg-gradient-to-r from-yellow-600 to-orange-600 border-yellow-500 text-white hover:from-yellow-700 hover:to-orange-700 font-bold"
+                data-testid="button-super-app-nav"
+              >
+                🌴 Super-App
               </Button>
               <Button variant="outline" onClick={handleLogout} data-testid="button-logout">
                 Logout
