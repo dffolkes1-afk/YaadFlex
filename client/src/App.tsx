@@ -153,7 +153,8 @@ function Router() {
       <Route path="/founder-vision-2024" component={FounderProfile} />
       
       {/* ALL ROUTES NOW UNLOCKED - NO AUTHENTICATION BLOCKS */}
-      <Route path="/" component={ModernLanding} />
+      <Route path="/" component={Home} />
+      <Route path="/modern-landing" component={ModernLanding} />
       <Route path="/old-landing" component={ProfessionalLanding} />
       <Route path="/original-landing" component={Landing} />
       <Route path="/home" component={Home} />

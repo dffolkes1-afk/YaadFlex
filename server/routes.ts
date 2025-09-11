@@ -175,7 +175,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Serve YaadFlex Landing Page - Main Link for Facebook/Social Media
   app.get('/yaadflex', (req, res) => {
     // FIXED: Redirect to main app instead of missing file
-    res.redirect('/');
+    res.redirect('/home');
   });
 
   // Let the frontend handle routing
