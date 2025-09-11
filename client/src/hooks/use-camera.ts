@@ -29,23 +29,37 @@ export const useCamera = () => {
     try {
       setError(null);
       
-      // Request camera access with optimal settings for driving
+      // Request camera access with stabilized settings for smooth driving view
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: {
-          width: { ideal: 1280, min: 640 },
-          height: { ideal: 720, min: 480 },
-          frameRate: { ideal: 30, min: 15 },
-          facingMode: 'environment' // Back camera for road view
+          width: { ideal: 1920, min: 1280 },
+          height: { ideal: 1080, min: 720 },
+          frameRate: { ideal: 60, min: 30 },
+          facingMode: 'environment', // Back camera for road view
+          aspectRatio: { ideal: 16/9 }
         },
         audio: false // No audio needed for visual analysis
       });
 
       setStream(mediaStream);
       
-      // Attach to video element
+      // Attach to video element with optimized playback settings
       if (videoRef.current) {
-        videoRef.current.srcObject = mediaStream;
-        videoRef.current.play();
+        const video = videoRef.current;
+        video.srcObject = mediaStream;
+        
+        // Optimize for smooth real-time playback
+        video.setAttribute('playsinline', 'true');
+        video.setAttribute('webkit-playsinline', 'true');
+        video.muted = true;
+        video.defaultMuted = true;
+        
+        // Reduce latency for real-time experience
+        if ('latency' in video) {
+          (video as any).latency = 0;
+        }
+        
+        await video.play();
       }
       
       setIsActive(true);

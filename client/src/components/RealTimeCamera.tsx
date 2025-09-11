@@ -97,7 +97,19 @@ export const RealTimeCamera = ({
             autoPlay
             playsInline
             muted
-            className="w-full h-full object-cover"
+            preload="none"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center',
+              transform: 'translate3d(0, 0, 0)', // Hardware acceleration
+              willChange: 'transform', // Optimize for smooth updates
+              backfaceVisibility: 'hidden', // Reduce jittering
+              WebkitTransform: 'translate3d(0, 0, 0)', // Safari optimization
+              WebkitBackfaceVisibility: 'hidden'
+            }}
+            className="w-full h-full select-none"
             data-testid="camera-video"
           />
           
