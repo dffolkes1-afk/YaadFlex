@@ -143,5 +143,14 @@ export async function setupAuth(app: Express) {
 
 export const isAuthenticated: RequestHandler = async (req, res, next) => {
   // BYPASSED - ALL ROUTES ARE PUBLIC
+  // Set a fake user to satisfy existing route handlers
+  (req as any).user = {
+    claims: {
+      sub: 'public-user-no-auth',
+      email: 'public@yaadflex.com',
+      first_name: 'Public',
+      last_name: 'User'
+    }
+  };
   return next();
 };
