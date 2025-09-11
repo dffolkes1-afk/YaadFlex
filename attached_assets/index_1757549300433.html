@@ -1,0 +1,44 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Ripley TTS Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body { font-family: system-ui, Arial, sans-serif; margin: 24px; }
+      .card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+      .toolbar { position: sticky; top: 8px; background: white; padding: 8px; border: 1px solid #eee; border-radius: 8px; }
+      button { padding: 8px 12px; border-radius: 8px; border: 1px solid #ddd; cursor: pointer; }
+      input[type="range"] { vertical-align: middle; }
+    </style>
+  </head>
+  <body>
+    <h1>Ripley In‑App Narrator (TTS) Demo</h1>
+    <p>This demo shows how Ripley can <b>talk whatever is in the window</b>. Try typing, changing text, or clicking Play.</p>
+
+    <div class="card toolbar" id="controls"></div>
+
+    <div class="card" data-tts="auto" id="live-window">
+      <h2>Live Output Window</h2>
+      <p>Change this text to hear it read aloud automatically. It will re‑read when content updates.</p>
+      <div contenteditable="true" style="border:1px dashed #aaa;border-radius:8px;padding:8px;min-height:80px;">
+        Type here… anything you type will be spoken.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Focused Input Reads</h2>
+      <input type="text" placeholder="Focus me to read my value" value="Ripley will read focused inputs.">
+      <textarea placeholder="Focus me to read my contents" rows="3">This textarea will be read when focused.</textarea>
+    </div>
+
+    <script src="./ripley-tts.js"></script>
+    <script>
+      // Mount optional controls
+      RipleyTTS.mountControls(document.getElementById('controls'));
+      // Example: programmatic speak
+      // RipleyTTS.say("Welcome to YaadFlex Ripley narrator!");
+    </script>
+  </body>
+</html>

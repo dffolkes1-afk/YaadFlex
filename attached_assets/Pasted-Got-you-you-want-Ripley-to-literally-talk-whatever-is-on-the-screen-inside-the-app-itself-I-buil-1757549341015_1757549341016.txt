@@ -1,0 +1,87 @@
+Got you — you want Ripley to literally talk whatever is on the screen, inside the app itself. I built you a drop-in in-app narrator (no OS install needed) that gives you that slick feel:
+
+🔵 Download & add to your project
+
+ripley-tts.js
+
+index.html (demo)
+
+
+What it does
+
+Reads live content in a window marked with data-tts="auto" (auto re-reads when text changes).
+
+Reads focused fields (inputs, textareas, contenteditable).
+
+Play / Pause / Resume / Stop controls, voice/rate/pitch/volume.
+
+Tries to pick an English voice automatically (you can choose others).
+
+Zero server cost (uses the browser’s Web Speech API). Falls back gracefully if not supported.
+
+
+How to use (super simple)
+
+1. Drop both files into your project.
+
+
+2. Include the script in your page/app shell:
+
+<script src="./ripley-tts.js"></script>
+
+
+3. Tag the window you want read automatically:
+
+<div data-tts="auto" id="ripley-window">…your dynamic text…</div>
+
+
+4. (Optional) Mount built-in controls:
+
+<div id="controls"></div>
+<script>RipleyTTS.mountControls(document.getElementById('controls'));</script>
+
+
+5. Speak anything on demand:
+
+RipleyTTS.say("Ride arriving in 2 minutes", { interrupt: true });
+
+
+
+React / Next.js quick hook (bonus)
+
+If Ripley is React:
+
+import { useEffect, useRef } from "react";
+
+export function useRipleyTTS(autoSelector='[data-tts="auto"]') {
+  const inited = useRef(false);
+  useEffect(() => {
+    if (!inited.current && window.RipleyTTS) {
+      window.RipleyTTS.init?.();
+      inited.current = true;
+    }
+  }, []);
+  return {
+    say: (text, opts) => window.RipleyTTS?.say(text, opts),
+    stop: () => window.RipleyTTS?.stop(),
+  };
+}
+
+Then:
+
+const { say } = useRipleyTTS();
+useEffect(() => { say("Welcome to YaadFlex!"); }, []);
+
+Want true OS screen reader too?
+
+You can still enable system readers for full accessibility (optional):
+
+Windows Narrator: Win + Ctrl + Enter
+
+Android TalkBack: Settings → Accessibility → TalkBack
+
+
+But you don’t need OS install to get the in-app voice. The module above gives you the slick in-app talkback you asked for.
+
+Want me to bundle this as a tiny NPM package or wire it into your existing Replit “Ripley” project structure for you?
+
