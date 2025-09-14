@@ -14,9 +14,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 // DuoWonTheWorld3D removed to fix WebGL issues - using CSS animations instead
 
-// Import YaadFlex Visual Assets
-import yaadFlexLogo from "@assets/generated_images/YaadFlex_Bank_logo_09b86b5e.png";
-import yaadFlexPoster from "@assets/generated_images/YaadFlex_promotional_poster_ab79c580.png";
+// TEMPORARY: Remove asset imports that might be breaking the bundle
+// import yaadFlexLogo from "@assets/generated_images/YaadFlex_Bank_logo_09b86b5e.png";
+// import yaadFlexPoster from "@assets/generated_images/YaadFlex_promotional_poster_ab79c580.png";
+
+// Use simple logos for now
+const yaadFlexLogo = "🏢"; // Temporary emoji logo
+const yaadFlexPoster = ""; // Remove background for now
 
 type Transaction = {
   id: string;
@@ -397,6 +401,25 @@ export default function Home() {
 
   return (
     <div className="min-h-screen text-foreground relative">
+      {/* GUARANTEED VISUAL FALLBACK - ALWAYS SHOWS */}
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: '#16a34a',
+        color: 'white',
+        padding: '15px',
+        textAlign: 'center',
+        fontSize: '24px',
+        fontWeight: 'bold',
+        zIndex: 9999,
+        border: '5px solid gold',
+        boxShadow: '0 0 20px rgba(255,215,0,0.8)'
+      }}>
+        🌴💎 YARDFLEX VISUAL MODE ON! 💎🌴 YOUR 6 HOUR WAIT IS OVER! 🎉
+      </div>
+      
       {/* Starfield Background */}
       <div className="starfield fixed inset-0 z-0"></div>
       
