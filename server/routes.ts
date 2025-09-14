@@ -775,7 +775,7 @@ Time: ${new Date().toISOString()}
 
       // Create service provider using existing schema
       const providerData = {
-        ownerId: userId,
+        userId: userId,
         businessName,
         category,
         description: description || '',
@@ -1609,7 +1609,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
         criticalReports: criticalReports,
         goalProgress: activeGoals.map(goal => ({
           ...goal,
-          progress: Math.min((parseFloat(goal.currentValue) / parseFloat(goal.targetValue)) * 100, 100)
+          progress: Math.min(((parseFloat(goal.currentValue || '0')) / (parseFloat(goal.targetValue || '1'))) * 100, 100)
         }))
       };
 
@@ -2121,7 +2121,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
         userId: 'outreach',
         eventType: 'seller_discovery',
         severity: 'low',
-        description: `Seller outreach initiated for ${category} in ${parish}, found ${foundSellers[category]} potential sellers`,
+        description: `Seller outreach initiated for ${category} in ${parish}, found ${foundSellers[category as keyof typeof foundSellers] || 0} potential sellers`,
         ipAddress: req.ip,
         userAgent: req.get('User-Agent'),
       });
@@ -2130,7 +2130,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
         success: true,
         category,
         parish,
-        sellersFound: foundSellers[category] || 0,
+        sellersFound: foundSellers[category as keyof typeof foundSellers] || 0,
         sources: [
           "Facebook Marketplace listings",
           "Instagram property/car posts",
@@ -2240,7 +2240,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
         'vehicle': 'Marcus Johnson'
       };
 
-      const handlerName = emailHandlers[template.category] || 'YaadFlex System';
+      const handlerName = emailHandlers[template.category as keyof typeof emailHandlers] || 'YaadFlex System';
 
       // Log email for tracking
       await storage.logSecurityEvent({
@@ -4500,13 +4500,13 @@ P.S. - Early business partners get exclusive territory rights and preferred part
         summary: summary || "OBD diagnostic test completed"
       }).where(eq(obdTests.id, req.params.testId)).returning();
 
-      if (!test.length) {
+      if (!test) {
         return res.status(404).json({ error: "OBD test not found" });
       }
 
       res.json({
         success: true,
-        test: test[0],
+        test: test,
         message: "OBD diagnostic test completed successfully"
       });
     } catch (error) {
@@ -4662,7 +4662,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
         pendingPayments: stats.pendingPayments,
         completedJobs: stats.completedJobs,
         customerCount: customers.customerCount,
-        commissionRate: Number(stats.avgCommissionRate * 100).toFixed(2)
+        commissionRate: Number(parseFloat(stats.avgCommissionRate || '0') * 100).toFixed(2)
       });
     } catch (error) {
       console.error("Error fetching business stats:", error);
