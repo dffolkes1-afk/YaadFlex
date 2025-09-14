@@ -128,23 +128,87 @@
   // UI helper to wire basic controls if desired
   tts.mountControls = function(container) {
     if (!this.supported) {
-      container.innerHTML = '<div style="padding:.75rem;border:1px solid #ddd;border-radius:.5rem">Your browser does not support speech synthesis.</div>';
+      const errorDiv = document.createElement('div');
+      errorDiv.style.cssText = 'padding:.75rem;border:1px solid #ddd;border-radius:.5rem';
+      errorDiv.textContent = 'Your browser does not support speech synthesis.';
+      container.appendChild(errorDiv);
       return;
     }
-    const voicesOptions = this.voices.map(v => `<option value="${v.name}">${v.name} (${v.lang})</option>`).join('');
-    container.innerHTML = `
-      <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
-        <select id="tts-voice">${voicesOptions}</select>
-        <label>Rate <input id="tts-rate" type="range" min="0.5" max="2" step="0.1" value="${this.opts.rate}"></label>
-        <label>Pitch <input id="tts-pitch" type="range" min="0" max="2" step="0.1" value="${this.opts.pitch}"></label>
-        <label>Volume <input id="tts-volume" type="range" min="0" max="1" step="0.05" value="${this.opts.volume}"></label>
-        <button id="tts-play">Play</button>
-        <button id="tts-pause">Pause</button>
-        <button id="tts-resume">Resume</button>
-        <button id="tts-stop">Stop</button>
-        <input id="tts-input" placeholder="Type and press Play" style="flex:1;min-width:200px">
-      </div>
-    `;
+    
+    // Create voice select options safely
+    const voiceSelect = document.createElement('select');
+    voiceSelect.id = 'tts-voice';
+    this.voices.forEach(v => {
+      const option = document.createElement('option');
+      option.value = v.name;
+      option.textContent = `${v.name} (${v.lang})`;
+      voiceSelect.appendChild(option);
+    });
+    
+    // Create main container
+    const controlsDiv = document.createElement('div');
+    controlsDiv.style.cssText = 'display:flex;gap:.5rem;flex-wrap:wrap;align-items:center';
+    
+    // Add voice select
+    controlsDiv.appendChild(voiceSelect);
+    
+    // Create and add rate control
+    const rateLabel = document.createElement('label');
+    rateLabel.textContent = 'Rate ';
+    const rateInput = document.createElement('input');
+    rateInput.id = 'tts-rate';
+    rateInput.type = 'range';
+    rateInput.min = '0.5';
+    rateInput.max = '2';
+    rateInput.step = '0.1';
+    rateInput.value = this.opts.rate;
+    rateLabel.appendChild(rateInput);
+    controlsDiv.appendChild(rateLabel);
+    
+    // Create and add pitch control
+    const pitchLabel = document.createElement('label');
+    pitchLabel.textContent = 'Pitch ';
+    const pitchInput = document.createElement('input');
+    pitchInput.id = 'tts-pitch';
+    pitchInput.type = 'range';
+    pitchInput.min = '0';
+    pitchInput.max = '2';
+    pitchInput.step = '0.1';
+    pitchInput.value = this.opts.pitch;
+    pitchLabel.appendChild(pitchInput);
+    controlsDiv.appendChild(pitchLabel);
+    
+    // Create and add volume control
+    const volumeLabel = document.createElement('label');
+    volumeLabel.textContent = 'Volume ';
+    const volumeInput = document.createElement('input');
+    volumeInput.id = 'tts-volume';
+    volumeInput.type = 'range';
+    volumeInput.min = '0';
+    volumeInput.max = '1';
+    volumeInput.step = '0.05';
+    volumeInput.value = this.opts.volume;
+    volumeLabel.appendChild(volumeInput);
+    controlsDiv.appendChild(volumeLabel);
+    
+    // Create buttons
+    const buttons = ['Play', 'Pause', 'Resume', 'Stop'];
+    buttons.forEach(text => {
+      const button = document.createElement('button');
+      button.id = `tts-${text.toLowerCase()}`;
+      button.textContent = text;
+      controlsDiv.appendChild(button);
+    });
+    
+    // Create text input
+    const textInput = document.createElement('input');
+    textInput.id = 'tts-input';
+    textInput.placeholder = 'Type and press Play';
+    textInput.style.cssText = 'flex:1;min-width:200px';
+    controlsDiv.appendChild(textInput);
+    
+    // Add to container
+    container.appendChild(controlsDiv);
     const $ = (id) => container.querySelector(id);
     $('#tts-voice').addEventListener('change', e => tts.selectVoice(e.target.value));
     $('#tts-rate').addEventListener('input', e => tts.setRate(parseFloat(e.target.value)));
