@@ -130,7 +130,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       status: "ok", 
       timestamp: new Date().toISOString(),
       server: "running",
-      public: req.hostname.includes('.replit.app') || req.hostname.includes('.repl.co')
+      public: req.hostname.includes('.replit.app') || req.hostname.includes('.repl.co') || req.hostname.includes('.railway.app') || req.hostname.includes('.up.railway.app')
     });
   });
 

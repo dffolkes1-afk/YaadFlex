@@ -21,9 +21,13 @@ export default function LiveStatusIndicator() {
         if (response.ok) {
           setIsLive(true);
           
-          // Check if we're on a public URL
+          // Check if we're on a public URL (includes Railway, Replit, and other deployment platforms)
           const isPublicUrl = window.location.hostname.includes('.replit.app') || 
-                             window.location.hostname.includes('.repl.co');
+                             window.location.hostname.includes('.repl.co') ||
+                             window.location.hostname.includes('.railway.app') ||
+                             window.location.hostname.includes('.up.railway.app') ||
+                             window.location.hostname.includes('.vercel.app') ||
+                             window.location.hostname.includes('.netlify.app');
           setIsPublic(isPublicUrl);
           
           // Simulate viewer count (in production, this would come from analytics)

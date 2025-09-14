@@ -8,9 +8,9 @@ import memoize from "memoizee";
 import connectPg from "connect-pg-simple";
 import { storage } from "./storage";
 
-if (!process.env.REPLIT_DOMAINS) {
-  throw new Error("Environment variable REPLIT_DOMAINS not provided");
-}
+// Optional: REPLIT_DOMAINS for Replit-specific auth, but not required for Railway deployment
+const SUPPORTED_DOMAINS = process.env.REPLIT_DOMAINS || process.env.RAILWAY_DOMAINS || process.env.ALLOWED_DOMAINS || '';
+console.log("Supported auth domains:", SUPPORTED_DOMAINS || "None configured - auth disabled");
 
 const getOidcConfig = memoize(
   async () => {
@@ -88,10 +88,14 @@ export async function setupAuth(app: Express) {
     verified(null, user);
   };
 
-  console.log("Registering strategies for domains:", process.env.REPLIT_DOMAINS);
+  console.log("Registering strategies for domains:", SUPPORTED_DOMAINS);
   
-  for (const domain of process.env
-    .REPLIT_DOMAINS!.split(",")) {
+  if (!SUPPORTED_DOMAINS) {
+    console.log("No domains configured - skipping auth setup");
+    return;
+  }
+  
+  for (const domain of SUPPORTED_DOMAINS.split(",")) {
     console.log(`Registering strategy for domain: ${domain}`);
     
     try {

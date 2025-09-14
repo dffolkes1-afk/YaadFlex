@@ -1439,6 +1439,59 @@ class DemoStorage implements IStorage {
   async createChatParticipant(participant: any): Promise<any> { return {}; }
   async createTranslationReport(report: any): Promise<any> { return {}; }
   async updateUserLanguagePreferences(userId: string, preferences: any): Promise<User> { throw new Error('Not implemented'); }
+  
+  // CEO Dashboard methods - returning mock data for demo mode
+  async getCeoMetrics(metricType: string): Promise<any> {
+    return {
+      totalRevenue: 125000,
+      monthlyGrowth: 12.5,
+      activeUsers: 2400,
+      systemHealth: 98.5
+    };
+  }
+  
+  async getActiveObligations(): Promise<any[]> {
+    return [
+      { id: '1', description: 'Monthly server costs', amount: '2500.00', dueDate: new Date(Date.now() + 86400000 * 7), status: 'pending' },
+      { id: '2', description: 'Insurance payment', amount: '1200.00', dueDate: new Date(Date.now() + 86400000 * 14), status: 'pending' }
+    ];
+  }
+  
+  async getRecentPayments(limit: number): Promise<any[]> {
+    return [
+      { id: '1', description: 'Vendor payment', amount: '850.00', date: new Date(Date.now() - 86400000), status: 'completed' },
+      { id: '2', description: 'Utility bill', amount: '320.00', date: new Date(Date.now() - 86400000 * 2), status: 'completed' }
+    ].slice(0, limit);
+  }
+  
+  async getRecentAgentLogs(limit: number): Promise<any[]> {
+    return [
+      { id: '1', task: 'System health check', status: 'completed', timestamp: new Date(Date.now() - 1800000) },
+      { id: '2', task: 'Payment processing', status: 'in_progress', timestamp: new Date(Date.now() - 900000) }
+    ].slice(0, limit);
+  }
+  
+  async getComplianceStatus(): Promise<any> {
+    return {
+      overallScore: 95,
+      criticalIssues: 0,
+      pendingTasks: 2,
+      lastAudit: new Date(Date.now() - 86400000 * 30),
+      nextReview: new Date(Date.now() + 86400000 * 60)
+    };
+  }
+  
+  async getPendingApprovals(): Promise<any[]> {
+    return [
+      { id: '1', task: 'Large payment approval', amount: '5000.00', requestedBy: 'system', status: 'pending' },
+      { id: '2', task: 'Security protocol update', requestedBy: 'admin', status: 'pending' }
+    ];
+  }
+  
+  async processApproval(taskId: string, action: string, userId: string): Promise<void> {
+    // Mock approval processing - no actual action needed in demo mode
+    console.log(`Demo mode: Processed approval ${taskId} with action ${action} by user ${userId}`);
+  }
 }
 
 export const storage = new DemoStorage();

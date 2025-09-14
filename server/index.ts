@@ -1,8 +1,44 @@
 import express, { type Request, Response, NextFunction } from "express";
+import cors from "cors";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
+
+// CORS configuration for Railway deployment
+const corsOptions = {
+  origin: function (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Allow Railway domains, localhost for development, and common deployment platforms
+    const allowedOrigins = [
+      /^https?:\/\/localhost(:\d+)?$/,
+      /^https?:\/\/127\.0\.0\.1(:\d+)?$/,
+      /^https:\/\/.*\.railway\.app$/,
+      /^https:\/\/.*\.up\.railway\.app$/,
+      /^https:\/\/.*\.replit\.app$/,
+      /^https:\/\/.*\.repl\.co$/,
+      /^https:\/\/.*\.vercel\.app$/,
+      /^https:\/\/.*\.netlify\.app$/,
+    ];
+    
+    const isAllowed = allowedOrigins.some(pattern => pattern.test(origin));
+    
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      log(`CORS blocked origin: ${origin}`);
+      callback(null, false); // Allow anyway for now, just log
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
