@@ -4,53 +4,53 @@
 @tailwind utilities;
 
 :root {
-  /* 💼 PROFESSIONAL UBER-STYLE COLORS 💼 */
-  --premium-black: hsl(0, 0%, 7%);           /* Professional Black */
-  --sleek-dark: hsl(220, 13%, 9%);           /* Sleek Dark */
-  --modern-steel: hsl(215, 14%, 18%);        /* Modern Steel */
-  --elegant-silver: hsl(215, 8%, 55%);       /* Elegant Silver */
-  --carbon-fiber: hsl(217, 12%, 20%);        /* Carbon Fiber */
-  --deep-space: hsl(220, 15%, 5%);           /* Deep Space */
-  --midnight-pro: hsl(218, 12%, 12%);        /* Midnight Pro */
+  /* 🌿 SERENE EARTH TONES - PROFESSIONAL & CALM 🌿 */
+  --warm-brown: hsl(25, 20%, 15%);           /* Warm Brown */
+  --stone-gray: hsl(30, 5%, 20%);            /* Stone Gray */
+  --earth-charcoal: hsl(20, 8%, 25%);       /* Earth Charcoal */
+  --sage-green: hsl(95, 15%, 35%);          /* Sage Green */
+  --natural-beige: hsl(40, 12%, 45%);       /* Natural Beige */
+  --forest-deep: hsl(120, 20%, 15%);        /* Forest Deep */
+  --clay-brown: hsl(15, 18%, 18%);          /* Clay Brown */
   
-  /* 🚗 CARIBBEAN EMERALD ACCENTS 🚗 */
-  --caribbean-green: hsl(142, 76%, 36%);     /* Caribbean Green */
-  --charcoal-edge: hsl(217, 15%, 15%);       /* Charcoal Edge */
-  --platinum-white: hsl(0, 0%, 95%);         /* Platinum White */
-  --chrome-accent: hsl(215, 12%, 50%);       /* Chrome Accent */
+  /* 🍃 NATURAL EARTH ACCENTS 🍃 */
+  --moss-green: hsl(85, 25%, 40%);          /* Moss Green */
+  --sand-beige: hsl(35, 15%, 55%);          /* Sand Beige */
+  --cream-white: hsl(45, 15%, 92%);         /* Cream White */
+  --bark-brown: hsl(25, 12%, 35%);          /* Bark Brown */
   
-  --background: var(--premium-black);
-  --foreground: var(--platinum-white);
-  --card: var(--deep-space);
-  --card-foreground: var(--platinum-white);
-  --popover: var(--deep-space);
-  --popover-foreground: var(--platinum-white);
-  --primary: var(--caribbean-green);
-  --primary-foreground: var(--platinum-white);
-  --secondary: var(--modern-steel);
-  --secondary-foreground: var(--platinum-white);
-  --muted: var(--midnight-pro);
-  --muted-foreground: var(--elegant-silver);
-  --accent: var(--carbon-fiber);
-  --accent-foreground: var(--platinum-white);
-  --destructive: hsl(0, 84%, 60%);
-  --destructive-foreground: var(--platinum-white);
-  --border: var(--charcoal-edge);
-  --input: var(--midnight-pro);
-  --ring: var(--caribbean-green);
-  --chart-1: var(--sleek-dark);
-  --chart-2: var(--modern-steel);
-  --chart-3: var(--carbon-fiber);
-  --chart-4: var(--elegant-silver);
-  --chart-5: var(--chrome-accent);
-  --sidebar: hsl(222 84% 8%);
-  --sidebar-foreground: hsl(210 40% 98%);
-  --sidebar-primary: hsl(217 91% 60%);
-  --sidebar-primary-foreground: hsl(210 40% 98%);
-  --sidebar-accent: hsl(217 19% 16%);
-  --sidebar-accent-foreground: hsl(210 40% 98%);
-  --sidebar-border: hsl(217 19% 16%);
-  --sidebar-ring: hsl(217 91% 60%);
+  --background: var(--warm-brown);
+  --foreground: var(--cream-white);
+  --card: var(--forest-deep);
+  --card-foreground: var(--cream-white);
+  --popover: var(--forest-deep);
+  --popover-foreground: var(--cream-white);
+  --primary: var(--moss-green);
+  --primary-foreground: var(--cream-white);
+  --secondary: var(--earth-charcoal);
+  --secondary-foreground: var(--cream-white);
+  --muted: var(--clay-brown);
+  --muted-foreground: var(--sand-beige);
+  --accent: var(--stone-gray);
+  --accent-foreground: var(--cream-white);
+  --destructive: hsl(15, 40%, 45%);
+  --destructive-foreground: var(--cream-white);
+  --border: var(--stone-gray);
+  --input: var(--clay-brown);
+  --ring: var(--moss-green);
+  --chart-1: var(--warm-brown);
+  --chart-2: var(--stone-gray);
+  --chart-3: var(--earth-charcoal);
+  --chart-4: var(--sand-beige);
+  --chart-5: var(--bark-brown);
+  --sidebar: var(--clay-brown);
+  --sidebar-foreground: var(--cream-white);
+  --sidebar-primary: var(--moss-green);
+  --sidebar-primary-foreground: var(--cream-white);
+  --sidebar-accent: var(--stone-gray);
+  --sidebar-accent-foreground: var(--cream-white);
+  --sidebar-border: var(--earth-charcoal);
+  --sidebar-ring: var(--moss-green);
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: Menlo, monospace;
@@ -68,29 +68,29 @@
 }
 
 .dark {
-  --background: var(--premium-black);
-  --foreground: var(--platinum-white);
-  --card: var(--deep-space);
-  --card-foreground: var(--platinum-white);
-  --popover: var(--deep-space);
-  --popover-foreground: var(--platinum-white);
-  --primary: var(--caribbean-green);
-  --primary-foreground: var(--platinum-white);
-  --secondary: var(--sleek-dark);
-  --secondary-foreground: var(--platinum-white);
-  --muted: var(--midnight-pro);
-  --muted-foreground: var(--elegant-silver);
-  --accent: var(--carbon-fiber);
-  --accent-foreground: var(--platinum-white);
-  --destructive: hsl(0, 84%, 60%);
-  --destructive-foreground: var(--platinum-white);
-  --border: var(--charcoal-edge);
-  --input: var(--midnight-pro);
-  --ring: var(--caribbean-green);
+  --background: var(--forest-deep);
+  --foreground: var(--cream-white);
+  --card: var(--clay-brown);
+  --card-foreground: var(--cream-white);
+  --popover: var(--clay-brown);
+  --popover-foreground: var(--cream-white);
+  --primary: var(--sage-green);
+  --primary-foreground: var(--cream-white);
+  --secondary: var(--earth-charcoal);
+  --secondary-foreground: var(--cream-white);
+  --muted: var(--stone-gray);
+  --muted-foreground: var(--sand-beige);
+  --accent: var(--bark-brown);
+  --accent-foreground: var(--cream-white);
+  --destructive: hsl(15, 40%, 45%);
+  --destructive-foreground: var(--cream-white);
+  --border: var(--earth-charcoal);
+  --input: var(--stone-gray);
+  --ring: var(--sage-green);
 }
 
-.professional-uber-gradient {
-  background: linear-gradient(135deg, hsl(0, 0%, 7%) 0%, hsl(220, 13%, 9%) 25%, hsl(142, 76%, 36%) 50%, hsl(218, 12%, 12%) 75%, hsl(220, 15%, 5%) 100%);
+.earth-tone-gradient {
+  background: linear-gradient(135deg, var(--warm-brown) 0%, var(--forest-deep) 25%, var(--moss-green) 50%, var(--earth-charcoal) 75%, var(--clay-brown) 100%);
 }
 
 /* RADAR SYSTEM ANIMATIONS */
@@ -175,9 +175,9 @@
   body {
     @apply font-sans antialiased text-foreground;
     font-family: var(--font-sans);
-    /* 🌌 GALACTIC WORLDLY BACKGROUND - CONNECTING TO THE UNIVERSE 🌌 */
+    /* 🌿 SERENE EARTH BACKGROUND - NATURAL & CALMING 🌿 */
     background: 
-      linear-gradient(135deg, var(--jamaica-black) 0%, hsl(153, 50%, 10%) 25%, hsl(260, 80%, 15%) 50%, var(--jamaica-black) 100%);
+      linear-gradient(135deg, var(--warm-brown) 0%, var(--forest-deep) 25%, var(--earth-charcoal) 50%, var(--clay-brown) 100%);
     position: relative;
     min-height: 100vh;
     overflow-x: hidden; /* Prevent horizontal scrolling */
@@ -522,7 +522,7 @@
     }
   }
 
-  /* Twinkling stars overlay */
+  /* Subtle earth-tone overlay */
   body::before {
     content: '';
     position: fixed;
@@ -533,11 +533,11 @@
     pointer-events: none;
     z-index: 0;
     background-image: 
-      radial-gradient(2px 2px at 20px 30px, var(--jamaica-gold), transparent),
-      radial-gradient(2px 2px at 40px 70px, #fff, transparent),
-      radial-gradient(1px 1px at 90px 40px, var(--earth-blue), transparent),
-      radial-gradient(1px 1px at 130px 80px, var(--jamaica-green), transparent),
-      radial-gradient(2px 2px at 160px 30px, #ddd, transparent);
+      radial-gradient(2px 2px at 20px 30px, var(--sand-beige), transparent),
+      radial-gradient(2px 2px at 40px 70px, var(--natural-beige), transparent),
+      radial-gradient(1px 1px at 90px 40px, var(--moss-green), transparent),
+      radial-gradient(1px 1px at 130px 80px, var(--bark-brown), transparent),
+      radial-gradient(2px 2px at 160px 30px, var(--stone-gray), transparent);
     background-repeat: repeat;
     background-size: 200px 100px;
     animation: twinkle 4s infinite ease-in-out;
@@ -681,19 +681,19 @@
   50% { background-position: 100% 50%; }
 }
 
-/* 🇯🇲 JAMAICAN GLOBAL THEME ANIMATIONS 🌍 */
+/* 🌿 EARTH TONE THEME ANIMATIONS 🌿 */
 
-/* Planet Earth Rotation */
-.planet-earth {
+/* Natural Earth Rotation */
+.earth-sphere {
   animation: planetRotation 20s linear infinite;
   background: radial-gradient(circle at 30% 30%, 
-    var(--earth-blue) 0%, 
-    var(--earth-green) 35%, 
-    var(--jamaica-green) 70%, 
-    var(--jamaica-black) 100%);
+    var(--moss-green) 0%, 
+    var(--sage-green) 35%, 
+    var(--forest-deep) 70%, 
+    var(--warm-brown) 100%);
   border-radius: 50%;
   box-shadow: 
-    0 0 30px var(--jamaica-green),
+    0 0 30px var(--moss-green),
     inset -10px -10px 20px rgba(0,0,0,0.3);
 }
 
@@ -702,31 +702,31 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Jamaica Flag Wave Effect */
-.jamaica-wave {
+/* Earth Tone Wave Effect */
+.earth-wave {
   background: linear-gradient(
     45deg,
-    var(--jamaica-green) 0%,
-    var(--jamaica-gold) 25%,
-    var(--jamaica-black) 50%,
-    var(--jamaica-gold) 75%,
-    var(--jamaica-green) 100%
+    var(--moss-green) 0%,
+    var(--sand-beige) 25%,
+    var(--forest-deep) 50%,
+    var(--natural-beige) 75%,
+    var(--sage-green) 100%
   );
   background-size: 400% 400%;
-  animation: jamaicaWave 4s ease-in-out infinite;
+  animation: earthWave 4s ease-in-out infinite;
 }
 
-@keyframes jamaicaWave {
+@keyframes earthWave {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
 }
 
-/* Global Connection Lines */
-.global-connections {
+/* Natural Earth Connections */
+.earth-connections {
   position: relative;
 }
 
-.global-connections::before {
+.earth-connections::before {
   content: '';
   position: absolute;
   top: 0;
@@ -734,55 +734,55 @@
   right: 0;
   bottom: 0;
   background: 
-    radial-gradient(2px 2px at 20px 30px, var(--jamaica-gold), transparent),
-    radial-gradient(2px 2px at 40px 70px, var(--jamaica-green), transparent),
-    radial-gradient(1px 1px at 90px 40px, var(--earth-blue), transparent),
-    radial-gradient(1px 1px at 130px 80px, var(--jamaica-gold), transparent),
-    linear-gradient(90deg, transparent 79px, var(--jamaica-green) 79px, var(--jamaica-green) 81px, transparent 81px),
-    linear-gradient(transparent 39px, var(--jamaica-gold) 39px, var(--jamaica-gold) 41px, transparent 41px);
+    radial-gradient(2px 2px at 20px 30px, var(--sand-beige), transparent),
+    radial-gradient(2px 2px at 40px 70px, var(--moss-green), transparent),
+    radial-gradient(1px 1px at 90px 40px, var(--natural-beige), transparent),
+    radial-gradient(1px 1px at 130px 80px, var(--bark-brown), transparent),
+    linear-gradient(90deg, transparent 79px, var(--sage-green) 79px, var(--sage-green) 81px, transparent 81px),
+    linear-gradient(transparent 39px, var(--stone-gray) 39px, var(--stone-gray) 41px, transparent 41px);
   background-size: 150px 100px;
-  animation: globalPulse 8s ease-in-out infinite;
+  animation: earthPulse 8s ease-in-out infinite;
   opacity: 0.3;
 }
 
-@keyframes globalPulse {
+@keyframes earthPulse {
   0%, 100% { opacity: 0.2; }
   50% { opacity: 0.6; }
 }
 
-/* Jamaican Glow Effects */
-.jamaica-glow {
+/* Natural Earth Glow Effects */
+.earth-glow {
   box-shadow: 
-    0 0 20px var(--jamaica-green),
-    0 0 40px var(--jamaica-gold),
-    0 0 60px var(--jamaica-green);
-  animation: jamaicaGlow 3s ease-in-out infinite alternate;
+    0 0 20px var(--moss-green),
+    0 0 40px var(--sand-beige),
+    0 0 60px var(--sage-green);
+  animation: earthGlow 3s ease-in-out infinite alternate;
 }
 
-@keyframes jamaicaGlow {
+@keyframes earthGlow {
   0% { 
     box-shadow: 
-      0 0 20px var(--jamaica-green),
-      0 0 30px var(--jamaica-gold);
+      0 0 20px var(--moss-green),
+      0 0 30px var(--sand-beige);
   }
   100% { 
     box-shadow: 
-      0 0 40px var(--jamaica-green),
-      0 0 60px var(--jamaica-gold),
-      0 0 80px var(--earth-blue);
+      0 0 40px var(--sage-green),
+      0 0 60px var(--natural-beige),
+      0 0 80px var(--bark-brown);
   }
 }
 
-/* World Map Background */
-.world-map-bg {
+/* Earth Map Background */
+.earth-map-bg {
   background: 
-    radial-gradient(circle at 20% 80%, var(--jamaica-green) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, var(--jamaica-gold) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, var(--earth-blue) 0%, transparent 50%);
-  animation: worldPulse 6s ease-in-out infinite;
+    radial-gradient(circle at 20% 80%, var(--moss-green) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, var(--sand-beige) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, var(--sage-green) 0%, transparent 50%);
+  animation: earthMapPulse 6s ease-in-out infinite;
 }
 
-@keyframes worldPulse {
+@keyframes earthMapPulse {
   0%, 100% { opacity: 0.1; }
   50% { opacity: 0.3; }
 }
