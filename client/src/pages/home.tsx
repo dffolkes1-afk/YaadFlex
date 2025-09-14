@@ -12,7 +12,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-// Images removed for production build
+// DuoWonTheWorld3D removed to fix WebGL issues - using CSS animations instead
+
+// Import YaadFlex Visual Assets
+import yaadFlexLogo from "@assets/generated_images/YaadFlex_Bank_logo_09b86b5e.png";
+import yaadFlexPoster from "@assets/generated_images/YaadFlex_promotional_poster_ab79c580.png";
 
 type Transaction = {
   id: string;
@@ -373,9 +377,30 @@ export default function Home() {
       <div className="relative overflow-hidden bg-gradient-to-r from-green-900/20 to-yellow-900/20 border-b border-yellow-500/30">
         <div className="relative">
           <div 
-            className="w-full h-64 md:h-96 bg-gradient-to-r from-green-600/40 via-yellow-500/40 to-green-700/40 opacity-90"
+            className="w-full h-64 md:h-96 bg-gradient-to-r from-green-600/40 via-yellow-500/40 to-green-700/40 opacity-90 relative"
             data-testid="hero-background"
-          ></div>
+            style={{
+              backgroundImage: `url(${yaadFlexPoster})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundBlendMode: 'overlay'
+            }}
+          >
+            {/* YaadFlex Logo Overlay */}
+            <div className="absolute top-4 left-4">
+              <img 
+                src={yaadFlexLogo} 
+                alt="YaadFlex Bank Logo" 
+                className="w-20 h-20 md:w-32 md:h-32 object-contain animate-pulse" 
+                data-testid="yadflex-logo-image"
+              />
+            </div>
+            
+            {/* Animated Interactive Element */}
+            <div className="absolute bottom-4 right-4 w-40 h-40 flex items-center justify-center">
+              <div className="text-6xl animate-bounce">🚀</div>
+            </div>
+          </div>
           
           {/* Hero Overlay Content */}
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-black/40 to-transparent">
@@ -530,6 +555,68 @@ export default function Home() {
                   <div className="text-sm text-purple-400 font-semibold animate-bounce">
                     🚀 T-MINUS ZERO: YARDFLEX MISSION TO THE MOON 🚀
                   </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* VISUAL BUSINESS SHOWCASE - MOVING PICTURES */}
+        <div className="mb-8">
+          <Card className="bg-gradient-to-br from-blue-900/30 via-purple-900/30 to-green-900/30 border-2 border-yellow-500/50 relative overflow-hidden" data-testid="visual-showcase">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-4 text-white">
+                <img 
+                  src={yaadFlexLogo} 
+                  alt="YaadFlex Logo" 
+                  className="w-16 h-16 object-contain animate-spin" 
+                  data-testid="spinning-logo"
+                />
+                <span className="text-2xl font-black animate-pulse">🏢 YARDFLEX BUSINESS PLATFORM 🏢</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Moving Globe Animation */}
+                <div className="h-40 bg-black/50 rounded-lg relative overflow-hidden flex items-center justify-center">
+                  <div className="relative">
+                    <div className="text-8xl animate-spin">🌍</div>
+                    <div className="absolute inset-0 text-8xl animate-pulse">✨</div>
+                  </div>
+                  <div className="absolute bottom-2 left-2 text-white text-sm font-bold">🌍 Global Network</div>
+                  <div className="absolute top-2 right-2 w-4 h-4 bg-green-500 rounded-full animate-pulse"></div>
+                </div>
+                
+                {/* YaadFlex Promotional Image */}
+                <div className="h-40 bg-gradient-to-br from-green-600 to-yellow-600 rounded-lg relative overflow-hidden">
+                  <img 
+                    src={yaadFlexPoster} 
+                    alt="YaadFlex Promotional" 
+                    className="w-full h-full object-cover animate-pulse" 
+                    data-testid="promotional-poster"
+                  />
+                  <div className="absolute bottom-2 left-2 text-white text-sm font-bold bg-black/50 px-2 py-1 rounded">📊 Business Growth</div>
+                </div>
+                
+                {/* Animated Stats */}
+                <div className="h-40 bg-gradient-to-br from-purple-600 to-blue-600 rounded-lg relative overflow-hidden flex flex-col justify-center items-center">
+                  <div className="text-4xl animate-bounce mb-2">🚀</div>
+                  <div className="text-white text-center">
+                    <div className="text-2xl font-bold animate-pulse">24/7</div>
+                    <div className="text-sm">Always Moving</div>
+                  </div>
+                  <div className="absolute top-2 right-2 w-6 h-6 bg-green-500 rounded-full animate-ping"></div>
+                </div>
+              </div>
+              
+              {/* MOVING TICKER */}
+              <div className="mt-6 bg-black/30 rounded-lg p-4 overflow-hidden">
+                <div className="text-yellow-400 font-bold text-lg mb-2">🔥 LIVE YADFLEX STATUS 🔥</div>
+                <div className="text-white text-sm animate-pulse">
+                  <span className="inline-block animate-bounce">🟢</span> Business Platform: ONLINE | 
+                  <span className="inline-block animate-bounce delay-100">🟢</span> Payment System: READY | 
+                  <span className="inline-block animate-bounce delay-200">🟢</span> Global Network: ACTIVE | 
+                  <span className="inline-block animate-bounce delay-300">🟢</span> YardFlex: MOVING!
                 </div>
               </div>
             </CardContent>
