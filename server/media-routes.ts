@@ -4,6 +4,14 @@ import { z } from "zod";
 import { insertMediaChannelSchema, insertMediaStreamSchema } from "../shared/media-schema";
 import { nanoid } from "nanoid";
 
+// Schema for allowed stream update properties - only allow safe user-modifiable fields
+const updateStreamSchema = z.object({
+  title: z.string().max(160).optional(),
+  streamUrl: z.string().url().optional(),
+  posterImage: z.string().url().optional(),
+  isLive: z.boolean().optional()
+});
+
 const router = express.Router();
 
 // Simple helper to detect provider
@@ -122,8 +130,13 @@ router.patch("/api/media/streams/:id", async (req, res) => {
     return res.status(404).json({ error: "Stream not found" });
   }
   
-  mediaStreams[streamIndex] = { ...mediaStreams[streamIndex], ...req.body };
-  res.json(mediaStreams[streamIndex]);
+  try {
+    const validatedUpdates = updateStreamSchema.parse(req.body);
+    mediaStreams[streamIndex] = { ...mediaStreams[streamIndex], ...validatedUpdates };
+    res.json(mediaStreams[streamIndex]);
+  } catch (error) {
+    res.status(400).json({ error: "Invalid update data" });
+  }
 });
 
 export default router;
