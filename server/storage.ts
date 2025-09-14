@@ -1345,15 +1345,15 @@ class DemoStorage implements IStorage {
 
   // Demo transactions with recent activity
   private transactions: Transaction[] = [
-    { id: '1', userId: '1', type: 'rental_payment', amount: '450.00', currency: 'KWD', status: 'completed', description: 'Property rental - Kingston Heights', metadata: {}, createdAt: new Date(Date.now() - 3600000), updatedAt: new Date() },
-    { id: '2', userId: '1', type: 'delivery_payment', amount: '125.50', currency: 'JMD', status: 'completed', description: 'Food delivery service', metadata: {}, createdAt: new Date(Date.now() - 7200000), updatedAt: new Date() },
-    { id: '3', userId: '1', type: 'business_transfer', amount: '800.00', currency: 'USD', status: 'pending', description: 'Business investment transfer', metadata: {}, createdAt: new Date(Date.now() - 1800000), updatedAt: new Date() }
+    { id: '1', userId: '1', type: 'rental_payment', amount: '450.00', currency: 'KWD', status: 'completed', description: 'Property rental - Kingston Heights', recipientId: null, recipientPhone: null, securityLevel: 'enhanced', countryCode: 'KW', isSecureTransfer: true, exchangeRate: '1.0000', originalCurrency: null, originalAmount: null, createdAt: new Date(Date.now() - 3600000), updatedAt: new Date() },
+    { id: '2', userId: '1', type: 'delivery_payment', amount: '125.50', currency: 'JMD', status: 'completed', description: 'Food delivery service', recipientId: null, recipientPhone: null, securityLevel: 'standard', countryCode: 'JM', isSecureTransfer: true, exchangeRate: '1.0000', originalCurrency: null, originalAmount: null, createdAt: new Date(Date.now() - 7200000), updatedAt: new Date() },
+    { id: '3', userId: '1', type: 'business_transfer', amount: '800.00', currency: 'USD', status: 'pending', description: 'Business investment transfer', recipientId: null, recipientPhone: null, securityLevel: 'enhanced', countryCode: 'US', isSecureTransfer: true, exchangeRate: '1.0000', originalCurrency: null, originalAmount: null, createdAt: new Date(Date.now() - 1800000), updatedAt: new Date() }
   ];
 
   // Demo security logs
   private securityLogs: SecurityLog[] = [
-    { id: '1', userId: '1', eventType: 'login_success', severity: 'low', description: 'Successful login from Denver, CO', ipAddress: '192.168.1.100', defenseSystemActivated: false, threatBlocked: false, createdAt: new Date(Date.now() - 900000), updatedAt: new Date() },
-    { id: '2', userId: '1', eventType: 'large_transaction', severity: 'medium', description: 'Large transaction approved: $800 USD', ipAddress: '192.168.1.100', defenseSystemActivated: true, threatBlocked: false, createdAt: new Date(Date.now() - 3600000), updatedAt: new Date() }
+    { id: '1', userId: '1', eventType: 'login_success', severity: 'low', description: 'Successful login from Denver, CO', ipAddress: '192.168.1.100', userAgent: null, threatBlocked: false, defenseSystemActivated: false, createdAt: new Date(Date.now() - 900000) },
+    { id: '2', userId: '1', eventType: 'large_transaction', severity: 'medium', description: 'Large transaction approved: $800 USD', ipAddress: '192.168.1.100', userAgent: null, threatBlocked: false, defenseSystemActivated: true, createdAt: new Date(Date.now() - 3600000) }
   ];
 
   // Implement all required interface methods
