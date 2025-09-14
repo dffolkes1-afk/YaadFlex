@@ -25,38 +25,7 @@ function detectProvider(url: string): "hls"|"youtube"|"twitch"|"vimeo"|"other" {
 }
 
 // Mock storage - in real app would use database
-const mediaChannels: any[] = [
-  {
-    id: "tvj-channel",
-    ownerUserId: "admin",
-    handle: "tvj",
-    displayName: "Television Jamaica (TVJ)",
-    about: "Jamaica's leading television station providing news, entertainment, and sports coverage",
-    verified: true,
-    avatarUrl: "/api/placeholder/80/80",
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: "cvm-channel", 
-    ownerUserId: "admin",
-    handle: "cvm",
-    displayName: "CVM Television",
-    about: "Caribbean Vision Media - Your vision, our focus",
-    verified: true,
-    avatarUrl: "/api/placeholder/80/80",
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: "gleaner-channel",
-    ownerUserId: "admin", 
-    handle: "gleaner",
-    displayName: "The Gleaner",
-    about: "Jamaica's oldest daily newspaper, now with live streaming",
-    verified: true,
-    avatarUrl: "/api/placeholder/80/80",
-    createdAt: new Date().toISOString()
-  }
-];
+const mediaChannels: any[] = [];
 
 const mediaStreams: any[] = [];
 
