@@ -14,6 +14,7 @@ import { initializeDeliveryRealtime } from "./delivery-realtime";
 import { registerSocialRoutes } from "./routes/social";
 import { autonomousOpsAgent } from "./autonomous-ops-agent";
 import { paymentTunnel } from "./unified-payment-tunnel";
+import { createPaypalOrder, capturePaypalOrder, loadPaypalDefault } from "./paypal";
 import { 
   demoWallets, 
   demoTransactions, 
@@ -131,6 +132,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       server: "running",
       public: req.hostname.includes('.replit.app') || req.hostname.includes('.repl.co')
     });
+  });
+
+  // PayPal payment routes - javascript_paypal integration
+  app.get("/paypal/setup", async (req, res) => {
+    await loadPaypalDefault(req, res);
+  });
+
+  app.post("/paypal/order", async (req, res) => {
+    // Request body should contain: { intent, amount, currency }
+    await createPaypalOrder(req, res);
+  });
+
+  app.post("/paypal/order/:orderID/capture", async (req, res) => {
+    await capturePaypalOrder(req, res);
   });
   
   // Time-locked authentication routes
