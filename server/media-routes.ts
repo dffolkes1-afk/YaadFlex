@@ -64,9 +64,10 @@ const mediaStreams: any[] = [];
 router.post("/api/media/channels", async (req, res) => {
   try {
     const validatedData = insertMediaChannelSchema.parse(req.body);
+    const { id, ...dataWithoutId } = validatedData;
     const newChannel = {
       id: nanoid(),
-      ...validatedData,
+      ...dataWithoutId,
       createdAt: new Date().toISOString()
     };
     
@@ -96,10 +97,11 @@ router.post("/api/media/streams", async (req, res) => {
   try {
     const validatedData = insertMediaStreamSchema.parse(req.body);
     const provider = detectProvider(validatedData.streamUrl);
+    const { id, ...dataWithoutId } = validatedData;
     
     const newStream = {
       id: nanoid(),
-      ...validatedData,
+      ...dataWithoutId,
       provider,
       createdAt: new Date().toISOString()
     };
