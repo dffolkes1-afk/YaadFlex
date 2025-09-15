@@ -7,6 +7,7 @@ import { isUnauthorizedError } from "@/lib/authUtils";
 import { useLocation, Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { VoiceButton } from "@/components/VoiceButton";
+import { VoiceTestPanel } from "@/components/VoiceTestPanel";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -1055,6 +1056,11 @@ export default function Home() {
               </div>
             </CardContent>
           </Card>
+        </div>
+
+        {/* ========== VOICE TTS SYSTEM - NEW FEATURE! ========== */}
+        <div className="mb-8">
+          <VoiceTestPanel />
         </div>
 
         {/* ========== MASSIVE EMAIL CAMPAIGN - SHAKE UP JAMAICA! ========== */}

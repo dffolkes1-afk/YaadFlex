@@ -10,6 +10,7 @@ import { seedTimeAuthSystem } from "./seed-time-auth";
 import rbacRoutes from "./rbac-routes";
 import { seedRbacSystem } from "./rbac-seed";
 import deliveryRoutes from "./delivery-routes";
+import ttsRoutes from "./tts-routes";
 import { initializeDeliveryRealtime } from "./delivery-realtime";
 import { registerSocialRoutes } from "./routes/social";
 import { autonomousOpsAgent } from "./autonomous-ops-agent";
@@ -156,6 +157,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Universal Delivery Network routes
   app.use(deliveryRoutes);
+  
+  // YaadFlex Voice TTS System (Azure + ElevenLabs) - PROTECTED
+  app.use('/api/tts', isAuthenticated, ttsRoutes);
   
   // Vehicle Registration System for Delaware Insurance Business
   const vehicleRegistrationRoutes = (await import('./vehicle-registration-routes')).default;
