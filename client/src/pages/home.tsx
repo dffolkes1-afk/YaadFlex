@@ -8,6 +8,7 @@ import { useLocation, Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { VoiceButton } from "@/components/VoiceButton";
 import { VoiceTestPanel } from "@/components/VoiceTestPanel";
+import { PremiumYaadFlexLogo } from "@/components/PremiumYaadFlexLogo";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -437,13 +438,12 @@ export default function Home() {
               backgroundBlendMode: 'overlay'
             }}
           >
-            {/* YaadFlex Logo Overlay */}
+            {/* Premium YaadFlex Logo Overlay */}
             <div className="absolute top-4 left-4">
-              <img 
-                src={yaadFlexLogo} 
-                alt="YaadFlex Bank Logo" 
-                className="w-20 h-20 md:w-32 md:h-32 object-contain animate-pulse" 
-                data-testid="yadflex-logo-image"
+              <PremiumYaadFlexLogo 
+                size="sm" 
+                className="premium-neon-glow" 
+                data-testid="yadflex-logo-premium"
               />
             </div>
             
@@ -483,15 +483,13 @@ export default function Home() {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div 
-                className="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-400 to-green-500 flex items-center justify-center text-white font-bold text-sm"
-                data-testid="yardflex-logo"
-              >
-                YF
-              </div>
-              <span className="text-2xl font-bold text-premium" data-testid="brand-name">YaadFlex</span>
-              <span className="text-xs bg-green-600 text-white px-2 py-1 rounded-full font-medium" data-testid="global-indicator">
-                GLOBAL
+              <PremiumYaadFlexLogo 
+                size="sm" 
+                className="premium-neon-glow transform hover:scale-105 transition-all duration-300" 
+                data-testid="main-premium-logo"
+              />
+              <span className="text-xs bg-emerald-600 text-white px-2 py-1 rounded-full font-medium gold-neon-glow" data-testid="global-indicator">
+                PREMIUM
               </span>
               {beastModeActive && (
                 <span className="text-xs bg-destructive text-destructive-foreground px-2 py-1 rounded-full font-medium animate-pulse" data-testid="beast-mode-indicator">

@@ -771,6 +771,12 @@
   50% { background-position: 100% 50%; }
 }
 
+/* Premium Logo Shimmer Animation */
+@keyframes logoShimmer {
+  0% { background-position: -300% -300%; }
+  100% { background-position: 300% 300%; }
+}
+
 /* 🌿 EARTH TONE THEME ANIMATIONS 🌿 */
 
 /* Natural Earth Rotation */
