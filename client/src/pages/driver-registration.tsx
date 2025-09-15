@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 import { 
   Car, 
   Bike, 
@@ -21,6 +22,7 @@ import {
   FileText,
   MapPin
 } from 'lucide-react';
+import { Link } from 'wouter';
 
 type DriverFormData = {
   fullName: string;
@@ -68,6 +70,9 @@ export default function DriverRegistration() {
   });
 
   const [currentStep, setCurrentStep] = useState(1);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [agreedToDriverAgreement, setAgreedToDriverAgreement] = useState(false);
+  const [agreedToPrivacy, setAgreedToPrivacy] = useState(false);
 
   const jamaicaParishes = [
     'Kingston', 'St. Andrew', 'St. Thomas', 'Portland', 'St. Mary',
@@ -143,7 +148,26 @@ export default function DriverRegistration() {
       return;
     }
 
-    registerDriverMutation.mutate(formData);
+    // Check legal agreements
+    if (!agreedToTerms || !agreedToDriverAgreement || !agreedToPrivacy) {
+      toast({
+        title: "Legal Agreements Required",
+        description: "Please review and accept all legal agreements to complete registration.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // CRITICAL: Include legal acceptance fields in POST payload for backend persistence
+    const completeDriverData = {
+      ...formData,
+      // Legal acceptance fields - required for legal compliance
+      agreedToTerms,
+      agreedToDriverAgreement,
+      agreedToPrivacy
+    };
+
+    registerDriverMutation.mutate(completeDriverData);
   };
 
   const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, 4));
@@ -579,6 +603,85 @@ export default function DriverRegistration() {
                 </>
               )}
 
+              {/* Legal Agreements - Only show on final step */}
+              {currentStep === 4 && (
+                <Card className="border-blue-200 bg-blue-50/50 dark:bg-blue-950/20 dark:border-blue-800">
+                  <CardContent className="p-6">
+                    <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-4 flex items-center gap-2">
+                      <Shield className="h-5 w-5" />
+                      Legal Agreements & Terms
+                    </h3>
+                    <p className="text-blue-800 dark:text-blue-200 text-sm mb-4">
+                      By registering as a YaadFlex driver, you're entering into an independent contractor agreement with BlackRock, Inc. 
+                      Please review and accept the following legal documents:
+                    </p>
+                    
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3 p-3 border rounded-lg">
+                        <Checkbox 
+                          id="terms-agreement"
+                          checked={agreedToTerms}
+                          onCheckedChange={setAgreedToTerms}
+                          data-testid="checkbox-terms"
+                        />
+                        <div className="flex-1">
+                          <label htmlFor="terms-agreement" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                            I agree to BlackRock's Terms of Service
+                          </label>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            General platform terms and conditions. 
+                            <Link href="/terms" className="text-blue-600 hover:underline ml-1">Read Terms →</Link>
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start gap-3 p-3 border rounded-lg">
+                        <Checkbox 
+                          id="driver-agreement"
+                          checked={agreedToDriverAgreement}
+                          onCheckedChange={setAgreedToDriverAgreement}
+                          data-testid="checkbox-driver-agreement"
+                        />
+                        <div className="flex-1">
+                          <label htmlFor="driver-agreement" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                            I agree to the Driver Agreement (85% earnings, independent contractor terms)
+                          </label>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Your earnings structure and working relationship with BlackRock. 
+                            <Link href="/driver-agreement" className="text-blue-600 hover:underline ml-1">Read Agreement →</Link>
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start gap-3 p-3 border rounded-lg">
+                        <Checkbox 
+                          id="privacy-policy"
+                          checked={agreedToPrivacy}
+                          onCheckedChange={setAgreedToPrivacy}
+                          data-testid="checkbox-privacy"
+                        />
+                        <div className="flex-1">
+                          <label htmlFor="privacy-policy" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                            I acknowledge BlackRock's Privacy Policy
+                          </label>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            How your personal data and location information is protected. 
+                            <Link href="/privacy" className="text-blue-600 hover:underline ml-1">Read Policy →</Link>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-4 p-3 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
+                      <p className="text-xs text-green-700 dark:text-green-300">
+                        <strong>BlackRock Corporate Information:</strong> BlackRock, Inc. (Delaware Corporation, SEC File: 001-15305) 
+                        operates YaadFlex as a multi-service platform. Address: 50 Hudson Yards, New York, NY 10001.
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
               {/* Navigation Buttons */}
               <div className="flex justify-between pt-6">
                 {currentStep > 1 && (
@@ -594,7 +697,7 @@ export default function DriverRegistration() {
                   <Button 
                     type="submit"
                     className="ml-auto h-12 px-8 text-lg font-bold bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 hover:from-green-600 hover:via-yellow-600 hover:to-red-600"
-                    disabled={registerDriverMutation.isPending}
+                    disabled={registerDriverMutation.isPending || !agreedToTerms || !agreedToDriverAgreement || !agreedToPrivacy}
                     data-testid="button-register-driver"
                   >
                     {registerDriverMutation.isPending ? (

@@ -89,6 +89,21 @@ export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
   upsertUser(user: UpsertUser): Promise<User>;
   
+  // Legal Acceptance Operations - CRITICAL for legal compliance
+  updateUserLegalAcceptance(userId: string, legalData: {
+    termsAccepted?: boolean;
+    privacyAccepted?: boolean;
+    userAgreementAccepted?: boolean;
+    driverAgreementAccepted?: boolean;
+    businessAgreementAccepted?: boolean;
+    legalAcceptedAt?: Date;
+    termsVersion?: string;
+    privacyVersion?: string;
+    agreementVersion?: string;
+    ipAddressAtAcceptance?: string;
+    userAgentAtAcceptance?: string;
+  }): Promise<User>;
+  
   // Transaction operations
   createTransaction(transaction: InsertTransaction): Promise<Transaction>;
   getUserTransactions(userId: string): Promise<Transaction[]>;
@@ -212,6 +227,31 @@ export class DatabaseStorage implements IStorage {
           updatedAt: new Date(),
         },
       })
+      .returning();
+    return user;
+  }
+
+  // CRITICAL: Legal acceptance method - required for legal compliance
+  async updateUserLegalAcceptance(userId: string, legalData: {
+    termsAccepted?: boolean;
+    privacyAccepted?: boolean;
+    userAgreementAccepted?: boolean;
+    driverAgreementAccepted?: boolean;
+    businessAgreementAccepted?: boolean;
+    legalAcceptedAt?: Date;
+    termsVersion?: string;
+    privacyVersion?: string;
+    agreementVersion?: string;
+    ipAddressAtAcceptance?: string;
+    userAgentAtAcceptance?: string;
+  }): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set({
+        ...legalData,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
       .returning();
     return user;
   }
@@ -1439,6 +1479,54 @@ class DemoStorage implements IStorage {
   async createChatParticipant(participant: any): Promise<any> { return {}; }
   async createTranslationReport(report: any): Promise<any> { return {}; }
   async updateUserLanguagePreferences(userId: string, preferences: any): Promise<User> { throw new Error('Not implemented'); }
+  
+  // CRITICAL: Legal acceptance method - required for legal compliance
+  async updateUserLegalAcceptance(userId: string, legalData: {
+    termsAccepted?: boolean;
+    privacyAccepted?: boolean;
+    userAgreementAccepted?: boolean;
+    driverAgreementAccepted?: boolean;
+    businessAgreementAccepted?: boolean;
+    legalAcceptedAt?: Date;
+    termsVersion?: string;
+    privacyVersion?: string;
+    agreementVersion?: string;
+    ipAddressAtAcceptance?: string;
+    userAgentAtAcceptance?: string;
+  }): Promise<User> {
+    // Demo mode: Return mock user with legal acceptance applied
+    return {
+      id: userId,
+      email: 'demo@yaadflex.com',
+      firstName: 'Demo',
+      lastName: 'User',
+      profileImageUrl: null,
+      mfaEnabled: false,
+      mfaSecret: null,
+      backupCodes: null,
+      securityLevel: 'standard',
+      lastSecurityCheck: null,
+      trustedDevices: null,
+      preferredLang: 'en-JM',
+      fallbackLang: 'en-US',
+      showAlwaysEnglishToggle: true,
+      captionVoiceMessages: true,
+      autoTranslateEnabled: true,
+      termsAccepted: legalData.termsAccepted || false,
+      privacyAccepted: legalData.privacyAccepted || false,
+      userAgreementAccepted: legalData.userAgreementAccepted || false,
+      driverAgreementAccepted: legalData.driverAgreementAccepted || false,
+      businessAgreementAccepted: legalData.businessAgreementAccepted || false,
+      legalAcceptedAt: legalData.legalAcceptedAt || null,
+      termsVersion: legalData.termsVersion || '1.0',
+      privacyVersion: legalData.privacyVersion || '1.0',
+      agreementVersion: legalData.agreementVersion || '1.0',
+      ipAddressAtAcceptance: legalData.ipAddressAtAcceptance || null,
+      userAgentAtAcceptance: legalData.userAgentAtAcceptance || null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+  }
   
   // CEO Dashboard methods - returning mock data for demo mode
   async getCeoMetrics(metricType: string): Promise<any> {

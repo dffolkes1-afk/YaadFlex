@@ -85,13 +85,33 @@ import VoiceControl from "@/components/VoiceControl";
 import LiveStatusIndicator from "@/components/LiveStatusIndicator";
 import DashboardButton from "@/components/DashboardButton";
 
+// Legal Pages
+import TermsOfService from "@/pages/terms-of-service";
+import PrivacyPolicy from "@/pages/privacy-policy";
+import UserAgreement from "@/pages/user-agreement";
+import DriverAgreement from "@/pages/driver-agreement";
+import BusinessPartnerAgreement from "@/pages/business-partner-agreement";
+import LegalCenter from "@/pages/legal-center";
+
 function Router() {
-  // BYPASS AUTHENTICATION - UNLOCK ALL ACCESS FOR OWNER
-  const isAuthenticated = true; // Force authentication bypass
-  const isLoading = false; // No loading blocks
+  // SECURITY RESTORED: Use proper authentication
+  const { user, isLoading } = useAuth();
+  const isAuthenticated = !!user;
 
   return (
     <Switch>
+      {/* Legal Pages - accessible to everyone */}
+      <Route path="/terms" component={TermsOfService} />
+      <Route path="/terms-of-service" component={TermsOfService} />
+      <Route path="/privacy" component={PrivacyPolicy} />
+      <Route path="/privacy-policy" component={PrivacyPolicy} />
+      <Route path="/user-agreement" component={UserAgreement} />
+      <Route path="/driver-agreement" component={DriverAgreement} />
+      <Route path="/business-agreement" component={BusinessPartnerAgreement} />
+      <Route path="/business-partner-agreement" component={BusinessPartnerAgreement} />
+      <Route path="/legal" component={LegalCenter} />
+      <Route path="/legal-center" component={LegalCenter} />
+      
       {/* Public routes - accessible to everyone */}
       <Route path="/ripley" component={RipleyTest} />
       <Route path="/ripley-test" component={RipleyTest} />

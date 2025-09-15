@@ -78,6 +78,8 @@ import {
   defaultConditionForm,
   defaultObdParams
 } from "./valuation/engine";
+import { LEGAL_VERSIONS } from "@shared/legal-versions";
+import { businessLegalAcceptanceSchema, driverLegalAcceptanceSchema } from "@shared/schema";
 import { 
   insertTransactionSchema, 
   insertUserWalletSchema,
@@ -1113,7 +1115,11 @@ Time: ${new Date().toISOString()}
         website,
         services,
         operatingHours,
-        parish
+        parish,
+        // CRITICAL: Legal acceptance fields - required for legal compliance
+        agreedToTerms,
+        agreedToBusinessAgreement,
+        agreedToPrivacy
       } = req.body;
 
       // Validate required fields
@@ -1121,6 +1127,28 @@ Time: ${new Date().toISOString()}
         return res.status(400).json({ 
           message: "Missing required fields: businessName, category, phone, email" 
         });
+      }
+
+      // CRITICAL: Validate legal acceptance using Zod schema - BLOCK registration if not accepted
+      try {
+        businessLegalAcceptanceSchema.parse({
+          agreedToTerms,
+          agreedToBusinessAgreement,
+          agreedToPrivacy
+        });
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          return res.status(400).json({ 
+            message: "Legal agreements must be accepted. Please review and accept Terms of Service, Business Partner Agreement, and Privacy Policy before registering.",
+            missingAgreements: {
+              terms: !agreedToTerms,
+              businessAgreement: !agreedToBusinessAgreement,
+              privacy: !agreedToPrivacy
+            },
+            validationErrors: error.errors
+          });
+        }
+        throw error;
       }
 
       // Create service provider using existing schema
@@ -1145,12 +1173,26 @@ Time: ${new Date().toISOString()}
 
       const business = await storage.createServiceProvider(providerData);
 
+      // CRITICAL: Update user record with legal acceptance data for compliance
+      await storage.updateUserLegalAcceptance(userId, {
+        termsAccepted: true,
+        privacyAccepted: true,
+        userAgreementAccepted: true,
+        businessAgreementAccepted: true,
+        legalAcceptedAt: new Date(),
+        termsVersion: LEGAL_VERSIONS.TERMS_OF_SERVICE,
+        privacyVersion: LEGAL_VERSIONS.PRIVACY_POLICY,
+        agreementVersion: LEGAL_VERSIONS.BUSINESS_AGREEMENT,
+        ipAddressAtAcceptance: req.ip,
+        userAgentAtAcceptance: req.get('User-Agent')
+      });
+
       // Log business registration for transparency
       await storage.logSecurityEvent({
         userId,
         eventType: 'business_registration',
         severity: 'medium',
-        description: `New business registered: ${businessName} (${category}) in ${parish}`,
+        description: `New business registered: ${businessName} (${category}) in ${parish} - Legal agreements accepted`,
         ipAddress: req.ip,
         userAgent: req.get('User-Agent'),
       });
@@ -1253,7 +1295,11 @@ Time: ${new Date().toISOString()}
         bankName,
         accountNumber,
         routingNumber,
-        accountHolderName
+        accountHolderName,
+        // CRITICAL: Legal acceptance fields - required for legal compliance
+        agreedToTerms,
+        agreedToDriverAgreement,
+        agreedToPrivacy
       } = req.body;
 
       // Validate required fields
@@ -1261,6 +1307,28 @@ Time: ${new Date().toISOString()}
         return res.status(400).json({ 
           message: "Missing required fields for driver registration" 
         });
+      }
+
+      // CRITICAL: Validate legal acceptance using Zod schema - BLOCK registration if not accepted
+      try {
+        driverLegalAcceptanceSchema.parse({
+          agreedToTerms,
+          agreedToDriverAgreement,
+          agreedToPrivacy
+        });
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          return res.status(400).json({ 
+            message: "Legal agreements must be accepted. Please review and accept Terms of Service, Driver Agreement, and Privacy Policy before registering.",
+            missingAgreements: {
+              terms: !agreedToTerms,
+              driverAgreement: !agreedToDriverAgreement,
+              privacy: !agreedToPrivacy
+            },
+            validationErrors: error.errors
+          });
+        }
+        throw error;
       }
 
       // Create vehicle record first
@@ -1288,12 +1356,26 @@ Time: ${new Date().toISOString()}
         lastActivity: new Date()
       });
 
+      // CRITICAL: Update user record with legal acceptance data for compliance
+      await storage.updateUserLegalAcceptance(userId, {
+        termsAccepted: true,
+        privacyAccepted: true,
+        userAgreementAccepted: true,
+        driverAgreementAccepted: true,
+        legalAcceptedAt: new Date(),
+        termsVersion: LEGAL_VERSIONS.TERMS_OF_SERVICE,
+        privacyVersion: LEGAL_VERSIONS.PRIVACY_POLICY,
+        agreementVersion: LEGAL_VERSIONS.DRIVER_AGREEMENT,
+        ipAddressAtAcceptance: req.ip,
+        userAgentAtAcceptance: req.get('User-Agent')
+      });
+
       // Log driver registration for security
       await storage.logSecurityEvent({
         userId,
         eventType: 'driver_registration',
         severity: 'medium',
-        description: `New driver registered: ${fullName} with ${vehicleType} (${licensePlate}), bank: ${bankName}`,
+        description: `New driver registered: ${fullName} with ${vehicleType} (${licensePlate}), bank: ${bankName} - Legal agreements accepted`,
         ipAddress: req.ip,
         userAgent: req.get('User-Agent'),
       });

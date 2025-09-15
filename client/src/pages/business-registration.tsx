@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 import { 
   MapPin, 
   Phone, 
@@ -27,8 +28,10 @@ import {
   Camera,
   GraduationCap,
   Heart,
-  CheckCircle2
+  CheckCircle2,
+  Shield
 } from 'lucide-react';
+import { Link } from 'wouter';
 
 const businessCategories = [
   { id: 'travel', name: '✈️ Travel Agents', desc: 'Hotels, flights, tours, vacation packages', icon: <Plane className="h-5 w-5" />, color: 'bg-blue-500' },
@@ -75,6 +78,9 @@ export default function BusinessRegistration() {
   });
 
   const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [agreedToBusinessAgreement, setAgreedToBusinessAgreement] = useState(false);
+  const [agreedToPrivacy, setAgreedToPrivacy] = useState(false);
 
   const jamaicaParishes = [
     'Kingston', 'St. Andrew', 'St. Thomas', 'Portland', 'St. Mary',
@@ -131,7 +137,26 @@ export default function BusinessRegistration() {
       return;
     }
 
-    registerBusinessMutation.mutate(formData);
+    // Check legal agreements
+    if (!agreedToTerms || !agreedToBusinessAgreement || !agreedToPrivacy) {
+      toast({
+        title: "Legal Agreements Required",
+        description: "Please review and accept all legal agreements to complete business registration.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // CRITICAL: Include legal acceptance fields in POST payload for backend persistence
+    const completeBusinessData = {
+      ...formData,
+      // Legal acceptance fields - required for legal compliance
+      agreedToTerms,
+      agreedToBusinessAgreement,
+      agreedToPrivacy
+    };
+
+    registerBusinessMutation.mutate(completeBusinessData);
   };
 
   const selectedCategoryInfo = businessCategories.find(cat => cat.id === selectedCategory);
@@ -377,6 +402,83 @@ export default function BusinessRegistration() {
                           <Badge variant="outline" className="text-orange-600">✓</Badge>
                           <span>24/7 customer support platform</span>
                         </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Legal Agreements */}
+                  <Card className="border-blue-200 bg-blue-50/50 dark:bg-blue-950/20 dark:border-blue-800">
+                    <CardContent className="p-6">
+                      <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-4 flex items-center gap-2">
+                        <Shield className="h-5 w-5" />
+                        Legal Agreements & Partnership Terms
+                      </h3>
+                      <p className="text-blue-800 dark:text-blue-200 text-sm mb-4">
+                        By registering your business on YaadFlex, you're entering into a commercial partnership with BlackRock, Inc. 
+                        Please review and accept the following legal documents:
+                      </p>
+                      
+                      <div className="space-y-4">
+                        <div className="flex items-start gap-3 p-3 border rounded-lg">
+                          <Checkbox 
+                            id="business-terms-agreement"
+                            checked={agreedToTerms}
+                            onCheckedChange={setAgreedToTerms}
+                            data-testid="checkbox-business-terms"
+                          />
+                          <div className="flex-1">
+                            <label htmlFor="business-terms-agreement" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                              I agree to BlackRock's Terms of Service
+                            </label>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              General platform terms and conditions. 
+                              <Link href="/terms" className="text-blue-600 hover:underline ml-1">Read Terms →</Link>
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3 p-3 border rounded-lg">
+                          <Checkbox 
+                            id="business-partner-agreement"
+                            checked={agreedToBusinessAgreement}
+                            onCheckedChange={setAgreedToBusinessAgreement}
+                            data-testid="checkbox-business-agreement"
+                          />
+                          <div className="flex-1">
+                            <label htmlFor="business-partner-agreement" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                              I agree to the Business Partner Agreement (commercial partnership terms)
+                            </label>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              Platform fees, payment terms, and business relationship with BlackRock. 
+                              <Link href="/business-partner-agreement" className="text-blue-600 hover:underline ml-1">Read Agreement →</Link>
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start gap-3 p-3 border rounded-lg">
+                          <Checkbox 
+                            id="business-privacy-policy"
+                            checked={agreedToPrivacy}
+                            onCheckedChange={setAgreedToPrivacy}
+                            data-testid="checkbox-business-privacy"
+                          />
+                          <div className="flex-1">
+                            <label htmlFor="business-privacy-policy" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                              I acknowledge BlackRock's Privacy Policy
+                            </label>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              How customer and business data is protected and managed. 
+                              <Link href="/privacy" className="text-blue-600 hover:underline ml-1">Read Policy →</Link>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="mt-4 p-3 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-800">
+                        <p className="text-xs text-green-700 dark:text-green-300">
+                          <strong>BlackRock Corporate Information:</strong> BlackRock, Inc. (Delaware Corporation, SEC File: 001-15305) 
+                          operates YaadFlex as a multi-service platform. Address: 50 Hudson Yards, New York, NY 10001.
+                        </p>
                       </div>
                     </CardContent>
                   </Card>

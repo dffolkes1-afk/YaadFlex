@@ -16,6 +16,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { LEGAL_VERSIONS, LEGAL_VALIDATION_MESSAGES } from "./legal-versions";
 
 // Session storage table.
 // (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
@@ -51,6 +52,20 @@ export const users = pgTable("users", {
   showAlwaysEnglishToggle: boolean("show_always_english_toggle").default(true),
   captionVoiceMessages: boolean("caption_voice_messages").default(true),
   autoTranslateEnabled: boolean("auto_translate_enabled").default(true),
+  
+  // Legal Acceptance Fields - CRITICAL for legal compliance
+  termsAccepted: boolean("terms_accepted").default(false).notNull(),
+  privacyAccepted: boolean("privacy_accepted").default(false).notNull(),
+  userAgreementAccepted: boolean("user_agreement_accepted").default(false).notNull(),
+  driverAgreementAccepted: boolean("driver_agreement_accepted").default(false), // Only for drivers
+  businessAgreementAccepted: boolean("business_agreement_accepted").default(false), // Only for businesses
+  legalAcceptedAt: timestamp("legal_accepted_at"), // When legal agreements were accepted
+  termsVersion: varchar("terms_version").default('1.0'), // Policy version tracking
+  privacyVersion: varchar("privacy_version").default('1.0'),
+  agreementVersion: varchar("agreement_version").default('1.0'),
+  ipAddressAtAcceptance: varchar("ip_address_at_acceptance"), // Legal audit trail
+  userAgentAtAcceptance: text("user_agent_at_acceptance"), // Browser/device info
+  
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -924,6 +939,18 @@ export const companies = pgTable("companies", {
   rating: decimal("rating", { precision: 3, scale: 2 }).default('5.00'),
   totalJobs: integer("total_jobs").default(0),
   activeJobs: integer("active_jobs").default(0),
+  
+  // Business Legal Acceptance Fields - CRITICAL for commercial partnerships
+  businessTermsAccepted: boolean("business_terms_accepted").default(false).notNull(),
+  businessPartnerAgreementAccepted: boolean("business_partner_agreement_accepted").default(false).notNull(),
+  businessPrivacyAccepted: boolean("business_privacy_accepted").default(false).notNull(),
+  legalAcceptedAt: timestamp("legal_accepted_at"), // When business agreements were accepted
+  businessTermsVersion: varchar("business_terms_version").default('1.0'),
+  businessAgreementVersion: varchar("business_agreement_version").default('1.0'),
+  businessPrivacyVersion: varchar("business_privacy_version").default('1.0'),
+  ipAddressAtAcceptance: varchar("ip_address_at_acceptance"), // Legal audit trail
+  userAgentAtAcceptance: text("user_agent_at_acceptance"), // Browser/device info for compliance
+  
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -6226,3 +6253,40 @@ export type CreditTransfer = typeof creditTransfers.$inferSelect;
 export type InsertCreditTransfer = z.infer<typeof insertCreditTransferSchema>;
 export type PaymentMethodConfig = typeof paymentMethodConfigs.$inferSelect;
 export type InsertPaymentMethodConfig = z.infer<typeof insertPaymentMethodConfigSchema>;
+
+// LEGAL ACCEPTANCE VALIDATION SCHEMAS - CRITICAL FOR COMPLIANCE
+export const legalAcceptanceSchema = z.object({
+  agreedToTerms: z.boolean()
+    .refine(val => val === true, { message: LEGAL_VALIDATION_MESSAGES.MISSING_TERMS }),
+  agreedToPrivacy: z.boolean()
+    .refine(val => val === true, { message: LEGAL_VALIDATION_MESSAGES.MISSING_PRIVACY }),
+  agreedToUserAgreement: z.boolean()
+    .refine(val => val === true, { message: LEGAL_VALIDATION_MESSAGES.MISSING_USER_AGREEMENT }).optional(),
+});
+
+export const driverLegalAcceptanceSchema = legalAcceptanceSchema.extend({
+  agreedToDriverAgreement: z.boolean()
+    .refine(val => val === true, { message: LEGAL_VALIDATION_MESSAGES.MISSING_DRIVER_AGREEMENT }),
+});
+
+export const businessLegalAcceptanceSchema = legalAcceptanceSchema.extend({
+  agreedToBusinessAgreement: z.boolean()
+    .refine(val => val === true, { message: LEGAL_VALIDATION_MESSAGES.MISSING_BUSINESS_AGREEMENT }),
+});
+
+// Legal acceptance update data for storage layer
+export const userLegalAcceptanceUpdateSchema = z.object({
+  termsAccepted: z.boolean().optional(),
+  privacyAccepted: z.boolean().optional(), 
+  userAgreementAccepted: z.boolean().optional(),
+  driverAgreementAccepted: z.boolean().optional(),
+  businessAgreementAccepted: z.boolean().optional(),
+  legalAcceptedAt: z.date().optional(),
+  termsVersion: z.string().optional(),
+  privacyVersion: z.string().optional(),
+  agreementVersion: z.string().optional(),
+  ipAddressAtAcceptance: z.string().optional(),
+  userAgentAtAcceptance: z.string().optional(),
+});
+
+export type UserLegalAcceptanceUpdate = z.infer<typeof userLegalAcceptanceUpdateSchema>;
