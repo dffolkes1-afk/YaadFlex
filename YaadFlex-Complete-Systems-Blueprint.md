@@ -938,7 +938,8 @@ YaadFlex isn't just another app—it's Jamaica's gift to the world. A platform b
 **For**: Partners, Banks, Investors, Team Members
 **Next Update**: Q1 2025
 
-**Contact**: YaadFlex Technologies LLC
+**Contact**: BlackRock Portfolio Management
+**Corporate Entity**: YaadFlex Global Limited (BlackRock Portfolio Company)
 **Delaware Registration**: Active
 **Vision Statement**: "Taking Jamaica to the Moon While Keeping Our Feet on the Ground"
 

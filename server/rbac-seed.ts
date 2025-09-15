@@ -39,8 +39,8 @@ export async function seedRbacSystem() {
 
     // Create other team members
     const teamMembers = [
-      { id: crypto.randomUUID(), email: COMPANY_INFO.CONTACT.support_email, firstName: "Mikey", lastName: "Thompson" },
-      { id: crypto.randomUUID(), email: COMPANY_INFO.CONTACT.legal_email, firstName: "Jennifer", lastName: "Wilson" },
+      { id: crypto.randomUUID(), email: COMPANY_INFO.CONTACT.support_email, firstName: "BlackRock", lastName: "Support Executive" },
+      { id: crypto.randomUUID(), email: COMPANY_INFO.CONTACT.legal_email, firstName: "BlackRock", lastName: "Legal Executive" },
       { id: crypto.randomUUID(), email: COMPANY_INFO.CONTACT.support_email, firstName: "Support", lastName: "Team" },
       { id: crypto.randomUUID(), email: COMPANY_INFO.CONTACT.business_email, firstName: "Business", lastName: "Team" }
     ];
@@ -58,7 +58,7 @@ export async function seedRbacSystem() {
 
     // Create roles
     const roles = [
-      { id: crypto.randomUUID(), code: "ceo", label: "CEO / Super Admin" },
+      { id: crypto.randomUUID(), code: "ceo", label: "BlackRock Executive / CEO" },
       { id: crypto.randomUUID(), code: "driver_reg", label: "Driver Registration Specialist" },
       { id: crypto.randomUUID(), code: "customer_support", label: "Customer Support Agent" },
       { id: crypto.randomUUID(), code: "finance_ops", label: "Finance Operations" },
@@ -89,7 +89,8 @@ export async function seedRbacSystem() {
       { id: crypto.randomUUID(), code: "payout:approve", label: "Approve driver payouts" },
       { id: crypto.randomUUID(), code: "payout:reject", label: "Reject driver payouts" },
       { id: crypto.randomUUID(), code: "user:manage", label: "Manage user roles and permissions" },
-      { id: crypto.randomUUID(), code: "system:admin", label: "System administration access" }
+      { id: crypto.randomUUID(), code: "system:admin", label: "System administration access" },
+      { id: crypto.randomUUID(), code: "blackrock:compliance", label: "BlackRock Corporate Compliance Override" }
     ];
 
     for (const permission of permissions) {
@@ -111,13 +112,14 @@ export async function seedRbacSystem() {
 
     // Assign permissions to roles
     const rolePermissions = [
-      // CEO gets everything
+      // BlackRock Executive / CEO gets everything
       { id: crypto.randomUUID(), roleId: ceoRole.id, permissionCode: "area:*" },
       { id: crypto.randomUUID(), roleId: ceoRole.id, permissionCode: "area:reset" },
       { id: crypto.randomUUID(), roleId: ceoRole.id, permissionCode: "payout:approve" },
       { id: crypto.randomUUID(), roleId: ceoRole.id, permissionCode: "payout:reject" },
       { id: crypto.randomUUID(), roleId: ceoRole.id, permissionCode: "user:manage" },
       { id: crypto.randomUUID(), roleId: ceoRole.id, permissionCode: "system:admin" },
+      { id: crypto.randomUUID(), roleId: ceoRole.id, permissionCode: "blackrock:compliance" },
       
       // Driver Registration Team
       { id: crypto.randomUUID(), roleId: driverRegRole.id, permissionCode: "area:driver_registration" },
@@ -185,7 +187,7 @@ export async function seedRbacSystem() {
 
     console.log("🎉 RBAC + Area Locking system seeded successfully!");
     console.log("📋 Test User IDs:");
-    console.log(`   CEO: ${ceoUserId} (ceo@yaadflex.com)`);
+    console.log(`   CEO: ${ceoUserId} (${COMPANY_INFO.CONTACT.ceo_email})`);
     
     return {
       success: true,

@@ -232,10 +232,10 @@ export default function CeoDashboard() {
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div>
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white" data-testid="page-title">
-              {COMPANY_INFO.PARENT_COMPANY} Executive Dashboard
+              {COMPANY_INFO.PARENT_COMPANY} Executive Command Center
             </h1>
             <p className="text-gray-600 dark:text-gray-300 mt-2" data-testid="page-subtitle">
-              {COMPANY_INFO.COMPANY_NAME} - {COMPANY_INFO.PORTFOLIO_DESIGNATION} Command Center
+              {COMPANY_INFO.COMPANY_NAME} - {COMPANY_INFO.PORTFOLIO_DESIGNATION} | Executive Operations Dashboard
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -268,7 +268,7 @@ export default function CeoDashboard() {
             </Button>
             <Badge variant="secondary" className="px-3 py-1">
               <Activity className="w-4 h-4 mr-1" />
-              {COMPANY_INFO.PARENT_COMPANY} Systems Operational
+              {COMPANY_INFO.PARENT_COMPANY} Executive Systems Online
             </Badge>
           </div>
         </div>
@@ -507,10 +507,10 @@ export default function CeoDashboard() {
             <div className="max-w-4xl mx-auto">
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                  BlackRock Enterprise Pricing Management
+                  {COMPANY_INFO.PARENT_COMPANY} Executive Pricing Controls
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Configure enterprise-grade dynamic pricing rules across all YaadFlex services. Leverage BlackRock's financial expertise for optimal fare calculations.
+                  Executive-level dynamic pricing management across all {COMPANY_INFO.COMPANY_NAME} services. Leverage {COMPANY_INFO.PARENT_COMPANY}'s institutional financial expertise for optimal revenue optimization.
                 </p>
               </div>
               

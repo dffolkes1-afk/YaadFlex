@@ -266,6 +266,6 @@ This blueprint positions YaadFlex as **THE FAIR ALTERNATIVE** with technology th
 **Classification**: Partner/Investor Distribution  
 **Next Review**: Q1 2025
 
-**Contact**: YaadFlex Communications Team  
-**Delaware Entity**: YaadFlex Technologies LLC  
+**Contact**: BlackRock Portfolio Management  
+**Delaware Entity**: YaadFlex Global Limited (BlackRock Portfolio Company)  
 **Vision**: "FLEX! FLEX! GLOBAL FLEX!" 🇯🇲🚀

@@ -270,9 +270,14 @@ cd yaadflex && npm i @tanstack/react-query zod react-hook-form tailwindcss
 
 ## 15) Contacts
 
-**Owner:** Dwayne Ffolkes  
-**Support:** support@yardflex.com (alias)  
-**Ops/Approvals:** ops@yardflex.com
+**Owner:** BlackRock Portfolio Management  
+**Executive:** executive@yaadflex.blackrock.com  
+**Support:** support@yaadflex.blackrock.com  
+**Business Operations:** business@yaadflex.blackrock.com  
+**Legal & Compliance:** legal@yaadflex.blackrock.com  
+
+**Corporate Headquarters:** 1 BlackRock Plaza, New York, NY 10005, USA  
+**Caribbean Operations:** Kingston, Jamaica
 
 ### **Frontend Stack**
 - **Framework:** React 18 + TypeScript + Vite

@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { COMPANY_INFO } from '@shared/company';
 
-export default function FounderProfile() {
+export default function ExecutiveProfile() {
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950 py-12 px-4">
       <div className="container mx-auto max-w-5xl">
@@ -30,11 +30,11 @@ export default function FounderProfile() {
           </div>
           
           <h1 className="text-4xl font-semibold text-slate-900 dark:text-slate-100 mb-3">
-            Chief Executive Officer
+            {COMPANY_INFO.PARENT_COMPANY} Executive Leadership
           </h1>
           
           <div className="text-xl font-medium text-slate-700 dark:text-slate-300 mb-2">
-            {COMPANY_INFO.COMPANY_NAME} - {COMPANY_INFO.PORTFOLIO_DESIGNATION}
+            Chief Executive Officer | {COMPANY_INFO.COMPANY_NAME} - {COMPANY_INFO.PORTFOLIO_DESIGNATION}
           </div>
           
           <div className="text-lg text-slate-600 dark:text-slate-400 mb-6 max-w-2xl mx-auto">
@@ -46,10 +46,10 @@ export default function FounderProfile() {
               {COMPANY_INFO.CEO.company_designation}
             </Badge>
             <Badge variant="outline" className="px-3 py-1 text-sm border-slate-300 text-slate-700">
-              Global Technology Leader
+              {COMPANY_INFO.PARENT_COMPANY} Portfolio Management
             </Badge>
             <Badge variant="outline" className="px-3 py-1 text-sm border-slate-300 text-slate-700">
-              Enterprise Vision
+              Executive Leadership
             </Badge>
           </div>
         </div>
