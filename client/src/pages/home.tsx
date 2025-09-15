@@ -8,7 +8,7 @@ import { useLocation, Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { VoiceButton } from "@/components/VoiceButton";
 import { VoiceTestPanel } from "@/components/VoiceTestPanel";
-import { PremiumYaadFlexLogo } from "@/components/PremiumYaadFlexLogo";
+// import { PremiumYaadFlexLogo } from "@/components/PremiumYaadFlexLogo";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
