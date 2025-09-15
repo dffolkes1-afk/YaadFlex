@@ -84,6 +84,8 @@ import YaadParty from "@/pages/YaadParty";
 import VoiceControl from "@/components/VoiceControl";
 import LiveStatusIndicator from "@/components/LiveStatusIndicator";
 import DashboardButton from "@/components/DashboardButton";
+import { BlackRockCorporateHeader } from "@/components/BlackRockCorporateHeader";
+import { BlackRockCorporateFooter } from "@/components/BlackRockCorporateFooter";
 
 // Legal Pages
 import TermsOfService from "@/pages/terms-of-service";
@@ -93,6 +95,9 @@ import DriverAgreement from "@/pages/driver-agreement";
 import BusinessPartnerAgreement from "@/pages/business-partner-agreement";
 import LegalCenter from "@/pages/legal-center";
 
+// Corporate Pages
+import CorporateCompliancePage from "@/pages/corporate-compliance";
+
 function Router() {
   // SECURITY RESTORED: Use proper authentication
   const { user, isLoading } = useAuth();
@@ -100,6 +105,12 @@ function Router() {
 
   return (
     <Switch>
+      {/* Corporate Pages - accessible to everyone */}
+      <Route path="/corporate" component={CorporateCompliancePage} />
+      <Route path="/corporate-compliance" component={CorporateCompliancePage} />
+      <Route path="/compliance" component={CorporateCompliancePage} />
+      <Route path="/blackrock" component={CorporateCompliancePage} />
+      
       {/* Legal Pages - accessible to everyone */}
       <Route path="/terms" component={TermsOfService} />
       <Route path="/terms-of-service" component={TermsOfService} />
@@ -245,12 +256,18 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Toaster />
-        <LiveStatusIndicator />
-        <DashboardButton />
-        <Router />
-        <RipleyControls />
-        <VoiceControl />
+        <div className="min-h-screen flex flex-col">
+          <BlackRockCorporateHeader />
+          <main className="flex-1">
+            <Toaster />
+            <LiveStatusIndicator />
+            <DashboardButton />
+            <Router />
+            <RipleyControls />
+            <VoiceControl />
+          </main>
+          <BlackRockCorporateFooter />
+        </div>
       </TooltipProvider>
     </QueryClientProvider>
   );
