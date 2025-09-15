@@ -18,6 +18,7 @@ const corsOptions = {
       /^https:\/\/.*\.railway\.app$/,
       /^https:\/\/.*\.up\.railway\.app$/,
       /^https:\/\/.*\.replit\.app$/,
+      /^https:\/\/.*\.replit\.dev$/,
       /^https:\/\/.*\.repl\.co$/,
       /^https:\/\/.*\.vercel\.app$/,
       /^https:\/\/.*\.netlify\.app$/,
@@ -29,7 +30,7 @@ const corsOptions = {
       callback(null, true);
     } else {
       log(`CORS blocked origin: ${origin}`);
-      callback(null, false); // Allow anyway for now, just log
+      callback(null, true); // Allow all origins for now - YaadFlex needs access
     }
   },
   credentials: true,
