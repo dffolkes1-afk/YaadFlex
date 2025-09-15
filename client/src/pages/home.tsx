@@ -8,7 +8,7 @@ import { useLocation, Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { VoiceButton } from "@/components/VoiceButton";
 import { VoiceTestPanel } from "@/components/VoiceTestPanel";
-// import { PremiumYaadFlexLogo } from "@/components/PremiumYaadFlexLogo";
+import { PremiumYaadFlexLogo } from "@/components/PremiumYaadFlexLogo";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,8 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 // import yaadFlexLogo from "@assets/generated_images/YaadFlex_Bank_logo_09b86b5e.png";
 // import yaadFlexPoster from "@assets/generated_images/YaadFlex_promotional_poster_ab79c580.png";
 
-// Use simple logos for now
-const yaadFlexLogo = "🏢"; // Temporary emoji logo
+// Using premium corporate logo with BlackRock branding
 const yaadFlexPoster = ""; // Remove background for now
 
 type Transaction = {
@@ -134,7 +133,7 @@ function KWDWalletSection() {
               🌴 Super-App Hub - All Your Apps Here!
             </Button>
           </Link>
-          <p className="text-sm text-gray-600 mt-2">Access Instagram, TikTok, Uber, PayPal & more - wrapped in YardFlex</p>
+          <p className="text-sm text-gray-600 mt-2">Access Instagram, TikTok, Uber, PayPal & more - wrapped in YaadFlex</p>
         </div>
 
         {/* Quick Access Dashboard Links */}
@@ -419,7 +418,7 @@ export default function Home() {
         border: '5px solid gold',
         boxShadow: '0 0 20px rgba(255,215,0,0.8)'
       }}>
-        🌴💎 YARDFLEX VISUAL MODE ON! 💎🌴 YOUR 6 HOUR WAIT IS OVER! 🎉
+        🌴💎 YAADFLEX VISUAL MODE ON! 💎🌴 YOUR 6 HOUR WAIT IS OVER! 🎉
       </div>
       
       {/* Starfield Background */}
@@ -566,7 +565,7 @@ export default function Home() {
           <Card className="bg-gradient-to-br from-green-900/95 via-yellow-900/95 to-orange-900/95 border-8 border-yellow-400/100 relative overflow-hidden shadow-2xl shadow-yellow-500/80" data-testid="spectacular-dashboard">
             <CardHeader className="text-center pb-4">
               <CardTitle className="text-4xl md:text-6xl font-black text-yellow-400 animate-pulse leading-tight">
-                🏢 YARDFLEX LIVE BUSINESS DASHBOARD 🏢
+                🏢 YAADFLEX LIVE BUSINESS DASHBOARD 🏢
               </CardTitle>
               <div className="text-xl md:text-3xl font-bold text-green-400 animate-bounce">LOOK AT THESE NUMBERS! 📊</div>
             </CardHeader>
@@ -635,7 +634,7 @@ export default function Home() {
               
               {/* LIVE STATUS TICKER */}
               <div className="bg-gradient-to-r from-red-600/50 to-orange-600/50 border-4 border-red-400/80 rounded-xl p-4 text-center">
-                <div className="text-2xl font-black text-red-300 mb-2 animate-pulse">🚨 LIVE YARDFLEX STATUS 🚨</div>
+                <div className="text-2xl font-black text-red-300 mb-2 animate-pulse">🚨 LIVE YAADFLEX STATUS 🚨</div>
                 <div className="text-white text-lg font-bold">
                   <span className="inline-block animate-bounce">🟢</span> BUSINESS: BOOMING | 
                   <span className="inline-block animate-bounce delay-100">🟢</span> PAYMENTS: FLOWING | 
@@ -696,7 +695,7 @@ export default function Home() {
                 </div>
                 <div className="text-center">
                   <div className="text-sm text-purple-400 font-semibold animate-bounce">
-                    🚀 T-MINUS ZERO: YARDFLEX MISSION TO THE MOON 🚀
+                    🚀 T-MINUS ZERO: YAADFLEX MISSION TO THE MOON 🚀
                   </div>
                 </div>
               </div>
@@ -708,14 +707,17 @@ export default function Home() {
         <div className="mb-8">
           <Card className="bg-gradient-to-br from-blue-900/30 via-purple-900/30 to-green-900/30 border-2 border-yellow-500/50 relative overflow-hidden" data-testid="visual-showcase">
             <CardHeader>
-              <CardTitle className="flex items-center space-x-4 text-white">
-                <img 
-                  src={yaadFlexLogo} 
-                  alt="YaadFlex Logo" 
-                  className="w-16 h-16 object-contain animate-spin" 
-                  data-testid="spinning-logo"
-                />
-                <span className="text-2xl font-black animate-pulse">🏢 YARDFLEX BUSINESS PLATFORM 🏢</span>
+              <CardTitle className="flex flex-col items-center space-y-4 text-white">
+                <div className="animate-pulse">
+                  <PremiumYaadFlexLogo 
+                    size="sm"
+                    showCrest={true}
+                    showBlackrockBranding={true}
+                    className="mb-2"
+                    data-testid="corporate-logo"
+                  />
+                </div>
+                <span className="text-xl font-black animate-pulse text-center">YAADFLEX BUSINESS PLATFORM</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -759,7 +761,7 @@ export default function Home() {
                   <span className="inline-block animate-bounce">🟢</span> Business Platform: ONLINE | 
                   <span className="inline-block animate-bounce delay-100">🟢</span> Payment System: READY | 
                   <span className="inline-block animate-bounce delay-200">🟢</span> Global Network: ACTIVE | 
-                  <span className="inline-block animate-bounce delay-300">🟢</span> YardFlex: MOVING!
+                  <span className="inline-block animate-bounce delay-300">🟢</span> YaadFlex: MOVING!
                 </div>
               </div>
             </CardContent>
@@ -784,7 +786,7 @@ export default function Home() {
                   🏢 ALL JAMAICA BUSINESSES! 🏢
                 </div>
                 <div className="text-2xl md:text-6xl font-black text-yellow-300 animate-bounce leading-tight">
-                  EVERYBODY WANTS ON YARDFLEX!
+                  EVERYBODY WANTS ON YAADFLEX!
                 </div>
                 <div className="text-xl md:text-4xl font-black text-white animate-pulse">
                   INSURANCE • REAL ESTATE • LOANS • EVERYONE!
@@ -833,7 +835,7 @@ export default function Home() {
                 </div>
                 
                 <div className="bg-gradient-to-r from-orange-600/50 to-red-600/50 border-4 border-orange-400/80 rounded-2xl p-6 mb-8 animate-pulse">
-                  <h4 className="text-2xl md:text-4xl font-black text-orange-300 mb-4">🇯🇲 ALL JAMAICA ON YARDFLEX! 🇯🇲</h4>
+                  <h4 className="text-2xl md:text-4xl font-black text-orange-300 mb-4">🇯🇲 ALL JAMAICA ON YAADFLEX! 🇯🇲</h4>
                   <div className="text-white text-lg md:text-xl font-bold">
                     <strong>EVERY BUSINESS WANTS TO BE HERE!</strong><br/>
                     Turn your business into an app! Everyone loves what they get!<br/>
@@ -878,7 +880,7 @@ export default function Home() {
                     className="bg-gradient-to-r from-green-600 to-yellow-600 hover:from-green-700 hover:to-yellow-700 text-white text-3xl px-12 py-6 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-green-400/80"
                     data-testid="button-join-yardflex-business"
                   >
-                    🏢 JOIN YARDFLEX NOW! 🏢
+                    🏢 JOIN YAADFLEX NOW! 🏢
                   </Button>
                 </div>
               </div>
@@ -1092,7 +1094,7 @@ export default function Home() {
                   MASSIVE EMAIL CAMPAIGN ACROSS THE ISLAND!
                 </div>
                 <div className="text-lg md:text-3xl font-black text-yellow-400 animate-bounce">
-                  🔥 EVERYONE ON THE ISLAND KNOWS ABOUT YARDFLEX! 🔥
+                  🔥 EVERYONE ON THE ISLAND KNOWS ABOUT YAADFLEX! 🔥
                 </div>
               </CardTitle>
             </CardHeader>
@@ -1175,7 +1177,7 @@ export default function Home() {
                   🌍 ALL APP STORES WORLDWIDE! 🌍
                 </div>
                 <div className="text-2xl md:text-6xl font-black text-green-300 animate-bounce leading-tight">
-                  YARDFLEX ON EVERY PLATFORM!
+                  YAADFLEX ON EVERY PLATFORM!
                 </div>
                 <div className="text-xl md:text-4xl font-black text-white animate-pulse">
                   JAMAICA → AMERICA → AFRICA → ASIA!
@@ -1277,7 +1279,7 @@ export default function Home() {
                 <div className="bg-gradient-to-r from-purple-600/50 to-pink-600/50 border-4 border-purple-400/80 rounded-2xl p-6 mb-8 animate-pulse">
                   <h4 className="text-2xl md:text-4xl font-black text-purple-300 mb-4">🚀 TOTAL GLOBAL COVERAGE! 🚀</h4>
                   <div className="text-white text-lg md:text-xl font-bold">
-                    <strong>YARDFLEX EVERYWHERE!</strong><br/>
+                    <strong>YAADFLEX EVERYWHERE!</strong><br/>
                     Every phone, every platform, every country!<br/>
                     <span className="text-yellow-400">🌍 COMPLETE WORLD DOMINATION! 🌍</span>
                   </div>
@@ -1463,7 +1465,7 @@ export default function Home() {
             <CardContent className="relative z-10 space-y-6">
               <div className="bg-gradient-to-r from-green-600/50 to-yellow-600/50 border-2 border-green-400/70 rounded-2xl p-8 text-center shadow-2xl shadow-green-500/30">
                 <h3 className="text-2xl md:text-5xl font-black text-green-300 mb-6 animate-pulse leading-tight">
-                  🚖 YARDFLEX TAXI PRICING SYSTEM! 🚖
+                  🚖 YAADFLEX TAXI PRICING SYSTEM! 🚖
                 </h3>
 
                 {/* PRICING COMPARISON */}
@@ -1480,7 +1482,7 @@ export default function Home() {
                   </div>
                   <div className="bg-green-600/70 border-4 border-green-400/80 rounded-2xl p-6 text-center transform scale-110">
                     <div className="text-4xl mb-4 animate-bounce">🎯</div>
-                    <div className="text-2xl font-black text-green-300 mb-2">YARDFLEX</div>
+                    <div className="text-2xl font-black text-green-300 mb-2">YAADFLEX</div>
                     <div className="text-white font-bold">
                       ✅ Competitive prices<br/>
                       ✅ Drivers keep 85%!<br/>
@@ -1556,7 +1558,7 @@ export default function Home() {
 
                 {/* PRICING EXPLANATION */}
                 <div className="bg-gradient-to-r from-yellow-600/50 to-orange-600/50 border-4 border-yellow-400/80 rounded-2xl p-6 mb-8 animate-pulse">
-                  <h4 className="text-2xl md:text-4xl font-black text-yellow-300 mb-4">🤝 WHY YARDFLEX IS BETTER! 🤝</h4>
+                  <h4 className="text-2xl md:text-4xl font-black text-yellow-300 mb-4">🤝 WHY YAADFLEX IS BETTER! 🤝</h4>
                   <div className="text-white text-lg md:text-xl font-bold text-left">
                     <div className="mb-4"><strong className="text-green-400">FOR DRIVERS:</strong> We only take 15% instead of 25-30% like other apps. You make more money from every ride!</div>
                     <div className="mb-4"><strong className="text-blue-400">FOR PASSENGERS:</strong> Same competitive prices as Uber, but your money supports local drivers better!</div>
@@ -1621,7 +1623,7 @@ export default function Home() {
             <CardHeader className="relative z-10 pb-8">
               <CardTitle className="text-center space-y-6">
                 <div className="text-4xl md:text-8xl font-black text-purple-400 animate-pulse leading-tight">
-                  📅 YARDFLEX BOOKS EVERYTHING! 📅
+                  📅 YAADFLEX BOOKS EVERYTHING! 📅
                 </div>
                 <div className="text-2xl md:text-6xl font-black text-pink-300 animate-bounce leading-tight">
                   THE ULTIMATE BOOKING PLATFORM!
@@ -1675,7 +1677,7 @@ export default function Home() {
                 <div className="bg-gradient-to-r from-yellow-600/50 to-orange-600/50 border-4 border-yellow-400/80 rounded-2xl p-6 mb-8 animate-pulse">
                   <h4 className="text-2xl md:text-4xl font-black text-yellow-300 mb-4">📅 ONE PLACE FOR EVERYTHING! 📅</h4>
                   <div className="text-white text-lg md:text-xl font-bold">
-                    <strong>YARDFLEX IS THE BOOKING PLATFORM FOR JAMAICA & CANADA!</strong><br/>
+                    <strong>YAADFLEX IS THE BOOKING PLATFORM FOR JAMAICA & CANADA!</strong><br/>
                     Need anything? Book it here! We have EVERYTHING!<br/>
                     <span className="text-yellow-400">🌟 ALL BOOKINGS, ONE APP, TWO COUNTRIES! 🌟</span>
                   </div>
@@ -1710,7 +1712,7 @@ export default function Home() {
             <CardHeader className="relative z-10 pb-8">
               <CardTitle className="text-center space-y-6">
                 <div className="text-4xl md:text-8xl font-black text-yellow-400 animate-pulse leading-tight">
-                  🏠 YARDFLEX RENTAL EMPIRE! 🚗
+                  🏠 YAADFLEX RENTAL EMPIRE! 🚗
                 </div>
                 <div className="text-2xl md:text-6xl font-black text-green-300 animate-bounce leading-tight">
                   PEER-TO-PEER TOOL SHARING MARKETPLACE!
@@ -1741,7 +1743,7 @@ export default function Home() {
                 <div className="bg-gradient-to-r from-red-600/50 to-orange-600/50 border-4 border-red-400/80 rounded-2xl p-6 mb-8 animate-pulse">
                   <h4 className="text-2xl md:text-4xl font-black text-red-300 mb-4">🚗⚡ SMART CAR CONTROL! ⚡🚗</h4>
                   <div className="text-white text-lg md:text-xl font-bold">
-                    <strong>YARDFLEX CONTROLS HOW PEOPLE DRIVE YOUR RENTAL CAR!</strong><br/>
+                    <strong>YAADFLEX CONTROLS HOW PEOPLE DRIVE YOUR RENTAL CAR!</strong><br/>
                     Bad driving? Car slows down + Driver gets warning!<br/>
                     <span className="text-yellow-400">🛡️ PROTECT YOUR CAR FROM DAMAGE! 🛡️</span>
                   </div>
@@ -1812,7 +1814,7 @@ export default function Home() {
             <CardHeader className="relative z-10 pb-8">
               <CardTitle className="text-center space-y-8">
                 <div className="text-5xl md:text-9xl font-black text-pink-300 animate-pulse leading-tight">
-                  🔥💥 YARDFLEX SOCIAL COMMERCE 💥🔥
+                  🔥💥 YAADFLEX SOCIAL COMMERCE 💥🔥
                 </div>
                 <div className="text-3xl md:text-7xl font-black text-yellow-400 animate-bounce leading-tight">
                   GET YOUR BUSINESS EVERYWHERE!
@@ -1837,7 +1839,7 @@ export default function Home() {
                   🌍 TELL THE WORLD ABOUT YOURSELF! 🌍
                 </h3>
                 <p className="text-white text-lg md:text-3xl mb-8 md:mb-10 leading-relaxed font-bold">
-                  <strong>CREATE YOUR BUSINESS PROFILE AND YARDFLEX AUTOMATICALLY POSTS EVERYWHERE!</strong><br/>
+                  <strong>CREATE YOUR BUSINESS PROFILE AND YAADFLEX AUTOMATICALLY POSTS EVERYWHERE!</strong><br/>
                   <strong>FACEBOOK! INSTAGRAM! TIKTOK! TELEGRAM! ALL PLATFORMS!</strong><br/>
                   <strong>YOUR BUSINESS WILL BE ALL OVER THE PLACE TELLING EVERYONE ABOUT ITSELF!</strong><br/>
                   <strong className="text-yellow-400 text-xl md:text-4xl animate-bounce">🗣️ YOUR BUSINESS TALKING TO THE WORLD! 🗣️</strong>
@@ -2062,7 +2064,7 @@ export default function Home() {
             <CardHeader className="relative z-10 pb-2">
               <CardTitle className="text-center">
                 <div className="text-4xl font-black text-green-300 mb-2 animate-pulse">
-                  🏠 YARDFLEX RENTAL EMPIRE! 🏠
+                  🏠 YAADFLEX RENTAL EMPIRE! 🏠
                 </div>
                 <div className="text-2xl font-black text-yellow-400 animate-bounce">
                   EVERYTHING FOR RENT • INSTANTLY AVAILABLE!

@@ -4,12 +4,14 @@ interface PremiumYaadFlexLogoProps {
   size?: "sm" | "md" | "lg" | "xl";
   className?: string;
   showCrest?: boolean;
+  showBlackrockBranding?: boolean;
 }
 
 export function PremiumYaadFlexLogo({ 
   size = "md", 
   className = "", 
-  showCrest = true 
+  showCrest = true,
+  showBlackrockBranding = true
 }: PremiumYaadFlexLogoProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [glowIntensity, setGlowIntensity] = useState(0);
@@ -34,6 +36,13 @@ export function PremiumYaadFlexLogo({
     md: "text-3xl",
     lg: "text-5xl", 
     xl: "text-7xl"
+  };
+
+  const blackrockSize = {
+    sm: "text-xs",
+    md: "text-sm",
+    lg: "text-base",
+    xl: "text-lg"
   };
 
   return (
@@ -160,6 +169,30 @@ export function PremiumYaadFlexLogo({
         >
           YaadFlex
         </div>
+
+        {/* BlackRock Corporate Branding */}
+        {showBlackrockBranding && (
+          <div 
+            className={`absolute -bottom-6 left-1/2 transform -translate-x-1/2 ${blackrockSize[size]} font-semibold opacity-80 transition-all duration-500 ${
+              isHovered ? 'opacity-100 scale-105' : 'opacity-80'
+            }`}
+            style={{
+              background: `linear-gradient(90deg, 
+                hsl(240, 5%, 15%) 0%,
+                hsl(0, 0%, 75%) 50%,
+                hsl(240, 5%, 15%) 100%
+              )`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              textShadow: `0 0 8px hsl(0, 0%, 60%)`,
+              letterSpacing: '0.1em'
+            }}
+            data-testid="blackrock-branding"
+          >
+            A BLACKROCK COMPANY
+          </div>
+        )}
       </div>
 
       {/* Caribbean Flag Elements */}

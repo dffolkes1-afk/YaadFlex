@@ -59,7 +59,7 @@ export function CountryThemeSelector() {
                       {country.name}
                     </div>
                     <div className="text-xs text-muted-foreground">
-                      {country.code === 'JM' ? 'Original YardFlex' : 'YardFlex Global'}
+                      {country.code === 'JM' ? 'Original YaadFlex' : 'YaadFlex Global'}
                     </div>
                   </div>
                   {selectedCountry === country.code && (

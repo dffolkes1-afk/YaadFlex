@@ -40,7 +40,7 @@ export default function ServiceWrapper() {
       window.open(config.externalUrl, '_blank');
       toast({
         title: `Opened ${config.displayName}`,
-        description: "External service opened in new tab with YardFlex tracking"
+        description: "External service opened in new tab with YaadFlex tracking"
       });
     }
   };
@@ -89,7 +89,7 @@ export default function ServiceWrapper() {
               {countdown}
             </div>
             <p className="text-lg" data-testid="text-loading-message">
-              Connecting to {config.displayName} through YardFlex secure wrapper...
+              Connecting to {config.displayName} through YaadFlex secure wrapper...
             </p>
             <p className="text-sm text-gray-600 dark:text-gray-400" data-testid="text-loading-subtitle">
               {config.description}
@@ -110,11 +110,11 @@ export default function ServiceWrapper() {
               <div className="flex items-center justify-center gap-2 mb-2">
                 <DollarSign className="w-4 h-4 text-blue-600" />
                 <p className="text-blue-800 dark:text-blue-200 font-semibold" data-testid="text-revenue-info">
-                  Powered by YardFlex
+                  Powered by YaadFlex
                 </p>
               </div>
               <p className="text-blue-700 dark:text-blue-300 text-xs" data-testid="text-revenue-details">
-                A small service fee supports YardFlex development and fair platform economics
+                A small service fee supports YaadFlex development and fair platform economics
               </p>
             </div>
           </CardContent>
@@ -139,7 +139,7 @@ export default function ServiceWrapper() {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white" data-testid="text-service-title">
-              {config.displayName} via YardFlex
+              {config.displayName} via YaadFlex
             </h1>
             <p className="text-gray-600 dark:text-gray-400" data-testid="text-service-subtitle">
               {config.description}
@@ -152,7 +152,7 @@ export default function ServiceWrapper() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2" data-testid="text-access-title">
               <Shield className="w-5 h-5 text-green-600" />
-              Secure Access via YardFlex
+              Secure Access via YaadFlex
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -164,7 +164,7 @@ export default function ServiceWrapper() {
                     <div className="flex items-center gap-2">
                       <Shield className="w-4 h-4 text-yellow-600" />
                       <span className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
-                        Wrapped by YardFlex • All activity tracked
+                        Wrapped by YaadFlex • All activity tracked
                       </span>
                     </div>
                     <Button 
@@ -180,7 +180,7 @@ export default function ServiceWrapper() {
                   <iframe 
                     src={config.externalUrl}
                     className="w-full h-96 rounded border-0"
-                    title={`${config.displayName} - Powered by YardFlex`}
+                    title={`${config.displayName} - Powered by YaadFlex`}
                     sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     data-testid="iframe-embedded-service"
@@ -223,7 +223,7 @@ export default function ServiceWrapper() {
                       🔒 Protected Connection
                     </h3>
                     <p className="text-green-700 dark:text-green-300 text-sm" data-testid="text-security-details">
-                      Your activity is tracked through YardFlex for enhanced security and revenue sharing.
+                      Your activity is tracked through YaadFlex for enhanced security and revenue sharing.
                     </p>
                   </div>
 
@@ -245,7 +245,7 @@ export default function ServiceWrapper() {
                   </div>
 
                   <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-4" data-testid="text-disclaimer">
-                    External service • Wrapped by YardFlex • Revenue sharing applies
+                    External service • Wrapped by YaadFlex • Revenue sharing applies
                   </p>
                 </div>
               )}
@@ -253,25 +253,25 @@ export default function ServiceWrapper() {
           </CardContent>
         </Card>
 
-        {/* YardFlex Alternative Suggestion */}
+        {/* YaadFlex Alternative Suggestion */}
         <Card className="border-yellow-200 bg-yellow-50 dark:bg-yellow-900/20">
           <CardContent className="pt-6">
             <div className="text-center space-y-2">
               <h3 className="font-semibold text-yellow-800 dark:text-yellow-200" data-testid="text-alternative-title">
-                💡 Try YardFlex Native Services
+                💡 Try YaadFlex Native Services
               </h3>
               <p className="text-yellow-700 dark:text-yellow-300 text-sm" data-testid="text-alternative-description">
-                Get better rates, more features, and keep 85% of earnings with YardFlex's own services
+                Get better rates, more features, and keep 85% of earnings with YaadFlex's own services
               </p>
               <div className="flex gap-2 justify-center mt-4">
                 <Link to="/ride-booking">
-                  <Button size="sm" variant="outline" data-testid="button-native-rides">YardFlex Rides</Button>
+                  <Button size="sm" variant="outline" data-testid="button-native-rides">YaadFlex Rides</Button>
                 </Link>
                 <Link to="/wallet">
-                  <Button size="sm" variant="outline" data-testid="button-native-wallet">YardFlex Wallet</Button>
+                  <Button size="sm" variant="outline" data-testid="button-native-wallet">YaadFlex Wallet</Button>
                 </Link>
                 <Link to="/media-hub">
-                  <Button size="sm" variant="outline" data-testid="button-native-media">YardFlex Media</Button>
+                  <Button size="sm" variant="outline" data-testid="button-native-media">YaadFlex Media</Button>
                 </Link>
               </div>
             </div>

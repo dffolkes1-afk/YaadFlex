@@ -193,7 +193,7 @@ export function FareRulesToggle({ onRuleToggle, isAdmin = false }: FareRulesTogg
         <div className="flex items-center justify-between">
           <CardTitle className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-amber-400 bg-clip-text text-transparent flex items-center gap-2">
             <Settings className="h-5 w-5 text-emerald-400" />
-            YardFlex Fare Rules
+            YaadFlex Fare Rules
           </CardTitle>
           <Badge 
             variant={enabledRulesCount > 0 ? "default" : "secondary"}
