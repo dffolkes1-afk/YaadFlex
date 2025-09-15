@@ -3,6 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
+import { COMPANY_INFO, CORPORATE_TEMPLATES } from '@shared/company';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -100,8 +101,8 @@ export default function YaadFlexBankingPage() {
     retry: false,
   });
 
-  // Fetch YaadFlex business account
-  const { data: yaadflexAccount, isLoading: yaadflexLoading } = useQuery<YaadFlexAccount>({
+  // Fetch business account
+  const { data: businessAccount, isLoading: businessLoading } = useQuery<YaadFlexAccount>({
     queryKey: ['/api/banking/yaadflex-account'],
     retry: false,
   });

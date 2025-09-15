@@ -8,6 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { Link } from 'wouter';
 import { Camera, Heart, MessageCircle, Share2 } from 'lucide-react';
+import { COMPANY_INFO } from '@shared/company';
 
 interface SignupData {
   username: string;
@@ -33,7 +34,7 @@ export default function SocialSignup() {
     },
     onSuccess: () => {
       toast({
-        title: "Welcome to YaadFlex Social! 🎉",
+        title: `Welcome to ${COMPANY_INFO.COMPANY_NAME} Social! 🎉`,
         description: "Your account is ready. Start sharing your story!",
       });
       // Redirect to social feed

@@ -121,6 +121,7 @@ import path from "path";
 import fs from "fs";
 import { paymentService } from "./payment-service";
 import { db } from "./db";
+import { COMPANY_INFO, CORPORATE_TEMPLATES } from '@shared/company';
 import { 
   rentalProperties, 
   rentalBookings, 
@@ -140,6 +141,104 @@ export async function registerRoutes(app: Express): Promise<Server> {
       server: "running",
       public: req.hostname.includes('.replit.app') || req.hostname.includes('.repl.co') || req.hostname.includes('.railway.app') || req.hostname.includes('.up.railway.app')
     });
+  });
+
+  // Corporate alignment validation endpoint - CI/CD integration with REAL file scanning
+  app.get("/api/health/corporate-alignment", async (req, res) => {
+    const violations: string[] = [];
+    const warnings: string[] = [];
+    
+    try {
+      // Scan for template string interpolation issues
+      const clientFiles = fs.readdirSync('./client/src/pages', { recursive: true })
+        .filter(f => f.toString().endsWith('.tsx'))
+        .map(f => `./client/src/pages/${f}`);
+      
+      for (const filePath of clientFiles) {
+        try {
+          const content = fs.readFileSync(filePath, 'utf8');
+          
+          // Check for bad template string interpolation
+          if (content.includes('{COMPANY_INFO.')) {
+            violations.push(`Template interpolation error in ${filePath}: Found {COMPANY_INFO.X} instead of \${COMPANY_INFO.X}`);
+          }
+          
+          // Check for forbidden hardcoded contact details
+          if (content.includes('privacy@yaadflex.com')) {
+            violations.push(`Hardcoded contact in ${filePath}: privacy@yaadflex.com should use \${COMPANY_INFO.CONTACT.public_support}`);
+          }
+          
+          if (content.includes('50 Hudson Yards')) {
+            violations.push(`Hardcoded address in ${filePath}: 50 Hudson Yards should use \${COMPANY_INFO.HEADQUARTERS.legal_address}`);
+          }
+          
+          if (content.includes('legal@yaadflex.com')) {
+            violations.push(`Hardcoded legal email in ${filePath}: legal@yaadflex.com should use \${COMPANY_INFO.CONTACT.legal_email}`);
+          }
+          
+          if (content.includes('support@yaadflex.com') && !content.includes('COMPANY_INFO.CONTACT')) {
+            warnings.push(`Potential hardcoded support email in ${filePath}: verify using \${COMPANY_INFO.CONTACT.public_support}`);
+          }
+          
+        } catch (error) {
+          warnings.push(`Could not scan file ${filePath}: ${error}`);
+        }
+      }
+      
+      // Additional validation checks
+      const basicChecks = {
+        company_info_loaded: typeof COMPANY_INFO !== 'undefined',
+        corporate_templates_loaded: typeof CORPORATE_TEMPLATES !== 'undefined',
+        proper_blackrock_hierarchy: COMPANY_INFO.PARENT_COMPANY === "BlackRock, Inc.",
+        legal_entity_defined: COMPANY_INFO.LEGAL_NAME.includes("Global"),
+        contact_structure_valid: COMPANY_INFO.CONTACT.signature_domain === "yaadflex.blackrock.com",
+        branding_consistent: COMPANY_INFO.BRANDING.corporate_badge === "BlackRock Portfolio"
+      };
+      
+      // Check for failed basic validations
+      Object.entries(basicChecks).forEach(([key, passed]) => {
+        if (!passed) {
+          violations.push(`Basic validation failed: ${key}`);
+        }
+      });
+      
+      const isAligned = violations.length === 0;
+      const status = isAligned ? "aligned" : "violations_detected";
+      
+      res.status(isAligned ? 200 : 422).json({
+        status,
+        aligned: isAligned,
+        timestamp: new Date().toISOString(),
+        scan_results: {
+          files_scanned: clientFiles.length,
+          violations_found: violations.length,
+          warnings_count: warnings.length
+        },
+        violations,
+        warnings,
+        basic_checks: basicChecks,
+        corporate_info: isAligned ? {
+          parent_company: COMPANY_INFO.PARENT_COMPANY,
+          company_name: COMPANY_INFO.COMPANY_NAME,
+          legal_name: COMPANY_INFO.LEGAL_NAME,
+          portfolio_designation: COMPANY_INFO.PORTFOLIO_DESIGNATION,
+          headquarters: COMPANY_INFO.HEADQUARTERS.legal_address,
+          contact_domain: COMPANY_INFO.CONTACT.signature_domain
+        } : { note: "Corporate info hidden due to violations" },
+        message: isAligned 
+          ? "All corporate alignment checks passed" 
+          : `Found ${violations.length} critical violations that must be fixed for BlackRock corporate compliance`
+      });
+      
+    } catch (error) {
+      res.status(500).json({
+        status: "scan_error", 
+        aligned: false,
+        timestamp: new Date().toISOString(),
+        error: `Validation scan failed: ${error.message}`,
+        message: "Unable to validate corporate alignment due to system error"
+      });
+    }
   });
 
   // PayPal payment routes - javascript_paypal integration
@@ -247,9 +346,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Missing required fields" });
       }
 
-      // Email content for YaadFlex support
+      // Email content for corporate support
       const emailContent = `
-YaadFlex Global Vybz - Support Request
+${COMPANY_INFO.COMPANY_NAME} - Support Request
 
 From: ${name} <${email}>
 Phone: ${phone || 'Not provided'}
@@ -260,13 +359,16 @@ Message:
 ${message}
 
 ---
-Sent via YaadFlex Email Assistant
+Sent via ${COMPANY_INFO.PORTFOLIO_DESIGNATION} Corporate Assistant
 Time: ${new Date().toISOString()}
       `;
 
       // Log the support request (future: integrate with SendGrid when API key available)
-      console.log('=== YAADFLEX SUPPORT EMAIL ===');
-      console.log('TO: support@yaadflexglobalvybz.com');
+      console.log(`=== ${COMPANY_INFO.PARENT_COMPANY} ${COMPANY_INFO.BRANDING.corporate_badge} SUPPORT EMAIL ===`);
+      console.log(`TO: ${COMPANY_INFO.CONTACT.support_email}`);
+      console.log(`FROM: ${name} <${email}>`);
+      console.log(`SUBJECT: ${subject}`);
+      console.log(`MESSAGE: ${message}`);
       console.log('FROM:', email);
       console.log('SUBJECT:', subject);
       console.log(emailContent);
@@ -496,7 +598,7 @@ Time: ${new Date().toISOString()}
   // Global statistics endpoint
   app.get('/api/stats/global', async (req, res) => {
     try {
-      // Return global YaadFlex statistics
+      // Return global platform statistics
       res.json({
         countries: 195,
         uptime: "99.99%",
@@ -1491,7 +1593,7 @@ Time: ${new Date().toISOString()}
           content: `
 Dear ${contactName},
 
-I hope this letter finds you well. My name is Dwayne Christopher Ffolkes, founder of YaadFlex, Jamaica's revolutionary ride-sharing super-app that prioritizes fair earnings for drivers.
+I hope this letter finds you well. I represent the BlackRock executive team overseeing YaadFlex, Jamaica's revolutionary ride-sharing super-app that prioritizes fair earnings for drivers.
 
 YaadFlex is experiencing explosive growth with over 50,000+ registered drivers and 100,000+ monthly customers across all 14 parishes. Our drivers complete thousands of trips daily, representing a massive fuel consumption opportunity for forward-thinking gas station partners like ${companyName}.
 
@@ -1522,10 +1624,10 @@ I would love to schedule a 30-minute meeting to show you our driver heat maps, d
 
 Best regards,
 
-Dwayne Christopher Ffolkes
-Founder & CEO, YaadFlex
-Phone: 1-800-YAADFLEX
-Email: dwayne@yaadflex.com
+BlackRock Executive Team
+YaadFlex Portfolio Company Leadership
+Phone: +1 (212) 810-5300
+Email: yaadflexglobal@blackrock.com
 
 P.S. - Ruby's and Texaco stations in Kingston that partner with ride-sharing services report 35-50% increases in fuel sales. Don't let your competitors get there first!
           `
@@ -1535,7 +1637,7 @@ P.S. - Ruby's and Texaco stations in Kingston that partner with ride-sharing ser
           content: `
 Dear ${contactName},
 
-Greetings! I'm Dwayne Christopher Ffolkes, founder of YaadFlex, Jamaica's fastest-growing fintech-enabled transportation super-app.
+Greetings! I represent BlackRock's YaadFlex portfolio company, Jamaica's fastest-growing fintech-enabled transportation super-app.
 
 YaadFlex processes over JMD $50 million monthly in transactions with our revolutionary 85/15 split model (drivers keep 85%, platform 15%). We're seeking a progressive banking partner like ${companyName} to handle our massive payment volume and serve our growing driver community.
 
@@ -1573,10 +1675,10 @@ I'd appreciate 30 minutes to demonstrate our payment dashboard, show our monthly
 
 Best regards,
 
-Dwayne Christopher Ffolkes
-Founder & CEO, YaadFlex
-Phone: 1-800-YAADFLEX
-Email: dwayne@yaadflex.com
+BlackRock Executive Team
+YaadFlex Portfolio Company Leadership
+Phone: +1 (212) 810-5300
+Email: yaadflexglobal@blackrock.com
 
 P.S. - First National Bank of Trinidad saw 400% increase in digital transactions after partnering with their national ride-share platform. The early mover advantage is significant!
           `
@@ -1586,7 +1688,7 @@ P.S. - First National Bank of Trinidad saw 400% increase in digital transactions
           content: `
 Dear ${contactName},
 
-I'm Dwayne Christopher Ffolkes, founder of YaadFlex, Jamaica's revolutionary super-app connecting 50,000+ drivers with 100,000+ customers island-wide.
+I represent BlackRock's YaadFlex, Jamaica's revolutionary super-app connecting 50,000+ drivers with 100,000+ customers island-wide.
 
 ${companyName} has an incredible opportunity to tap into our massive user base through strategic partnerships that drive both foot traffic and customer loyalty.
 
@@ -1627,10 +1729,10 @@ I'd love to show you our driver heat maps, demonstrate how the partnership works
 
 Best regards,
 
-Dwayne Christopher Ffolkes
-Founder & CEO, YaadFlex
-Phone: 1-800-YAADFLEX
-Email: dwayne@yaadflex.com
+BlackRock Executive Team
+YaadFlex Portfolio Company Leadership
+Phone: +1 (212) 810-5300
+Email: yaadflexglobal@blackrock.com
 
 P.S. - Supermarkets in Kingston partnering with gig economy platforms report 30% higher sales from driver customer segments. Let's discuss how ${companyName} can capture this growth!
           `
@@ -1640,7 +1742,7 @@ P.S. - Supermarkets in Kingston partnering with gig economy platforms report 30%
           content: `
 Dear ${contactName},
 
-I'm Dwayne Christopher Ffolkes, founder of YaadFlex, Jamaica's fastest-growing super-app with 50,000+ drivers and 100,000+ customers nationwide.
+I represent BlackRock's YaadFlex, Jamaica's fastest-growing super-app with 50,000+ drivers and 100,000+ customers nationwide.
 
 YaadFlex is revolutionizing how Jamaicans work and travel, and we're seeking forward-thinking business partners like ${companyName} to grow together.
 
@@ -1674,10 +1776,10 @@ I'd appreciate the opportunity to meet and discuss how YaadFlex can help ${compa
 
 Best regards,
 
-Dwayne Christopher Ffolkes
-Founder & CEO, YaadFlex
-Phone: 1-800-YAADFLEX
-Email: dwayne@yaadflex.com
+BlackRock Executive Team
+YaadFlex Portfolio Company Leadership
+Phone: +1 (212) 810-5300
+Email: yaadflexglobal@blackrock.com
 
 P.S. - Early business partners get exclusive territory rights and preferred partnership terms. Let's discuss how ${companyName} can be first in your industry!
           `
@@ -2817,7 +2919,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
           accountNumber: '123456789012',
           routingNumber: '001234',
           accountType: 'checking',
-          accountHolderName: 'Dwayne Christopher Ffolkes',
+          accountHolderName: 'BlackRock YaadFlex Corporate',
           isVerified: true,
           isPrimary: true,
           balance: 125000.00,
@@ -2830,7 +2932,7 @@ P.S. - Early business partners get exclusive territory rights and preferred part
           accountNumber: '987654321098',
           routingNumber: '002345',
           accountType: 'savings',
-          accountHolderName: 'Dwayne Christopher Ffolkes',
+          accountHolderName: 'BlackRock YaadFlex Corporate',
           isVerified: true,
           isPrimary: false,
           balance: 85000.00,

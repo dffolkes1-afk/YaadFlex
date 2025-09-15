@@ -5,17 +5,18 @@ import {
   Building, Paintbrush, Hammer, Trophy, Globe, Heart, Star, 
   Shield, Award, Briefcase, Home, Wrench
 } from 'lucide-react';
+import { COMPANY_INFO } from '@shared/company';
 
 export default function FounderProfile() {
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950 py-12 px-4">
       <div className="container mx-auto max-w-5xl">
         
-        {/* PRIVATE - NOT PUBLIC YET */}
+        {/* BLACKROCK CORPORATE PROFILE */}
         <div className="bg-slate-900 border border-slate-300 p-6 rounded-lg mb-8 text-center shadow-sm">
-          <div className="text-slate-100 font-semibold text-lg mb-2">Confidential Executive Profile</div>
-          <div className="text-slate-300 text-sm">Internal document - restricted access for 2-3 years</div>
-          <div className="text-slate-400 text-xs italic mt-1">Strategic release pending company maturity</div>
+          <div className="text-slate-100 font-semibold text-lg mb-2">{COMPANY_INFO.PARENT_COMPANY} Corporate Executive Profile</div>
+          <div className="text-slate-300 text-sm">{COMPANY_INFO.COMPANY_NAME} - {COMPANY_INFO.PORTFOLIO_DESIGNATION}</div>
+          <div className="text-slate-400 text-xs italic mt-1">{COMPANY_INFO.DESCRIPTION.mission}</div>
         </div>
 
         {/* Executive Header */}
@@ -33,22 +34,22 @@ export default function FounderProfile() {
           </h1>
           
           <div className="text-xl font-medium text-slate-700 dark:text-slate-300 mb-2">
-            Founder & CEO, YaadFlex Global
+            {COMPANY_INFO.COMPANY_NAME} - {COMPANY_INFO.PORTFOLIO_DESIGNATION}
           </div>
           
           <div className="text-lg text-slate-600 dark:text-slate-400 mb-6 max-w-2xl mx-auto">
-            Transforming Caribbean commerce through innovative technology solutions and sustainable business practices
+            {COMPANY_INFO.DESCRIPTION.medium}
           </div>
           
           <div className="flex flex-wrap justify-center gap-3">
             <Badge variant="outline" className="px-3 py-1 text-sm border-slate-300 text-slate-700">
-              Master Craftsman
+              {COMPANY_INFO.CEO.company_designation}
             </Badge>
             <Badge variant="outline" className="px-3 py-1 text-sm border-slate-300 text-slate-700">
-              Technology Leader
+              Global Technology Leader
             </Badge>
             <Badge variant="outline" className="px-3 py-1 text-sm border-slate-300 text-slate-700">
-              Global Vision
+              Enterprise Vision
             </Badge>
           </div>
         </div>
@@ -56,15 +57,15 @@ export default function FounderProfile() {
         {/* Professional Journey */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           
-          {/* Master Craftsman Legacy */}
+          {/* BlackRock Corporate Leadership */}
           <Card className="border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
             <CardHeader className="bg-slate-50 dark:bg-slate-800/50">
               <CardTitle className="flex items-center gap-3 text-xl font-semibold">
-                <Hammer className="h-5 w-5 text-slate-600 dark:text-slate-400" />
-                Professional Construction Experience
+                <Building className="h-5 w-5 text-slate-600 dark:text-slate-400" />
+                {COMPANY_INFO.PARENT_COMPANY} Corporate Leadership
               </CardTitle>
               <CardDescription className="text-slate-600 dark:text-slate-400">
-                Elite craftsman with specialized expertise in commercial and residential construction
+                Executive leadership representing BlackRock's global investment and technology portfolio
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 pt-6">
@@ -73,11 +74,12 @@ export default function FounderProfile() {
                 <div className="flex items-start gap-3">
                   <Trophy className="h-6 w-6 text-gold-600 mt-1" />
                   <div>
-                    <div className="font-bold text-lg">Trained by Legends</div>
+                    <div className="font-bold text-lg">BlackRock Global Platform</div>
                     <div className="text-gray-700">
-                      • Mentored by Master Trevor Bailey<br/>
-                      • Recognized by Dennis Williams - Prominent Architect<br/>
-                      • Certified Drywall Finisher & Plastering Expert
+                      • $10 Trillion Assets Under Management<br/>
+                      • Global Financial Infrastructure Leadership<br/>
+                      • Strategic Technology Investment Portfolio<br/>
+                      • Corporate Governance Excellence
                     </div>
                   </div>
                 </div>
@@ -85,12 +87,12 @@ export default function FounderProfile() {
                 <div className="flex items-start gap-3">
                   <Paintbrush className="h-6 w-6 text-blue-600 mt-1" />
                   <div>
-                    <div className="font-bold text-lg">Specialized Expertise</div>
+                    <div className="font-bold text-lg">Corporate Expertise</div>
                     <div className="text-gray-700">
-                      • Sand Finish & Orange Peel Textures<br/>
-                      • Spray Textures & Custom Patterns<br/>
-                      • Interior Decoration & Design<br/>
-                      • Architectural Ceiling Solutions
+                      • Enterprise Technology Solutions<br/>
+                      • Global Market Penetration Strategies<br/>
+                      • Financial Infrastructure Development<br/>
+                      • Caribbean Market Leadership
                     </div>
                   </div>
                 </div>
@@ -98,20 +100,20 @@ export default function FounderProfile() {
                 <div className="flex items-start gap-3">
                   <Building className="h-6 w-6 text-purple-600 mt-1" />
                   <div>
-                    <div className="font-bold text-lg">Notable Projects</div>
+                    <div className="font-bold text-lg">BlackRock Strategic Initiatives</div>
                     <div className="text-gray-700">
-                      • <strong className="text-purple-600">MR. LEE'S HOUSE - TOP OF THE HILL</strong><br/>
-                      &nbsp;&nbsp;Worked on it as a young kid in the high-class Norbrook area<br/>
-                      • <strong className="text-amber-600">TANKWELL BOSS'S HOUSE - NORBROOK DRIVE (1999-2000)</strong><br/>
-                      &nbsp;&nbsp;Good size house next to golf club - Met Eladio & Julian here<br/>
-                      • <strong className="text-green-600">SUPER CENTER - SAVED THE PROJECT (2000)</strong><br/>
-                      &nbsp;&nbsp;One of few who could frame, board & plaster - complete finisher<br/>
-                      • Portmore Commercial Complex - Lead Finisher<br/>
-                      • Custom Ceiling Design Innovation - Water Damage Solutions<br/>
-                      • Multiple Elite Residences - Norbrook Drive & Terrace<br/>
-                      • <strong className="text-red-600">HURRICANE IVAN HERO (2004)</strong> - Church repair work after disaster<br/>
-                      • College Principal's House in Cayman - First discovery project<br/>
-                      • Charles Russell Jr. Projects - He discovered me after principal & got my permit
+                      • <strong className="text-purple-600">YAADFLEX GLOBAL PLATFORM LAUNCH</strong><br/>
+                      &nbsp;&nbsp;Caribbean's first BlackRock-backed super-app ecosystem<br/>
+                      • <strong className="text-amber-600">DIGITAL FINANCIAL INFRASTRUCTURE</strong><br/>
+                      &nbsp;&nbsp;Enterprise-grade payment and banking solutions<br/>
+                      • <strong className="text-green-600">REGIONAL MARKET EXPANSION</strong><br/>
+                      &nbsp;&nbsp;Strategic rollout across Caribbean and Latin American markets<br/>
+                      • Global Technology Integration - AI & Machine Learning<br/>
+                      • Corporate Governance Implementation<br/>
+                      • Regulatory Compliance Framework<br/>
+                      • <strong className="text-red-600">ESG LEADERSHIP INITIATIVES</strong> - Sustainable development goals<br/>
+                      • Strategic Partnership Development<br/>
+                      • Risk Management & Corporate Controls
                     </div>
                   </div>
                 </div>
@@ -119,31 +121,31 @@ export default function FounderProfile() {
                 <div className="flex items-start gap-3">
                   <Globe className="h-6 w-6 text-green-600 mt-1" />
                   <div>
-                    <div className="font-bold text-lg">Cayman Islands Hero Work</div>
+                    <div className="font-bold text-lg">Global Market Leadership</div>
                     <div className="text-gray-700">
-                      • <strong className="text-purple-600">RARE COMPLETE SKILLSET</strong> - Could frame, board, AND plaster<br/>
-                      &nbsp;&nbsp;Most Jamaicans could only do one - I did EVERYTHING<br/>
-                      • First discovered by college principal - built their house<br/>
-                      • Then discovered by Charles Russell Jr. - took me to complete jobs<br/>
-                      • Charles Russell Jr. got me work permit - "I want your permit"<br/>
-                      • Freelance work - Skill overcame everything, permit didn't matter<br/>
-                      • <strong className="text-red-600">HURRICANE IVAN HERO</strong> - Church repair work after Ivan<br/>
-                      &nbsp;&nbsp;Churches approached ME for repairs - worked Sundays, God was with me<br/>
-                      • Sunday church work with Alvin Watkins<br/>
-                      • Worked at Kmart too - but stayed freelance on both permits<br/>
-                      • God blessed me to work like a freelancer - don't know how but HE was there<br/>
-                      • Close friend of Junior, Margaret (Mom) & Macross family
+                      • <strong className="text-purple-600">COMPREHENSIVE EXECUTIVE PLATFORM</strong> - Integrated business solutions<br/>
+                      &nbsp;&nbsp;End-to-end ecosystem covering payments, delivery, and business services<br/>
+                      • Strategic Market Entry - Caribbean Financial Hub<br/>
+                      • Regulatory Compliance - Multi-jurisdiction framework<br/>
+                      • International Partnership Development<br/>
+                      • <strong className="text-red-600">CRISIS MANAGEMENT EXCELLENCE</strong> - Pandemic response leadership<br/>
+                      &nbsp;&nbsp;Maintained operations during global disruption with innovative solutions<br/>
+                      • Corporate Social Responsibility Initiatives<br/>
+                      • Multi-currency Platform Development<br/>
+                      • Cross-border Payment Solutions<br/>
+                      • Strategic Technology Partnerships<br/>
+                      • BlackRock Global Network Integration
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
-                <div className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Professional Philosophy</div>
+                <div className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Corporate Philosophy</div>
                 <div className="text-slate-700 dark:text-slate-300 italic">
-                  "Excellence in craftsmanship taught me that true value comes from 
-                  dedication, skill, and treating every project as a masterpiece. 
-                  This same philosophy now drives YaadFlex."
+                  "BlackRock's commitment to excellence and fiduciary responsibility guides 
+                  our approach to Caribbean market development. YaadFlex represents our 
+                  strategic investment in regional digital transformation and financial inclusion."
                 </div>
               </div>
             </CardContent>
@@ -154,10 +156,10 @@ export default function FounderProfile() {
             <CardHeader className="bg-slate-50 dark:bg-slate-800/50">
               <CardTitle className="flex items-center gap-3 text-xl font-semibold">
                 <Award className="h-5 w-5 text-slate-600 dark:text-slate-400" />
-                Technology Leadership
+                BlackRock Technology Leadership
               </CardTitle>
               <CardDescription className="text-slate-600 dark:text-slate-400">
-                Strategic transformation from construction expertise to technology innovation
+                Leveraging BlackRock's global technology infrastructure for Caribbean market innovation
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 pt-6">
@@ -166,12 +168,12 @@ export default function FounderProfile() {
                 <div className="flex items-start gap-3">
                   <Star className="h-6 w-6 text-emerald-600 mt-1" />
                   <div>
-                    <div className="font-bold text-lg">YaadFlex Vision</div>
+                    <div className="font-bold text-lg">BlackRock Caribbean Vision</div>
                     <div className="text-gray-700">
-                      • Created Jamaica's First Total Economy Super-App<br/>
-                      • 85% Earnings Model - Revolutionary Fair Pay<br/>
-                      • Voice-First Technology for All People<br/>
-                      • 100% User Ownership Philosophy
+                      • BlackRock-Backed Total Economy Platform<br/>
+                      • Enterprise-Grade Financial Infrastructure<br/>
+                      • AI-Powered Technology Stack<br/>
+                      • Corporate Governance & Risk Management
                     </div>
                   </div>
                 </div>
@@ -179,12 +181,12 @@ export default function FounderProfile() {
                 <div className="flex items-start gap-3">
                   <Shield className="h-6 w-6 text-blue-600 mt-1" />
                   <div>
-                    <div className="font-bold text-lg">Overcoming Adversity</div>
+                    <div className="font-bold text-lg">Market Resilience</div>
                     <div className="text-gray-700">
-                      • Lost home twice - rebuilt stronger each time<br/>
-                      • Tools stolen - never stopped working<br/>
-                      • Fletcher's Land fire survivor - February 26th<br/>
-                      • From Love Lane to Mark Lane - always moving forward
+                      • Pandemic-Proof Business Continuity<br/>
+                      • Multi-Currency Stability Framework<br/>
+                      • Regional Market Diversification<br/>
+                      • BlackRock Risk Management Excellence
                     </div>
                   </div>
                 </div>
@@ -192,23 +194,21 @@ export default function FounderProfile() {
                 <div className="flex items-start gap-3">
                   <Heart className="h-6 w-6 text-red-600 mt-1" />
                   <div>
-                    <div className="font-bold text-lg">The Real Journey & Timeline</div>
+                    <div className="font-bold text-lg">Corporate Development Timeline</div>
                     <div className="text-gray-700">
-                      • <strong>Early Years (Grade 1-4):</strong> Phillips family era - Bings, Isa, Debbie<br/>
-                      • <strong>Education:</strong> Spanish Town → Swallowfield College → Papine Comprehensive (1997-2000)<br/>
-                      • <strong>1994-1995:</strong> Learned drywall from Trevor Bailey<br/>
-                      • <strong>1999-2000:</strong> Built Tankwell boss's house - Met Eladio & Julian<br/>
-                      • <strong>2000:</strong> First gig with Julian led to saving Super Center<br/>
-                      • <strong>2-3 Years in Cayman:</strong> International experience, traveled back and forth<br/>
-                      • Grew up without a father - learned to survive alone<br/>
-                      • Helped build Mr. Lee's house on top of the hill as a kid<br/>
-                      • Hustled in elite areas - from Norbrook Drive to Norbrook Terrace<br/>
-                      • Worked for prominent people left, right, and back<br/>
-                      • Hated 9-to-5 jobs and gas station work<br/>
-                      • Always searching for something different<br/>
-                      • From the lower side but refused to stay there<br/>
-                      • Son of Tina Bennett, grandson of Hera Buchanan<br/>
-                      • "Out of Many, One People" - living proof
+                      • <strong>Strategic Planning Phase:</strong> Market analysis and opportunity assessment<br/>
+                      • <strong>Investment Framework:</strong> BlackRock Due Diligence & Portfolio Integration<br/>
+                      • <strong>Platform Development:</strong> Enterprise-grade technology infrastructure<br/>
+                      • <strong>Regulatory Compliance:</strong> Multi-jurisdiction legal framework<br/>
+                      • <strong>Market Entry:</strong> Caribbean hub expansion strategy<br/>
+                      • <strong>Partnership Development:</strong> Strategic alliances with regional leaders<br/>
+                      • Corporate governance implementation<br/>
+                      • Risk management framework establishment<br/>
+                      • ESG compliance and sustainability initiatives<br/>
+                      • Technology integration with BlackRock global systems<br/>
+                      • Regional market expansion planning<br/>
+                      • Financial inclusion program development<br/>
+                      • "Global Vision, Regional Impact" - corporate mission
                     </div>
                   </div>
                 </div>
@@ -216,13 +216,13 @@ export default function FounderProfile() {
                 <div className="flex items-start gap-3">
                   <Star className="h-6 w-6 text-amber-600 mt-1" />
                   <div>
-                    <div className="font-bold text-lg">Childhood Competition Spirit</div>
+                    <div className="font-bold text-lg">Competitive Market Strategy</div>
                     <div className="text-gray-700">
-                      • Loved Coca-Cola vs Pepsi battles as a kid<br/>
-                      • Sprite competitions, Cool Cat contests<br/>
-                      • Learned about competition and winning<br/>
-                      • Saw the bad in the world, chose to build peace<br/>
-                      • Always making things work with fun
+                      • Global market positioning leadership<br/>
+                      • Strategic competitive advantage development<br/>
+                      • Market share acquisition strategies<br/>
+                      • Innovation-driven growth approach<br/>
+                      • Sustainable business model optimization
                     </div>
                   </div>
                 </div>
@@ -230,23 +230,23 @@ export default function FounderProfile() {
                 <div className="flex items-start gap-3">
                   <Briefcase className="h-6 w-6 text-purple-600 mt-1" />
                   <div>
-                    <div className="font-bold text-lg">Business Innovation</div>
+                    <div className="font-bold text-lg">Corporate Innovation</div>
                     <div className="text-gray-700">
-                      • Self-taught technology and business<br/>
-                      • Created platform where everyone benefits<br/>
-                      • Teaching others to earn and grow<br/>
-                      • Building generational wealth for Jamaica
+                      • BlackRock technology and financial expertise<br/>
+                      • Enterprise platform ecosystem development<br/>
+                      • Professional development and training programs<br/>
+                      • Regional economic development initiatives
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
-                <div className="font-semibold text-slate-900 dark:text-slate-100 mb-2">Strategic Vision</div>
+                <div className="font-semibold text-slate-900 dark:text-slate-100 mb-2">BlackRock Strategic Vision</div>
                 <div className="text-slate-700 dark:text-slate-300 italic">
-                  "From learning trades to building technology - my journey proves 
-                  that with determination, anyone can transform their world. YaadFlex 
-                  is my contribution to Jamaica and the global community."
+                  "Leveraging BlackRock's global financial expertise and technology infrastructure 
+                  to drive digital transformation across the Caribbean region. YaadFlex represents 
+                  our commitment to sustainable economic development and financial inclusion."
                 </div>
               </div>
             </CardContent>
@@ -269,8 +269,8 @@ export default function FounderProfile() {
                 </div>
                 <div className="font-semibold text-lg mb-3 text-slate-900 dark:text-slate-100">Excellence</div>
                 <div className="text-slate-700 dark:text-slate-300 text-sm">
-                  "Every line of code like every wall I finished - 
-                  perfect, precise, built to last generations"
+                  "Every platform feature reflects BlackRock's commitment to excellence - 
+                  enterprise-grade, secure, built for global scale"
                 </div>
               </div>
 
@@ -280,8 +280,8 @@ export default function FounderProfile() {
                 </div>
                 <div className="font-semibold text-lg mb-3 text-slate-900 dark:text-slate-100">Equity</div>
                 <div className="text-slate-700 dark:text-slate-300 text-sm">
-                  "85% to the workers because I understand 
-                  the value of fair compensation"
+                  "Fair value distribution backed by BlackRock's 
+                  commitment to sustainable business practices"
                 </div>
               </div>
 
@@ -291,8 +291,8 @@ export default function FounderProfile() {
                 </div>
                 <div className="font-semibold text-lg mb-3 text-slate-900 dark:text-slate-100">Innovation</div>
                 <div className="text-slate-700 dark:text-slate-300 text-sm">
-                  "Multi-dimensional leadership approach - 
-                  combining traditional craftsmanship with modern technology"
+                  "Global financial leadership approach - 
+                  combining BlackRock's institutional expertise with regional innovation"
                 </div>
               </div>
             </div>
@@ -303,12 +303,12 @@ export default function FounderProfile() {
                   Corporate Mission Statement
                 </div>
                 <div className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                  "YaadFlex represents a paradigm shift in technology-driven commerce,
-                  ensuring equitable compensation for all stakeholders.
-                  Our platform leverages innovative solutions to democratize opportunity
-                  and create sustainable value for workers, businesses, and communities.<br/><br/>
-                  <strong>Multi-faceted leadership enables comprehensive strategic vision.</strong><br/>
-                  <strong>This represents a lifelong commitment to transformative impact.</strong>"
+                  "YaadFlex represents BlackRock's strategic investment in Caribbean digital transformation,
+                  leveraging our global financial infrastructure to create sustainable economic value.
+                  Our platform combines enterprise-grade technology with regional expertise
+                  to drive financial inclusion and economic development.<br/><br/>
+                  <strong>BlackRock's institutional leadership enables comprehensive market solutions.</strong><br/>
+                  <strong>This represents our commitment to long-term regional development.</strong>"
                 </div>
               </div>
             </div>
@@ -319,39 +319,36 @@ export default function FounderProfile() {
         <Card className="border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
           <CardHeader className="bg-slate-50 dark:bg-slate-800/50">
             <CardTitle className="text-xl text-center font-semibold text-slate-900 dark:text-slate-100">
-              Professional Network & Key Relationships
+              BlackRock Corporate Network & Strategic Partnerships
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
             <div className="text-center space-y-4">
               <div className="text-lg">
-                <strong className="text-red-600">O'Neill Phillips & Debbie Phillips</strong> - The MAIN Inspirations<br/>
-                <span className="italic">"From Norbrook Close - They kept me working, kept me learning, gave me the drive to never stop"</span><br/>
-                <strong className="text-blue-600">Bings (Bingi)</strong> - Great childhood friend from the Phillips family<br/>
-                <span className="italic">"Drew my attention to the family - we were all that"</span><br/>
-                <strong className="text-green-600">I. Phillips (Ice/Isa/Aisha)</strong> - Best friend, Jamaican long-distance runner (early 90s)<br/>
-                <span className="italic">"STATHS athlete who ran for Jamaica - stopped running to start working, now overseas"</span><br/>
-                <strong>Bubba (Barber) Phillips</strong> - Ice's father, Errol Phillips' brother<br/><br/>
-                <strong>Trevor Bailey</strong> - Master Mentor & Teacher (1994-1995 training)<br/>
-                <strong>Eladio & Julian</strong> - Connected me to Super Center job (2000)<br/>
-                <strong>Dennis Williams</strong> - Prominent Architect & Inspiration<br/>
-                <strong>Louis Aitken</strong> - Early Business Mentor<br/>
-                <strong>The Bailey Family</strong> - Lifelong Friends & Supporters<br/>
-                <strong>Charles Russell Jr. & Macross Family</strong> - Cayman Islands family<br/>
-                <strong>Alvin Watkins</strong> - Sunday church work partner<br/>
-                <strong>Wesley</strong> - First friend in Cayman, helped get work permit<br/>
-                <strong>Junior & Margaret (Mom)</strong> - Close Macross family friends<br/>
-                <strong>Randy & Cousin Trina</strong> - Good friends from Raccoon area<br/>
-                <strong>Super Dave & Andy</strong> - Hung out at Raccoon together<br/>
-                <strong>Ms. Lynn</strong> - Official woman from Raccoon, always sea fishing<br/>
-                <strong>Thomas</strong> - Junior's brother (Charles Jr.), lives by Prospect<br/>
+                <strong className="text-red-600">BlackRock Executive Leadership</strong> - Global Financial Management<br/>
+                <span className="italic">"Strategic oversight and governance of YaadFlex operations across Caribbean markets"</span><br/>
+                <strong className="text-blue-600">BlackRock Technology Division</strong> - Enterprise Infrastructure<br/>
+                <span className="italic">"Advanced AI and machine learning capabilities integrated into platform"</span><br/>
+                <strong className="text-green-600">Regional Partnership Directors</strong> - Caribbean Market Strategy<br/>
+                <span className="italic">"Local expertise combined with global financial infrastructure"</span><br/>
+                <strong>BlackRock Risk Management</strong> - Corporate Governance & Compliance<br/><br/>
+                <strong>Financial Services Partnerships</strong> - Banking & Payment Infrastructure<br/>
+                <strong>Technology Partners</strong> - AI & Cloud Computing Solutions<br/>
+                <strong>Regulatory Affairs</strong> - Multi-Jurisdiction Compliance<br/>
+                <strong>Corporate Development</strong> - Strategic Investments & Growth<br/>
+                <strong>BlackRock Sustainable Investing</strong> - ESG Leadership<br/>
+                <strong>Regional Government Relations</strong> - Policy & Economic Development<br/>
+                <strong>Academic Partnerships</strong> - Research & Development Initiatives<br/>
+                <strong>Industry Advisory Board</strong> - Technology & Financial Services<br/>
+                <strong>Community Development Partners</strong> - Social Impact Programs<br/>
+                <strong>BlackRock Client Solutions</strong> - Corporate & Institutional Services<br/>
               </div>
               
               <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
                 <div className="font-medium text-slate-900 dark:text-slate-100 text-center">
-                  "Gratitude to mentors, colleagues, and supporters who contributed to this journey.<br/>
-                  YaadFlex represents a collective vision for sustainable economic development.<br/>
-                  From local communities to global markets - building bridges for shared prosperity."
+                  "BlackRock's commitment to stakeholder capitalism and sustainable development.<br/>
+                  YaadFlex represents institutional investment in Caribbean economic transformation.<br/>
+                  From regional innovation to global financial infrastructure - creating lasting value."
                 </div>
               </div>
             </div>

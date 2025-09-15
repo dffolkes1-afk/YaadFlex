@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { COMPANY_INFO, CORPORATE_TEMPLATES } from '@shared/company';
 import { 
   Scale, 
   Shield, 
@@ -22,7 +23,7 @@ export default function LegalCenter() {
     {
       id: 'terms',
       title: 'Terms of Service',
-      description: 'Complete terms and conditions for using YaadFlex platform services',
+      description: `Complete terms and conditions for using ${COMPANY_INFO.COMPANY_NAME} platform services`,
       icon: <Scale className="h-6 w-6" />,
       path: '/terms',
       audience: 'All Users',
@@ -33,7 +34,7 @@ export default function LegalCenter() {
     {
       id: 'privacy',
       title: 'Privacy Policy',
-      description: 'How BlackRock collects, uses, and protects your personal information',
+      description: `How ${COMPANY_INFO.PARENT_COMPANY} collects, uses, and protects your personal information`,
       icon: <Shield className="h-6 w-6" />,
       path: '/privacy',
       audience: 'All Users',
@@ -79,17 +80,17 @@ export default function LegalCenter() {
   const contactInfo = [
     {
       type: 'Legal Department',
-      email: 'legal@yaadflex.com',
+      email: COMPANY_INFO.CONTACT.legal_email,
       description: 'General legal inquiries and contract questions'
     },
     {
       type: 'Privacy Officer',
-      email: 'privacy@yaadflex.com',
+      email: COMPANY_INFO.CONTACT.support_email,
       description: 'Data protection and privacy concerns'
     },
     {
       type: 'Business Compliance',
-      email: 'compliance@yaadflex.com',
+      email: COMPANY_INFO.CONTACT.blackrock_compliance,
       description: 'Regulatory compliance and business matters'
     }
   ];

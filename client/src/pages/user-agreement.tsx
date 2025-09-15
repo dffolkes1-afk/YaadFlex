@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+import { COMPANY_INFO, CORPORATE_TEMPLATES } from '@shared/company';
 import { 
   Users, 
   Car, 
@@ -23,10 +24,10 @@ export default function UserAgreement() {
   const sections = [
     {
       id: 'platform-overview',
-      title: 'YaadFlex Platform Overview',
+      title: `${COMPANY_INFO.COMPANY_NAME} Platform Overview`,
       icon: <Building2 className="h-5 w-5" />,
       content: `
-**Service Provider:** BlackRock, Inc. provides YaadFlex as a comprehensive platform connecting users with transportation, delivery, and marketplace services throughout Jamaica and the Caribbean.
+**Service Provider:** ${COMPANY_INFO.PARENT_COMPANY} provides ${COMPANY_INFO.COMPANY_NAME} as a comprehensive platform connecting users with transportation, delivery, and marketplace services throughout Jamaica and the Caribbean.
 
 **Platform Services:**
 - Ride-sharing and transportation coordination
@@ -36,7 +37,7 @@ export default function UserAgreement() {
 - Voice communication and messaging systems
 - Real-time tracking and safety features
 
-**User Types:** This agreement applies to all YaadFlex users including:
+**User Types:** This agreement applies to all ${COMPANY_INFO.COMPANY_NAME} users including:
 - Riders requesting transportation services
 - Customers booking delivery services
 - Users browsing the business marketplace

@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
+import { COMPANY_INFO, CORPORATE_TEMPLATES } from '@shared/company';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -115,8 +116,8 @@ export default function DriverRegistration() {
     },
     onSuccess: (data) => {
       toast({
-        title: "🎉 Welcome to YaadFlex Driver Network!",
-        description: `${formData.fullName}, you're now registered! You'll earn 85% of every fare directly to your ${formData.bankName} account.`,
+        title: `🎉 Welcome to ${COMPANY_INFO.COMPANY_NAME} Driver Network!`,
+        description: `${formData.fullName}, you're now registered with ${COMPANY_INFO.COMPANY_NAME}! You'll earn ${COMPANY_INFO.MARKETING.value_proposition.split(' ')[0]} of every fare directly to your ${formData.bankName} account.`,
       });
       queryClient.invalidateQueries({ queryKey: ['/api/drivers'] });
     },

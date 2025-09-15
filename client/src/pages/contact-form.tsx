@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { COMPANY_INFO, CORPORATE_TEMPLATES } from '@shared/company';
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -44,7 +45,7 @@ export default function ContactForm() {
       }}>
         <h3 style={{ margin: '0 0 12px', fontSize: '20px' }}>Message Sent! 🚀</h3>
         <p style={{ margin: '0', color: '#cbd6df' }}>
-          Your message has been sent to our business team. For business partnerships and serious inquiries, we'll respond within 24 hours.
+          Your message has been sent to {COMPANY_INFO.PARENT_COMPANY}'s {COMPANY_INFO.COMPANY_NAME} team. Our corporate representatives will respond to partnership and business inquiries within 24 hours.
         </p>
       </div>
     );
@@ -59,7 +60,7 @@ export default function ContactForm() {
       maxWidth: '500px',
       margin: '0 auto'
     }}>
-      <h3 style={{ margin: '0 0 16px', fontSize: '18px', color: '#eaf2f8' }}>Get in Touch</h3>
+      <h3 style={{ margin: '0 0 16px', fontSize: '18px', color: '#eaf2f8' }}>Contact {COMPANY_INFO.PARENT_COMPANY} - {COMPANY_INFO.COMPANY_NAME}</h3>
       
       <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '16px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
@@ -131,16 +132,17 @@ export default function ContactForm() {
           }}
           data-testid="select-contact-interest"
         >
-          <option value="delivery">Delivery Services</option>
-          <option value="driver">Become a Driver</option>
-          <option value="partner">Business Partnership</option>
+          <option value="delivery">YaadFlex Delivery Services</option>
+          <option value="driver">Platform Partnership</option>
+          <option value="partner">Corporate Partnership</option>
+          <option value="investor">Investor Relations</option>
           <option value="press">Press & Media</option>
           <option value="other">Other</option>
         </select>
         
         <textarea
           name="message"
-          placeholder="Tell us how we can help..."
+          placeholder="How can BlackRock's YaadFlex team assist you?"
           value={formData.message}
           onChange={handleChange}
           rows={4}
@@ -184,10 +186,12 @@ export default function ContactForm() {
         fontSize: '12px',
         color: '#9fb0c0'
       }}>
-        <strong>Business Contact:</strong><br/>
-        📧 dChris@yaadflexglobalvybz.com - Direct contact for partnerships & business matters<br/>
-        💬 <a href="https://t.me/yaadflex" target="_blank" style={{ color: '#10d07a' }}>Telegram</a> | 
-        📱 <a href="https://wa.me/1876XXXXXXX" target="_blank" style={{ color: '#10d07a' }}>WhatsApp Business</a>
+        <strong>BlackRock Corporate Contact:</strong><br/>
+        🏢 BlackRock, Inc. - 50 Hudson Yards, New York, NY 10001<br/>
+        📧 yaadflexglobal@blackrock.com - Corporate partnerships & business development<br/>
+        📧 investor-relations@blackrock.com - Investor inquiries<br/>
+        📞 +1 (212) 810-5300 - BlackRock Corporate Headquarters<br/>
+        🌐 YaadFlex: A BlackRock Portfolio Company
       </div>
     </div>
   );

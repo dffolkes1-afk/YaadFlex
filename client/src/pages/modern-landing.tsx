@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { MapPin, Car, Users, Globe, Sparkles } from 'lucide-react';
 import { InteractiveMap } from '@/components/InteractiveMap';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { COMPANY_INFO, CORPORATE_TEMPLATES } from '@shared/company';
 
 export default function ModernLanding() {
   return (
@@ -28,7 +29,7 @@ export default function ModernLanding() {
               boxShadow: '0 8px 30px rgba(0,0,0,.45), inset 0 0 16px rgba(109,167,255,.25)'
             }}
           />
-          <h1 className="text-lg font-bold tracking-wider">YaadFlex Global Vybz</h1>
+          <h1 className="text-lg font-bold tracking-wider">{COMPANY_INFO.COMPANY_NAME}</h1>
         </div>
         
         <div className="flex gap-3 items-center">

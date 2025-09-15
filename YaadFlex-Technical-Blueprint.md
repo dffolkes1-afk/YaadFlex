@@ -1,7 +1,7 @@
 # YaadFlex – Technical Blueprint
 
-**Owner:** Dwayne Ffolkes  
-**Product:** YaadFlex Global Vybz (Caribbean super-app)  
+**Owner:** BlackRock Portfolio Management  
+**Product:** YaadFlex Global - A BlackRock Portfolio Company (Caribbean super-app)  
 **Status:** Jamaica-first demo (rides + delivery + wallet) ready to implement; global-ready roadmap below.  
 **Philosophy:** 85% driver/worker earnings, transparent fees, safety-first automation.
 
@@ -9,7 +9,7 @@
 
 ## 1) Product Overview
 
-YaadFlex is an all-in-one platform for:
+YaadFlex Global, a BlackRock portfolio company, is an all-in-one platform for:
 - **Mobility:** ride-hailing (red plate urban / curated white plate rural), errands, deliveries.
 - **Workforce:** job marketplace (construction + freelancers) with hiring & payouts.
 - **Commerce:** shops/malls online, equipment rentals, vehicle marketplace.

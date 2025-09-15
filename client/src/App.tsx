@@ -45,7 +45,7 @@ import TravelBooking from "@/pages/travel-booking";
 import ServiceMarketplace from "@/pages/service-marketplace";
 import InsuranceFAQ from "@/pages/insurance-faq";
 import EmailAssistant from "@/pages/email-assistant";
-import CeoDashboard from "@/pages/CeoDashboard";
+import CeoDashboard from "@/pages/ceo-dashboard";
 import VendorManagement from "@/pages/vendor-management";
 import TimeAuthLogin from "@/pages/time-auth-login";
 import RBACDashboard from "@/pages/rbac-dashboard";

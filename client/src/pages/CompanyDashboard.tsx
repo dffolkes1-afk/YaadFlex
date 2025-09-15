@@ -14,7 +14,7 @@ import {
 
 export default function CompanyDashboard() {
   const { toast } = useToast();
-  const [companyName, setCompanyName] = useState('Kingston Tech Taxi');
+  const [companyName, setCompanyName] = useState('BlackRock Caribbean Transport');
   const [baseRate, setBaseRate] = useState('150');
   const [commissionRate, setCommissionRate] = useState('15');
 
@@ -45,21 +45,21 @@ export default function CompanyDashboard() {
             </div>
             <div>
               <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-green-500 to-purple-600 bg-clip-text text-transparent">
-                🚕 Company Dashboard
+                🚕 BlackRock Enterprise Dashboard
               </h1>
               <p className="text-xl text-gray-600">
-                Complete control of your taxi business
+                Complete control of your BlackRock-powered transportation business
               </p>
             </div>
           </div>
           
-          {/* YaadFlex Advantage Banner */}
+          {/* BlackRock Advantage Banner */}
           <div className="bg-gradient-to-r from-emerald-50 to-yellow-50 dark:from-emerald-950 dark:to-yellow-950 p-4 rounded-2xl border-2 border-emerald-300 shadow-lg">
             <div className="text-lg font-bold text-emerald-800 dark:text-emerald-200">
-              🎯 85% Driver Earnings vs 75% from Other Platforms
+              🎯 BlackRock-Backed Platform: 85% Driver Earnings vs 75% from Other Platforms
             </div>
             <div className="text-sm text-emerald-700 dark:text-emerald-300">
-              Your drivers keep more money = Happier drivers = Better business!
+              Enterprise-grade financial infrastructure = Better earnings = Superior business outcomes!
             </div>
           </div>
 
@@ -75,8 +75,8 @@ export default function CompanyDashboard() {
             <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl border shadow-md hover:shadow-lg transition-all">
               <div className="text-center">
                 <div className="text-4xl mb-2">💰</div>
-                <div className="font-semibold text-green-800">YFD Currency</div>
-                <div className="text-sm text-green-600">Global Digital Money</div>
+                <div className="font-semibold text-green-800">BlackRock Digital Currency</div>
+                <div className="text-sm text-green-600">Enterprise Financial Infrastructure</div>
               </div>
             </div>
             <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl border shadow-md hover:shadow-lg transition-all">

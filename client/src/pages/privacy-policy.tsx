@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+import { COMPANY_INFO, CORPORATE_TEMPLATES } from '@shared/company';
 import { 
   Shield, 
   Eye, 
@@ -29,18 +30,18 @@ export default function PrivacyPolicy() {
       title: 'Privacy Overview & Corporate Information',
       icon: <Building2 className="h-5 w-5" />,
       content: `
-**Data Controller:** BlackRock, Inc., a Delaware corporation with its principal place of business at 50 Hudson Yards, New York, NY 10001.
+**Data Controller:** ${COMPANY_INFO.PARENT_COMPANY}, a Delaware corporation with its principal place of business at ${COMPANY_INFO.HEADQUARTERS.legal_address}.
 
-**Platform:** This Privacy Policy applies to YaadFlex, BlackRock's proprietary multi-service platform operating in Jamaica and the Caribbean region.
+**Platform:** This Privacy Policy applies to ${COMPANY_INFO.COMPANY_NAME}, ${COMPANY_INFO.PARENT_COMPANY}'s proprietary multi-service platform operating in Jamaica and the Caribbean region.
 
-**Our Commitment:** BlackRock is committed to protecting your privacy and handling your personal data responsibly. We comply with applicable data protection laws including GDPR, CCPA, and Jamaica's Data Protection Act.
+**Our Commitment:** ${COMPANY_INFO.PARENT_COMPANY} is committed to protecting your privacy and handling your personal data responsibly. We comply with applicable data protection laws including GDPR, CCPA, and Jamaica's Data Protection Act.
 
-**Global Standards:** As a global financial services corporation, BlackRock maintains enterprise-grade privacy and security standards across all operations, including YaadFlex services.
+**Global Standards:** As a global financial services corporation, ${COMPANY_INFO.PARENT_COMPANY} maintains enterprise-grade privacy and security standards across all operations, including ${COMPANY_INFO.COMPANY_NAME} services.
 
 **Contact Information:**
-- Privacy Officer: privacy@yaadflex.com
-- Data Protection Officer: dpo@blackrock.com
-- Corporate Address: BlackRock, Inc., 50 Hudson Yards, New York, NY 10001
+- Privacy Officer: ${COMPANY_INFO.CONTACT.support_email}
+- Data Protection Officer: ${COMPANY_INFO.CONTACT.blackrock_legal}
+- Corporate Address: ${COMPANY_INFO.HEADQUARTERS.legal_address}
       `
     },
     {
@@ -217,7 +218,7 @@ export default function PrivacyPolicy() {
 - Right to complain to the Office of the Information Commissioner
 
 **How to Exercise Rights:**
-- Email: privacy@yaadflex.com
+- Email: ${COMPANY_INFO.CONTACT.public_support}
 - In-app privacy settings
 - Written request to BlackRock Legal Department
 - Contact our Data Protection Officer at dpo@blackrock.com
@@ -357,18 +358,18 @@ export default function PrivacyPolicy() {
 **Contact Information:**
 
 **Privacy Inquiries:**
-- Email: privacy@yaadflex.com
+- Email: ${COMPANY_INFO.CONTACT.public_support}
 - Phone: +1-876-YAAD-PRI (876-922-3774)
 - Caribbean Support: +1-876-555-0199
 
 **Data Protection Officer:**
 - Email: dpo@blackrock.com
 - Phone: +1-212-810-5300
-- Address: BlackRock DPO, 50 Hudson Yards, New York, NY 10001
+- Address: BlackRock DPO, ${COMPANY_INFO.HEADQUARTERS.legal_address}
 
 **Corporate Legal Department:**
-- Email: legal@yaadflex.com
-- Address: BlackRock Legal, 50 Hudson Yards, New York, NY 10001
+- Email: ${COMPANY_INFO.CONTACT.legal_email}
+- Address: BlackRock Legal, ${COMPANY_INFO.HEADQUARTERS.legal_address}
 
 **Regulatory Complaints:**
 - Jamaica: Office of the Information Commissioner
@@ -503,7 +504,7 @@ export default function PrivacyPolicy() {
             <h3 className="font-semibold mb-1">Contact Privacy Team</h3>
             <p className="text-sm text-muted-foreground mb-3">Questions about your privacy</p>
             <Button size="sm" variant="outline" data-testid="button-contact-privacy">
-              privacy@yaadflex.com
+              ${COMPANY_INFO.CONTACT.public_support}
             </Button>
           </Card>
           

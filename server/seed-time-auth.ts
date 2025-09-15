@@ -3,10 +3,11 @@ import { db } from "./db";
 import { users, workSchedules, authPolicies, userMfa } from "@shared/schema";
 import { eq, and } from "drizzle-orm";
 import crypto from "node:crypto";
+import { COMPANY_INFO } from '@shared/company';
 
 export async function seedTimeAuthSystem() {
   try {
-    console.log("🔐 Setting up YaadFlex Time-Locked Authentication System...");
+    console.log(`🔐 Setting up ${COMPANY_INFO.COMPANY_NAME} Time-Locked Authentication System...`);
 
     // Create CEO user if not exists
     const ceoId = "ceo-yaadflex-admin-001";
@@ -15,7 +16,7 @@ export async function seedTimeAuthSystem() {
     if (existingCeo.length === 0) {
       await db.insert(users).values({
         id: ceoId,
-        email: "ceo@yaadflex.com",
+        email: COMPANY_INFO.CONTACT.ceo_email,
         firstName: "Dwayne",
         lastName: "Ffolkes",
         mfaEnabled: true,
@@ -67,7 +68,7 @@ export async function seedTimeAuthSystem() {
 
     console.log("🎉 Time-locked authentication system ready!");
     console.log("📱 Next steps:");
-    console.log("   1. Navigate to /api/mfa/setup with userId: ceo-yaadflex-admin-001");
+    console.log(`   1. Navigate to /api/mfa/setup with userId: ceo-${COMPANY_INFO.BRANDING.logo_text.toLowerCase()}-admin-001`);
     console.log("   2. Scan QR code with authenticator app");
     console.log("   3. Verify setup with /api/mfa/verify");
     console.log("   4. Login with /api/auth/login using TOTP code");

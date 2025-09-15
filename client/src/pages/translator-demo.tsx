@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Globe, Languages, MessageCircle, Settings } from 'lucide-react';
+import { COMPANY_INFO } from '@shared/company';
 
 export function TranslatorDemoPage() {
   const [activeLanguage, setActiveLanguage] = useState('en-JM');
@@ -26,7 +27,7 @@ export function TranslatorDemoPage() {
           <div className="flex items-center justify-center space-x-3 mb-4">
             <Globe className="h-8 w-8 text-accent animate-pulse" />
             <h1 className="text-4xl font-bold bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
-              YaadFlex Ultimate Translator
+              {COMPANY_INFO.COMPANY_NAME} Ultimate Translator
             </h1>
             <Languages className="h-8 w-8 text-accent animate-pulse" />
           </div>

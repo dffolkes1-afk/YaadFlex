@@ -10,6 +10,7 @@ import { VoiceButton } from "@/components/VoiceButton";
 import { VoiceTestPanel } from "@/components/VoiceTestPanel";
 import { PremiumYaadFlexLogo } from "@/components/PremiumYaadFlexLogo";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { COMPANY_INFO, CORPORATE_TEMPLATES } from '@shared/company';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -74,7 +75,7 @@ function KWDWalletSection() {
     onSuccess: () => {
       toast({
         title: "Success!",
-        description: `Successfully added ${kwdAmount} KWD to your YaadFlex wallet!`,
+        description: `Successfully added ${kwdAmount} KWD to your ${COMPANY_INFO.BRANDING.logo_text} wallet!`,
       });
       setKwdAmount('');
       queryClient.invalidateQueries({ queryKey: ['/api/wallets'] });
@@ -116,7 +117,7 @@ function KWDWalletSection() {
       <CardHeader>
         <CardTitle className="flex items-center space-x-2">
           <span className="text-xl floating">💎</span>
-          <span className="text-premium">YaadFlex Currency (KWD/YFD)</span>
+          <span className="text-premium">{COMPANY_INFO.BRANDING.logo_text} Currency (KWD/YFD)</span>
           <div className="text-sm text-muted-foreground ml-4 shimmer">1 KWD = 1 YFD</div>
         </CardTitle>
       </CardHeader>

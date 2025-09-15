@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+import { COMPANY_INFO, CORPORATE_TEMPLATES } from '@shared/company';
 import { 
   Shield, 
   Scale, 
@@ -27,15 +28,15 @@ export default function TermsOfService() {
       title: 'Definitions & Company Information',
       icon: <Building2 className="h-5 w-5" />,
       content: `
-**Service Provider:** BlackRock, Inc., a Delaware corporation with its principal place of business at 50 Hudson Yards, New York, NY 10001 ("BlackRock," "Company," "we," "us," or "our").
+**Service Provider:** ${COMPANY_INFO.PARENT_COMPANY}, a Delaware corporation with its principal place of business at ${COMPANY_INFO.HEADQUARTERS.legal_address} ("${COMPANY_INFO.PARENT_COMPANY}," "Company," "we," "us," or "our").
 
-**Platform:** YaadFlex, a proprietary transportation, delivery, and multi-service marketplace platform owned and operated by BlackRock.
+**Platform:** ${COMPANY_INFO.COMPANY_NAME}, a proprietary transportation, delivery, and multi-service marketplace platform owned and operated by ${COMPANY_INFO.PARENT_COMPANY}.
 
-**User:** Any individual or entity accessing or using the YaadFlex platform ("you" or "your").
+**User:** Any individual or entity accessing or using the ${COMPANY_INFO.COMPANY_NAME} platform ("you" or "your").
 
-**Services:** All transportation, delivery, marketplace, payment processing, communication, and related services provided through the YaadFlex platform.
+**Services:** All transportation, delivery, marketplace, payment processing, communication, and related services provided through the ${COMPANY_INFO.COMPANY_NAME} platform.
 
-**Corporate Structure:** BlackRock operates YaadFlex as a subsidiary service offering, leveraging BlackRock's global infrastructure, regulatory compliance, and financial services expertise.
+**Corporate Structure:** ${COMPANY_INFO.PARENT_COMPANY} operates ${COMPANY_INFO.COMPANY_NAME} as a subsidiary service offering, leveraging ${COMPANY_INFO.PARENT_COMPANY}'s global infrastructure, regulatory compliance, and financial services expertise.
       `
     },
     {
@@ -172,11 +173,11 @@ By accessing, downloading, or using the YaadFlex platform, you acknowledge that 
 **Notice Period:** Material changes will be communicated with at least 30 days advance notice through the YaadFlex platform or email.
 
 **Contact Information:**
-- **Legal Department:** legal@yaadflex.com
-- **Corporate Address:** BlackRock, Inc., 50 Hudson Yards, New York, NY 10001
-- **Jamaican Operations:** YaadFlex Jamaica, Kingston Business Park, Kingston, Jamaica
-- **Customer Support:** support@yaadflex.com
-- **Business Inquiries:** partners@yaadflex.com
+- **Legal Department:** ${COMPANY_INFO.CONTACT.legal_email}
+- **Corporate Address:** ${COMPANY_INFO.HEADQUARTERS.legal_address}
+- **Jamaican Operations:** ${COMPANY_INFO.HEADQUARTERS.operational_address}
+- **Customer Support:** ${COMPANY_INFO.CONTACT.public_support}
+- **Business Inquiries:** ${COMPANY_INFO.CONTACT.public_business}
 
 **Severability:** If any provision of these terms is deemed invalid, the remaining provisions shall remain in full force and effect.
 

@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
+import { COMPANY_INFO, CORPORATE_TEMPLATES } from '@shared/company';
 import { useToast } from '@/hooks/use-toast';
 import { Link } from 'wouter';
 import { FareRulesToggle } from '@/components/FareRulesToggle';
@@ -103,19 +104,19 @@ export default function CeoDashboard() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
 
   // Fetch business expenses
-  const { data: expenses = [], isLoading: expensesLoading } = useQuery({
+  const { data: expenses = [], isLoading: expensesLoading } = useQuery<BusinessExpense[]>({
     queryKey: ['/api/ceo/expenses'],
     retry: false,
   });
 
   // Fetch AI advisory reports
-  const { data: advisoryReports = [], isLoading: reportsLoading } = useQuery({
+  const { data: advisoryReports = [], isLoading: reportsLoading } = useQuery<AiAdvisoryReport[]>({
     queryKey: ['/api/ceo/advisory-reports'],
     retry: false,
   });
 
   // Fetch business goals
-  const { data: businessGoals = [], isLoading: goalsLoading } = useQuery({
+  const { data: businessGoals = [], isLoading: goalsLoading } = useQuery<BusinessGoal[]>({
     queryKey: ['/api/ceo/business-goals'],
     retry: false,
   });
@@ -231,10 +232,10 @@ export default function CeoDashboard() {
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div>
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white" data-testid="page-title">
-              CEO Dashboard
+              {COMPANY_INFO.PARENT_COMPANY} Executive Dashboard
             </h1>
             <p className="text-gray-600 dark:text-gray-300 mt-2" data-testid="page-subtitle">
-              Your complete business command center for YaadFlex Global
+              {COMPANY_INFO.COMPANY_NAME} - {COMPANY_INFO.PORTFOLIO_DESIGNATION} Command Center
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -244,7 +245,7 @@ export default function CeoDashboard() {
               data-testid="vendor-management-link"
             >
               <Building2 className="w-4 h-4 mr-2" />
-              Vendor Management
+              {COMPANY_INFO.PARENT_COMPANY} Vendor Management
             </Link>
             <Button 
               onClick={() => processAllDue.mutate()}
@@ -267,7 +268,7 @@ export default function CeoDashboard() {
             </Button>
             <Badge variant="secondary" className="px-3 py-1">
               <Activity className="w-4 h-4 mr-1" />
-              All Systems Operational
+              {COMPANY_INFO.PARENT_COMPANY} Systems Operational
             </Badge>
           </div>
         </div>
@@ -371,7 +372,7 @@ export default function CeoDashboard() {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <DollarSign className="w-5 h-5" />
-                      Business Expenses & Renewals
+                      {COMPANY_INFO.PARENT_COMPANY} Corporate Expenses & Infrastructure
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -506,10 +507,10 @@ export default function CeoDashboard() {
             <div className="max-w-4xl mx-auto">
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                  Fare Pricing Management
+                  BlackRock Enterprise Pricing Management
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Configure dynamic fare rules for rides across all YaadFlex services. Toggle pricing factors on or off to adjust fare calculations in real-time.
+                  Configure enterprise-grade dynamic pricing rules across all YaadFlex services. Leverage BlackRock's financial expertise for optimal fare calculations.
                 </p>
               </div>
               
@@ -620,7 +621,7 @@ export default function CeoDashboard() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <BarChart3 className="w-5 h-5" />
-                  Weekly YaadFlex CEO Report
+                  Weekly BlackRock Portfolio Performance Report
                 </CardTitle>
               </CardHeader>
               <CardContent>

@@ -97,7 +97,7 @@ export default function BusinessRegistration() {
     onSuccess: (data) => {
       toast({
         title: "🎉 Business Registered Successfully!",
-        description: `Welcome to YaadFlex, ${formData.businessName}! Your business is now part of Jamaica's premier platform.`,
+        description: `Welcome to YaadFlex powered by BlackRock, ${formData.businessName}! Your business is now part of the Caribbean's premier BlackRock-backed platform.`,
       });
       // Reset form
       setFormData({

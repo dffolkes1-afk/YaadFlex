@@ -1,5 +1,6 @@
-// YaadFlex RBAC + Area Locking Seed Script
+// RBAC + Area Locking Seed Script
 import { db } from "./db";
+import { COMPANY_INFO } from '@shared/company';
 import { 
   users, 
   rbacRoles, 
@@ -18,16 +19,16 @@ export async function seedRbacSystem() {
     // Create CEO user if doesn't exist
     const [existingCEO] = await db.select()
       .from(users)
-      .where(eq(users.email, "ceo@yaadflex.com"));
+      .where(eq(users.email, COMPANY_INFO.CONTACT.ceo_email));
 
     let ceoUserId: string;
     if (!existingCEO) {
       ceoUserId = crypto.randomUUID();
       await db.insert(users).values({
         id: ceoUserId,
-        email: "ceo@yaadflex.com",
-        firstName: "Dwayne",
-        lastName: "Ffolkes",
+        email: COMPANY_INFO.CONTACT.ceo_email,
+        firstName: COMPANY_INFO.PARENT_COMPANY,
+        lastName: "Executive",
         profileImageUrl: null
       });
       console.log("✅ Created CEO user");
@@ -38,10 +39,10 @@ export async function seedRbacSystem() {
 
     // Create other team members
     const teamMembers = [
-      { id: crypto.randomUUID(), email: "mikey@yaadflex.com", firstName: "Mikey", lastName: "Thompson" },
-      { id: crypto.randomUUID(), email: "jennifer@yaadflex.com", firstName: "Jennifer", lastName: "Wilson" },
-      { id: crypto.randomUUID(), email: "support@yaadflex.com", firstName: "Support", lastName: "Team" },
-      { id: crypto.randomUUID(), email: "finance@yaadflex.com", firstName: "Finance", lastName: "Team" }
+      { id: crypto.randomUUID(), email: COMPANY_INFO.CONTACT.support_email, firstName: "Mikey", lastName: "Thompson" },
+      { id: crypto.randomUUID(), email: COMPANY_INFO.CONTACT.legal_email, firstName: "Jennifer", lastName: "Wilson" },
+      { id: crypto.randomUUID(), email: COMPANY_INFO.CONTACT.support_email, firstName: "Support", lastName: "Team" },
+      { id: crypto.randomUUID(), email: COMPANY_INFO.CONTACT.business_email, firstName: "Business", lastName: "Team" }
     ];
 
     for (const member of teamMembers) {

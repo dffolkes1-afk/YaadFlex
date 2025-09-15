@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Link } from 'wouter';
+import { COMPANY_INFO, CORPORATE_TEMPLATES } from '@shared/company';
 
 export default function ProfessionalLanding() {
   useEffect(() => {
@@ -10,7 +11,7 @@ export default function ProfessionalLanding() {
     }
 
     // Set meta tags for SEO and social sharing  
-    document.title = "YaadFlex Global Vybz";
+    document.title = CORPORATE_TEMPLATES.page_title("");
     
     // Add meta description
     let metaDescription = document.querySelector('meta[name="description"]') as HTMLMetaElement;
@@ -19,11 +20,11 @@ export default function ProfessionalLanding() {
       metaDescription.name = 'description';
       document.head.appendChild(metaDescription);
     }
-    metaDescription.content = "YaadFlex Global Vybz — The Fair Alternative. Delivery, jobs, rides, and services. Built in Jamaica for the world. Workers keep up to 85%.";
+    metaDescription.content = `${COMPANY_INFO.COMPANY_NAME} — ${COMPANY_INFO.MARKETING.primary_message}. ${COMPANY_INFO.DESCRIPTION.medium}. Workers keep up to 85%.`;
 
     // Add Open Graph tags
     const ogTags = [
-      { property: 'og:title', content: 'YaadFlex Global Vybz' },
+      { property: 'og:title', content: COMPANY_INFO.COMPANY_NAME },
       { property: 'og:description', content: 'The Fair Alternative. One app. One world. Workers keep up to 85%.' },
       { property: 'og:type', content: 'website' },
       { name: 'twitter:card', content: 'summary_large_image' }

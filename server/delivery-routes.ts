@@ -1,5 +1,6 @@
-// YaadFlex Universal Delivery Network Routes
+// Universal Delivery Network Routes
 import { Router } from "express";
+import { COMPANY_INFO } from '@shared/company';
 import { 
   generateOrderNumber,
   calculateDeliveryFee,
@@ -113,7 +114,7 @@ router.post("/api/delivery/orders", isAuthenticated, async (req, res) => {
     try {
       const assignedPersonnelId = await autoAssignOrder(newOrder.id);
       if (assignedPersonnelId === 'QUEUED') {
-        assignmentMessage = "Order ACCEPTED! We're finding you a driver right now - no cancellation needed! 🇯🇲";
+        assignmentMessage = `Order ACCEPTED! We're finding you a driver right now - no cancellation needed! ${COMPANY_INFO.BRANDING.flag_emoji}`;
         console.log(`Order ${newOrder.orderNumber} ACCEPTED and QUEUED - No drivers available but NEVER REJECTED!`);
       } else if (assignedPersonnelId) {
         assignmentMessage = "Order ACCEPTED and driver assigned! Your delivery is starting soon! 🚚";

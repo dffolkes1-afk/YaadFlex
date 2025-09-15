@@ -6,6 +6,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { COMPANY_INFO, CORPORATE_TEMPLATES } from '@shared/company';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -114,7 +115,7 @@ export default function BusinessDashboard() {
             <CardTitle>Authentication Required</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="mb-4">Please log in to access your business dashboard.</p>
+            <p className="mb-4">Please log in to access your {COMPANY_INFO.PARENT_COMPANY} {COMPANY_INFO.COMPANY_NAME} business dashboard.</p>
             <Button asChild className="w-full">
               <Link href="/api/login">Log In</Link>
             </Button>
@@ -166,7 +167,7 @@ export default function BusinessDashboard() {
                   Business Dashboard
                 </h1>
                 <p className="text-sm text-muted-foreground" data-testid="business-subtitle">
-                  Manage your YaadFlex business and track earnings
+                  Manage your {COMPANY_INFO.COMPANY_NAME} business and track earnings
                 </p>
               </div>
             </div>

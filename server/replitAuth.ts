@@ -7,6 +7,7 @@ import type { Express, RequestHandler } from "express";
 import memoize from "memoizee";
 import connectPg from "connect-pg-simple";
 import { storage } from "./storage";
+import { COMPANY_INFO } from '@shared/company';
 
 // Optional: REPLIT_DOMAINS for Replit-specific auth, but not required for Railway deployment
 const SUPPORTED_DOMAINS = process.env.REPLIT_DOMAINS || process.env.RAILWAY_DOMAINS || process.env.ALLOWED_DOMAINS || '';
@@ -66,7 +67,7 @@ async function upsertUser(
 
 export async function setupAuth(app: Express) {
   // DISABLED - NO AUTHENTICATION REQUIRED
-  console.log("Auth disabled - YaadFlex is UNLOCKED");
+  console.log(`Auth disabled - ${COMPANY_INFO.COMPANY_NAME} is UNLOCKED`);
   return;
   
   let config;

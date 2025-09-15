@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+import { COMPANY_INFO, CORPORATE_TEMPLATES } from '@shared/company';
 import { 
   Building2, 
   Store, 
@@ -30,9 +31,9 @@ export default function BusinessPartnerAgreement() {
       title: 'Business Partnership Overview',
       icon: <Building2 className="h-5 w-5" />,
       content: `
-**Platform Provider:** BlackRock, Inc., a Delaware corporation, operates YaadFlex as a comprehensive business marketplace and service coordination platform.
+**Platform Provider:** ${COMPANY_INFO.PARENT_COMPANY}, a Delaware corporation, operates ${COMPANY_INFO.COMPANY_NAME} as a comprehensive business marketplace and service coordination platform.
 
-**Partnership Structure:** This agreement establishes a commercial partnership between BlackRock and registered business partners for service delivery through the YaadFlex platform.
+**Partnership Structure:** This agreement establishes a commercial partnership between ${COMPANY_INFO.PARENT_COMPANY} and registered business partners for service delivery through the ${COMPANY_INFO.COMPANY_NAME} platform.
 
 **Business Categories Covered:**
 - Travel agents and tourism services

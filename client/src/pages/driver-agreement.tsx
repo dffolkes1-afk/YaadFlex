@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+import { COMPANY_INFO, CORPORATE_TEMPLATES } from '@shared/company';
 import { 
   Car, 
   DollarSign, 
@@ -30,9 +31,9 @@ export default function DriverAgreement() {
       title: 'Independent Contractor Relationship',
       icon: <Building2 className="h-5 w-5" />,
       content: `
-**Service Provider:** BlackRock, Inc., a Delaware corporation, provides the YaadFlex platform connecting independent transportation providers with riders.
+**Service Provider:** ${COMPANY_INFO.PARENT_COMPANY}, a Delaware corporation, provides the ${COMPANY_INFO.COMPANY_NAME} platform connecting independent transportation providers with riders.
 
-**Independent Contractor Status:** You are an independent contractor, not an employee of BlackRock. This agreement establishes a technology services relationship, not an employment relationship.
+**Independent Contractor Status:** You are an independent contractor, not an employee of ${COMPANY_INFO.PARENT_COMPANY}. This agreement establishes a technology services relationship, not an employment relationship.
 
 **Business Relationship:**
 - You use BlackRock's YaadFlex technology platform to connect with potential customers

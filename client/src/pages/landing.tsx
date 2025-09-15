@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CountryThemeSelector } from "@/components/CountryThemeSelector";
 import { Link } from "wouter";
+import { COMPANY_INFO, CORPORATE_TEMPLATES } from '@shared/company';
 
 export default function Landing() {
   const handleLogin = () => {
@@ -27,7 +28,7 @@ export default function Landing() {
               <div className="text-3xl text-primary shield-glow" data-testid="logo-shield">
                 🛡️
               </div>
-              <span className="text-2xl font-bold text-foreground" data-testid="brand-name">YardFlex</span>
+              <span className="text-2xl font-bold text-foreground" data-testid="brand-name">{COMPANY_INFO.BRANDING.logo_text}</span>
               <span className="text-xs bg-accent text-accent-foreground px-2 py-1 rounded-full font-medium" data-testid="security-badge">SECURE</span>
             </div>
             <div className="hidden md:flex items-center space-x-8">

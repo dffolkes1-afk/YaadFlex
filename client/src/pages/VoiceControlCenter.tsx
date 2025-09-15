@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { VoiceInteractive } from '@/components/VoiceInteractive';
 import { useToast } from '@/hooks/use-toast';
+import { COMPANY_INFO } from '@shared/company';
 import { 
   Zap, Mic, MessageSquare, Car, Wallet, Phone, Music, 
   ShoppingBag, MapPin, Search, Home, User, Settings,
@@ -82,7 +83,7 @@ export default function VoiceControlCenter() {
           <div className="mb-6">
             <Mic className="h-16 w-16 mx-auto mb-4 text-yellow-300" />
             <h1 className="text-5xl font-bold mb-4">
-              🎤 YaadFlex Voice Control
+              🎤 {COMPANY_INFO.COMPANY_NAME} Voice Control
             </h1>
             <p className="text-xl opacity-90 mb-6">
               Talk to your app - it writes what you say AND does what you want! 🚀

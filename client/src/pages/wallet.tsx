@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { COMPANY_INFO, CORPORATE_TEMPLATES } from '@shared/company';
 import { Wallet, Send, Plus, QrCode, TrendingUp, Clock, DollarSign, ArrowUpRight, ArrowDownRight, Key, Gift, AlertTriangle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -64,7 +65,7 @@ export default function WalletScreen() {
     },
     onSuccess: (data: any) => {
       toast({
-        title: "Welcome to YaadFlex Beta! 🇯🇲🚀",
+        title: `Welcome to ${COMPANY_INFO.COMPANY_NAME} Beta! ${COMPANY_INFO.BRANDING.flag_emoji}🚀`,
         description: `${data.welcomeBonus} added to your demo wallet`,
       });
       queryClient.invalidateQueries({ queryKey: ['/api/demo/beta-status'] });

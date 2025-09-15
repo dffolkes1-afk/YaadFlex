@@ -65,7 +65,7 @@ import {
   type InsertPriceCalculation,
   type LocationZone,
   type InsertLocationZone,
-  // YaadFlex Ultimate Translator types
+  // Ultimate Translator types
   chatMessages,
   messageTranslations,
   chatParticipants,

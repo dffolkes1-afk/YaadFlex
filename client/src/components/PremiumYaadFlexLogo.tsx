@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { COMPANY_INFO } from '@shared/company';
 
 interface PremiumYaadFlexLogoProps {
   size?: "sm" | "md" | "lg" | "xl";
@@ -50,7 +51,7 @@ export function PremiumYaadFlexLogo({
       className={`relative flex items-center justify-center gap-4 ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      data-testid="premium-yaadflex-logo"
+      data-testid="premium-company-logo"
     >
       
       {/* Premium Crest Emblem */}
@@ -100,7 +101,7 @@ export function PremiumYaadFlexLogo({
             transform: `translate(${3 + Math.sin(glowIntensity/10)}px, ${3 + Math.cos(glowIntensity/10)}px)` 
           }}
         >
-          YaadFlex
+          {COMPANY_INFO.BRANDING.logo_text}
         </div>
         
         {/* Mid-layer Glow - Platinum */}
@@ -112,7 +113,7 @@ export function PremiumYaadFlexLogo({
             transform: `translate(${1 + Math.sin(glowIntensity/15)}px, ${1 + Math.cos(glowIntensity/15)}px)`
           }}
         >
-          YaadFlex
+          {COMPANY_INFO.BRANDING.logo_text}
         </div>
 
         {/* Main Logo - 3D Embossed Metallic Gradient */}
@@ -144,7 +145,7 @@ export function PremiumYaadFlexLogo({
             `
           }}
         >
-          YaadFlex
+          {COMPANY_INFO.BRANDING.logo_text}
         </div>
 
         {/* Highlight Reflection */}
@@ -167,7 +168,7 @@ export function PremiumYaadFlexLogo({
             animation: isHovered ? 'logoShimmer 2s ease-in-out infinite' : 'none'
           }}
         >
-          YaadFlex
+          {COMPANY_INFO.BRANDING.logo_text}
         </div>
 
         {/* BlackRock Corporate Branding */}
@@ -190,7 +191,7 @@ export function PremiumYaadFlexLogo({
             }}
             data-testid="blackrock-branding"
           >
-            A BLACKROCK COMPANY
+            {COMPANY_INFO.PORTFOLIO_DESIGNATION}
           </div>
         )}
       </div>
