@@ -440,11 +440,14 @@ export default function Home() {
           >
             {/* Premium YaadFlex Logo Overlay */}
             <div className="absolute top-4 left-4">
-              <PremiumYaadFlexLogo 
-                size="sm" 
-                className="premium-neon-glow" 
-                data-testid="yadflex-logo-premium"
-              />
+              <div className="flex items-center gap-2">
+                <div 
+                  className="w-8 h-8 rounded-full bg-gradient-to-r from-emerald-400 to-yellow-400 flex items-center justify-center text-black font-bold text-xs premium-neon-glow"
+                >
+                  🛡️
+                </div>
+                <span className="text-lg font-bold bg-gradient-to-r from-emerald-400 to-yellow-400 bg-clip-text text-transparent">YaadFlex</span>
+              </div>
             </div>
             
             {/* Animated Interactive Element */}
@@ -483,11 +486,15 @@ export default function Home() {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <PremiumYaadFlexLogo 
-                size="sm" 
-                className="premium-neon-glow transform hover:scale-105 transition-all duration-300" 
-                data-testid="main-premium-logo"
-              />
+              <div className="flex items-center gap-3">
+                <div 
+                  className="w-10 h-10 rounded-full bg-gradient-to-r from-emerald-400 to-yellow-400 flex items-center justify-center text-black font-bold text-sm premium-neon-glow"
+                  data-testid="main-premium-logo"
+                >
+                  🛡️
+                </div>
+                <span className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-yellow-400 bg-clip-text text-transparent" data-testid="brand-name">YaadFlex</span>
+              </div>
               <span className="text-xs bg-emerald-600 text-white px-2 py-1 rounded-full font-medium gold-neon-glow" data-testid="global-indicator">
                 PREMIUM
               </span>
