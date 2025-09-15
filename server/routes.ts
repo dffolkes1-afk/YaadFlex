@@ -66,6 +66,9 @@ import {
   paymentHistory,
   vendorProfiles,
   paymentJobs,
+  // Fare Rules System
+  fareRules,
+  fareCalculations,
 } from "@shared/schema";
 import { 
   estimateValue, 
@@ -107,6 +110,8 @@ import {
   insertPaymentHistorySchema,
   insertVendorProfileSchema,
   insertPaymentJobSchema,
+  // Fare Rules Insert Schemas
+  insertFareRuleSchema,
 } from "@shared/schema";
 import { z } from "zod";
 import { desc, eq, and, sql, lte, gte, or } from "drizzle-orm";
@@ -661,22 +666,180 @@ Time: ${new Date().toISOString()}
 
   // YAADFLEX RIDE BOOKING SYSTEM - Specific endpoints for the ride booking UI
 
-  // Book a new ride - YaadFlex style!
+  // Enhanced context-aware fare calculation with intelligent rule application
+  async function calculateDynamicFare(vehicleType: string, tripData: any) {
+    // Base fares by vehicle type (JMD)
+    const baseFares = {
+      bike: 150,
+      car: 300, 
+      van: 500,
+      truck: 800
+    };
+    
+    let baseFare = baseFares[vehicleType as keyof typeof baseFares] || 300;
+    let ruleAdjustments = 0;
+    let distanceCost = 0;
+    let timeCost = 0;
+    const appliedRules: any[] = [];
+    
+    // Calculate distance cost if coordinates are provided
+    if (tripData.coordinates?.pickupLatitude && tripData.coordinates?.dropoffLatitude) {
+      const distance = calculateDistance(
+        tripData.coordinates.pickupLatitude,
+        tripData.coordinates.pickupLongitude,
+        tripData.coordinates.dropoffLatitude,
+        tripData.coordinates.dropoffLongitude
+      );
+      
+      // Distance pricing: J$15/km for all vehicle types
+      distanceCost = Math.round(distance * 15);
+      
+      // Estimated time cost: J$8 per minute (based on average speed of 25 km/h in urban areas)
+      const estimatedTimeMinutes = (distance / 25) * 60; // Convert hours to minutes
+      timeCost = Math.round(estimatedTimeMinutes * 8);
+    }
+    
+    // Extract trip context for intelligent rule application
+    const pickupAddress = (tripData.pickupAddress || '').toLowerCase();
+    const dropoffAddress = (tripData.dropoffAddress || '').toLowerCase();
+    const isAirportTrip = pickupAddress.includes('airport') || dropoffAddress.includes('airport');
+    const isHillyArea = pickupAddress.includes('hill') || pickupAddress.includes('mountain') || 
+                       dropoffAddress.includes('hill') || dropoffAddress.includes('mountain') ||
+                       pickupAddress.includes('blue mountain') || dropoffAddress.includes('blue mountain');
+    const estimatedDuration = timeCost / 8; // Convert back to minutes for tour detection
+    const isTourOrExcursion = estimatedDuration > 60 || // Long trips > 1 hour
+                              pickupAddress.includes('tour') || dropoffAddress.includes('tour') ||
+                              pickupAddress.includes('excursion') || dropoffAddress.includes('excursion');
+    
+    // Get enabled fare rules
+    const enabledRules = await db.select()
+      .from(fareRules)
+      .where(eq(fareRules.isEnabled, true))
+      .orderBy(fareRules.priority);
+    
+    // Apply each enabled rule with context awareness
+    for (const rule of enabledRules) {
+      const value = parseFloat(rule.value || '0');
+      let adjustment = 0;
+      let shouldApplyRule = true;
+      
+      // Context-aware rule application
+      switch (rule.ruleName) {
+        case 'airport_extra':
+          shouldApplyRule = isAirportTrip;
+          break;
+        case 'hilly_area':
+          shouldApplyRule = isHillyArea;
+          break;
+        case 'tour_excursion_fee':
+          shouldApplyRule = isTourOrExcursion;
+          break;
+        // Other rules can be applied universally or add more context checks here
+        default:
+          shouldApplyRule = true;
+          break;
+      }
+      
+      // Skip rule if context doesn't match
+      if (!shouldApplyRule) {
+        continue;
+      }
+      
+      // Apply rule calculation
+      switch (rule.ruleType) {
+        case 'multiplier':
+          adjustment = baseFare * (value - 1.0);
+          break;
+        case 'fixed_amount':
+          adjustment = value;
+          break;
+        case 'percentage':
+          adjustment = baseFare * (value / 100);
+          break;
+        case 'mode':
+          // Mode rules change calculation method
+          if (rule.ruleName === 'fixed_fare_mode') {
+            baseFare = value > 0 ? value : baseFare;
+            // Record mode rules in appliedRules
+            appliedRules.push({
+              ruleName: rule.ruleName,
+              displayName: rule.displayName,
+              ruleType: rule.ruleType,
+              value: rule.value,
+              adjustment: 0,
+              note: `Base fare changed to J$${value}`
+            });
+          }
+          break;
+      }
+      
+      if (adjustment !== 0) {
+        ruleAdjustments += adjustment;
+        appliedRules.push({
+          ruleName: rule.ruleName,
+          displayName: rule.displayName,
+          ruleType: rule.ruleType,
+          value: rule.value,
+          adjustment: adjustment,
+          contextApplied: {
+            isAirportTrip,
+            isHillyArea,
+            isTourOrExcursion
+          }
+        });
+      }
+    }
+    
+    const totalBeforeMinimum = baseFare + ruleAdjustments + distanceCost + timeCost;
+    const finalFare = Math.max(totalBeforeMinimum, 50); // Minimum fare J$50
+    
+    return {
+      baseFare,
+      distanceCost,
+      timeCost,
+      ruleAdjustments,
+      finalFare,
+      appliedRules,
+      currency: 'JMD',
+      tripContext: {
+        isAirportTrip,
+        isHillyArea,
+        isTourOrExcursion,
+        estimatedDuration: Math.round(estimatedDuration)
+      }
+    };
+  }
+  
+  // Haversine formula to calculate distance between two coordinates
+  function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+    const R = 6371; // Radius of the Earth in kilometers
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const distance = R * c;
+    return distance;
+  }
+
+  // Book a new ride - YaadFlex style with dynamic pricing!
   app.post('/api/trips/book', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       
-      // Calculate estimated fare based on vehicle type
+      // Extract trip data
       const { vehicleType, pickupAddress, dropoffAddress, pickupLatitude, pickupLongitude, dropoffLatitude, dropoffLongitude } = req.body;
       
-      const fares = {
-        bike: '150',
-        car: '300', 
-        van: '500',
-        truck: '800'
-      };
+      // Calculate fare using dynamic rules
+      const fareCalculation = await calculateDynamicFare(vehicleType, {
+        pickupAddress,
+        dropoffAddress,
+        vehicleType,
+        coordinates: { pickupLatitude, pickupLongitude, dropoffLatitude, dropoffLongitude }
+      });
       
-      const estimatedFare = fares[vehicleType as keyof typeof fares] || '300';
+      const estimatedFare = fareCalculation.finalFare.toString();
 
       const validatedData = insertTripSchema.parse({
         riderId: userId,
@@ -694,6 +857,31 @@ Time: ${new Date().toISOString()}
 
       const trip = await storage.createTrip(validatedData);
 
+      // Save fare calculation breakdown for transparency
+      await db.insert(fareCalculations).values({
+        tripId: trip.id,
+        baseFare: fareCalculation.baseFare.toString(),
+        distanceCost: (fareCalculation.distanceCost || 0).toString(),
+        timeCost: (fareCalculation.timeCost || 0).toString(),
+        appliedRules: JSON.stringify(fareCalculation.appliedRules),
+        ruleAdjustments: fareCalculation.ruleAdjustments.toString(),
+        totalBeforeAddons: fareCalculation.finalFare.toString(),
+        addonsCost: '0.00',
+        finalFare: fareCalculation.finalFare.toString(),
+        currency: fareCalculation.currency,
+        calculationBreakdown: JSON.stringify({
+          baseFare: fareCalculation.baseFare,
+          distanceCost: fareCalculation.distanceCost || 0,
+          timeCost: fareCalculation.timeCost || 0,
+          appliedRules: fareCalculation.appliedRules,
+          ruleAdjustments: fareCalculation.ruleAdjustments,
+          finalFare: fareCalculation.finalFare,
+          tripContext: fareCalculation.tripContext,
+          vehicleType,
+          calculatedAt: new Date().toISOString()
+        })
+      });
+
       // Log the ride booking for transparency
       await storage.createSecurityEvent({
         tripId: trip.id,
@@ -701,10 +889,10 @@ Time: ${new Date().toISOString()}
         eventType: 'trip_requested',
         threatLevel: 'low',
         aiConfidence: '98.5',
-        description: `YaadFlex ride booked: ${vehicleType} from ${pickupAddress} to ${dropoffAddress}`,
+        description: `YaadFlex ride booked: ${vehicleType} from ${pickupAddress} to ${dropoffAddress} (Dynamic Fare: J$${fareCalculation.finalFare})`,
         latitude: pickupLatitude,
         longitude: pickupLongitude,
-        actionTaken: 'Ride request logged and dispatched to available drivers',
+        actionTaken: 'Ride request logged and dispatched to available drivers with dynamic pricing',
         isResolved: true,
       });
 
@@ -712,9 +900,16 @@ Time: ${new Date().toISOString()}
         success: true,
         tripId: trip.id,
         estimatedFare,
-        driverEarnings: Math.round(parseFloat(estimatedFare) * 0.85),
-        yaadFlexFee: parseFloat(estimatedFare) - Math.round(parseFloat(estimatedFare) * 0.85),
-        message: `Your ${vehicleType} is being dispatched! 🇯🇲🚗`,
+        fareBreakdown: {
+          baseFare: fareCalculation.baseFare,
+          appliedRules: fareCalculation.appliedRules,
+          ruleAdjustments: fareCalculation.ruleAdjustments,
+          finalFare: fareCalculation.finalFare,
+          currency: fareCalculation.currency
+        },
+        driverEarnings: Math.round(fareCalculation.finalFare * 0.85),
+        yaadFlexFee: fareCalculation.finalFare - Math.round(fareCalculation.finalFare * 0.85),
+        message: `Your ${vehicleType} is being dispatched! 🇯🇲🚗 (Dynamic pricing applied)`,
         guaranteed: true,
         status: "RIDE ACCEPTED - NO REJECTIONS EVER!"
       });
@@ -725,6 +920,157 @@ Time: ${new Date().toISOString()}
       } else {
         res.status(500).json({ message: "Failed to book ride" });
       }
+    }
+  });
+
+  // FARE RULES MANAGEMENT API - Dynamic pricing system
+  
+  // Get all fare rules (for admin interface)
+  app.get('/api/fare-rules', requireCEOAccess(), async (req, res) => {
+    try {
+      const rules = await db.select().from(fareRules).orderBy(fareRules.priority);
+      res.json(rules);
+    } catch (error) {
+      console.error("Error fetching fare rules:", error);
+      res.status(500).json({ message: "Failed to fetch fare rules" });
+    }
+  });
+
+  // Update fare rule toggle state
+  app.put('/api/fare-rules/:id/toggle', requireCEOAccess(), async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const { isEnabled } = req.body;
+      
+      const [updatedRule] = await db.update(fareRules)
+        .set({ 
+          isEnabled: isEnabled,
+          updatedAt: new Date()
+        })
+        .where(eq(fareRules.id, id))
+        .returning();
+
+      if (!updatedRule) {
+        return res.status(404).json({ message: "Fare rule not found" });
+      }
+
+      res.json(updatedRule);
+    } catch (error) {
+      console.error("Error toggling fare rule:", error);
+      res.status(500).json({ message: "Failed to toggle fare rule" });
+    }
+  });
+
+  // Batch update fare rules (enable/disable multiple)
+  app.put('/api/fare-rules/batch', requireCEOAccess(), async (req: any, res) => {
+    try {
+      const { ruleIds, isEnabled } = req.body;
+      
+      const updatedRules = await db.update(fareRules)
+        .set({ 
+          isEnabled: isEnabled,
+          updatedAt: new Date()
+        })
+        .where(sql`${fareRules.id} = ANY(${ruleIds})`)
+        .returning();
+
+      res.json({
+        success: true,
+        updatedCount: updatedRules.length,
+        rules: updatedRules
+      });
+    } catch (error) {
+      console.error("Error batch updating fare rules:", error);
+      res.status(500).json({ message: "Failed to batch update fare rules" });
+    }
+  });
+
+  // Create new fare rule
+  app.post('/api/fare-rules', requireCEOAccess(), async (req: any, res) => {
+    try {
+      const validatedData = insertFareRuleSchema.parse(req.body);
+      
+      const [newRule] = await db.insert(fareRules)
+        .values(validatedData)
+        .returning();
+
+      res.status(201).json(newRule);
+    } catch (error) {
+      console.error("Error creating fare rule:", error);
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "Invalid fare rule data", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "Failed to create fare rule" });
+      }
+    }
+  });
+
+  // Update fare rule
+  app.put('/api/fare-rules/:id', requireCEOAccess(), async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      const validatedData = insertFareRuleSchema.partial().parse(req.body);
+      
+      const [updatedRule] = await db.update(fareRules)
+        .set({ 
+          ...validatedData,
+          updatedAt: new Date()
+        })
+        .where(eq(fareRules.id, id))
+        .returning();
+
+      if (!updatedRule) {
+        return res.status(404).json({ message: "Fare rule not found" });
+      }
+
+      res.json(updatedRule);
+    } catch (error) {
+      console.error("Error updating fare rule:", error);
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "Invalid fare rule data", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "Failed to update fare rule" });
+      }
+    }
+  });
+
+  // Delete fare rule
+  app.delete('/api/fare-rules/:id', requireCEOAccess(), async (req: any, res) => {
+    try {
+      const { id } = req.params;
+      
+      const [deletedRule] = await db.delete(fareRules)
+        .where(eq(fareRules.id, id))
+        .returning();
+
+      if (!deletedRule) {
+        return res.status(404).json({ message: "Fare rule not found" });
+      }
+
+      res.json({ message: "Fare rule deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting fare rule:", error);
+      res.status(500).json({ message: "Failed to delete fare rule" });
+    }
+  });
+
+  // Get fare calculation breakdown for a trip
+  app.get('/api/trips/:tripId/fare-breakdown', async (req, res) => {
+    try {
+      const { tripId } = req.params;
+      
+      const [calculation] = await db.select()
+        .from(fareCalculations)
+        .where(eq(fareCalculations.tripId, tripId));
+
+      if (!calculation) {
+        return res.status(404).json({ message: "Fare calculation not found" });
+      }
+
+      res.json(calculation);
+    } catch (error) {
+      console.error("Error fetching fare breakdown:", error);
+      res.status(500).json({ message: "Failed to fetch fare breakdown" });
     }
   });
 

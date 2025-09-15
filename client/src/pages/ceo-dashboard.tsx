@@ -30,6 +30,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
 import { Link } from 'wouter';
+import { FareRulesToggle } from '@/components/FareRulesToggle';
 
 interface BusinessExpense {
   id: string;
@@ -353,10 +354,11 @@ export default function CeoDashboard() {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="expenses" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5 lg:w-auto lg:grid-cols-5">
             <TabsTrigger value="expenses" data-testid="tab-expenses">Expenses</TabsTrigger>
             <TabsTrigger value="advisory" data-testid="tab-advisory">AI Advisory</TabsTrigger>
             <TabsTrigger value="goals" data-testid="tab-goals">Goals</TabsTrigger>
+            <TabsTrigger value="pricing" data-testid="tab-pricing">Pricing</TabsTrigger>
             <TabsTrigger value="reports" data-testid="tab-reports">Reports</TabsTrigger>
           </TabsList>
 
@@ -496,6 +498,83 @@ export default function CeoDashboard() {
                   </Card>
                 );
               })}
+            </div>
+          </TabsContent>
+
+          {/* Pricing Rules Tab */}
+          <TabsContent value="pricing" className="space-y-6">
+            <div className="max-w-4xl mx-auto">
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  Fare Pricing Management
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  Configure dynamic fare rules for rides across all YaadFlex services. Toggle pricing factors on or off to adjust fare calculations in real-time.
+                </p>
+              </div>
+              
+              <FareRulesToggle 
+                isAdmin={true}
+                onRuleToggle={(ruleId, enabled) => {
+                  console.log(`Rule ${ruleId} ${enabled ? 'enabled' : 'disabled'}`);
+                  toast({
+                    title: `Fare Rule ${enabled ? 'Enabled' : 'Disabled'}`,
+                    description: `Rule ${ruleId} has been ${enabled ? 'activated' : 'deactivated'}.`,
+                  });
+                }}
+              />
+              
+              <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-emerald-950/20 dark:to-blue-950/20 border-emerald-200 dark:border-emerald-800">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-emerald-700 dark:text-emerald-300">
+                      <DollarSign className="w-5 h-5" />
+                      Fare Performance
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-600 dark:text-gray-300">Average Fare</span>
+                        <span className="font-semibold text-gray-900 dark:text-white">J$425</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-600 dark:text-gray-300">Peak Adjustment</span>
+                        <span className="font-semibold text-emerald-600">+40%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-600 dark:text-gray-300">Airport Premium</span>
+                        <span className="font-semibold text-blue-600">+J$200</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border-amber-200 dark:border-amber-800">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-amber-700 dark:text-amber-300">
+                      <TrendingUp className="w-5 h-5" />
+                      Rule Usage Stats
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-600 dark:text-gray-300">Most Used Rule</span>
+                        <span className="font-semibold text-gray-900 dark:text-white">Peak Hour</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-600 dark:text-gray-300">Applications Today</span>
+                        <span className="font-semibold text-amber-600">147</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-600 dark:text-gray-300">Revenue Impact</span>
+                        <span className="font-semibold text-green-600">+J$12,450</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </TabsContent>
 
