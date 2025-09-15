@@ -334,8 +334,55 @@ export const cbChannelSubscriptions = pgTable("cb_channel_subscriptions", {
   index("idx_driver_channel").on(table.driverId, table.channelId),
 ]);
 
+// YaadFlex Fare Rules System - Dynamic pricing toggles
+export const fareRules = pgTable("fare_rules", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  ruleName: varchar("rule_name").notNull().unique(), // 'airport_extra', 'tour_excursion_fee', 'hilly_area', etc.
+  displayName: varchar("display_name").notNull(), // 'Airport Extra', 'Tour/Excursion Fee', 'Hilly Area'
+  description: text("description"),
+  ruleType: varchar("rule_type").notNull(), // 'multiplier', 'fixed_amount', 'percentage', 'mode'
+  value: decimal("value", { precision: 8, scale: 2 }), // Multiplier (1.5), fixed amount (50.00), percentage (15.00)
+  currency: varchar("currency", { length: 3 }).default('JMD'),
+  isEnabled: boolean("is_enabled").default(false), // Toggle state
+  minApplicableAmount: decimal("min_applicable_amount", { precision: 8, scale: 2 }).default('0.00'),
+  maxApplicableAmount: decimal("max_applicable_amount", { precision: 8, scale: 2 }),
+  applicableVehicleTypes: jsonb("applicable_vehicle_types"), // ['bike', 'car', 'van', 'truck']
+  applicableZones: jsonb("applicable_zones"), // Zone restrictions
+  timeRestrictions: jsonb("time_restrictions"), // Peak hour restrictions
+  priority: integer("priority").default(1), // Rule application order
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Fare calculation breakdown for transparency
+export const fareCalculations = pgTable("fare_calculations", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  tripId: varchar("trip_id").references(() => trips.id).notNull(),
+  baseFare: decimal("base_fare", { precision: 10, scale: 2 }).notNull(),
+  distanceCost: decimal("distance_cost", { precision: 8, scale: 2 }).default('0.00'),
+  timeCost: decimal("time_cost", { precision: 8, scale: 2 }).default('0.00'),
+  appliedRules: jsonb("applied_rules"), // Array of applied rule details
+  ruleAdjustments: decimal("rule_adjustments", { precision: 8, scale: 2 }).default('0.00'),
+  totalBeforeAddons: decimal("total_before_addons", { precision: 10, scale: 2 }).notNull(),
+  addonsCost: decimal("addons_cost", { precision: 8, scale: 2 }).default('0.00'),
+  finalFare: decimal("final_fare", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).default('JMD'),
+  calculationBreakdown: jsonb("calculation_breakdown"), // Detailed breakdown for audit
+  calculatedAt: timestamp("calculated_at").defaultNow(),
+});
+
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
+
+// Fare rules types
+export type FareRule = typeof fareRules.$inferSelect;
+export type InsertFareRule = typeof fareRules.$inferInsert;
+export type FareCalculation = typeof fareCalculations.$inferSelect;
+export type InsertFareCalculation = typeof fareCalculations.$inferInsert;
+
+// Fare rules Zod schemas
+export const insertFareRuleSchema = createInsertSchema(fareRules);
+export const insertFareCalculationSchema = createInsertSchema(fareCalculations);
 
 // Observability and Error Monitoring Schema
 export const subsystems = pgTable("subsystems", {
