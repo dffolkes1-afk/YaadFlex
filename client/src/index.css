@@ -4,53 +4,52 @@
 @tailwind utilities;
 
 :root {
-  /* 🌿 SERENE EARTH TONES - PROFESSIONAL & CALM 🌿 */
-  --warm-brown: hsl(25, 20%, 15%);           /* Warm Brown */
-  --stone-gray: hsl(30, 5%, 20%);            /* Stone Gray */
-  --earth-charcoal: hsl(20, 8%, 25%);       /* Earth Charcoal */
-  --sage-green: hsl(95, 15%, 35%);          /* Sage Green */
-  --natural-beige: hsl(40, 12%, 45%);       /* Natural Beige */
-  --forest-deep: hsl(120, 20%, 15%);        /* Forest Deep */
-  --clay-brown: hsl(15, 18%, 18%);          /* Clay Brown */
+  /* ✨ EXOTIC LUXURY CARIBBEAN PALETTE - PREMIUM YAADFLEX ✨ */
+  --deep-obsidian: hsl(240, 5%, 4%);        /* Deep Obsidian Black #0B0B0C */
+  --platinum-silver: hsl(0, 0%, 85%);       /* Platinum Silver #D7D7D9 */
+  --emerald-glow: hsl(168, 100%, 36%);      /* Emerald Glow #00B58D */
+  --pearl-white: hsl(0, 0%, 96%);           /* Pearl White #F5F5F5 */
+  --subtle-gold: hsl(43, 100%, 70%);        /* Subtle Gold Trim #FFD166 */
   
-  /* 🍃 NATURAL EARTH ACCENTS 🍃 */
-  --moss-green: hsl(85, 25%, 40%);          /* Moss Green */
-  --sand-beige: hsl(35, 15%, 55%);          /* Sand Beige */
-  --cream-white: hsl(45, 15%, 92%);         /* Cream White */
-  --bark-brown: hsl(25, 12%, 35%);          /* Bark Brown */
+  /* 🎯 PREMIUM SUPPORTING COLORS 🎯 */
+  --midnight-black: hsl(240, 8%, 8%);       /* Deeper Black for contrast */
+  --chrome-silver: hsl(0, 0%, 75%);         /* Chrome Silver */
+  --jade-accent: hsl(168, 80%, 45%);        /* Jade Accent */
+  --champagne-gold: hsl(43, 85%, 65%);      /* Champagne Gold */
+  --crystal-white: hsl(0, 0%, 98%);         /* Crystal White */
   
-  --background: var(--warm-brown);
-  --foreground: var(--cream-white);
-  --card: var(--forest-deep);
-  --card-foreground: var(--cream-white);
-  --popover: var(--forest-deep);
-  --popover-foreground: var(--cream-white);
-  --primary: var(--moss-green);
-  --primary-foreground: var(--cream-white);
-  --secondary: var(--earth-charcoal);
-  --secondary-foreground: var(--cream-white);
-  --muted: var(--clay-brown);
-  --muted-foreground: var(--sand-beige);
-  --accent: var(--stone-gray);
-  --accent-foreground: var(--cream-white);
-  --destructive: hsl(15, 40%, 45%);
-  --destructive-foreground: var(--cream-white);
-  --border: var(--stone-gray);
-  --input: var(--clay-brown);
-  --ring: var(--moss-green);
-  --chart-1: var(--warm-brown);
-  --chart-2: var(--stone-gray);
-  --chart-3: var(--earth-charcoal);
-  --chart-4: var(--sand-beige);
-  --chart-5: var(--bark-brown);
-  --sidebar: var(--clay-brown);
-  --sidebar-foreground: var(--cream-white);
-  --sidebar-primary: var(--moss-green);
-  --sidebar-primary-foreground: var(--cream-white);
-  --sidebar-accent: var(--stone-gray);
-  --sidebar-accent-foreground: var(--cream-white);
-  --sidebar-border: var(--earth-charcoal);
-  --sidebar-ring: var(--moss-green);
+  --background: var(--deep-obsidian);
+  --foreground: var(--pearl-white);
+  --card: var(--midnight-black);
+  --card-foreground: var(--pearl-white);
+  --popover: var(--midnight-black);
+  --popover-foreground: var(--pearl-white);
+  --primary: var(--emerald-glow);
+  --primary-foreground: var(--deep-obsidian);
+  --secondary: var(--platinum-silver);
+  --secondary-foreground: var(--deep-obsidian);
+  --muted: var(--midnight-black);
+  --muted-foreground: var(--chrome-silver);
+  --accent: var(--subtle-gold);
+  --accent-foreground: var(--deep-obsidian);
+  --destructive: hsl(0, 85%, 60%);
+  --destructive-foreground: var(--crystal-white);
+  --border: var(--platinum-silver);
+  --input: var(--midnight-black);
+  --ring: var(--emerald-glow);
+  --chart-1: var(--emerald-glow);
+  --chart-2: var(--subtle-gold);
+  --chart-3: var(--platinum-silver);
+  --chart-4: var(--jade-accent);
+  --chart-5: var(--champagne-gold);
+  --sidebar: var(--midnight-black);
+  --sidebar-foreground: var(--pearl-white);
+  --sidebar-primary: var(--emerald-glow);
+  --sidebar-primary-foreground: var(--deep-obsidian);
+  --sidebar-accent: var(--subtle-gold);
+  --sidebar-accent-foreground: var(--deep-obsidian);
+  --sidebar-border: var(--platinum-silver);
+  --sidebar-ring: var(--emerald-glow);
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: Menlo, monospace;
@@ -68,29 +67,90 @@
 }
 
 .dark {
-  --background: var(--forest-deep);
-  --foreground: var(--cream-white);
-  --card: var(--clay-brown);
-  --card-foreground: var(--cream-white);
-  --popover: var(--clay-brown);
-  --popover-foreground: var(--cream-white);
-  --primary: var(--sage-green);
-  --primary-foreground: var(--cream-white);
-  --secondary: var(--earth-charcoal);
-  --secondary-foreground: var(--cream-white);
-  --muted: var(--stone-gray);
-  --muted-foreground: var(--sand-beige);
-  --accent: var(--bark-brown);
-  --accent-foreground: var(--cream-white);
-  --destructive: hsl(15, 40%, 45%);
-  --destructive-foreground: var(--cream-white);
-  --border: var(--earth-charcoal);
-  --input: var(--stone-gray);
-  --ring: var(--sage-green);
+  /* PREMIUM DARK MODE - ENHANCED OBSIDIAN LUXURY */
+  --background: hsl(240, 8%, 2%);
+  --foreground: var(--crystal-white);
+  --card: var(--deep-obsidian);
+  --card-foreground: var(--pearl-white);
+  --popover: var(--deep-obsidian);
+  --popover-foreground: var(--pearl-white);
+  --primary: var(--jade-accent);
+  --primary-foreground: var(--deep-obsidian);
+  --secondary: var(--chrome-silver);
+  --secondary-foreground: var(--deep-obsidian);
+  --muted: hsl(240, 8%, 6%);
+  --muted-foreground: var(--platinum-silver);
+  --accent: var(--champagne-gold);
+  --accent-foreground: var(--deep-obsidian);
+  --destructive: hsl(0, 85%, 65%);
+  --destructive-foreground: var(--crystal-white);
+  --border: hsl(240, 8%, 15%);
+  --input: hsl(240, 8%, 6%);
+  --ring: var(--jade-accent);
 }
 
-.earth-tone-gradient {
-  background: linear-gradient(135deg, var(--warm-brown) 0%, var(--forest-deep) 25%, var(--moss-green) 50%, var(--earth-charcoal) 75%, var(--clay-brown) 100%);
+/* ✨ EXOTIC LUXURY GRADIENTS ✨ */
+.luxury-gradient {
+  background: linear-gradient(135deg, 
+    var(--deep-obsidian) 0%, 
+    var(--midnight-black) 20%,
+    var(--emerald-glow) 40%, 
+    var(--subtle-gold) 60%,
+    var(--platinum-silver) 80%,
+    var(--deep-obsidian) 100%
+  );
+}
+
+.premium-neon-glow {
+  box-shadow: 
+    0 0 5px var(--emerald-glow),
+    0 0 10px var(--emerald-glow),
+    0 0 15px var(--emerald-glow),
+    0 0 20px var(--emerald-glow);
+  animation: neonPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes neonPulse {
+  0% {
+    box-shadow: 
+      0 0 5px var(--emerald-glow),
+      0 0 10px var(--emerald-glow),
+      0 0 15px var(--emerald-glow),
+      0 0 20px var(--emerald-glow);
+  }
+  100% {
+    box-shadow: 
+      0 0 2px var(--emerald-glow),
+      0 0 5px var(--emerald-glow),
+      0 0 10px var(--emerald-glow),
+      0 0 15px var(--emerald-glow),
+      0 0 20px var(--jade-accent),
+      0 0 35px var(--jade-accent);
+  }
+}
+
+.gold-neon-glow {
+  box-shadow: 
+    0 0 5px var(--subtle-gold),
+    0 0 10px var(--subtle-gold),
+    0 0 15px var(--champagne-gold);
+  animation: goldNeonPulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes goldNeonPulse {
+  0% {
+    box-shadow: 
+      0 0 5px var(--subtle-gold),
+      0 0 10px var(--subtle-gold),
+      0 0 15px var(--champagne-gold);
+  }
+  100% {
+    box-shadow: 
+      0 0 10px var(--subtle-gold),
+      0 0 20px var(--subtle-gold),
+      0 0 30px var(--champagne-gold),
+      0 0 40px var(--champagne-gold);
+  }
 }
 
 /* RADAR SYSTEM ANIMATIONS */
@@ -175,9 +235,14 @@
   body {
     @apply font-sans antialiased text-foreground;
     font-family: var(--font-sans);
-    /* 🌿 SERENE EARTH BACKGROUND - NATURAL & CALMING 🌿 */
+    /* ✨ EXOTIC LUXURY CARIBBEAN BACKGROUND - PREMIUM OBSIDIAN ELEGANCE ✨ */
     background: 
-      linear-gradient(135deg, var(--warm-brown) 0%, var(--forest-deep) 25%, var(--earth-charcoal) 50%, var(--clay-brown) 100%);
+      linear-gradient(135deg, 
+        var(--deep-obsidian) 0%, 
+        var(--midnight-black) 25%, 
+        hsl(240, 8%, 12%) 50%, 
+        var(--deep-obsidian) 100%
+      );
     position: relative;
     min-height: 100vh;
     overflow-x: hidden; /* Prevent horizontal scrolling */
@@ -522,7 +587,7 @@
     }
   }
 
-  /* Subtle earth-tone overlay */
+  /* ✨ PREMIUM EXOTIC PARTICLE OVERLAY ✨ */
   body::before {
     content: '';
     position: fixed;
@@ -533,19 +598,29 @@
     pointer-events: none;
     z-index: 0;
     background-image: 
-      radial-gradient(2px 2px at 20px 30px, var(--sand-beige), transparent),
-      radial-gradient(2px 2px at 40px 70px, var(--natural-beige), transparent),
-      radial-gradient(1px 1px at 90px 40px, var(--moss-green), transparent),
-      radial-gradient(1px 1px at 130px 80px, var(--bark-brown), transparent),
-      radial-gradient(2px 2px at 160px 30px, var(--stone-gray), transparent);
+      radial-gradient(1px 1px at 20px 30px, var(--emerald-glow), transparent),
+      radial-gradient(2px 2px at 40px 70px, var(--subtle-gold), transparent),
+      radial-gradient(1px 1px at 90px 40px, var(--jade-accent), transparent),
+      radial-gradient(1px 1px at 130px 80px, var(--platinum-silver), transparent),
+      radial-gradient(1px 1px at 160px 30px, var(--champagne-gold), transparent);
     background-repeat: repeat;
-    background-size: 200px 100px;
-    animation: twinkle 4s infinite ease-in-out;
+    background-size: 300px 150px;
+    animation: luxuryTwinkle 6s infinite ease-in-out;
   }
 
-  @keyframes twinkle {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 1; }
+  @keyframes luxuryTwinkle {
+    0%, 100% { 
+      opacity: 0.1; 
+      transform: scale(1);
+    }
+    33% { 
+      opacity: 0.4; 
+      transform: scale(1.05);
+    }
+    66% { 
+      opacity: 0.7; 
+      transform: scale(0.95);
+    }
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -555,20 +630,35 @@
 
 /* ✨ PREMIUM INTERFACE UPGRADES - WAY BETTER THAN SUPREME VENTURE ✨ */
 
-/* Glass Morphism Effects */
+/* ✨ PREMIUM EXOTIC GLASSMORPHISM EFFECTS ✨ */
 .glass-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    rgba(0, 181, 141, 0.05) 50%, 
+    rgba(255, 209, 102, 0.08) 100%
+  );
+  backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid rgba(0, 181, 141, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 40px rgba(0, 181, 141, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(112, 142, 85, 0.3);
-  transform: translateY(-5px) scale(1.01);
-  box-shadow: 0 20px 40px rgba(112, 142, 85, 0.2);
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.15) 0%, 
+    rgba(0, 181, 141, 0.1) 50%, 
+    rgba(255, 209, 102, 0.12) 100%
+  );
+  border-color: rgba(0, 181, 141, 0.4);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.5),
+    0 0 60px rgba(0, 181, 141, 0.3),
+    0 0 20px rgba(255, 209, 102, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 /* Premium Button Effects */
