@@ -64,6 +64,7 @@ import FounderProfile from "@/pages/FounderProfile";
 import UniversalPaymentPage from "@/pages/UniversalPaymentPage";
 import VoiceControlCenter from "@/pages/VoiceControlCenter";
 import VoiceDemo from "@/pages/VoiceDemo";
+import VoiceWorkspace from "@/pages/VoiceWorkspace";
 import ErrorDashboard from "@/pages/ErrorDashboard";
 import UploadTest from "@/pages/UploadTest";
 import SimpleUpload from "@/pages/SimpleUpload";
@@ -158,6 +159,11 @@ function Router() {
       <Route path="/voice-control" component={VoiceControlCenter} />
       <Route path="/voice-interactive" component={VoiceControlCenter} />
       <Route path="/voice-demo" component={VoiceDemo} />
+      <Route path="/voice-workspace" component={VoiceWorkspace} />
+      <Route path="/workspace" component={VoiceWorkspace} />
+      <Route path="/voice-studio" component={VoiceWorkspace} />
+      <Route path="/tts" component={VoiceWorkspace} />
+      <Route path="/speech" component={VoiceWorkspace} />
       <Route path="/driving-coach" component={DrivingCoach} />
       <Route path="/learn-driving" component={DrivingCoach} />
       <Route path="/driving-lessons" component={DrivingCoach} />
