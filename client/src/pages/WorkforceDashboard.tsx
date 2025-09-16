@@ -100,26 +100,22 @@ export default function WorkforceDashboard() {
 
   // Fetch jobs
   const { data: jobs = [] } = useQuery<Job[]>({
-    queryKey: ['/api/jobs'],
-    queryFn: () => apiRequest('/api/jobs?limit=100')
+    queryKey: ['/api/jobs?limit=100']
   });
 
   // Fetch workers
   const { data: workers = [] } = useQuery<Worker[]>({
-    queryKey: ['/api/workers'],
-    queryFn: () => apiRequest('/api/workers')
+    queryKey: ['/api/workers']
   });
 
   // Fetch equipment
   const { data: equipment = [] } = useQuery<Equipment[]>({
-    queryKey: ['/api/equipment'],
-    queryFn: () => apiRequest('/api/equipment')
+    queryKey: ['/api/equipment']
   });
 
   // Fetch vehicle listings
   const { data: vehicles = [] } = useQuery<VehicleListing[]>({
-    queryKey: ['/api/vehicle-listings'],
-    queryFn: () => apiRequest('/api/vehicle-listings?limit=50')
+    queryKey: ['/api/vehicle-listings?limit=50']
   });
 
   // Create company mutation
@@ -173,7 +169,9 @@ export default function WorkforceDashboard() {
             </div>
             <div className="text-right">
               <p className="text-sm text-gray-300">Welcome back,</p>
-              <p className="text-xl font-semibold text-white">{user?.firstName || 'Boss'}</p>
+              <p className="text-xl font-semibold text-white">
+                {user?.isBlackRockExecutive ? 'BlackRock Executive Officer' : `${user?.firstName || 'User'} ${user?.lastName || ''}`}
+              </p>
             </div>
           </div>
         </div>
@@ -291,7 +289,7 @@ export default function WorkforceDashboard() {
                         <div key={worker.id} className="flex justify-between items-center">
                           <div>
                             <p className="text-white font-medium text-sm">
-                              {worker.firstName} {worker.lastName}
+                              YaadFlex Worker #{worker.id.slice(-6)}
                             </p>
                             <p className="text-gray-300 text-xs">{worker.city}</p>
                           </div>
@@ -450,7 +448,7 @@ export default function WorkforceDashboard() {
                     <div className="flex justify-between items-start mb-4">
                       <div>
                         <h3 className="text-lg font-semibold text-white">
-                          {worker.firstName} {worker.lastName}
+                          YaadFlex Worker #{worker.id.slice(-6)}
                         </h3>
                         <p className="text-gray-300">{worker.city}</p>
                         <p className="text-sm text-gray-400 capitalize">{worker.experienceLevel}</p>

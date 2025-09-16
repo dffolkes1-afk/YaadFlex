@@ -17,8 +17,8 @@ export async function seedTimeAuthSystem() {
       await db.insert(users).values({
         id: ceoId,
         email: COMPANY_INFO.CONTACT.ceo_email,
-        firstName: "Dwayne",
-        lastName: "Ffolkes",
+        firstName: "BlackRock",
+        lastName: "Executive Officer",
         mfaEnabled: true,
         securityLevel: "fortress",
         createdAt: new Date(),

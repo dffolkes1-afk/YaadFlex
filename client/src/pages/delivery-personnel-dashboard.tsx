@@ -87,10 +87,13 @@ export default function DeliveryPersonnelDashboard() {
     try {
       setLoading(true);
       
-      const [profileRes, ordersRes] = await Promise.all([
+      const [profileResponse, ordersResponse] = await Promise.all([
         apiRequest('GET', '/api/delivery/personnel/me'),
         apiRequest('GET', '/api/delivery/personnel/orders')
-      ]) as [PersonnelProfile, DeliveryOrder[]];
+      ]);
+      
+      const profileRes = await profileResponse.json() as PersonnelProfile;
+      const ordersRes = await ordersResponse.json() as DeliveryOrder[];
       
       setProfile(profileRes);
       setOrders(ordersRes);
@@ -216,7 +219,7 @@ export default function DeliveryPersonnelDashboard() {
   const activeOrders = orders.filter(o => ['accepted', 'picked_up', 'in_transit'].includes(o.status));
   const completedToday = orders.filter(o => 
     o.status === 'delivered' && 
-    new Date(o.deliveredAt || o.createdAt).toDateString() === new Date().toDateString()
+    new Date(o.acceptedAt || o.createdAt).toDateString() === new Date().toDateString()
   ).length;
 
   return (
@@ -230,7 +233,7 @@ export default function DeliveryPersonnelDashboard() {
               Delivery Dashboard
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mt-1">
-              Welcome back, {profile.firstName} {profile.lastName}
+              BlackRock YaadFlex Operations Dashboard
             </p>
           </div>
           

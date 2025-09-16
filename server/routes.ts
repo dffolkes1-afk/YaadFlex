@@ -235,7 +235,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         status: "scan_error", 
         aligned: false,
         timestamp: new Date().toISOString(),
-        error: `Validation scan failed: ${error.message}`,
+        error: `Validation scan failed: ${error instanceof Error ? error.message : String(error)}`,
         message: "Unable to validate corporate alignment due to system error"
       });
     }
@@ -361,7 +361,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({
         status: 'error',
         timestamp: new Date().toISOString(),
-        error: `Domain configuration retrieval failed: ${error?.message || 'Unknown error'}`,
+        error: `Domain configuration retrieval failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
         message: 'Unable to retrieve corporate domain configuration'
       });
     }
@@ -519,6 +519,14 @@ Time: ${new Date().toISOString()}
     try {
       const userId = req.user.claims.sub;
       const user = await storage.getUser(userId);
+      
+      // Apply BlackRock executive positioning ONLY for actual CEO users
+      if (user && user.email === COMPANY_INFO.CONTACT.ceo_email) {
+        user.firstName = 'BlackRock';
+        user.lastName = 'Executive Officer';
+        (user as any).isBlackRockExecutive = true;
+      }
+      
       res.json(user);
     } catch (error) {
       console.error("Error fetching user:", error);
@@ -2893,11 +2901,11 @@ P.S. - Early business partners get exclusive territory rights and preferred part
 
       // Simulate email sending with team assignment
       const emailHandlers = {
-        'business': 'Marlon Ice',
-        'property': 'Marlon Ice', 
-        'driver': 'Keisha Brown',
-        'customer': 'Keisha Brown',
-        'vehicle': 'Marcus Johnson'
+        'business': 'BlackRock Business Team',
+        'property': 'BlackRock Property Team', 
+        'driver': 'BlackRock Driver Operations',
+        'customer': 'BlackRock Customer Support',
+        'vehicle': 'BlackRock Vehicle Management'
       };
 
       const handlerName = emailHandlers[template.category as keyof typeof emailHandlers] || 'YaadFlex System';

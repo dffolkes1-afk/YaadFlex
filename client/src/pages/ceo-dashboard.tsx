@@ -170,13 +170,20 @@ export default function CeoDashboard() {
   const processAllDue = useMutation({
     mutationFn: async () => {
       const response = await apiRequest('POST', '/api/payments/process-all-due');
-      return response;
+      return response.json();
     },
     onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ['/api/ceo/expenses'] });
+      
+      // Safe access to results data with fallbacks
+      const results = data?.results || {};
+      const processed = results.processed || 0;
+      const successful = results.successful || 0;
+      const failed = results.failed || 0;
+      
       toast({
         title: 'All Due Payments Processed',
-        description: `Processed: ${data.results.processed}, Successful: ${data.results.successful}, Failed: ${data.results.failed}`,
+        description: `Processed: ${processed}, Successful: ${successful}, Failed: ${failed}`,
       });
     },
     onError: (error: any) => {

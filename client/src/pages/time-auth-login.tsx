@@ -39,10 +39,11 @@ export default function TimeAuthLogin() {
     try {
       const response = await apiRequest('POST', '/api/mfa/setup', {
         userId: formData.userId
-      }) as { qr: string; secret: string };
+      });
+      const data = await response.json() as { qr: string; secret: string };
       
-      setQrCode(response.qr);
-      setMfaSecret(response.secret);
+      setQrCode(data.qr);
+      setMfaSecret(data.secret);
       setStep('setup');
       
       toast({
@@ -116,7 +117,7 @@ export default function TimeAuthLogin() {
       if (response.ok) {
         toast({
           title: 'Login Successful',
-          description: `Welcome back, ${response.user?.firstName || 'User'}!`,
+          description: 'Welcome back! Authentication successful.',
         });
         
         // Redirect to CEO Dashboard

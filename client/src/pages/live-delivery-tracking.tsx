@@ -15,7 +15,8 @@ import {
   AlertCircle,
   Zap,
   Target,
-  Radio
+  Radio,
+  Package
 } from 'lucide-react';
 import { apiRequest } from '@/lib/queryClient';
 
@@ -91,7 +92,8 @@ export default function LiveDeliveryTracking() {
   const loadMyOrders = async () => {
     try {
       setLoading(true);
-      const ordersRes = await apiRequest('GET', '/api/delivery/my-orders?limit=20') as DeliveryOrder[];
+      const response = await apiRequest('GET', '/api/delivery/my-orders?limit=20');
+      const ordersRes = await response.json() as DeliveryOrder[];
       setOrders(ordersRes);
       
       if (ordersRes.length > 0) {
@@ -413,7 +415,7 @@ export default function LiveDeliveryTracking() {
                           <div key={driver.id} className="p-3 border rounded-lg">
                             <div className="flex items-center justify-between mb-2">
                               <div className="font-medium">
-                                {driver.firstName} {driver.lastName}
+                                YaadFlex Driver #{driver.id.slice(-6)}
                               </div>
                               <Badge variant="outline" className="text-xs">
                                 ⭐ {Number(driver.rating).toFixed(1)}

@@ -508,14 +508,14 @@ export default function Home() {
               {/* User Profile Display */}
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm border-2 border-white shadow-lg" data-testid="user-avatar">
-                  {user?.firstName?.[0]}{user?.lastName?.[0]}
+                  {user?.isBlackRockExecutive ? 'BR' : (user ? `${user.firstName?.[0] || 'U'}${user.lastName?.[0] || 'S'}` : 'US')}
                 </div>
                 <div className="flex flex-col">
                   <span className="text-sm font-semibold text-foreground" data-testid="user-name">
-                    {user?.firstName} {user?.lastName}
+                    {user?.isBlackRockExecutive ? 'BlackRock Executive' : (user ? `${user.firstName} ${user.lastName}` : 'User')}
                   </span>
                   <span className="text-xs text-muted-foreground" data-testid="user-welcome">
-                    Owner • Global Economy
+                    {user?.isBlackRockExecutive ? 'Owner • Global Economy' : 'Member • YaadFlex Global'}
                   </span>
                 </div>
               </div>

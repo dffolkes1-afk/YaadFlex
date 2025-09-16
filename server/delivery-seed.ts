@@ -258,9 +258,9 @@ export async function seedDeliverySystem() {
     // Create sample delivery personnel
     const deliveryPeople = [
       {
-        email: "marcus@yaadflex.com",
-        firstName: "Marcus",
-        lastName: "Campbell", 
+        email: "driver1@yaadflex.com",
+        firstName: "YaadFlex",
+        lastName: "Driver Alpha", 
         deliveryTypes: ["gas", "packages", "water"],
         vehicleType: "motorcycle",
         licenseNumber: "DL123456",
@@ -268,9 +268,9 @@ export async function seedDeliverySystem() {
         phoneNumber: "+1-876-555-0101"
       },
       {
-        email: "keisha@yaadflex.com", 
-        firstName: "Keisha",
-        lastName: "Thompson",
+        email: "driver2@yaadflex.com", 
+        firstName: "YaadFlex",
+        lastName: "Driver Beta",
         deliveryTypes: ["food", "pharmacy", "grocery"],
         vehicleType: "car",
         licenseNumber: "DL789012",
@@ -278,9 +278,9 @@ export async function seedDeliverySystem() {
         phoneNumber: "+1-876-555-0102"
       },
       {
-        email: "devon@yaadflex.com",
-        firstName: "Devon", 
-        lastName: "Brown",
+        email: "driver3@yaadflex.com",
+        firstName: "YaadFlex", 
+        lastName: "Driver Gamma",
         deliveryTypes: ["packages", "electronics", "laundry"],
         vehicleType: "van",
         licenseNumber: "DL345678",
@@ -288,9 +288,9 @@ export async function seedDeliverySystem() {
         phoneNumber: "+1-876-555-0103"
       },
       {
-        email: "tanya@yaadflex.com",
-        firstName: "Tanya",
-        lastName: "Williams",
+        email: "driver4@yaadflex.com",
+        firstName: "YaadFlex",
+        lastName: "Driver Delta",
         deliveryTypes: ["food", "pharmacy"],
         vehicleType: "motorcycle", 
         licenseNumber: "DL901234",
@@ -298,9 +298,9 @@ export async function seedDeliverySystem() {
         phoneNumber: "+1-876-555-0104"
       },
       {
-        email: "andre@yaadflex.com",
-        firstName: "Andre",
-        lastName: "Davis",
+        email: "driver5@yaadflex.com",
+        firstName: "YaadFlex",
+        lastName: "Driver Echo",
         deliveryTypes: ["gas", "water", "grocery"],
         vehicleType: "truck",
         licenseNumber: "CDL567890",

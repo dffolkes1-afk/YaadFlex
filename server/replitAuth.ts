@@ -66,9 +66,21 @@ async function upsertUser(
 }
 
 export async function setupAuth(app: Express) {
-  // DISABLED - NO AUTHENTICATION REQUIRED
-  console.log(`Auth disabled - ${COMPANY_INFO.COMPANY_NAME} is UNLOCKED`);
-  return;
+  console.log(`Setting up authentication for ${COMPANY_INFO.COMPANY_NAME}`);
+  
+  // Always mount session and passport middleware for basic auth functionality
+  const sessionMiddleware = getSession();
+  app.use(sessionMiddleware);
+  app.use(passport.initialize());
+  app.use(passport.session());
+  
+  console.log("Session and passport middleware mounted");
+  
+  // If no domains configured, still provide basic auth structure but skip OIDC
+  if (!SUPPORTED_DOMAINS) {
+    console.log("No domains configured - auth disabled but middleware ready");
+    return;
+  }
   
   let config;
   try {
@@ -90,11 +102,6 @@ export async function setupAuth(app: Express) {
   };
 
   console.log("Registering strategies for domains:", SUPPORTED_DOMAINS);
-  
-  if (!SUPPORTED_DOMAINS) {
-    console.log("No domains configured - skipping auth setup");
-    return;
-  }
   
   for (const domain of SUPPORTED_DOMAINS.split(",")) {
     console.log(`Registering strategy for domain: ${domain}`);
@@ -144,18 +151,45 @@ export async function setupAuth(app: Express) {
       );
     });
   });
+
+  // User API route for compatibility with legacy routes
+  app.get("/api/user", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      // Apply BlackRock executive positioning ONLY for actual CEO users
+      if (user && user.email === COMPANY_INFO.CONTACT.ceo_email) {
+        user.firstName = 'BlackRock';
+        user.lastName = 'Executive Officer';
+        (user as any).isBlackRockExecutive = true;
+      }
+      
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
 }
 
 export const isAuthenticated: RequestHandler = async (req, res, next) => {
-  // BYPASSED - ALL ROUTES ARE PUBLIC
-  // Set a fake user to satisfy existing route handlers
-  (req as any).user = {
-    claims: {
-      sub: 'public-user-no-auth',
-      email: 'public@yaadflex.com',
-      first_name: 'Public',
-      last_name: 'User'
-    }
-  };
+  if (!req.isAuthenticated || !req.isAuthenticated()) {
+    return res.status(401).json({ error: "Authentication required" });
+  }
+  
+  const user = (req as any).user;
+  if (!user || !user.claims) {
+    return res.status(401).json({ error: "Invalid session" });
+  }
+
+  // Apply BlackRock executive positioning ONLY for actual CEO users
+  if (user.claims.email === COMPANY_INFO.CONTACT.ceo_email) {
+    // This is the actual CEO - apply BlackRock executive positioning
+    user.claims.first_name = 'BlackRock';
+    user.claims.last_name = 'Executive Officer';
+    user.isBlackRockExecutive = true;
+  }
+  
   return next();
 };

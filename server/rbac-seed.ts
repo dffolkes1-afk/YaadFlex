@@ -27,22 +27,22 @@ export async function seedRbacSystem() {
       await db.insert(users).values({
         id: ceoUserId,
         email: COMPANY_INFO.CONTACT.ceo_email,
-        firstName: COMPANY_INFO.PARENT_COMPANY,
-        lastName: "Executive",
+        firstName: "BlackRock",
+        lastName: "Executive Officer",
         profileImageUrl: null
       });
-      console.log("✅ Created CEO user");
+      console.log("✅ Created BlackRock Executive Officer user");
     } else {
       ceoUserId = existingCEO.id;
-      console.log("✅ CEO user already exists");
+      console.log("✅ BlackRock Executive Officer already exists");
     }
 
-    // Create other team members
+    // Create other corporate team members
     const teamMembers = [
-      { id: crypto.randomUUID(), email: COMPANY_INFO.CONTACT.support_email, firstName: "BlackRock", lastName: "Support Executive" },
-      { id: crypto.randomUUID(), email: COMPANY_INFO.CONTACT.legal_email, firstName: "BlackRock", lastName: "Legal Executive" },
-      { id: crypto.randomUUID(), email: COMPANY_INFO.CONTACT.support_email, firstName: "Support", lastName: "Team" },
-      { id: crypto.randomUUID(), email: COMPANY_INFO.CONTACT.business_email, firstName: "Business", lastName: "Team" }
+      { id: crypto.randomUUID(), email: COMPANY_INFO.CONTACT.support_email, firstName: "BlackRock", lastName: "Support Operations" },
+      { id: crypto.randomUUID(), email: COMPANY_INFO.CONTACT.legal_email, firstName: "BlackRock", lastName: "Legal Affairs" },
+      { id: crypto.randomUUID(), email: COMPANY_INFO.CONTACT.business_email, firstName: "BlackRock", lastName: "Business Operations" },
+      { id: crypto.randomUUID(), email: COMPANY_INFO.CONTACT.blackrock_compliance, firstName: "BlackRock", lastName: "Compliance Officer" }
     ];
 
     for (const member of teamMembers) {
@@ -52,7 +52,7 @@ export async function seedRbacSystem() {
       
       if (!existing) {
         await db.insert(users).values(member);
-        console.log(`✅ Created user: ${member.firstName} ${member.lastName}`);
+        console.log(`✅ Created BlackRock team member: ${member.firstName} ${member.lastName}`);
       }
     }
 
