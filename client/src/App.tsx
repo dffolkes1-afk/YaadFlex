@@ -23,6 +23,7 @@ import CarMarketplacePage from "@/pages/car-marketplace";
 import PremiumStorefrontPage from "@/pages/premium-storefront";
 import MarketplacePage from "@/pages/marketplace";
 import DashboardPage from "@/pages/dashboard";
+import YFBrandingPage from "@/pages/yf-branding";
 import SimpleLinksPage from "@/pages/simple-links";
 import ContactlessSystemPage from "@/pages/contactless-system";
 import CBRadioPage from "@/pages/cb-radio";
@@ -133,6 +134,9 @@ function Router() {
       <Route path="/portal" component={GalacticPortalPage} />
       <Route path="/real-estate" component={RealEstatePage} />
       <Route path="/dashboard" component={DashboardPage} />
+      <Route path="/yf-branding" component={YFBrandingPage} />
+      <Route path="/branding" component={YFBrandingPage} />
+      <Route path="/wallpapers" component={YFBrandingPage} />
       <Route path="/marketplace" component={MarketplacePage} />
       <Route path="/buy" component={MarketplacePage} />
       <Route path="/sell" component={MarketplacePage} />

@@ -310,3 +310,125 @@ input:focus, textarea:focus, select:focus {
 .transition-colors {
   transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
 }
+
+/* ==================== YF BRANDING STYLES ==================== */
+
+/* YF Wallpaper Previews */
+.yf-wallpaper-preview {
+  position: relative;
+  background: var(--card);
+  border-radius: 8px;
+}
+
+.yf-monogram {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  text-shadow: var(--shadow-sm);
+}
+
+/* Corporate Professional Style */
+.corporate-yf {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.corporate-yf .yf-monogram {
+  color: #1e293b;
+  background: linear-gradient(135deg, #1e293b 0%, #64748b 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Luxury Premium Style */
+.luxury-yf {
+  background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+}
+
+.luxury-yf .yf-monogram {
+  background: linear-gradient(135deg, #fbbf24 0%, #059669 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Tech Modern Style */
+.tech-yf {
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  position: relative;
+}
+
+.tech-yf::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 70%, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
+}
+
+.tech-yf .yf-monogram {
+  color: #3730a3;
+  position: relative;
+  z-index: 1;
+}
+
+/* Caribbean Heritage Style */
+.caribbean-yf {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+}
+
+.caribbean-yf .yf-monogram {
+  background: linear-gradient(135deg, #059669 0%, #f59e0b 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Classic Business Style */
+.classic-yf {
+  background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+}
+
+.classic-yf .yf-monogram {
+  color: #374151;
+}
+
+/* Textured Premium Style */
+.textured-yf {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  position: relative;
+}
+
+.textured-yf::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(100, 116, 139, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(100, 116, 139, 0.05) 0%, transparent 50%);
+}
+
+.textured-yf .yf-monogram {
+  color: #64748b;
+  position: relative;
+  z-index: 1;
+}
+
+/* Integration Examples */
+.integration-example {
+  background: var(--muted);
+  position: relative;
+  overflow: hidden;
+}
+
+.integration-example::before {
+  content: 'YF';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary);
+  opacity: 0.1;
+  pointer-events: none;
+}
