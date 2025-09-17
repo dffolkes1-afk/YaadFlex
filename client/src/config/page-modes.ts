@@ -29,13 +29,7 @@ export const PAGE_MODE_MAPPING: Record<string, PageModeConfig> = {
   
   // Landing & Home Pages - Full glamour to grab crowds
   '/': {
-    mode: 'glamorous',
-    intensity: 'bold',
-    backgroundStyle: 'caribbean',
-    enableParticles: true,
-    enableFloatingElements: true,
-    enableAmbientLighting: true,
-    showYFWatermark: true,
+    mode: 'professional',
     title: 'YaadFlex - Jamaica Taking Over The World 🇯🇲',
     description: 'Join the revolution! 85% driver earnings, instant payments, and the most advanced transport platform in the Caribbean.',
     ogImage: '/api/og-image/home'
@@ -66,11 +60,7 @@ export const PAGE_MODE_MAPPING: Record<string, PageModeConfig> = {
   
   // Marketplace & Shopping - Attract customers with luxury feel
   '/marketplace': {
-    mode: 'glamorous',
-    intensity: 'medium',
-    backgroundStyle: 'luxury',
-    enableParticles: true,
-    enableFloatingElements: true,
+    mode: 'professional',
     title: 'YaadFlex Marketplace - Premium Services & Products',
     description: 'Discover premium services, exclusive deals, and luxury experiences in Jamaica\'s premier marketplace.'
   },
@@ -111,12 +101,7 @@ export const PAGE_MODE_MAPPING: Record<string, PageModeConfig> = {
   
   // Sponsorship & Partnership - Captivating for partnerships
   '/sponsorship': {
-    mode: 'glamorous',
-    intensity: 'bold',
-    backgroundStyle: 'luxury',
-    enableParticles: true,
-    enableFloatingElements: true,
-    enableAmbientLighting: true,
+    mode: 'professional',
     title: 'Partner with YaadFlex - Revolutionary Sponsorship Opportunities',
     description: 'Join the most dynamic transport platform in the Caribbean. Premium sponsorship packages available.'
   },
@@ -681,15 +666,15 @@ export const ROUTE_PATTERNS: RoutePattern[] = [
 // ================== DEFAULT CONFIGURATIONS ==================
 
 export const DEFAULT_GLAMOROUS_CONFIG: PageModeConfig = {
-  mode: 'glamorous',
-  intensity: 'medium',
-  backgroundStyle: 'luxury',
-  enableParticles: true,
+  mode: 'professional',
+  intensity: 'subtle',
+  backgroundStyle: 'corporate',
+  enableParticles: false,
   enableFloatingElements: false,
-  enableAmbientLighting: true,
-  showYFWatermark: true,
-  watermarkOpacity: 0.1,
-  disableOnMobile: false
+  enableAmbientLighting: false,
+  showYFWatermark: false,
+  watermarkOpacity: 0.05,
+  disableOnMobile: true
 };
 
 export const DEFAULT_PROFESSIONAL_CONFIG: PageModeConfig = {
@@ -715,7 +700,7 @@ export function getPageModeConfig(path: string): PageModeConfig {
     }
   }
   
-  // 3. Default to professional for unknown routes (conservative approach)
+  // 3. Default to professional for all routes (Uber-style approach)
   return DEFAULT_PROFESSIONAL_CONFIG;
 }
 

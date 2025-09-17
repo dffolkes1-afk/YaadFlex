@@ -7,58 +7,58 @@
 :root {
   /* ✨ LUXURY GLAMOUR DESIGN SYSTEM ✨ */
   
-  /* 💎 RICH LUXURY COLOR PALETTE */
-  /* Vibrant Emerald Collection */
-  --emerald-50: hsl(151, 81%, 96%);
-  --emerald-100: hsl(149, 80%, 90%);
-  --emerald-200: hsl(152, 76%, 80%);
-  --emerald-300: hsl(156, 72%, 67%);
-  --emerald-400: hsl(158, 64%, 52%);
-  --emerald-500: hsl(160, 84%, 39%);
-  --emerald-600: hsl(161, 94%, 30%);
-  --emerald-700: hsl(163, 94%, 24%);
-  --emerald-800: hsl(166, 85%, 20%);
-  --emerald-900: hsl(169, 77%, 17%);
-  --emerald-950: hsl(170, 97%, 9%);
+  /* 💼 PROFESSIONAL COLOR PALETTE */
+  /* Neutral Collection */
+  --emerald-50: hsl(0, 0%, 98%);
+  --emerald-100: hsl(0, 0%, 96%);
+  --emerald-200: hsl(0, 0%, 94%);
+  --emerald-300: hsl(0, 0%, 85%);
+  --emerald-400: hsl(0, 0%, 64%);
+  --emerald-500: hsl(0, 0%, 45%);
+  --emerald-600: hsl(0, 0%, 32%);
+  --emerald-700: hsl(0, 0%, 25%);
+  --emerald-800: hsl(0, 0%, 15%);
+  --emerald-900: hsl(0, 0%, 9%);
+  --emerald-950: hsl(0, 0%, 4%);
 
-  /* Luxurious Gold Collection */
-  --gold-50: hsl(48, 100%, 96%);
-  --gold-100: hsl(48, 96%, 89%);
-  --gold-200: hsl(48, 97%, 77%);
-  --gold-300: hsl(46, 97%, 65%);
-  --gold-400: hsl(43, 96%, 56%);
-  --gold-500: hsl(38, 92%, 50%);
-  --gold-600: hsl(32, 95%, 44%);
-  --gold-700: hsl(26, 90%, 37%);
-  --gold-800: hsl(23, 83%, 31%);
-  --gold-900: hsl(22, 78%, 26%);
-  --gold-950: hsl(23, 92%, 14%);
+  /* Professional Accent Collection */
+  --gold-50: hsl(210, 20%, 98%);
+  --gold-100: hsl(210, 20%, 96%);
+  --gold-200: hsl(210, 16%, 93%);
+  --gold-300: hsl(213, 13%, 87%);
+  --gold-400: hsl(215, 12%, 70%);
+  --gold-500: hsl(215, 16%, 47%);
+  --gold-600: hsl(215, 19%, 35%);
+  --gold-700: hsl(215, 25%, 27%);
+  --gold-800: hsl(217, 33%, 17%);
+  --gold-900: hsl(222, 47%, 11%);
+  --gold-950: hsl(222, 84%, 5%);
 
-  /* Passionate Rose Collection */
-  --rose-50: hsl(355, 100%, 97%);
-  --rose-100: hsl(355, 86%, 94%);
-  --rose-200: hsl(353, 96%, 90%);
-  --rose-300: hsl(353, 95%, 82%);
-  --rose-400: hsl(351, 95%, 71%);
-  --rose-500: hsl(348, 83%, 47%);
-  --rose-600: hsl(346, 87%, 43%);
-  --rose-700: hsl(345, 82%, 35%);
-  --rose-800: hsl(343, 78%, 30%);
-  --rose-900: hsl(341, 75%, 27%);
-  --rose-950: hsl(341, 92%, 14%);
+  /* Subtle Blue Accent Collection */
+  --rose-50: hsl(210, 40%, 98%);
+  --rose-100: hsl(210, 40%, 96%);
+  --rose-200: hsl(214, 32%, 91%);
+  --rose-300: hsl(213, 27%, 84%);
+  --rose-400: hsl(215, 20%, 65%);
+  --rose-500: hsl(215, 16%, 47%);
+  --rose-600: hsl(215, 19%, 35%);
+  --rose-700: hsl(215, 25%, 27%);
+  --rose-800: hsl(217, 33%, 17%);
+  --rose-900: hsl(222, 47%, 11%);
+  --rose-950: hsl(222, 84%, 5%);
 
-  /* Vibrant Orange Collection */
-  --orange-50: hsl(33, 100%, 96%);
-  --orange-100: hsl(34, 100%, 92%);
-  --orange-200: hsl(32, 98%, 83%);
-  --orange-300: hsl(31, 97%, 72%);
-  --orange-400: hsl(27, 96%, 61%);
-  --orange-500: hsl(25, 95%, 53%);
-  --orange-600: hsl(21, 90%, 48%);
-  --orange-700: hsl(17, 88%, 40%);
-  --orange-800: hsl(15, 79%, 34%);
-  --orange-900: hsl(15, 75%, 28%);
-  --orange-950: hsl(15, 85%, 15%);
+  /* Dark Professional Collection */
+  --orange-50: hsl(0, 0%, 98%);
+  --orange-100: hsl(0, 0%, 96%);
+  --orange-200: hsl(0, 0%, 92%);
+  --orange-300: hsl(0, 0%, 85%);
+  --orange-400: hsl(0, 0%, 64%);
+  --orange-500: hsl(0, 0%, 45%);
+  --orange-600: hsl(0, 0%, 32%);
+  --orange-700: hsl(0, 0%, 25%);
+  --orange-800: hsl(0, 0%, 15%);
+  --orange-900: hsl(0, 0%, 9%);
+  --orange-950: hsl(0, 0%, 4%);
 
   /* Sophisticated Neutrals with Warmth */
   --neutral-50: hsl(210, 20%, 98%);
@@ -73,27 +73,27 @@
   --neutral-900: hsl(221, 39%, 11%);
   --neutral-950: hsl(224, 71%, 4%);
 
-  /* 🌟 GLAMOUR LIGHT MODE */
-  --background: linear-gradient(135deg, hsl(151, 81%, 98%) 0%, hsl(48, 100%, 98%) 100%);
-  --background-solid: hsl(151, 81%, 98%);
-  --foreground: var(--neutral-950);
-  --card: rgba(255, 255, 255, 0.95);
-  --card-foreground: var(--neutral-950);
-  --popover: rgba(255, 255, 255, 0.98);
-  --popover-foreground: var(--neutral-950);
-  --primary: var(--emerald-500);
-  --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: var(--gold-100);
-  --secondary-foreground: var(--gold-900);
-  --muted: var(--neutral-100);
-  --muted-foreground: var(--neutral-500);
-  --accent: var(--rose-100);
-  --accent-foreground: var(--rose-900);
-  --destructive: var(--rose-500);
-  --destructive-foreground: hsl(0, 0%, 100%);
-  --border: var(--neutral-200);
-  --input: rgba(255, 255, 255, 0.9);
-  --ring: var(--emerald-500);
+  /* 🌟 PROFESSIONAL MODE */
+  --background: hsl(0, 0%, 6%);
+  --background-solid: hsl(0, 0%, 6%);
+  --foreground: hsl(0, 0%, 98%);
+  --card: hsl(0, 0%, 10%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --popover: hsl(0, 0%, 12%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --primary: hsl(0, 0%, 100%);
+  --primary-foreground: hsl(0, 0%, 9%);
+  --secondary: hsl(0, 0%, 15%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --muted: hsl(0, 0%, 15%);
+  --muted-foreground: hsl(0, 0%, 70%);
+  --accent: hsl(215, 16%, 47%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --border: hsl(0, 0%, 20%);
+  --input: hsl(0, 0%, 10%);
+  --ring: hsl(215, 16%, 47%);
 
   /* 🎨 LUXURY CHART COLORS */
   --chart-1: var(--emerald-500);
@@ -102,12 +102,12 @@
   --chart-4: var(--orange-500);
   --chart-5: var(--neutral-400);
 
-  /* ✨ PREMIUM GLOW COLORS */
-  --glow-emerald: hsla(160, 84%, 39%, 0.5);
-  --glow-gold: hsla(38, 92%, 50%, 0.5);
-  --glow-rose: hsla(348, 83%, 47%, 0.5);
-  --glow-orange: hsla(25, 95%, 53%, 0.5);
-  --glow-white: hsla(0, 0%, 100%, 0.8);
+  /* ✨ PROFESSIONAL ACCENTS */
+  --glow-emerald: hsla(0, 0%, 45%, 0.3);
+  --glow-gold: hsla(215, 16%, 47%, 0.3);
+  --glow-rose: hsla(215, 16%, 47%, 0.3);
+  --glow-orange: hsla(0, 0%, 45%, 0.3);
+  --glow-white: hsla(0, 0%, 100%, 0.2);
 
   /* 💫 TYPOGRAPHY - Luxury Fonts */
   --font-display: 'Playfair Display', Georgia, serif;
@@ -145,34 +145,34 @@
 }
 
 .dark {
-  /* 🌙 GLAMOUR DARK MODE */
-  --background: linear-gradient(135deg, hsl(224, 71%, 6%) 0%, hsl(221, 39%, 13%) 100%);
-  --background-solid: hsl(224, 71%, 4%);
-  --foreground: var(--neutral-50);
-  --card: rgba(0, 0, 0, 0.7);
-  --card-foreground: var(--neutral-50);
-  --popover: rgba(0, 0, 0, 0.9);
-  --popover-foreground: var(--neutral-50);
-  --primary: var(--emerald-400);
-  --primary-foreground: var(--neutral-950);
-  --secondary: var(--gold-900);
-  --secondary-foreground: var(--gold-100);
-  --muted: var(--neutral-800);
-  --muted-foreground: var(--neutral-400);
-  --accent: var(--rose-900);
-  --accent-foreground: var(--rose-100);
-  --destructive: var(--rose-400);
-  --destructive-foreground: var(--neutral-950);
-  --border: var(--neutral-700);
-  --input: rgba(0, 0, 0, 0.8);
-  --ring: var(--emerald-400);
+  /* 🌙 PROFESSIONAL DARK MODE */
+  --background: hsl(0, 0%, 6%);
+  --background-solid: hsl(0, 0%, 4%);
+  --foreground: hsl(0, 0%, 98%);
+  --card: hsl(0, 0%, 10%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --popover: hsl(0, 0%, 12%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --primary: hsl(0, 0%, 100%);
+  --primary-foreground: hsl(0, 0%, 9%);
+  --secondary: hsl(0, 0%, 15%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --muted: hsl(0, 0%, 15%);
+  --muted-foreground: hsl(0, 0%, 70%);
+  --accent: hsl(215, 16%, 47%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --border: hsl(0, 0%, 20%);
+  --input: hsl(0, 0%, 10%);
+  --ring: hsl(215, 16%, 47%);
 
-  /* Dark Mode Glows - More Intense */
-  --glow-emerald: hsla(158, 64%, 52%, 0.7);
-  --glow-gold: hsla(43, 96%, 56%, 0.7);
-  --glow-rose: hsla(351, 95%, 71%, 0.7);
-  --glow-orange: hsla(27, 96%, 61%, 0.7);
-  --glow-white: hsla(0, 0%, 100%, 0.3);
+  /* Professional Accents */
+  --glow-emerald: hsla(0, 0%, 45%, 0.3);
+  --glow-gold: hsla(215, 16%, 47%, 0.3);
+  --glow-rose: hsla(215, 16%, 47%, 0.3);
+  --glow-orange: hsla(0, 0%, 45%, 0.3);
+  --glow-white: hsla(0, 0%, 100%, 0.2);
 }
 
 /* ==================== ✨ LUXURY COMPONENT SYSTEM ✨ ==================== */
