@@ -196,15 +196,12 @@ export default function SponsorshipPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/10 py-8 px-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-100 via-amber-100 to-rose-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900 py-8 px-4 relative overflow-hidden">
       
-      {/* Animated Partnership Machine Background */}
-      <div className="absolute inset-0 pointer-events-none opacity-5">
-        <div className="absolute top-20 left-10 w-32 h-32 border-4 border-emerald-400 rounded-full animate-spin" style={{ animationDuration: '8s' }}></div>
-        <div className="absolute top-40 right-20 w-24 h-24 border-3 border-yellow-400 rounded-lg animate-pulse"></div>
-        <div className="absolute bottom-32 left-1/4 w-16 h-16 bg-gradient-to-r from-green-400 to-yellow-400 rounded-full animate-bounce"></div>
-        <div className="absolute top-1/2 right-1/3 w-20 h-20 border-2 border-dashed border-red-400 rounded-full" style={{ animation: 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite' }}></div>
-        <div className="absolute bottom-20 right-10 w-14 h-14 bg-emerald-300 rotate-45 animate-pulse"></div>
+      {/* Subtle Partnership Machine Background */}
+      <div className="absolute inset-0 pointer-events-none opacity-10">
+        <div className="absolute top-20 right-20 w-32 h-32 border-4 border-emerald-600 rounded-full animate-spin-slow"></div>
+        <div className="absolute bottom-32 left-1/4 w-16 h-16 bg-gradient-to-r from-emerald-500 to-amber-500 rounded-full animate-bounce"></div>
       </div>
 
       <div className="container mx-auto max-w-6xl relative z-10">
@@ -223,19 +220,19 @@ export default function SponsorshipPage() {
           <h1 className="text-5xl font-bold bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 bg-clip-text text-transparent mb-4">
             🤖 YaadFlex Partnership Machine 🇯🇲
           </h1>
-          <p className="text-2xl text-muted-foreground mb-6">
+          <p className="text-2xl text-foreground/80 mb-6">
             Power up Jamaica's fastest-growing super-app and connect with 100,000+ active users
           </p>
           <div className="flex justify-center gap-2 flex-wrap mb-8">
-            <Badge variant="secondary" className="text-green-600 text-lg px-4 py-2">✓ 50,000+ Drivers</Badge>
-            <Badge variant="secondary" className="text-blue-600 text-lg px-4 py-2">✓ 100,000+ Customers</Badge>
+            <Badge variant="secondary" className="text-emerald-700 bg-emerald-100 text-lg px-4 py-2">✓ 50,000+ Drivers</Badge>
+            <Badge variant="secondary" className="text-amber-700 bg-amber-100 text-lg px-4 py-2">✓ 100,000+ Customers</Badge>
             <Badge variant="secondary" className="text-purple-600 text-lg px-4 py-2">✓ Island-Wide Coverage</Badge>
             <Badge variant="secondary" className="text-orange-600 text-lg px-4 py-2">✓ 24/7 Operations</Badge>
           </div>
         </div>
 
         {/* Why Partner With YaadFlex */}
-        <Card className="mb-12 bg-gradient-to-br from-green-50 to-yellow-50 dark:from-green-950/20 dark:to-yellow-950/20 border-green-200 dark:border-green-800">
+        <Card className="mb-12 bg-gradient-to-br from-emerald-200/40 to-amber-200/40 dark:from-emerald-950/30 dark:to-amber-950/30 border-emerald-300 dark:border-emerald-700">
           <CardHeader>
             <CardTitle className="text-3xl text-center">🚀 Why Partner With YaadFlex?</CardTitle>
           </CardHeader>
@@ -272,8 +269,8 @@ export default function SponsorshipPage() {
             {sponsorshipPackages.map((pkg) => (
               <Card 
                 key={pkg.id}
-                className={`cursor-pointer transition-all hover:shadow-lg ${
-                  selectedPackage === pkg.id ? 'ring-2 ring-accent shadow-lg' : ''
+                className={`cursor-pointer transition-all bg-white/90 dark:bg-slate-900/70 border-emerald-200 hover:bg-emerald-50/60 hover:shadow-lg ${
+                  selectedPackage === pkg.id ? 'ring-2 ring-emerald-500 shadow-lg bg-emerald-50/80' : ''
                 }`}
                 onClick={() => setSelectedPackage(pkg.id)}
                 data-testid={`package-${pkg.id}`}
