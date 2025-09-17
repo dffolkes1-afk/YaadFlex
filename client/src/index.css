@@ -863,3 +863,332 @@ h3 {
     transform: none;
   }
 }
+
+/* ==================== ✨ GLAMOUR LAYOUT SYSTEM ✨ ==================== */
+
+/* Main Glamour Layout Container */
+.glamour-layout-container {
+  position: relative;
+  background: var(--background);
+  overflow-x: hidden;
+}
+
+/* Intensity Level Classes */
+.glamour-subtle {
+  --glamour-intensity: 0.6;
+  --glamour-particle-density: 0.3;
+  --glamour-animation-speed: 1.2;
+}
+
+.glamour-medium {
+  --glamour-intensity: 1;
+  --glamour-particle-density: 0.6;
+  --glamour-animation-speed: 1;
+}
+
+.glamour-bold {
+  --glamour-intensity: 1.5;
+  --glamour-particle-density: 1;
+  --glamour-animation-speed: 0.8;
+}
+
+/* Hover Effects Enhancement */
+.glamour-hover-effects .card-glamour {
+  transition: all var(--duration-normal) var(--ease-luxury);
+}
+
+.glamour-hover-effects .card-glamour:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: var(--shadow-float);
+}
+
+.glamour-hover-effects .btn-luxury:hover {
+  transform: translateY(-6px) scale(1.05);
+}
+
+/* ==================== 🌟 GLAMOUR PARTICLES SYSTEM ==================== */
+
+.glamour-particles {
+  will-change: opacity, transform;
+}
+
+.glamour-particles > div {
+  border-radius: 50%;
+  filter: blur(0.5px);
+  animation: twinkle var(--duration-slower) ease-in-out infinite;
+}
+
+/* Enhanced twinkle animation for particles */
+@keyframes glamour-twinkle {
+  0%, 100% { 
+    opacity: calc(0.2 * var(--glamour-intensity)); 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: calc(0.8 * var(--glamour-intensity)); 
+    transform: scale(1.3); 
+  }
+}
+
+/* ==================== 💫 AMBIENT LIGHTING SYSTEM ==================== */
+
+.glamour-ambient-lighting {
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.glamour-ambient-lighting > div {
+  filter: blur(60px);
+  animation: ambient-pulse 8s ease-in-out infinite;
+}
+
+@keyframes ambient-pulse {
+  0%, 100% { 
+    opacity: calc(0.8 * var(--glamour-intensity)); 
+    transform: scale(1); 
+  }
+  25% { 
+    opacity: calc(1.2 * var(--glamour-intensity)); 
+    transform: scale(1.1); 
+  }
+  50% { 
+    opacity: calc(0.6 * var(--glamour-intensity)); 
+    transform: scale(0.9); 
+  }
+  75% { 
+    opacity: calc(1.1 * var(--glamour-intensity)); 
+    transform: scale(1.05); 
+  }
+}
+
+/* ==================== ✨ FLOATING ELEMENTS SYSTEM ==================== */
+
+.glamour-floating-elements {
+  pointer-events: none;
+  will-change: transform;
+}
+
+.glamour-floating-elements > div {
+  filter: drop-shadow(0 0 10px currentColor);
+  animation: glamour-float calc(6s / var(--glamour-animation-speed)) ease-in-out infinite;
+}
+
+@keyframes glamour-float {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
+  25% { 
+    transform: translateY(-15px) rotate(5deg); 
+  }
+  50% { 
+    transform: translateY(-30px) rotate(0deg); 
+  }
+  75% { 
+    transform: translateY(-15px) rotate(-5deg); 
+  }
+}
+
+/* ==================== 👑 YF LUXURY WATERMARK SYSTEM ==================== */
+
+.yf-luxury-watermark {
+  pointer-events: none;
+  user-select: none;
+  will-change: opacity;
+  font-family: var(--font-display);
+  filter: drop-shadow(0 0 20px var(--glow-emerald));
+}
+
+.yf-luxury-watermark:hover {
+  animation: watermark-glow 2s ease-in-out infinite;
+}
+
+@keyframes watermark-glow {
+  0%, 100% { 
+    filter: drop-shadow(0 0 20px var(--glow-emerald)); 
+  }
+  50% { 
+    filter: drop-shadow(0 0 40px var(--glow-gold)); 
+  }
+}
+
+/* ==================== 🎨 GLAMOUR WALLPAPER SYSTEM ==================== */
+
+.glamour-wallpaper {
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.glamour-wallpaper .yf-monogram {
+  font-family: var(--font-display);
+  text-shadow: 0 0 30px currentColor;
+  filter: blur(0.5px);
+}
+
+/* Wallpaper animation */
+.glamour-wallpaper > div:nth-child(2) {
+  animation: wallpaper-drift 20s linear infinite;
+}
+
+@keyframes wallpaper-drift {
+  0% { transform: rotate(12deg) scale(1.1) translateX(0%); }
+  100% { transform: rotate(12deg) scale(1.1) translateX(-5%); }
+}
+
+/* ==================== 🎭 GLAMOUR UTILITY CLASSES ==================== */
+
+/* Glamorous Text Effects */
+.text-glamour-glow {
+  background: linear-gradient(135deg, var(--emerald-400), var(--gold-400), var(--rose-400));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradient-text 4s ease infinite;
+  text-shadow: 0 0 30px var(--glow-emerald);
+  filter: drop-shadow(0 0 20px var(--glow-gold));
+}
+
+/* Glamorous Backgrounds */
+.bg-glamour-gradient {
+  background: linear-gradient(135deg, 
+    var(--emerald-500) 0%, 
+    var(--gold-500) 25%, 
+    var(--rose-500) 50%, 
+    var(--orange-500) 75%, 
+    var(--emerald-500) 100%);
+  background-size: 300% 300%;
+  animation: gradient-shift calc(8s / var(--glamour-animation-speed)) ease infinite;
+}
+
+/* Glamorous Borders */
+.border-glamour {
+  border: 2px solid transparent;
+  background: linear-gradient(var(--background), var(--background)) padding-box,
+              linear-gradient(135deg, var(--emerald-400), var(--gold-400), var(--rose-400)) border-box;
+  animation: border-glow 3s ease-in-out infinite;
+}
+
+@keyframes border-glow {
+  0%, 100% { 
+    filter: drop-shadow(0 0 10px var(--glow-emerald)); 
+  }
+  50% { 
+    filter: drop-shadow(0 0 20px var(--glow-gold)); 
+  }
+}
+
+/* Glamorous Cards Enhancement */
+.card-glamour-enhanced {
+  background: var(--glass-light);
+  backdrop-filter: blur(25px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--duration-normal) var(--ease-luxury);
+  box-shadow: var(--shadow-luxury);
+}
+
+.card-glamour-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glow-white), transparent);
+}
+
+.card-glamour-enhanced::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, 
+    var(--emerald-500)/5 0%, 
+    var(--gold-500)/3 25%, 
+    var(--rose-500)/3 50%, 
+    var(--orange-500)/5 75%, 
+    transparent 100%);
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-luxury);
+  pointer-events: none;
+}
+
+.card-glamour-enhanced:hover::after {
+  opacity: 1;
+}
+
+/* ==================== 🌟 MOBILE OPTIMIZATIONS ==================== */
+
+@media (max-width: 768px) {
+  .glamour-layout-container {
+    --glamour-intensity: 0.5;
+    --glamour-particle-density: 0.2;
+    --glamour-animation-speed: 1.5;
+  }
+  
+  .glamour-particles > div {
+    filter: blur(1px);
+  }
+  
+  .glamour-ambient-lighting > div {
+    filter: blur(40px);
+  }
+  
+  .glamour-floating-elements {
+    opacity: 0.5;
+  }
+  
+  .yf-luxury-watermark {
+    font-size: 2rem !important;
+    opacity: 0.08 !important;
+  }
+}
+
+/* ==================== 🎨 DARK MODE GLAMOUR ENHANCEMENTS ==================== */
+
+.dark .glamour-layout-container {
+  --glow-emerald: hsla(158, 64%, 52%, 0.8);
+  --glow-gold: hsla(43, 96%, 56%, 0.8);
+  --glow-rose: hsla(351, 95%, 71%, 0.8);
+  --glow-orange: hsla(27, 96%, 61%, 0.8);
+}
+
+.dark .card-glamour-enhanced {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .border-glamour {
+  background: linear-gradient(var(--background-solid), var(--background-solid)) padding-box,
+              linear-gradient(135deg, var(--emerald-300), var(--gold-300), var(--rose-300)) border-box;
+}
+
+/* ==================== 🚀 PERFORMANCE & ACCESSIBILITY ==================== */
+
+/* GPU Acceleration for Glamour Components */
+.glamour-particles,
+.glamour-ambient-lighting,
+.glamour-floating-elements,
+.glamour-wallpaper,
+.yf-luxury-watermark {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+/* Reduce Motion Support for Glamour */
+@media (prefers-reduced-motion: reduce) {
+  .glamour-particles > div,
+  .glamour-ambient-lighting > div,
+  .glamour-floating-elements > div,
+  .yf-luxury-watermark,
+  .text-glamour-glow,
+  .bg-glamour-gradient,
+  .border-glamour {
+    animation: none !important;
+  }
+  
+  .glamour-layout-container {
+    --glamour-animation-speed: 0;
+  }
+}

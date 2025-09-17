@@ -85,6 +85,7 @@ import SurpriseLanding from "@/pages/SurpriseLanding";
 import ContactMagic from "@/pages/ContactMagic";
 import WorldTakeover from "@/pages/WorldTakeover";
 import YaadParty from "@/pages/YaadParty";
+import GlamourShowcase from "@/pages/glamour-showcase";
 import VoiceControl from "@/components/VoiceControl";
 import LiveStatusIndicator from "@/components/LiveStatusIndicator";
 import DashboardButton from "@/components/DashboardButton";
@@ -223,6 +224,12 @@ function Router() {
       <Route path="/party" component={YaadParty} />
       <Route path="/fun" component={YaadParty} />
       <Route path="/yaad-party" component={YaadParty} />
+      
+      {/* Glamour Showcase - Design System Demo */}
+      <Route path="/glamour" component={GlamourShowcase} />
+      <Route path="/glamour-showcase" component={GlamourShowcase} />
+      <Route path="/design-system" component={GlamourShowcase} />
+      <Route path="/luxury-demo" component={GlamourShowcase} />
       
       {/* Hidden Founder Profile - Private */}
       <Route path="/founder-vision-2024" component={FounderProfile} />
