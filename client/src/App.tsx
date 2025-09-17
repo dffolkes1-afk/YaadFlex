@@ -91,6 +91,7 @@ import LiveStatusIndicator from "@/components/LiveStatusIndicator";
 import DashboardButton from "@/components/DashboardButton";
 import { BlackRockCorporateHeader } from "@/components/BlackRockCorporateHeader";
 import { BlackRockCorporateFooter } from "@/components/BlackRockCorporateFooter";
+import { PageModeWrapper } from "@/components/PageModeWrapper";
 
 // Legal Pages
 import TermsOfService from "@/pages/terms-of-service";
@@ -285,7 +286,9 @@ function App() {
             <Toaster />
             <LiveStatusIndicator />
             <DashboardButton />
-            <Router />
+            <PageModeWrapper showModeIndicator={import.meta.env.DEV}>
+              <Router />
+            </PageModeWrapper>
             <RipleyControls />
             <VoiceControl />
           </main>
