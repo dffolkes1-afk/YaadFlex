@@ -58,7 +58,7 @@
   --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
   
   /* Geometry - Minimal & Clean */
-  --radius: 1.25rem;
+  --radius: 0.5rem;
   
   /* Shadows - Subtle and Professional */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
