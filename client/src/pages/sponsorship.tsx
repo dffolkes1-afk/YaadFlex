@@ -215,6 +215,16 @@ export default function SponsorshipPage() {
       {/* YF Watermark - subtle bottom right only */}
       <div className="yf-watermark"></div>
       
+      {/* Glamorous YF Theme Elements */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.08]">
+        {/* Luxury YF Monogram with Glow */}
+        <div className="absolute top-1/3 right-10 yf-monogram text-6xl font-black text-amber-500/30 animate-pulse drop-shadow-2xl">YF</div>
+        <div className="absolute bottom-1/4 left-20 yf-monogram text-5xl font-black text-emerald-500/25 animate-pulse drop-shadow-xl" style={{ animationDelay: '1s' }}>YF</div>
+        
+        {/* Sexy Gradient YaadFlex Text */}
+        <div className="absolute top-20 right-1/4 text-2xl font-extralight tracking-[0.3em] bg-gradient-to-r from-emerald-400/20 to-amber-400/15 bg-clip-text text-transparent rotate-12 drop-shadow-lg">YAADFLEX</div>
+      </div>
+      
       {/* Luxury Magazine Paper Texture */}
       <div className="absolute inset-0 opacity-[0.015] pointer-events-none">
         <div className="absolute inset-0" style={{
@@ -362,9 +372,17 @@ export default function SponsorshipPage() {
 
         {/* Executive Statement */}
         <div className="mb-32 py-20 bg-gradient-to-r from-amber-100 via-emerald-100 to-orange-100 dark:bg-slate-900/30 border-t-2 border-b-2 border-amber-400 relative luxury-yf">
+          {/* Glamorous YF Elements in Quote Section */}
+          <div className="absolute inset-0 pointer-events-none opacity-[0.06]">
+            <div className="absolute top-10 left-10 yf-monogram text-4xl font-black text-amber-600/40 rotate-45 drop-shadow-lg animate-pulse">YF</div>
+            <div className="absolute bottom-10 right-10 yf-monogram text-4xl font-black text-emerald-600/35 -rotate-45 drop-shadow-lg animate-pulse" style={{ animationDelay: '2s' }}>YF</div>
+          </div>
+          
           <div className="max-w-3xl mx-auto text-center px-8 relative z-10">
-            <div className="text-7xl font-serif text-amber-400 mb-6 leading-none">
+            <div className="text-7xl font-serif text-amber-400 mb-6 leading-none relative">
               "
+              {/* Sexy YF beside quote mark */}
+              <span className="yf-monogram text-lg font-black text-amber-500/40 absolute -right-8 top-2 animate-pulse drop-shadow-md">YF</span>
             </div>
             <blockquote className="text-3xl font-extralight text-emerald-800 dark:text-emerald-200 leading-relaxed mb-8 italic">
               Partnership excellence through strategic alignment with Jamaica's premier mobility ecosystem
@@ -457,10 +475,12 @@ export default function SponsorshipPage() {
                   {/* Selection Indicator */}
                   {selectedPackage === pkg.id && (
                     <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
-                      <div className="text-center">
+                      <div className="text-center relative">
                         <span className="text-sm font-light text-slate-600 dark:text-slate-400 tracking-[0.15em] uppercase">
                           Selected for Partnership
                         </span>
+                        {/* Glamorous YF on selected card */}
+                        <div className="absolute -right-4 -top-2 yf-monogram text-xs font-black text-amber-500/60 animate-pulse drop-shadow-sm">YF</div>
                       </div>
                     </div>
                   )}
@@ -492,6 +512,9 @@ export default function SponsorshipPage() {
               {/* Floating Elements */}
               <div className="absolute top-10 right-10 w-6 h-6 bg-gradient-to-r from-emerald-400/30 to-amber-400/30 rounded-full blur-sm animate-pulse"></div>
               <div className="absolute bottom-10 left-10 w-4 h-4 bg-gradient-to-r from-amber-400/40 to-orange-400/30 rounded-full blur-sm animate-bounce" style={{ animationDelay: '1s' }}></div>
+              
+              {/* Glamorous YF in Form Corner */}
+              <div className="absolute top-6 left-6 yf-monogram text-2xl font-black text-emerald-500/20 animate-pulse drop-shadow-sm">YF</div>
               <div className="space-y-8 relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
