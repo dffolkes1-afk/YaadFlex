@@ -1,5 +1,8 @@
 import { useEffect, useState, ReactNode } from 'react';
 import { YFBackgroundSystem } from './YFBackgroundSystem';
+import { useMotionPreferences } from '@/hooks/use-motion-preferences';
+import { useAdaptiveIntensity, usePerformanceMonitor } from '@/hooks/use-performance-monitor';
+import { GlamorousErrorBoundary, PerformanceErrorBoundary } from '@/components/ErrorBoundary';
 
 // ================== TYPES & INTERFACES ==================
 
@@ -8,6 +11,7 @@ interface GlamourLayoutProps {
   
   // Intensity Control
   intensity?: 'subtle' | 'medium' | 'bold';
+  adaptiveIntensity?: boolean;
   
   // Background & Style
   backgroundStyle?: 'corporate' | 'luxury' | 'tech' | 'caribbean' | 'classic' | 'textured' | 'old-english' | 'default';
@@ -35,6 +39,12 @@ interface GlamourLayoutProps {
   enableScrollEffects?: boolean;
   enableHoverEffects?: boolean;
   disableOnMobile?: boolean;
+  
+  // Performance & Accessibility
+  respectMotionPreferences?: boolean;
+  performanceMonitoring?: boolean;
+  lazyLoadEffects?: boolean;
+  errorBoundary?: boolean;
 }
 
 // ================== FLOATING PARTICLES COMPONENT ==================

@@ -1,11 +1,13 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
+import { useMotionPreferences, useConditionalEffect } from "@/hooks/use-motion-preferences"
+import { useAdaptiveIntensity } from "@/hooks/use-performance-monitor"
 
 // ================== GLAMOROUS SECTION VARIANTS ==================
 
 const glamorousSectionVariants = cva(
-  "relative overflow-hidden transition-all duration-500 transform-gpu will-change-transform",
+  "relative overflow-hidden motion-safe:transition-all motion-safe:duration-500 motion-safe:transform-gpu motion-safe:will-change-transform motion-reduce:transition-colors",
   {
     variants: {
       variant: {

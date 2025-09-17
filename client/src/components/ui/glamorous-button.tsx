@@ -2,22 +2,24 @@ import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
+import { useMotionPreferences, useConditionalEffect } from "@/hooks/use-motion-preferences"
+import { useAdaptiveIntensity } from "@/hooks/use-performance-monitor"
 
 // ================== GLAMOROUS BUTTON VARIANTS ==================
 
 const glamorousButtonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 relative overflow-hidden group transform-gpu will-change-transform",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 relative overflow-hidden group motion-safe:transform-gpu motion-safe:will-change-transform",
   {
     variants: {
       variant: {
-        luxury: "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:from-emerald-400 hover:to-emerald-500 shadow-lg hover:shadow-emerald-500/25 hover:shadow-2xl hover:-translate-y-1 hover:scale-105 active:scale-95",
-        premium: "bg-gradient-to-r from-gold-500 via-amber-500 to-orange-500 text-white hover:from-gold-400 hover:via-amber-400 hover:to-orange-400 shadow-lg hover:shadow-gold-500/25 hover:shadow-2xl hover:-translate-y-1 hover:scale-105 active:scale-95",
-        glamour: "bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 text-white hover:from-rose-400 hover:via-pink-400 hover:to-purple-400 shadow-lg hover:shadow-rose-500/25 hover:shadow-2xl hover:-translate-y-1 hover:scale-105 active:scale-95",
-        glass: "bg-white/10 backdrop-blur-md border border-white/20 text-foreground hover:bg-white/20 hover:border-white/30 shadow-lg hover:shadow-white/10 hover:shadow-2xl hover:-translate-y-1 hover:scale-105 active:scale-95",
-        neon: "bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:from-cyan-400 hover:to-blue-400 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/50 hover:shadow-2xl hover:-translate-y-1 hover:scale-105 active:scale-95 border-2 border-cyan-400/50 hover:border-cyan-300",
-        party: "bg-gradient-to-r from-emerald-500 via-gold-500 to-rose-500 text-white hover:from-emerald-400 hover:via-gold-400 hover:to-rose-400 shadow-lg hover:shadow-emerald-500/25 hover:shadow-2xl hover:-translate-y-1 hover:scale-105 active:scale-95 bg-size-200 animate-gradient",
-        magnetic: "bg-gradient-to-r from-slate-800 to-slate-900 text-white hover:from-slate-700 hover:to-slate-800 shadow-lg hover:shadow-slate-500/25 hover:shadow-2xl hover:-translate-y-2 hover:scale-110 hover:rotate-1 active:scale-95 active:rotate-0",
-        holographic: "bg-gradient-to-r from-emerald-400 via-gold-400 via-rose-400 to-purple-400 text-white hover:bg-gradient-to-l shadow-lg hover:shadow-2xl hover:-translate-y-1 hover:scale-105 active:scale-95 bg-size-400 animate-gradient",
+        luxury: "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:from-emerald-400 hover:to-emerald-500 shadow-lg hover:shadow-emerald-500/25 hover:shadow-2xl motion-safe:hover:-translate-y-1 motion-safe:hover:scale-105 motion-safe:active:scale-95 motion-safe:transition-all motion-safe:duration-300 motion-reduce:transition-colors focus:ring-emerald-500/50",
+        premium: "bg-gradient-to-r from-gold-500 via-amber-500 to-orange-500 text-white hover:from-gold-400 hover:via-amber-400 hover:to-orange-400 shadow-lg hover:shadow-gold-500/25 hover:shadow-2xl motion-safe:hover:-translate-y-1 motion-safe:hover:scale-105 motion-safe:active:scale-95 motion-safe:transition-all motion-safe:duration-300 motion-reduce:transition-colors focus:ring-amber-500/50",
+        glamour: "bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 text-white hover:from-rose-400 hover:via-pink-400 hover:to-purple-400 shadow-lg hover:shadow-rose-500/25 hover:shadow-2xl motion-safe:hover:-translate-y-1 motion-safe:hover:scale-105 motion-safe:active:scale-95 motion-safe:transition-all motion-safe:duration-300 motion-reduce:transition-colors focus:ring-rose-500/50",
+        glass: "bg-white/10 backdrop-blur-md border border-white/20 text-foreground hover:bg-white/20 hover:border-white/30 shadow-lg hover:shadow-white/10 hover:shadow-2xl motion-safe:hover:-translate-y-1 motion-safe:hover:scale-105 motion-safe:active:scale-95 motion-safe:transition-all motion-safe:duration-300 motion-reduce:transition-colors focus:ring-white/50",
+        neon: "bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:from-cyan-400 hover:to-blue-400 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/50 hover:shadow-2xl motion-safe:hover:-translate-y-1 motion-safe:hover:scale-105 motion-safe:active:scale-95 border-2 border-cyan-400/50 hover:border-cyan-300 motion-safe:transition-all motion-safe:duration-300 motion-reduce:transition-colors focus:ring-cyan-500/50",
+        party: "bg-gradient-to-r from-emerald-500 via-gold-500 to-rose-500 text-white hover:from-emerald-400 hover:via-gold-400 hover:to-rose-400 shadow-lg hover:shadow-emerald-500/25 hover:shadow-2xl motion-safe:hover:-translate-y-1 motion-safe:hover:scale-105 motion-safe:active:scale-95 bg-size-200 motion-safe:animate-gradient motion-reduce:bg-emerald-500 motion-safe:transition-all motion-safe:duration-300 motion-reduce:transition-colors focus:ring-emerald-500/50",
+        magnetic: "bg-gradient-to-r from-slate-800 to-slate-900 text-white hover:from-slate-700 hover:to-slate-800 shadow-lg hover:shadow-slate-500/25 hover:shadow-2xl motion-safe:hover:-translate-y-2 motion-safe:hover:scale-110 motion-safe:hover:rotate-1 motion-safe:active:scale-95 motion-safe:active:rotate-0 motion-safe:transition-all motion-safe:duration-300 motion-reduce:transition-colors focus:ring-slate-500/50",
+        holographic: "bg-gradient-to-r from-emerald-400 via-gold-400 via-rose-400 to-purple-400 text-white hover:bg-gradient-to-l shadow-lg hover:shadow-2xl motion-safe:hover:-translate-y-1 motion-safe:hover:scale-105 motion-safe:active:scale-95 bg-size-400 motion-safe:animate-gradient motion-reduce:bg-emerald-500 motion-safe:transition-all motion-safe:duration-300 motion-reduce:transition-colors focus:ring-emerald-500/50",
       },
       size: {
         default: "h-12 px-6 py-3 text-sm",
@@ -55,15 +57,18 @@ interface FloatingElementsProps {
 }
 
 function FloatingElements({ intensity, enabled }: FloatingElementsProps) {
-  if (!enabled) return null;
+  const motionPreferences = useMotionPreferences();
+  const { actualIntensity, effectMultiplier } = useAdaptiveIntensity(intensity);
+  
+  if (!enabled || motionPreferences.prefersReducedMotion) return null;
   
   const getElementCount = () => {
-    switch (intensity) {
-      case 'subtle': return 2;
-      case 'medium': return 4;
-      case 'bold': return 6;
-      default: return 2;
-    }
+    const baseCounts = {
+      'subtle': 2,
+      'medium': 4, 
+      'bold': 6
+    };
+    return Math.floor(baseCounts[actualIntensity] * effectMultiplier);
   };
   
   const elements = ['✨', '💎', '⭐', '🌟', '💫', '✴️'];
@@ -74,13 +79,14 @@ function FloatingElements({ intensity, enabled }: FloatingElementsProps) {
       {elements.slice(0, elementCount).map((element, i) => (
         <div
           key={i}
-          className="absolute text-xs opacity-30 animate-float"
+          className="absolute text-xs opacity-30 motion-safe:animate-float motion-reduce:animate-none"
           style={{
             left: `${20 + (i * 15)}%`,
             top: `${10 + (i * 10)}%`,
-            animationDelay: `${i * 0.5}s`,
-            animationDuration: `${3 + i}s`,
+            animationDelay: motionPreferences.prefersReducedMotion ? '0s' : `${i * 0.5}s`,
+            animationDuration: motionPreferences.prefersReducedMotion ? '0s' : `${3 + i}s`,
           }}
+          aria-hidden="true"
         >
           {element}
         </div>
@@ -99,6 +105,11 @@ export interface GlamorousButtonProps
   elementIntensity?: 'subtle' | 'medium' | 'bold';
   rippleEffect?: boolean;
   magneticHover?: boolean;
+  respectMotionPreferences?: boolean;
+  adaptivePerformance?: boolean;
+  ariaLabel?: string;
+  ariaDescribedby?: string;
+  loadingState?: boolean;
   'data-testid'?: string;
 }
 
@@ -114,19 +125,50 @@ const GlamorousButton = React.forwardRef<HTMLButtonElement, GlamorousButtonProps
     elementIntensity = 'medium',
     rippleEffect = true,
     magneticHover = false,
+    respectMotionPreferences = true,
+    adaptivePerformance = true,
+    ariaLabel,
+    ariaDescribedby,
+    loadingState = false,
     'data-testid': testId,
     onClick,
     children,
+    disabled,
     ...props 
   }, ref) => {
     const [ripples, setRipples] = React.useState<Array<{ id: number; x: number; y: number }>>([]);
+    const [isVisible, setIsVisible] = React.useState(false);
     const buttonRef = React.useRef<HTMLButtonElement>(null);
+    
+    const motionPreferences = useMotionPreferences();
+    const { actualIntensity, shouldReduceEffects } = useAdaptiveIntensity(elementIntensity);
     
     React.useImperativeHandle(ref, () => buttonRef.current!);
     
-    // Ripple effect handler
+    // Intersection Observer for performance
+    React.useEffect(() => {
+      if (!adaptivePerformance) {
+        setIsVisible(true);
+        return;
+      }
+      
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          setIsVisible(entry.isIntersecting);
+        },
+        { rootMargin: '50px' }
+      );
+      
+      if (buttonRef.current) {
+        observer.observe(buttonRef.current);
+      }
+      
+      return () => observer.disconnect();
+    }, [adaptivePerformance]);
+    
+    // Ripple effect handler with motion preferences
     const handleClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-      if (rippleEffect && buttonRef.current) {
+      if (rippleEffect && buttonRef.current && isVisible && !motionPreferences.prefersReducedMotion && !shouldReduceEffects) {
         const rect = buttonRef.current.getBoundingClientRect();
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
@@ -135,24 +177,26 @@ const GlamorousButton = React.forwardRef<HTMLButtonElement, GlamorousButtonProps
         setRipples(prev => [...prev, { id, x, y }]);
         
         // Remove ripple after animation
+        const duration = motionPreferences.animationDuration === 'fast' ? 300 : 600;
         setTimeout(() => {
           setRipples(prev => prev.filter(ripple => ripple.id !== id));
-        }, 600);
+        }, duration);
       }
       
       onClick?.(event);
-    }, [onClick, rippleEffect]);
+    }, [onClick, rippleEffect, isVisible, motionPreferences, shouldReduceEffects]);
     
-    // Magnetic hover effect
+    // Magnetic hover effect with motion preferences
     const handleMouseMove = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-      if (magneticHover && buttonRef.current) {
+      if (magneticHover && buttonRef.current && !motionPreferences.prefersReducedMotion && !shouldReduceEffects) {
         const rect = buttonRef.current.getBoundingClientRect();
         const x = event.clientX - rect.left - rect.width / 2;
         const y = event.clientY - rect.top - rect.height / 2;
         
-        buttonRef.current.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px) scale(1.05)`;
+        const intensity = shouldReduceEffects ? 0.05 : 0.1;
+        buttonRef.current.style.transform = `translate(${x * intensity}px, ${y * intensity}px) scale(1.05)`;
       }
-    }, [magneticHover]);
+    }, [magneticHover, motionPreferences.prefersReducedMotion, shouldReduceEffects]);
     
     const handleMouseLeave = React.useCallback(() => {
       if (magneticHover && buttonRef.current) {
@@ -164,7 +208,10 @@ const GlamorousButton = React.forwardRef<HTMLButtonElement, GlamorousButtonProps
     
     const buttonClasses = cn(
       glamorousButtonVariants({ variant, size, glow, sparkle }),
-      magneticHover && "transition-transform duration-200 ease-out",
+      magneticHover && "motion-safe:transition-transform motion-safe:duration-200 motion-safe:ease-out",
+      loadingState && "opacity-75 cursor-wait",
+      !isVisible && adaptivePerformance && "opacity-50",
+      respectMotionPreferences && motionPreferences.prefersReducedMotion && "transform-none",
       className
     );
     
@@ -173,30 +220,38 @@ const GlamorousButton = React.forwardRef<HTMLButtonElement, GlamorousButtonProps
         className={buttonClasses}
         ref={buttonRef}
         onClick={handleClick}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
+        onMouseMove={respectMotionPreferences ? handleMouseMove : undefined}
+        onMouseLeave={respectMotionPreferences ? handleMouseLeave : undefined}
         data-testid={testId}
+        aria-label={ariaLabel}
+        aria-describedby={ariaDescribedby}
+        aria-busy={loadingState}
+        disabled={disabled || loadingState}
         {...props}
       >
         {/* Floating Elements */}
-        {floatingElements && (
-          <FloatingElements intensity={elementIntensity} enabled={floatingElements} />
+        {floatingElements && isVisible && (
+          <FloatingElements intensity={actualIntensity} enabled={floatingElements} />
         )}
         
         {/* Ripple Effects */}
-        {ripples.map(ripple => (
-          <span
-            key={ripple.id}
-            className="absolute bg-white/30 rounded-full animate-ping pointer-events-none"
-            style={{
-              left: ripple.x - 10,
-              top: ripple.y - 10,
-              width: 20,
-              height: 20,
-              animationDuration: '0.6s',
-            }}
-          />
-        ))}
+        {ripples.map(ripple => {
+          const duration = motionPreferences.animationDuration === 'fast' ? '0.3s' : '0.6s';
+          return (
+            <span
+              key={ripple.id}
+              className="absolute bg-white/30 rounded-full motion-safe:animate-ping motion-reduce:animate-none pointer-events-none"
+              style={{
+                left: ripple.x - 10,
+                top: ripple.y - 10,
+                width: 20,
+                height: 20,
+                animationDuration: duration,
+              }}
+              aria-hidden="true"
+            />
+          );
+        })}
         
         {/* Button Content */}
         <span className="relative z-10 flex items-center gap-2">
@@ -204,8 +259,8 @@ const GlamorousButton = React.forwardRef<HTMLButtonElement, GlamorousButtonProps
         </span>
         
         {/* Shine overlay for certain variants */}
-        {(variant === 'luxury' || variant === 'premium' || variant === 'party') && (
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        {(variant === 'luxury' || variant === 'premium' || variant === 'party') && isVisible && !motionPreferences.prefersReducedMotion && (
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 motion-safe:transition-opacity motion-safe:duration-300 motion-reduce:opacity-0 pointer-events-none" aria-hidden="true" />
         )}
       </Comp>
     );

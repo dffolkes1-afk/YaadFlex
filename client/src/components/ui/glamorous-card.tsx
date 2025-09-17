@@ -1,15 +1,17 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
+import { useMotionPreferences, useConditionalEffect } from "@/hooks/use-motion-preferences"
+import { useAdaptiveIntensity } from "@/hooks/use-performance-monitor"
 
 // ================== GLAMOROUS CARD VARIANTS ==================
 
 const glamorousCardVariants = cva(
-  "relative overflow-hidden rounded-xl transition-all duration-300 transform-gpu will-change-transform group",
+  "relative overflow-hidden rounded-xl motion-safe:transform-gpu motion-safe:will-change-transform group motion-safe:transition-all motion-safe:duration-300 motion-reduce:transition-colors",
   {
     variants: {
       variant: {
-        luxury: "bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md border border-white/20 shadow-xl hover:shadow-emerald-500/20 hover:shadow-2xl hover:-translate-y-2 hover:scale-[1.02]",
+        luxury: "bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md border border-white/20 shadow-xl hover:shadow-emerald-500/20 hover:shadow-2xl motion-safe:hover:-translate-y-2 motion-safe:hover:scale-[1.02] focus-within:ring-2 focus-within:ring-emerald-500/50 focus-within:ring-offset-2",
         premium: "bg-gradient-to-br from-gold-50/80 to-amber-50/60 backdrop-blur-md border border-gold-200/50 shadow-xl hover:shadow-gold-500/25 hover:shadow-2xl hover:-translate-y-2 hover:scale-[1.02]",
         glass: "bg-white/5 backdrop-blur-xl border border-white/10 shadow-lg hover:bg-white/10 hover:border-white/20 hover:shadow-white/10 hover:shadow-2xl hover:-translate-y-2 hover:scale-[1.02]",
         gradient: "bg-gradient-to-br from-emerald-500/20 via-gold-500/20 to-rose-500/20 backdrop-blur-md border border-white/30 shadow-xl hover:shadow-2xl hover:-translate-y-3 hover:scale-[1.03]",
@@ -17,7 +19,7 @@ const glamorousCardVariants = cva(
         neon: "bg-black/40 backdrop-blur-md border-2 border-cyan-400/50 shadow-lg shadow-cyan-500/25 hover:border-cyan-300 hover:shadow-cyan-500/50 hover:shadow-2xl hover:-translate-y-2 hover:scale-[1.02]",
         holographic: "bg-gradient-to-br from-emerald-400/20 via-gold-400/20 via-rose-400/20 to-purple-400/20 backdrop-blur-md border border-white/30 shadow-xl hover:shadow-2xl hover:-translate-y-3 hover:scale-[1.03] holographic",
         depth3d: "bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-md border border-white/20 shadow-2xl hover:shadow-3xl depth-3d hover:-translate-y-2 hover:scale-[1.02]",
-        corporate: "bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-lg hover:shadow-xl hover:-translate-y-1 hover:scale-[1.01]",
+        corporate: "bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-lg hover:shadow-xl motion-safe:hover:-translate-y-1 motion-safe:hover:scale-[1.01] focus-within:ring-2 focus-within:ring-blue-500/50 focus-within:ring-offset-2",
       },
       size: {
         sm: "p-4",
@@ -56,32 +58,36 @@ interface AmbientParticlesProps {
 }
 
 function AmbientParticles({ intensity, enabled }: AmbientParticlesProps) {
-  if (!enabled) return null;
+  const motionPreferences = useMotionPreferences();
+  const { actualIntensity, effectMultiplier } = useAdaptiveIntensity(intensity);
+  
+  if (!enabled || motionPreferences.prefersReducedMotion) return null;
   
   const getParticleCount = () => {
-    switch (intensity) {
-      case 'subtle': return 3;
-      case 'medium': return 6;
-      case 'bold': return 10;
-      default: return 3;
-    }
+    const baseCounts = {
+      'subtle': 3,
+      'medium': 6,
+      'bold': 10
+    };
+    return Math.floor(baseCounts[actualIntensity] * effectMultiplier);
   };
   
   const particles = ['✨', '💎', '⭐', '🌟', '💫', '✴️', '💰', '👑', '🏆', '💍'];
   const particleCount = getParticleCount();
   
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20 group-hover:opacity-40 transition-opacity duration-500">
+    <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20 group-hover:opacity-40 motion-safe:transition-opacity motion-safe:duration-500 motion-reduce:opacity-20">
       {particles.slice(0, particleCount).map((particle, i) => (
         <div
           key={i}
-          className="absolute text-xs animate-float"
+          className="absolute text-xs motion-safe:animate-float motion-reduce:animate-none"
           style={{
             left: `${Math.random() * 80 + 10}%`,
             top: `${Math.random() * 80 + 10}%`,
-            animationDelay: `${i * 0.8}s`,
-            animationDuration: `${4 + i * 0.5}s`,
+            animationDelay: motionPreferences.prefersReducedMotion ? '0s' : `${i * 0.8}s`,
+            animationDuration: motionPreferences.prefersReducedMotion ? '0s' : `${4 + i * 0.5}s`,
           }}
+          aria-hidden="true"
         >
           {particle}
         </div>
@@ -192,6 +198,11 @@ export interface GlamorousCardProps
   backgroundPattern?: 'dots' | 'grid' | 'waves' | 'orbs' | 'none';
   backgroundIntensity?: 'subtle' | 'medium' | 'bold';
   entrance?: 'none' | 'fade' | 'slide' | 'scale' | 'float';
+  respectMotionPreferences?: boolean;
+  adaptivePerformance?: boolean;
+  lazyLoad?: boolean;
+  ariaLabel?: string;
+  ariaDescribedby?: string;
   'data-testid'?: string;
 }
 
@@ -210,47 +221,66 @@ const GlamorousCard = React.forwardRef<HTMLDivElement, GlamorousCardProps>(
     backgroundPattern = 'none',
     backgroundIntensity = 'subtle',
     entrance = 'none',
+    respectMotionPreferences = true,
+    adaptivePerformance = true,
+    lazyLoad = true,
+    ariaLabel,
+    ariaDescribedby,
     'data-testid': testId,
     children,
     ...props 
   }, ref) => {
     const [isVisible, setIsVisible] = React.useState(false);
+    const [isInView, setIsInView] = React.useState(false);
     const cardRef = React.useRef<HTMLDivElement>(null);
+    
+    const motionPreferences = useMotionPreferences();
+    const { actualIntensity, shouldReduceEffects } = useAdaptiveIntensity(particleIntensity);
     
     React.useImperativeHandle(ref, () => cardRef.current!);
     
-    // Intersection Observer for entrance animations
+    // Intersection Observer for entrance animations and lazy loading
     React.useEffect(() => {
-      if (entrance === 'none') {
-        setIsVisible(true);
-        return;
-      }
-      
       const observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
-            setIsVisible(true);
-            observer.disconnect();
+            setIsInView(true);
+            if (entrance !== 'none') {
+              setIsVisible(true);
+            }
+            if (!lazyLoad) {
+              observer.disconnect();
+            }
+          } else if (lazyLoad) {
+            setIsInView(false);
           }
         },
-        { threshold: 0.1 }
+        { 
+          threshold: entrance === 'none' ? 0.1 : 0.2,
+          rootMargin: adaptivePerformance ? '100px' : '50px'
+        }
       );
       
       if (cardRef.current) {
         observer.observe(cardRef.current);
       }
       
+      // Set visible immediately if no entrance animation
+      if (entrance === 'none') {
+        setIsVisible(true);
+      }
+      
       return () => observer.disconnect();
-    }, [entrance]);
+    }, [entrance, lazyLoad, adaptivePerformance]);
     
     const getEntranceClasses = () => {
-      if (entrance === 'none' || !isVisible) return '';
+      if (entrance === 'none' || !isVisible || motionPreferences.prefersReducedMotion) return '';
       
       const entranceAnimations = {
-        fade: 'animate-in fade-in duration-700',
-        slide: 'animate-in slide-in-from-bottom-4 duration-700',
-        scale: 'animate-in zoom-in-95 duration-700',
-        float: 'animate-in slide-in-from-bottom-8 fade-in duration-1000',
+        fade: 'motion-safe:animate-in motion-safe:fade-in motion-safe:duration-700',
+        slide: 'motion-safe:animate-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-700',
+        scale: 'motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:duration-700',
+        float: 'motion-safe:animate-in motion-safe:slide-in-from-bottom-8 motion-safe:fade-in motion-safe:duration-1000',
       };
       
       return entranceAnimations[entrance] || '';
@@ -260,6 +290,8 @@ const GlamorousCard = React.forwardRef<HTMLDivElement, GlamorousCardProps>(
       glamorousCardVariants({ variant, size, glow, shine }),
       getEntranceClasses(),
       !isVisible && entrance !== 'none' && 'opacity-0',
+      !isInView && lazyLoad && shouldReduceEffects && 'opacity-50',
+      respectMotionPreferences && motionPreferences.prefersReducedMotion && 'transform-none',
       className
     );
     
@@ -268,16 +300,19 @@ const GlamorousCard = React.forwardRef<HTMLDivElement, GlamorousCardProps>(
         className={cardClasses}
         ref={cardRef}
         data-testid={testId}
+        aria-label={ariaLabel}
+        aria-describedby={ariaDescribedby}
+        role={ariaLabel ? 'region' : undefined}
         {...props}
       >
         {/* Background Pattern */}
-        <LuxuryBackground pattern={backgroundPattern} intensity={backgroundIntensity} />
+        {isInView && <LuxuryBackground pattern={backgroundPattern} intensity={backgroundIntensity} />}
         
         {/* Ambient Particles */}
-        <AmbientParticles intensity={particleIntensity} enabled={ambientParticles} />
+        {isInView && <AmbientParticles intensity={actualIntensity} enabled={ambientParticles} />}
         
         {/* Glow Border */}
-        <GlowBorder variant={glowVariant} intensity={glowIntensity} enabled={glowBorder} />
+        {isInView && <GlowBorder variant={glowVariant} intensity={glowIntensity} enabled={glowBorder} />}
         
         {/* Content */}
         <div className="relative z-10">
