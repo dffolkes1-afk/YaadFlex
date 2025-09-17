@@ -73,27 +73,27 @@
   --neutral-900: hsl(221, 39%, 11%);
   --neutral-950: hsl(224, 71%, 4%);
 
-  /* 🖤 UBER-STYLE ELEGANT BLACK */
-  --background: hsl(0, 0%, 0%);
-  --background-solid: hsl(0, 0%, 0%);
-  --foreground: hsl(0, 0%, 100%);
-  --card: hsl(0, 0%, 2%);
-  --card-foreground: hsl(0, 0%, 100%);
-  --popover: hsl(0, 0%, 2%);
-  --popover-foreground: hsl(0, 0%, 100%);
-  --primary: hsl(0, 0%, 100%);
-  --primary-foreground: hsl(0, 0%, 0%);
-  --secondary: hsl(0, 0%, 8%);
-  --secondary-foreground: hsl(0, 0%, 100%);
-  --muted: hsl(0, 0%, 8%);
-  --muted-foreground: hsl(0, 0%, 80%);
-  --accent: hsl(0, 0%, 100%);
-  --accent-foreground: hsl(0, 0%, 0%);
+  /* 🤍 YAADFLEX WHITE LUXURY BRAND */
+  --background: hsl(0, 0%, 100%);
+  --background-solid: hsl(0, 0%, 100%);
+  --foreground: hsl(0, 0%, 0%);
+  --card: hsl(0, 0%, 98%);
+  --card-foreground: hsl(0, 0%, 0%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(0, 0%, 0%);
+  --primary: hsl(220, 100%, 50%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(210, 20%, 96%);
+  --secondary-foreground: hsl(0, 0%, 0%);
+  --muted: hsl(210, 20%, 96%);
+  --muted-foreground: hsl(0, 0%, 40%);
+  --accent: hsl(270, 100%, 70%);
+  --accent-foreground: hsl(0, 0%, 100%);
   --destructive: hsl(0, 84%, 60%);
   --destructive-foreground: hsl(0, 0%, 100%);
-  --border: hsl(0, 0%, 12%);
-  --input: hsl(0, 0%, 5%);
-  --ring: hsl(0, 0%, 100%);
+  --border: hsl(0, 0%, 85%);
+  --input: hsl(0, 0%, 98%);
+  --ring: hsl(220, 100%, 50%);
 
   /* 🎨 LUXURY CHART COLORS */
   --chart-1: var(--emerald-500);
@@ -145,27 +145,27 @@
 }
 
 .dark {
-  /* 🖤 UBER-STYLE ELEGANT BLACK */
-  --background: hsl(0, 0%, 0%);
-  --background-solid: hsl(0, 0%, 0%);
-  --foreground: hsl(0, 0%, 100%);
-  --card: hsl(0, 0%, 2%);
-  --card-foreground: hsl(0, 0%, 100%);
-  --popover: hsl(0, 0%, 2%);
-  --popover-foreground: hsl(0, 0%, 100%);
-  --primary: hsl(0, 0%, 100%);
-  --primary-foreground: hsl(0, 0%, 0%);
-  --secondary: hsl(0, 0%, 8%);
-  --secondary-foreground: hsl(0, 0%, 100%);
-  --muted: hsl(0, 0%, 8%);
-  --muted-foreground: hsl(0, 0%, 80%);
-  --accent: hsl(0, 0%, 100%);
-  --accent-foreground: hsl(0, 0%, 0%);
+  /* 🤍 YAADFLEX WHITE LUXURY BRAND */
+  --background: hsl(0, 0%, 100%);
+  --background-solid: hsl(0, 0%, 100%);
+  --foreground: hsl(0, 0%, 0%);
+  --card: hsl(0, 0%, 98%);
+  --card-foreground: hsl(0, 0%, 0%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(0, 0%, 0%);
+  --primary: hsl(220, 100%, 50%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(210, 20%, 96%);
+  --secondary-foreground: hsl(0, 0%, 0%);
+  --muted: hsl(210, 20%, 96%);
+  --muted-foreground: hsl(0, 0%, 40%);
+  --accent: hsl(270, 100%, 70%);
+  --accent-foreground: hsl(0, 0%, 100%);
   --destructive: hsl(0, 84%, 60%);
   --destructive-foreground: hsl(0, 0%, 100%);
-  --border: hsl(0, 0%, 12%);
-  --input: hsl(0, 0%, 5%);
-  --ring: hsl(0, 0%, 100%);
+  --border: hsl(0, 0%, 85%);
+  --input: hsl(0, 0%, 98%);
+  --ring: hsl(220, 100%, 50%);
 
   /* Professional Accents */
   --glow-emerald: hsla(0, 0%, 45%, 0.3);
@@ -507,11 +507,61 @@
 
 body {
   font-family: var(--font-sans);
-  background: #000000;
-  color: #ffffff;
+  background: 
+    radial-gradient(circle at 15% 85%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 85% 15%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+    #ffffff;
+  color: #000000;
   line-height: 1.6;
   overflow-x: hidden;
   position: relative;
+}
+
+body::before {
+  content: 'YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF YF';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 6rem;
+  color: rgba(0, 0, 0, 0.02);
+  word-spacing: 4rem;
+  line-height: 8rem;
+  transform: rotate(-15deg);
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+
+body::after {
+  content: 'YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX YAADFLEX';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 2rem;
+  color: rgba(59, 130, 246, 0.05);
+  word-spacing: 2rem;
+  line-height: 4rem;
+  transform: rotate(45deg) translateX(50%);
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+  white-space: pre-wrap;
+  animation: slide-watermark 20s linear infinite;
+}
+
+@keyframes slide-watermark {
+  0% { transform: rotate(45deg) translateX(-100%); }
+  100% { transform: rotate(45deg) translateX(100%); }
 }
 
 /* Luxury Typography Hierarchy */
@@ -525,20 +575,21 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-size: 4rem;
-  color: #ffffff;
-  font-weight: 700;
+  color: #000000;
+  font-weight: 900;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
   font-size: 3rem;
-  color: #ffffff;
-  font-weight: 600;
+  color: #000000;
+  font-weight: 700;
 }
 
 h3 {
   font-size: 2.5rem;
-  color: #ffffff;
-  font-weight: 500;
+  color: #000000;
+  font-weight: 600;
 }
 
 /* Luxury Scrollbar */
