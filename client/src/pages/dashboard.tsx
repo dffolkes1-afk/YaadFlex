@@ -110,30 +110,30 @@ function StatsWidget({ widget }: { widget: DashboardWidget }) {
   });
 
   return (
-    <Card className="h-full" data-testid="widget-stats">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium flex items-center gap-2">
-          <TrendingUp className="h-4 w-4 text-emerald-600" />
+    <Card className="card-elegant h-full" data-testid="widget-stats">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-sm font-medium flex items-center gap-2 text-foreground">
+          <TrendingUp className="h-4 w-4 text-muted-foreground" />
           {widget.title}
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div>
-            <p className="text-2xl font-bold text-emerald-600">{stats?.countries || 195}</p>
-            <p className="text-muted-foreground">Countries</p>
+      <CardContent className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          <div className="text-center">
+            <p className="text-2xl font-semibold text-foreground">{stats?.countries || 195}</p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wider">Countries</p>
           </div>
-          <div>
-            <p className="text-2xl font-bold text-amber-600">{stats?.uptime || '99.99%'}</p>
-            <p className="text-muted-foreground">Uptime</p>
+          <div className="text-center">
+            <p className="text-2xl font-semibold text-primary">{stats?.uptime || '99.99%'}</p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wider">Uptime</p>
           </div>
-          <div>
-            <p className="text-2xl font-bold text-blue-600">{stats?.activeDefenses || 47}</p>
-            <p className="text-muted-foreground">Active Defenses</p>
+          <div className="text-center">
+            <p className="text-2xl font-semibold text-foreground">{stats?.activeDefenses || 47}</p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wider">Defenses</p>
           </div>
-          <div>
-            <p className="text-2xl font-bold text-red-600">{stats?.threatsBlocked || 1247}</p>
-            <p className="text-muted-foreground">Threats Blocked</p>
+          <div className="text-center">
+            <p className="text-2xl font-semibold text-foreground">{stats?.threatsBlocked || 1247}</p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wider">Blocked</p>
           </div>
         </div>
       </CardContent>
@@ -152,29 +152,27 @@ function WalletWidget({ widget }: { widget: DashboardWidget }) {
   ) || 0;
 
   return (
-    <Card className="h-full" data-testid="widget-wallet">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium flex items-center gap-2">
-          <Wallet className="h-4 w-4 text-emerald-600" />
+    <Card className="card-elegant h-full" data-testid="widget-wallet">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-sm font-medium flex items-center gap-2 text-foreground">
+          <Wallet className="h-4 w-4 text-muted-foreground" />
           {widget.title}
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          <div>
-            <p className="text-2xl font-bold">JMD {totalBalance.toLocaleString()}</p>
-            <p className="text-sm text-muted-foreground">Total Balance</p>
-          </div>
-          <div className="flex gap-2">
-            <Button size="sm" className="flex-1">
-              <Plus className="h-3 w-3 mr-1" />
-              Add Money
-            </Button>
-            <Button size="sm" variant="outline" className="flex-1">
-              <DollarSign className="h-3 w-3 mr-1" />
-              Send
-            </Button>
-          </div>
+      <CardContent className="space-y-4">
+        <div className="text-center">
+          <p className="text-3xl font-semibold text-foreground">JMD {totalBalance.toLocaleString()}</p>
+          <p className="text-xs text-muted-foreground uppercase tracking-wider mt-1">Available Balance</p>
+        </div>
+        <div className="flex gap-2">
+          <Button size="sm" className="flex-1 btn-primary">
+            <Plus className="h-3 w-3 mr-1" />
+            Add
+          </Button>
+          <Button size="sm" variant="outline" className="flex-1 btn-secondary">
+            <DollarSign className="h-3 w-3 mr-1" />
+            Send
+          </Button>
         </div>
       </CardContent>
     </Card>
@@ -183,25 +181,25 @@ function WalletWidget({ widget }: { widget: DashboardWidget }) {
 
 function QuickActionsWidget({ widget }: { widget: DashboardWidget }) {
   return (
-    <Card className="h-full" data-testid="widget-quick-actions">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium flex items-center gap-2">
-          <Zap className="h-4 w-4 text-amber-600" />
+    <Card className="card-elegant h-full" data-testid="widget-quick-actions">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-sm font-medium flex items-center gap-2 text-foreground">
+          <Zap className="h-4 w-4 text-muted-foreground" />
           {widget.title}
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid gap-2">
-          <Button size="sm" variant="outline" className="justify-start">
-            <Car className="h-3 w-3 mr-2" />
+        <div className="space-y-2">
+          <Button size="sm" variant="outline" className="w-full justify-start btn-secondary">
+            <Car className="h-3 w-3 mr-2 text-muted-foreground" />
             Book Ride
           </Button>
-          <Button size="sm" variant="outline" className="justify-start">
-            <ShoppingBag className="h-3 w-3 mr-2" />
+          <Button size="sm" variant="outline" className="w-full justify-start btn-secondary">
+            <ShoppingBag className="h-3 w-3 mr-2 text-muted-foreground" />
             Marketplace
           </Button>
-          <Button size="sm" variant="outline" className="justify-start">
-            <MessageCircle className="h-3 w-3 mr-2" />
+          <Button size="sm" variant="outline" className="w-full justify-start btn-secondary">
+            <MessageCircle className="h-3 w-3 mr-2 text-muted-foreground" />
             CB Radio
           </Button>
         </div>
@@ -217,34 +215,32 @@ function MarketplaceWidget({ widget }: { widget: DashboardWidget }) {
   });
 
   return (
-    <Card className="h-full" data-testid="widget-marketplace">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium flex items-center gap-2">
-          <ShoppingBag className="h-4 w-4 text-blue-600" />
+    <Card className="card-elegant h-full" data-testid="widget-marketplace">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-sm font-medium flex items-center gap-2 text-foreground">
+          <ShoppingBag className="h-4 w-4 text-muted-foreground" />
           {widget.title}
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">Your Listings</span>
-            <Badge variant="secondary">{myListings?.length || 0}</Badge>
-          </div>
-          <div className="grid grid-cols-2 gap-2 text-sm">
-            <div>
-              <p className="text-lg font-semibold">0</p>
-              <p className="text-muted-foreground">Active</p>
-            </div>
-            <div>
-              <p className="text-lg font-semibold">0</p>
-              <p className="text-muted-foreground">Views</p>
-            </div>
-          </div>
-          <Button size="sm" className="w-full">
-            <Plus className="h-3 w-3 mr-1" />
-            Add Listing
-          </Button>
+      <CardContent className="space-y-4">
+        <div className="flex justify-between items-center">
+          <span className="text-xs text-muted-foreground uppercase tracking-wider">Your Listings</span>
+          <Badge variant="secondary" className="badge">{myListings?.length || 0}</Badge>
         </div>
+        <div className="grid grid-cols-2 gap-4 text-center">
+          <div>
+            <p className="text-xl font-semibold text-foreground">0</p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wider">Active</p>
+          </div>
+          <div>
+            <p className="text-xl font-semibold text-foreground">0</p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wider">Views</p>
+          </div>
+        </div>
+        <Button size="sm" className="w-full btn-primary">
+          <Plus className="h-3 w-3 mr-2" />
+          New Listing
+        </Button>
       </CardContent>
     </Card>
   );
@@ -259,27 +255,29 @@ function RecentActivityWidget({ widget }: { widget: DashboardWidget }) {
   const recentTransactions = transactions?.slice(0, 3) || [];
 
   return (
-    <Card className="h-full" data-testid="widget-recent-activity">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium flex items-center gap-2">
-          <Activity className="h-4 w-4 text-purple-600" />
+    <Card className="card-elegant h-full" data-testid="widget-recent-activity">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-sm font-medium flex items-center gap-2 text-foreground">
+          <Activity className="h-4 w-4 text-muted-foreground" />
           {widget.title}
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-2">
+        <div className="space-y-3">
           {recentTransactions.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No recent activity</p>
+            <div className="text-center py-4">
+              <p className="text-sm text-muted-foreground">No recent activity</p>
+            </div>
           ) : (
             recentTransactions.map((transaction: any) => (
-              <div key={transaction.id} className="flex justify-between items-center p-2 bg-muted rounded-lg">
+              <div key={transaction.id} className="flex justify-between items-center p-3 border border-border rounded bg-card">
                 <div>
-                  <p className="text-xs font-medium">{transaction.type}</p>
+                  <p className="text-sm font-medium text-foreground">{transaction.type}</p>
                   <p className="text-xs text-muted-foreground">{transaction.description}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-xs font-medium">{transaction.amount} {transaction.currency}</p>
-                  <Badge variant={transaction.status === 'completed' ? 'default' : 'secondary'} className="text-xs">
+                  <p className="text-sm font-medium text-foreground">{transaction.amount} {transaction.currency}</p>
+                  <Badge variant={transaction.status === 'completed' ? 'default' : 'secondary'} className="badge-success text-xs">
                     {transaction.status}
                   </Badge>
                 </div>
@@ -294,27 +292,27 @@ function RecentActivityWidget({ widget }: { widget: DashboardWidget }) {
 
 function NotificationsWidget({ widget }: { widget: DashboardWidget }) {
   return (
-    <Card className="h-full" data-testid="widget-notifications">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium flex items-center gap-2">
-          <Bell className="h-4 w-4 text-orange-600" />
+    <Card className="card-elegant h-full" data-testid="widget-notifications">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-sm font-medium flex items-center gap-2 text-foreground">
+          <Bell className="h-4 w-4 text-muted-foreground" />
           {widget.title}
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 p-2 bg-blue-50 dark:bg-blue-950 rounded-lg">
-            <Shield className="h-4 w-4 text-blue-600" />
-            <div>
-              <p className="text-sm font-medium">Welcome to YaadFlex!</p>
+        <div className="space-y-3">
+          <div className="flex items-start gap-3 p-3 border border-border rounded bg-card">
+            <Shield className="h-4 w-4 text-primary mt-0.5" />
+            <div className="flex-1">
+              <p className="text-sm font-medium text-foreground">Welcome to YaadFlex</p>
               <p className="text-xs text-muted-foreground">Complete your profile to get started</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 p-2 bg-amber-50 dark:bg-amber-950 rounded-lg">
-            <Globe className="h-4 w-4 text-amber-600" />
-            <div>
-              <p className="text-sm font-medium">Marketplace Ready</p>
-              <p className="text-xs text-muted-foreground">Start buying and selling on YaadFlex</p>
+          <div className="flex items-start gap-3 p-3 border border-border rounded bg-card">
+            <Globe className="h-4 w-4 text-primary mt-0.5" />
+            <div className="flex-1">
+              <p className="text-sm font-medium text-foreground">Marketplace Ready</p>
+              <p className="text-xs text-muted-foreground">Start buying and selling</p>
             </div>
           </div>
         </div>
@@ -400,48 +398,50 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-amber-50 dark:from-slate-950 dark:via-slate-900 dark:to-emerald-950">
-      <div className="container mx-auto p-6">
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-6 py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3" data-testid="text-dashboard-title">
-              <LayoutDashboard className="h-8 w-8 text-emerald-600" />
+            <h1 className="text-display-md text-foreground flex items-center gap-3" data-testid="text-dashboard-title">
+              <LayoutDashboard className="h-7 w-7 text-primary" />
               Dashboard
             </h1>
-            <p className="text-muted-foreground mt-1">
-              Welcome back, {user.firstName || user.email}! Here's your personalized YaadFlex overview.
+            <p className="text-muted-foreground mt-2 text-base">
+              Welcome back, {user.firstName || user.email}. Your personalized YaadFlex overview.
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <Button 
-              variant={editMode ? "default" : "outline"} 
+              variant={editMode ? "default" : "outline"}
+              size="sm"
               onClick={() => setEditMode(!editMode)}
               data-testid="button-edit-mode"
+              className="transition-smooth"
             >
               <Settings className="h-4 w-4 mr-2" />
-              {editMode ? 'Done Editing' : 'Customize'}
+              {editMode ? 'Done' : 'Customize'}
             </Button>
           </div>
         </div>
 
-        <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="widgets">Widget Settings</TabsTrigger>
+        <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-8">
+          <TabsList className="grid w-full grid-cols-2 bg-muted">
+            <TabsTrigger value="overview" className="data-[state=active]:bg-background data-[state=active]:text-foreground">Overview</TabsTrigger>
+            <TabsTrigger value="widgets" className="data-[state=active]:bg-background data-[state=active]:text-foreground">Settings</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
             {/* Widget Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {widgets.map(widget => (
-                <div key={widget.id} className="relative">
+                <div key={widget.id} className="relative transition-smooth">
                   {editMode && (
                     <div className="absolute -top-2 -right-2 z-10 flex gap-1">
                       <Button
                         size="sm"
                         variant="outline"
-                        className="h-6 w-6 p-0"
+                        className="h-6 w-6 p-0 btn-secondary"
                         onClick={() => toggleWidgetVisibility(widget.id)}
                         data-testid={`button-toggle-${widget.id}`}
                       >
@@ -450,7 +450,7 @@ export default function DashboardPage() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="h-6 w-6 p-0 cursor-move"
+                        className="h-6 w-6 p-0 cursor-move btn-secondary"
                         data-testid={`button-move-${widget.id}`}
                       >
                         <Move className="h-3 w-3" />
@@ -463,16 +463,16 @@ export default function DashboardPage() {
             </div>
 
             {/* System Status Footer */}
-            <Card>
+            <Card className="card-elegant">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
-                    <span className="text-sm text-muted-foreground">All YaadFlex systems operational</span>
+                  <div className="flex items-center gap-3">
+                    <div className="h-2 w-2 rounded-full bg-primary"></div>
+                    <span className="text-sm text-foreground">All systems operational</span>
                   </div>
                   <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                    <span>Last updated: {new Date().toLocaleTimeString()}</span>
-                    <Badge variant="outline" className="text-xs">
+                    <span>Updated: {new Date().toLocaleTimeString()}</span>
+                    <Badge variant="outline" className="badge text-xs">
                       <Shield className="h-3 w-3 mr-1" />
                       Secure
                     </Badge>
@@ -483,26 +483,27 @@ export default function DashboardPage() {
           </TabsContent>
 
           <TabsContent value="widgets" className="space-y-6">
-            <Card>
+            <Card className="card-elegant">
               <CardHeader>
-                <CardTitle>Widget Configuration</CardTitle>
-                <CardDescription>
-                  Customize which widgets appear on your dashboard and their settings
+                <CardTitle className="text-foreground">Widget Configuration</CardTitle>
+                <CardDescription className="text-muted-foreground">
+                  Customize which widgets appear on your dashboard
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid gap-4">
+                <div className="space-y-3">
                   {widgets.map(widget => (
-                    <div key={widget.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div key={widget.id} className="flex items-center justify-between p-4 border border-border rounded bg-card">
                       <div>
-                        <h4 className="font-medium">{widget.title}</h4>
-                        <p className="text-sm text-muted-foreground capitalize">{widget.type.replace('_', ' ')} widget</p>
+                        <h4 className="font-medium text-foreground">{widget.title}</h4>
+                        <p className="text-sm text-muted-foreground capitalize">{widget.type.replace('_', ' ')}</p>
                       </div>
                       <Button
                         variant={widget.visible ? "default" : "outline"}
                         size="sm"
                         onClick={() => toggleWidgetVisibility(widget.id)}
                         data-testid={`button-config-${widget.id}`}
+                        className={widget.visible ? 'btn-primary' : 'btn-secondary'}
                       >
                         {widget.visible ? <Eye className="h-4 w-4 mr-2" /> : <EyeOff className="h-4 w-4 mr-2" />}
                         {widget.visible ? 'Visible' : 'Hidden'}
