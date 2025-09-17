@@ -47,6 +47,13 @@ export default function YFBrandingPage() {
       description: 'Sophisticated with subtle texture effects',
       colors: ['#64748b', '#e2e8f0', '#f8fafc'],
       className: 'textured-yf'
+    },
+    {
+      id: 'old-english',
+      name: 'Old English Heritage',
+      description: 'Vintage parchment with ornate traditional styling',
+      colors: ['#92400e', '#fed7aa', '#fef7ed'],
+      className: 'old-english-yf'
     }
   ];
 

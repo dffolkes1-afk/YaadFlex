@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 interface YFBackgroundSystemProps {
   children: React.ReactNode;
-  style?: 'corporate' | 'luxury' | 'tech' | 'caribbean' | 'classic' | 'textured' | 'default';
+  style?: 'corporate' | 'luxury' | 'tech' | 'caribbean' | 'classic' | 'textured' | 'old-english' | 'default';
   className?: string;
 }
 
@@ -16,7 +16,7 @@ export function YFBackgroundSystem({
   // Allow dynamic background switching via localStorage
   useEffect(() => {
     const savedStyle = localStorage.getItem('yf-background-style');
-    if (savedStyle && ['corporate', 'luxury', 'tech', 'caribbean', 'classic', 'textured'].includes(savedStyle)) {
+    if (savedStyle && ['corporate', 'luxury', 'tech', 'caribbean', 'classic', 'textured', 'old-english'].includes(savedStyle)) {
       setBackgroundStyle(savedStyle as any);
     }
   }, []);
@@ -35,6 +35,8 @@ export function YFBackgroundSystem({
         return 'yf-background-classic';
       case 'textured':
         return 'yf-background-textured';
+      case 'old-english':
+        return 'yf-background-old-english';
       default:
         return '';
     }
@@ -60,7 +62,8 @@ export function YFBackgroundSwitcher() {
     { id: 'tech', name: 'Tech', description: 'Modern digital' },
     { id: 'caribbean', name: 'Caribbean', description: 'Warm tropical' },
     { id: 'classic', name: 'Classic', description: 'Traditional business' },
-    { id: 'textured', name: 'Textured', description: 'Sophisticated texture' }
+    { id: 'textured', name: 'Textured', description: 'Sophisticated texture' },
+    { id: 'old-english', name: 'Old English', description: 'Vintage parchment' }
   ];
 
   useEffect(() => {

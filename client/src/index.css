@@ -413,6 +413,30 @@ input:focus, textarea:focus, select:focus {
   z-index: 1;
 }
 
+/* Old English Heritage Style */
+.old-english-yf {
+  background: linear-gradient(135deg, #fef7ed 0%, #fed7aa 100%);
+  position: relative;
+}
+
+.old-english-yf::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(146, 64, 14, 0.03) 30px, rgba(146, 64, 14, 0.03) 32px),
+    repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(146, 64, 14, 0.03) 30px, rgba(146, 64, 14, 0.03) 32px);
+}
+
+.old-english-yf .yf-monogram {
+  color: #92400e;
+  font-family: 'Times New Roman', serif;
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(146, 64, 14, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
 /* Integration Examples */
 .integration-example {
   background: var(--muted);
@@ -500,6 +524,22 @@ input:focus, textarea:focus, select:focus {
   background-image: 
     radial-gradient(circle at 25% 25%, rgba(100, 116, 139, 0.02) 0%, transparent 50%),
     radial-gradient(circle at 75% 75%, rgba(100, 116, 139, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.yf-background-old-english {
+  background: linear-gradient(135deg, #fef7ed 0%, #fed7aa 100%);
+  position: relative;
+}
+
+.yf-background-old-english::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: 
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(146, 64, 14, 0.02) 2px, rgba(146, 64, 14, 0.02) 4px),
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(146, 64, 14, 0.02) 2px, rgba(146, 64, 14, 0.02) 4px);
   pointer-events: none;
   z-index: 0;
 }
