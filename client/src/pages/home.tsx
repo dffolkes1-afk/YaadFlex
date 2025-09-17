@@ -413,6 +413,33 @@ export default function Home() {
       
       {/* Strategic Hero Section - GLAMOROUS LUXURY UPGRADE */}
       <div className="relative overflow-hidden bg-gradient-to-br from-emerald-900 via-slate-900 to-amber-900">
+        {/* LUXURY YF WALLPAPER BACKGROUND SYSTEM */}
+        <div className="absolute inset-0 opacity-[0.08]">
+          {/* YF Wallpaper Pattern - Corporate Diamond Style */}
+          <div className="absolute inset-0" style={{
+            backgroundImage: `
+              radial-gradient(circle at 20% 30%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 80% 70%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 60% 20%, rgba(249, 115, 22, 0.06) 0%, transparent 50%)
+            `,
+          }}></div>
+          
+          {/* YF Monogram Wallpaper Grid */}
+          <div className="absolute inset-0 grid grid-cols-6 gap-16 p-8 rotate-12 transform scale-110">
+            {[...Array(24)].map((_, i) => (
+              <div key={i} className="flex items-center justify-center">
+                <span className="yf-monogram text-4xl font-black text-emerald-500/15 animate-pulse" style={{ animationDelay: `${i * 0.5}s` }}>YF</span>
+              </div>
+            ))}
+          </div>
+          
+          {/* YAADFLEX Text Watermarks */}
+          <div className="absolute top-20 left-1/4 text-2xl font-extralight tracking-[0.5em] text-amber-400/08 rotate-45 transform">YAADFLEX</div>
+          <div className="absolute bottom-32 right-1/4 text-2xl font-extralight tracking-[0.5em] text-emerald-400/08 -rotate-45 transform">YAADFLEX</div>
+          <div className="absolute top-1/2 left-1/6 text-xl font-extralight tracking-[0.4em] text-orange-400/08 rotate-12 transform">YAADFLEX</div>
+          <div className="absolute top-1/3 right-1/6 text-xl font-extralight tracking-[0.4em] text-amber-400/08 -rotate-12 transform">YAADFLEX</div>
+        </div>
+        
         {/* GLAMOROUS Background Elements */}
         <div className="absolute inset-0">
           {/* Luxury gradient overlay */}
@@ -432,11 +459,10 @@ export default function Home() {
           <div className="absolute bottom-80 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-400/30 to-transparent animate-pulse" style={{ animationDelay: '1.5s' }}></div>
         </div>
         
-        {/* Glamorous YF Theme Elements */}
+        {/* Enhanced YF Theme Elements */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.06]">
-          <div className="absolute top-1/4 right-16 yf-monogram text-5xl font-black text-amber-500/30 animate-pulse drop-shadow-xl">YF</div>
-          <div className="absolute bottom-1/3 left-24 yf-monogram text-4xl font-black text-emerald-500/25 animate-pulse drop-shadow-lg" style={{ animationDelay: '1s' }}>YF</div>
-          <div className="absolute top-32 left-1/3 text-xl font-extralight tracking-[0.3em] bg-gradient-to-r from-emerald-400/15 to-amber-400/10 bg-clip-text text-transparent rotate-12">YAADFLEX</div>
+          <div className="absolute top-1/4 right-16 yf-monogram text-6xl font-black text-amber-500/40 animate-pulse drop-shadow-2xl">YF</div>
+          <div className="absolute bottom-1/3 left-24 yf-monogram text-5xl font-black text-emerald-500/35 animate-pulse drop-shadow-xl" style={{ animationDelay: '1s' }}>YF</div>
         </div>
         
         <div className="relative max-w-7xl mx-auto px-6 py-20 z-10">
@@ -660,6 +686,29 @@ export default function Home() {
         {/* Strategic Platform Overview */}
         <div className="mb-12">
           <Card className="bg-gradient-to-br from-gray-900/90 to-emerald-950/90 border border-emerald-600/30 relative overflow-hidden" data-testid="platform-overview">
+            
+            {/* LUXURY YF WALLPAPER BACKGROUND FOR PLATFORM OVERVIEW */}
+            <div className="absolute inset-0 opacity-[0.04]">
+              {/* Diagonal YF Pattern */}
+              <div className="absolute inset-0" style={{
+                backgroundImage: `
+                  linear-gradient(45deg, rgba(16, 185, 129, 0.08) 0%, transparent 25%, transparent 75%, rgba(245, 158, 11, 0.06) 100%)
+                `,
+                backgroundSize: '200px 200px'
+              }}></div>
+              
+              {/* YF Monogram Scattered Pattern */}
+              <div className="absolute inset-0">
+                <div className="absolute top-16 left-16 yf-monogram text-3xl font-black text-emerald-400/20 animate-pulse">YF</div>
+                <div className="absolute top-32 right-24 yf-monogram text-2xl font-black text-amber-400/15 animate-pulse" style={{ animationDelay: '1s' }}>YF</div>
+                <div className="absolute bottom-20 left-32 yf-monogram text-3xl font-black text-orange-400/18 animate-pulse" style={{ animationDelay: '2s' }}>YF</div>
+                <div className="absolute bottom-40 right-16 yf-monogram text-2xl font-black text-emerald-400/15 animate-pulse" style={{ animationDelay: '1.5s' }}>YF</div>
+                
+                {/* YAADFLEX Watermarks */}
+                <div className="absolute top-1/3 left-1/4 text-sm font-extralight tracking-[0.3em] text-amber-400/08 rotate-12">YAADFLEX</div>
+                <div className="absolute bottom-1/3 right-1/4 text-sm font-extralight tracking-[0.3em] text-emerald-400/08 -rotate-12">YAADFLEX</div>
+              </div>
+            </div>
             <CardHeader className="text-center pb-6">
               <CardTitle className="text-3xl md:text-4xl font-bold text-white mb-4">
                 🌴 YaadFlex Global Platform 🌴
@@ -715,6 +764,30 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 via-amber-400/15 to-orange-400/20 rounded-2xl blur-xl"></div>
                 
                 <div className="relative bg-gradient-to-br from-slate-800/60 via-emerald-900/40 to-amber-900/60 border-2 border-emerald-400/40 rounded-2xl p-8 mb-8 backdrop-blur-sm shadow-2xl shadow-emerald-500/20">
+                  
+                  {/* LUXURY YF WALLPAPER FOR PAYMENT MARKETPLACE */}
+                  <div className="absolute inset-0 opacity-[0.03] rounded-2xl overflow-hidden">
+                    {/* Diamond Grid YF Pattern */}
+                    <div className="absolute inset-0 grid grid-cols-4 grid-rows-3 gap-8 p-6 transform rotate-45 scale-125">
+                      {[...Array(12)].map((_, i) => (
+                        <div key={i} className="flex items-center justify-center">
+                          <span className="yf-monogram text-2xl font-black text-amber-400/25 animate-pulse" style={{ animationDelay: `${i * 0.3}s` }}>YF</span>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* Radial YF Backgrounds */}
+                    <div className="absolute inset-0" style={{
+                      backgroundImage: `
+                        radial-gradient(circle at 25% 25%, rgba(16, 185, 129, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at 75% 75%, rgba(245, 158, 11, 0.04) 0%, transparent 40%)
+                      `
+                    }}></div>
+                    
+                    {/* YAADFLEX Corner Watermarks */}
+                    <div className="absolute top-4 right-8 text-xs font-extralight tracking-[0.2em] text-emerald-400/15 rotate-45">YAADFLEX</div>
+                    <div className="absolute bottom-4 left-8 text-xs font-extralight tracking-[0.2em] text-amber-400/12 -rotate-45">YAADFLEX</div>
+                  </div>
                   {/* Floating elements */}
                   <div className="absolute top-4 right-6 w-6 h-6 bg-gradient-to-r from-emerald-400/30 to-amber-400/25 rounded-full blur-sm animate-pulse"></div>
                   <div className="absolute bottom-6 left-8 w-4 h-4 bg-gradient-to-r from-amber-400/40 to-orange-400/30 rounded-full blur-sm animate-pulse" style={{ animationDelay: '1s' }}></div>
@@ -779,6 +852,33 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/25 via-amber-400/20 to-orange-400/25 rounded-3xl blur-2xl"></div>
                 
                 <div className="relative bg-gradient-to-br from-emerald-600/30 via-amber-600/25 to-orange-600/30 border-2 border-emerald-400/50 rounded-3xl p-10 backdrop-blur-md shadow-2xl shadow-emerald-500/25">
+                  
+                  {/* LUXURY YF WALLPAPER FOR CARIBBEAN COMMERCE */}
+                  <div className="absolute inset-0 opacity-[0.04] rounded-3xl overflow-hidden">
+                    {/* Hexagonal YF Pattern */}
+                    <div className="absolute inset-0" style={{
+                      backgroundImage: `
+                        radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 30%),
+                        radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.06) 0%, transparent 30%),
+                        radial-gradient(circle at 50% 50%, rgba(249, 115, 22, 0.05) 0%, transparent 25%)
+                      `,
+                      backgroundSize: '150px 150px'
+                    }}></div>
+                    
+                    {/* Strategic YF Monogram Placement */}
+                    <div className="absolute inset-0">
+                      <div className="absolute top-8 left-1/4 yf-monogram text-4xl font-black text-emerald-400/20 animate-pulse">YF</div>
+                      <div className="absolute top-1/3 right-1/4 yf-monogram text-3xl font-black text-amber-400/18 animate-pulse" style={{ animationDelay: '1s' }}>YF</div>
+                      <div className="absolute bottom-1/4 left-1/3 yf-monogram text-3xl font-black text-orange-400/16 animate-pulse" style={{ animationDelay: '2s' }}>YF</div>
+                      <div className="absolute bottom-8 right-1/3 yf-monogram text-2xl font-black text-emerald-400/15 animate-pulse" style={{ animationDelay: '1.5s' }}>YF</div>
+                    </div>
+                    
+                    {/* Premium YAADFLEX Watermarks */}
+                    <div className="absolute top-12 right-12 text-lg font-extralight tracking-[0.4em] text-amber-400/10 rotate-12">YAADFLEX</div>
+                    <div className="absolute bottom-12 left-12 text-lg font-extralight tracking-[0.4em] text-emerald-400/10 -rotate-12">YAADFLEX</div>
+                    <div className="absolute top-1/2 left-1/6 text-sm font-extralight tracking-[0.3em] text-orange-400/08 rotate-45">YAADFLEX</div>
+                    <div className="absolute top-1/2 right-1/6 text-sm font-extralight tracking-[0.3em] text-amber-400/08 -rotate-45">YAADFLEX</div>
+                  </div>
                   {/* Floating elements */}
                   <div className="absolute top-6 right-8 w-8 h-8 bg-gradient-to-r from-emerald-400/30 to-amber-400/25 rounded-full blur-sm animate-pulse"></div>
                   <div className="absolute bottom-8 left-10 w-5 h-5 bg-gradient-to-r from-amber-400/40 to-orange-400/30 rounded-full blur-sm animate-pulse" style={{ animationDelay: '1.5s' }}></div>
