@@ -3,6 +3,9 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
+import { GlamorousCard } from '@/components/ui/glamorous-card';
+import { GlamorousButton } from '@/components/ui/glamorous-button';
+import { GlamorousSection, PremiumSection, LuxuryHeroSection } from '@/components/ui/glamorous-section';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -395,31 +398,37 @@ export default function MarketplacePage() {
                           )}
                         </div>
                         <div className="flex gap-2">
-                          <Button 
+                          <GlamorousButton 
+                            variant="luxury"
                             size="sm" 
+                            glow="intense"
+                            sparkle="enabled"
                             className="flex-1"
                             onClick={() => buyNow(item)}
                             data-testid={`button-buy-${item.id}`}
                           >
                             <ShoppingBag className="h-4 w-4 mr-1" />
                             Buy Now
-                          </Button>
-                          <Button 
+                          </GlamorousButton>
+                          <GlamorousButton 
+                            variant="premium"
                             size="sm" 
-                            variant="outline"
+                            glow="medium"
+                            sparkle="enabled"
                             onClick={() => makeOffer(item)}
                             data-testid={`button-offer-${item.id}`}
                           >
                             💰 Offer
-                          </Button>
-                          <Button 
+                          </GlamorousButton>
+                          <GlamorousButton 
+                            variant="glass"
                             size="sm" 
-                            variant="outline"
+                            glow="subtle"
                             onClick={() => contactSeller(item)}
                             data-testid={`button-contact-${item.id}`}
                           >
                             <MessageCircle className="h-4 w-4" />
-                          </Button>
+                          </GlamorousButton>
                         </div>
                       </CardContent>
                     </Card>

@@ -5,7 +5,9 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { useLocation, Link } from "wouter";
-import { Button } from "@/components/ui/button";
+import { GlamorousButton } from "@/components/ui/glamorous-button";
+import { GlamorousCard } from "@/components/ui/glamorous-card";
+import { GlamorousSection, LuxuryHeroSection, PremiumSection, GradientSection } from "@/components/ui/glamorous-section";
 import { VoiceButton } from "@/components/VoiceButton";
 import { VoiceTestPanel } from "@/components/VoiceTestPanel";
 import { PremiumYaadFlexLogo } from "@/components/PremiumYaadFlexLogo";
@@ -113,7 +115,18 @@ function KWDWalletSection() {
   const yfdWallet = wallets?.find(w => w.currency === 'YFD');
 
   return (
-    <Card data-testid="kwd-wallet-section" className="card-ultra premium-glow">
+    <GlamorousCard 
+      data-testid="kwd-wallet-section" 
+      variant="luxury" 
+      size="lg" 
+      glow="intense" 
+      shine="medium"
+      ambientParticles={true}
+      particleIntensity="medium"
+      glowBorder={true}
+      glowBorderVariant="emerald"
+      glowBorderIntensity="medium"
+    >
       <CardHeader>
         <CardTitle className="flex items-center space-x-2">
           <span className="text-xl floating">💎</span>
@@ -126,13 +139,19 @@ function KWDWalletSection() {
         {/* SUPER-APP ACCESS - MAIN NAVIGATION BUTTON */}
         <div className="text-center mb-6">
           <Link to="/super-app">
-            <Button 
-              size="lg" 
-              className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold px-8 py-3 rounded-lg transform hover:scale-105 transition-all duration-200 shadow-lg"
+            <GlamorousButton 
+              variant="party" 
+              size="xl" 
+              glow="extreme"
+              sparkle="enabled"
+              floatingElements={true}
+              elementIntensity="bold"
+              rippleEffect={true}
+              magneticHover={true}
               data-testid="button-super-app-hub"
             >
               🌴 Super-App Hub - All Your Apps Here!
-            </Button>
+            </GlamorousButton>
           </Link>
           <p className="text-sm text-gray-600 mt-2">Access Instagram, TikTok, Uber, PayPal & more - wrapped in YaadFlex</p>
         </div>
@@ -140,48 +159,48 @@ function KWDWalletSection() {
         {/* Quick Access Dashboard Links */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-4">
           <Link to="/fleet-owner">
-            <Button variant="outline" className="w-full text-sm" data-testid="button-fleet-owner">
+            <GlamorousButton variant="glass" size="sm" glow="medium" data-testid="button-fleet-owner">
               🚗 Fleet Owner
-            </Button>
+            </GlamorousButton>
           </Link>
           <Link to="/ceo-dashboard">
-            <Button variant="outline" className="w-full text-sm" data-testid="button-ceo-dashboard">
+            <GlamorousButton variant="glass" size="sm" glow="medium" data-testid="button-ceo-dashboard">
               👔 CEO Dashboard
-            </Button>
+            </GlamorousButton>
           </Link>
           <Link to="/company-dashboard">
-            <Button variant="outline" className="w-full text-sm" data-testid="button-company-dashboard">
+            <GlamorousButton variant="glass" size="sm" glow="medium" data-testid="button-company-dashboard">
               🏢 Company
-            </Button>
+            </GlamorousButton>
           </Link>
           <Link to="/business-dashboard">
-            <Button variant="outline" className="w-full text-sm" data-testid="button-business-dashboard">
+            <GlamorousButton variant="glass" size="sm" glow="medium" data-testid="button-business-dashboard">
               💼 Business
-            </Button>
+            </GlamorousButton>
           </Link>
           <Link to="/trading-dashboard">
-            <Button variant="outline" className="w-full text-sm" data-testid="button-trading-dashboard">
+            <GlamorousButton variant="glass" size="sm" glow="medium" data-testid="button-trading-dashboard">
               📈 Trading
-            </Button>
+            </GlamorousButton>
           </Link>
           <Link to="/wallet">
-            <Button variant="outline" className="w-full text-sm" data-testid="button-wallet">
+            <GlamorousButton variant="glass" size="sm" glow="medium" data-testid="button-wallet">
               💰 Wallet
-            </Button>
+            </GlamorousButton>
           </Link>
         </div>
 
         {/* Payment & Booking Links */}
         <div className="grid grid-cols-2 gap-2 mb-4">
           <Link to="/pricing-calculator">
-            <Button variant="secondary" className="w-full text-sm" data-testid="button-pricing-calculator">
+            <GlamorousButton variant="premium" size="sm" glow="medium" sparkle="enabled" data-testid="button-pricing-calculator">
               🧮 Pricing Calculator
-            </Button>
+            </GlamorousButton>
           </Link>
           <Link to="/customer-booking">
-            <Button variant="secondary" className="w-full text-sm" data-testid="button-customer-booking">
+            <GlamorousButton variant="premium" size="sm" glow="medium" sparkle="enabled" data-testid="button-customer-booking">
               🚕 Book a Ride
-            </Button>
+            </GlamorousButton>
           </Link>
         </div>
 
@@ -217,35 +236,46 @@ function KWDWalletSection() {
                 className="flex-1"
                 data-testid="input-kwd-amount"
               />
-              <Button 
+              <GlamorousButton 
+                variant="luxury"
+                size="default"
+                glow="intense"
+                sparkle="enabled"
                 type="submit" 
                 disabled={addKWDMutation.isPending || !kwdAmount}
-                className="btn-premium premium-glow"
                 data-testid="button-add-kwd"
               >
                 {addKWDMutation.isPending ? "Adding..." : "Add KWD"}
-              </Button>
+              </GlamorousButton>
             </div>
           </div>
           
           {/* Quick Amount Buttons */}
           <div className="flex space-x-2">
-            <Button 
+            <GlamorousButton 
+              variant="neon"
+              size="default"
+              glow="medium"
+              sparkle="enabled"
+              floatingElements={true}
               type="button" 
-              className="btn-premium premium-glow floating"
               onClick={() => setKwdAmount('1')}
               data-testid="button-add-1-kwd"
             >
               Test $1 KWD
-            </Button>
-            <Button 
+            </GlamorousButton>
+            <GlamorousButton 
+              variant="luxury"
+              size="default"
+              glow="intense"
+              sparkle="enabled"
+              floatingElements={true}
               type="button" 
-              className="btn-premium premium-glow floating"
               onClick={() => setKwdAmount('100')}
               data-testid="button-add-100-kwd"
             >
               Add $100 KWD
-            </Button>
+            </GlamorousButton>
           </div>
         </form>
 
@@ -254,7 +284,7 @@ function KWDWalletSection() {
           Start with $1 KWD to test the system, then scale to $100 KWD as your yard cash reference.
         </div>
       </CardContent>
-    </Card>
+    </GlamorousCard>
   );
 }
 
@@ -1168,13 +1198,20 @@ export default function Home() {
                 </div>
                 
                 <div className="text-center">
-                  <Button 
+                  <GlamorousButton 
+                    variant="luxury"
+                    size="xl"
+                    glow="extreme"
+                    sparkle="enabled"
+                    floatingElements={true}
+                    elementIntensity="bold"
+                    rippleEffect={true}
+                    magneticHover={true}
                     onClick={() => setLocation('/business-registration')}
-                    className="bg-gradient-to-r from-green-600 to-yellow-600 hover:from-green-700 hover:to-yellow-700 text-white text-3xl px-12 py-6 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-green-400/80"
                     data-testid="button-join-yardflex-business"
                   >
                     🏢 JOIN YAADFLEX NOW! 🏢
-                  </Button>
+                  </GlamorousButton>
                 </div>
               </div>
             </CardContent>
@@ -1183,7 +1220,15 @@ export default function Home() {
 
         {/* B2B Wholesale & Dropshipping CTA */}
         <div className="mb-8">
-          <Card className="bg-gradient-to-r from-green-900/30 to-yellow-900/30 border-yellow-500/30" data-testid="b2b-cta-card">
+          <GlamorousCard 
+            variant="premium" 
+            size="lg" 
+            glow="medium" 
+            shine="medium" 
+            ambientParticles={true} 
+            particleIntensity="medium" 
+            data-testid="b2b-cta-card"
+          >
             <CardHeader>
               <CardTitle className="flex items-center space-x-2 text-yellow-400">
                 <span className="text-2xl">🌍</span>
@@ -1219,7 +1264,7 @@ export default function Home() {
                 </div>
               </div>
             </CardContent>
-          </Card>
+          </GlamorousCard>
         </div>
 
         {/* ========== YAADLEX WORKFORCE MANAGEMENT - ULTIMATE JOB PLATFORM! ========== */}
@@ -1886,13 +1931,20 @@ export default function Home() {
                 </div>
                 
                 <div className="text-center">
-                  <Button 
+                  <GlamorousButton 
+                    variant="party"
+                    size="xl"
+                    glow="extreme"
+                    sparkle="enabled"
+                    floatingElements={true}
+                    elementIntensity="bold"
+                    rippleEffect={true}
+                    magneticHover={true}
                     onClick={() => setLocation('/pricing-calculator')}
-                    className="bg-gradient-to-r from-green-600 to-yellow-600 hover:from-green-700 hover:to-yellow-700 text-white text-3xl px-12 py-6 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-green-400/80"
                     data-testid="button-fair-taxi-pricing"
                   >
                     🚖 SEE FAIR PRICING! 🚖
-                  </Button>
+                  </GlamorousButton>
                 </div>
               </div>
             </CardContent>
@@ -1977,13 +2029,20 @@ export default function Home() {
                 </div>
                 
                 <div className="text-center">
-                  <Button 
+                  <GlamorousButton 
+                    variant="glamour"
+                    size="xl"
+                    glow="extreme"
+                    sparkle="enabled"
+                    floatingElements={true}
+                    elementIntensity="bold"
+                    rippleEffect={true}
+                    magneticHover={true}
                     onClick={() => setLocation('/customer-booking')}
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-3xl px-12 py-6 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-purple-400/80"
                     data-testid="button-enter-booking-platform"
                   >
                     📅 BOOK EVERYTHING NOW! 📅
-                  </Button>
+                  </GlamorousButton>
                 </div>
               </div>
             </CardContent>
@@ -2071,13 +2130,20 @@ export default function Home() {
                 </div>
                 
                 <div className="text-center">
-                  <Button 
+                  <GlamorousButton 
+                    variant="luxury"
+                    size="xl"
+                    glow="extreme"
+                    sparkle="enabled"
+                    floatingElements={true}
+                    elementIntensity="bold"
+                    rippleEffect={true}
+                    magneticHover={true}
                     onClick={() => setLocation('/rental-empire')}
-                    className="bg-gradient-to-r from-yellow-600 to-green-600 hover:from-yellow-700 hover:to-green-700 text-white text-3xl px-12 py-6 rounded-2xl font-black shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-yellow-400/80"
                     data-testid="button-enter-rental-empire-mega"
                   >
                     🏠 ENTER RENTAL EMPIRE NOW! 🚗
-                  </Button>
+                  </GlamorousButton>
                 </div>
               </div>
             </CardContent>
