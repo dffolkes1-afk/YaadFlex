@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { useAuth } from '@/hooks/useAuth';
@@ -103,6 +103,36 @@ export default function MarketplacePage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   
+  // SEO Meta Tags
+  useEffect(() => {
+    document.title = "YaadFlex Marketplace - Buy & Sell Anything in Jamaica 🇯🇲";
+    
+    // Meta description
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute('name', 'description');
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.setAttribute('content', 'Discover Jamaica\'s premier marketplace - buy and sell electronics, fashion, cars, Caribbean culture items, and more. Island-wide delivery, secure payments, trusted community.');
+    
+    // Open Graph tags
+    const updateOGTag = (property: string, content: string) => {
+      let ogTag = document.querySelector(`meta[property="${property}"]`);
+      if (!ogTag) {
+        ogTag = document.createElement('meta');
+        ogTag.setAttribute('property', property);
+        document.head.appendChild(ogTag);
+      }
+      ogTag.setAttribute('content', content);
+    };
+    
+    updateOGTag('og:title', 'YaadFlex Marketplace - Buy & Sell Anything in Jamaica');
+    updateOGTag('og:description', 'Jamaica\'s premier marketplace with island-wide delivery and secure payments');
+    updateOGTag('og:type', 'website');
+    updateOGTag('og:site_name', 'YaadFlex');
+  }, []);
+  
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedParish, setSelectedParish] = useState('all');
@@ -139,7 +169,7 @@ export default function MarketplacePage() {
   // Create new listing
   const createListingMutation = useMutation({
     mutationFn: async (data: NewItemForm) => {
-      return apiRequest('/api/marketplace/items', 'POST', data);
+      return apiRequest('POST', '/api/marketplace/items', data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/marketplace/items'] });

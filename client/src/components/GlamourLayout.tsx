@@ -52,10 +52,13 @@ interface GlamourLayoutProps {
 interface FloatingParticlesProps {
   intensity: 'subtle' | 'medium' | 'bold';
   disableOnMobile: boolean;
+  adaptiveIntensity?: boolean;
 }
 
-function FloatingParticles({ intensity, disableOnMobile }: FloatingParticlesProps) {
+function FloatingParticles({ intensity, disableOnMobile, adaptiveIntensity = true }: FloatingParticlesProps) {
   const [isMobile, setIsMobile] = useState(false);
+  const { actualIntensity, shouldReduceEffects, effectMultiplier } = useAdaptiveIntensity(intensity);
+  const motionPreferences = useMotionPreferences();
   
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
@@ -69,16 +72,25 @@ function FloatingParticles({ intensity, disableOnMobile }: FloatingParticlesProp
   }, []);
   
   if (isMobile && disableOnMobile) return null;
+  if (motionPreferences.prefersReducedMotion) return null;
   
   const getParticleCount = () => {
-    if (isMobile) return intensity === 'bold' ? 8 : 4;
+    const targetIntensity = adaptiveIntensity ? actualIntensity : intensity;
     
-    switch (intensity) {
-      case 'subtle': return 12;
-      case 'medium': return 24;
-      case 'bold': return 48;
-      default: return 12;
+    let baseCount;
+    if (isMobile) {
+      baseCount = targetIntensity === 'bold' ? 8 : 4;
+    } else {
+      switch (targetIntensity) {
+        case 'subtle': baseCount = 12;
+        case 'medium': baseCount = 24;
+        case 'bold': baseCount = 48;
+        default: baseCount = 12;
+      }
     }
+    
+    // Apply performance-based multiplier
+    return Math.max(2, Math.floor(baseCount * (adaptiveIntensity ? effectMultiplier : 1)));
   };
   
   const particleCount = getParticleCount();
@@ -532,6 +544,7 @@ export function GlamourLayout({
           <FloatingParticles 
             intensity={intensity} 
             disableOnMobile={disableOnMobile}
+            adaptiveIntensity={true}
           />
         )}
         

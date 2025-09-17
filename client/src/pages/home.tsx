@@ -125,8 +125,6 @@ function KWDWalletSection() {
       ambientParticles={true}
       particleIntensity="medium"
       glowBorder={true}
-      glowBorderVariant="emerald"
-      glowBorderIntensity="medium"
     >
       <CardHeader>
         <CardTitle className="flex items-center space-x-2">
