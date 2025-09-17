@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 
 // ================== PERFORMANCE MONITORING HOOK ==================
 
@@ -218,7 +218,7 @@ export function useAdaptiveIntensity(
   const performance = usePerformanceMonitor();
   const capabilities = useDeviceCapabilities();
 
-  const actualIntensity = React.useMemo(() => {
+  const actualIntensity = useMemo(() => {
     // Always respect performance recommendations first
     if (performance.isLowPerformance) {
       return 'subtle';
@@ -226,7 +226,7 @@ export function useAdaptiveIntensity(
 
     // Consider device capabilities
     if (!capabilities.hasHardwareAcceleration || capabilities.connectionSpeed === 'slow') {
-      return Math.min(requestedIntensity, 'medium') as 'subtle' | 'medium';
+      return requestedIntensity === 'bold' ? 'medium' : requestedIntensity;
     }
 
     // Use performance recommendations if available
@@ -239,7 +239,7 @@ export function useAdaptiveIntensity(
 
   const shouldReduceEffects = performance.isLowPerformance || capabilities.connectionSpeed === 'slow';
 
-  const effectMultiplier = React.useMemo(() => {
+  const effectMultiplier = useMemo(() => {
     if (shouldReduceEffects) return 0.3;
     if (actualIntensity === 'subtle') return 0.5;
     if (actualIntensity === 'bold') return 1.5;

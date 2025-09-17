@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { useLocation, Link } from "wouter";
+import { Button } from "@/components/ui/button";
 import { GlamorousButton } from "@/components/ui/glamorous-button";
 import { GlamorousCard } from "@/components/ui/glamorous-card";
 import { GlamorousSection, LuxuryHeroSection, PremiumSection, GradientSection } from "@/components/ui/glamorous-section";
