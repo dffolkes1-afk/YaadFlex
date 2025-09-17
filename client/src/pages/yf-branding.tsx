@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Download, Palette, Eye, Copy } from "lucide-react";
+import { YFBackgroundSwitcher } from "@/components/YFBackgroundSystem";
 
 export default function YFBrandingPage() {
   const wallpaperStyles = [
@@ -159,29 +160,47 @@ export default function YFBrandingPage() {
           </CardContent>
         </Card>
 
-        {/* Integration Examples */}
-        <Card className="card-elegant">
-          <CardHeader>
-            <CardTitle className="text-foreground">Integration Examples</CardTitle>
-            <p className="text-muted-foreground">How YF branding appears across YaadFlex</p>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-3 gap-4">
-              <div className="integration-example app-background p-4 rounded border border-border">
-                <h4 className="font-medium text-foreground mb-2">App Background</h4>
-                <p className="text-sm text-muted-foreground">Subtle YF monogram as app wallpaper</p>
+        {/* Integration Examples and Background System */}
+        <div className="grid lg:grid-cols-2 gap-8">
+          <Card className="card-elegant">
+            <CardHeader>
+              <CardTitle className="text-foreground">Integration Examples</CardTitle>
+              <p className="text-muted-foreground">How YF branding appears across YaadFlex</p>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="integration-example app-background p-4 rounded border border-border">
+                  <h4 className="font-medium text-foreground mb-2">App Background</h4>
+                  <p className="text-sm text-muted-foreground">Subtle YF monogram as app wallpaper</p>
+                </div>
+                <div className="integration-example login-screen p-4 rounded border border-border">
+                  <h4 className="font-medium text-foreground mb-2">Login Screen</h4>
+                  <p className="text-sm text-muted-foreground">Prominent YF branding for brand recognition</p>
+                </div>
+                <div className="integration-example loading-states p-4 rounded border border-border">
+                  <h4 className="font-medium text-foreground mb-2">Loading States</h4>
+                  <p className="text-sm text-muted-foreground">Animated YF logo during transitions</p>
+                </div>
               </div>
-              <div className="integration-example login-screen p-4 rounded border border-border">
-                <h4 className="font-medium text-foreground mb-2">Login Screen</h4>
-                <p className="text-sm text-muted-foreground">Prominent YF branding for brand recognition</p>
+            </CardContent>
+          </Card>
+
+          <Card className="card-elegant">
+            <CardHeader>
+              <CardTitle className="text-foreground">Live Background System</CardTitle>
+              <p className="text-muted-foreground">Test YF background styles across the entire app</p>
+            </CardHeader>
+            <CardContent>
+              <YFBackgroundSwitcher />
+              <div className="mt-4 p-3 bg-muted rounded border">
+                <p className="text-sm text-muted-foreground">
+                  <strong>Note:</strong> Background changes apply to the entire YaadFlex app. 
+                  Your selection is saved and persists across page reloads.
+                </p>
               </div>
-              <div className="integration-example loading-states p-4 rounded border border-border">
-                <h4 className="font-medium text-foreground mb-2">Loading States</h4>
-                <p className="text-sm text-muted-foreground">Animated YF logo during transitions</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

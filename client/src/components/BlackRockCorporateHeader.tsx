@@ -27,6 +27,7 @@ export function BlackRockCorporateHeader({
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <BlackRockLogo size="sm" variant="icon" />
+              <div className="yf-header-logo">YaadFlex</div>
               <div className="hidden md:block">
                 <BlackRockBadge size="sm" />
               </div>
