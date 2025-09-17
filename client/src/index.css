@@ -4,39 +4,45 @@
 @tailwind utilities;
 
 :root {
-  /* ✨ EXOTIC LUXURY CARIBBEAN PALETTE - PREMIUM YAADFLEX ✨ */
-  --deep-obsidian: hsl(240, 5%, 4%);        /* Deep Obsidian Black #0B0B0C */
-  --platinum-silver: hsl(0, 0%, 85%);       /* Platinum Silver #D7D7D9 */
-  --emerald-glow: hsl(168, 100%, 36%);      /* Emerald Glow #00B58D */
-  --pearl-white: hsl(0, 0%, 96%);           /* Pearl White #F5F5F5 */
-  --subtle-gold: hsl(43, 100%, 70%);        /* Subtle Gold Trim #FFD166 */
+  /* ✨ YAADFLEX LUXURY CARIBBEAN PALETTE - BLACKROCK BACKED ✨ */
+  --caribbean-obsidian: hsl(240, 8%, 3%);   /* Deep Caribbean Night #080808 */
+  --platinum-pearl: hsl(0, 0%, 88%);        /* Premium Pearl #E1E1E1 */
+  --emerald-caribbean: hsl(165, 95%, 35%);  /* Caribbean Emerald #00A67E */
+  --island-gold: hsl(45, 98%, 68%);         /* Island Gold #FFC833 */
+  --crystal-white: hsl(0, 0%, 98%);         /* Crystal White #FAFAFA */
   
-  /* 🎯 PREMIUM SUPPORTING COLORS 🎯 */
-  --midnight-black: hsl(240, 8%, 8%);       /* Deeper Black for contrast */
-  --chrome-silver: hsl(0, 0%, 75%);         /* Chrome Silver */
-  --jade-accent: hsl(168, 80%, 45%);        /* Jade Accent */
-  --champagne-gold: hsl(43, 85%, 65%);      /* Champagne Gold */
-  --crystal-white: hsl(0, 0%, 98%);         /* Crystal White */
+  /* 🏢 BLACKROCK CORPORATE INTEGRATION 🏢 */
+  --blackrock-navy: hsl(215, 25%, 15%);     /* Corporate Navy #1F2937 */
+  --corporate-silver: hsl(210, 10%, 75%);   /* Corporate Silver #BBBFC7 */
+  --executive-blue: hsl(210, 85%, 45%);     /* Executive Blue #1366D9 */
   
-  --background: var(--deep-obsidian);
-  --foreground: var(--pearl-white);
-  --card: var(--midnight-black);
-  --card-foreground: var(--pearl-white);
-  --popover: var(--midnight-black);
-  --popover-foreground: var(--pearl-white);
-  --primary: var(--emerald-glow);
-  --primary-foreground: var(--deep-obsidian);
-  --secondary: var(--platinum-silver);
-  --secondary-foreground: var(--deep-obsidian);
-  --muted: var(--midnight-black);
-  --muted-foreground: var(--chrome-silver);
-  --accent: var(--subtle-gold);
-  --accent-foreground: var(--deep-obsidian);
-  --destructive: hsl(0, 85%, 60%);
+  /* 🎯 PREMIUM BRAND SUPPORTING COLORS 🎯 */
+  --midnight-caribbean: hsl(240, 12%, 6%);  /* Caribbean Midnight #0F0F12 */
+  --chrome-platinum: hsl(0, 0%, 78%);       /* Chrome Platinum #C7C7C7 */
+  --jade-caribbean: hsl(165, 75%, 48%);     /* Caribbean Jade #13B894 */
+  --royal-gold: hsl(45, 90%, 60%);          /* Royal Caribbean Gold #F2C94C */
+  --success-emerald: hsl(155, 70%, 50%);    /* Success Emerald #22C55E */
+  --warning-amber: hsl(35, 95%, 55%);       /* Warning Amber #F59E0B */
+  
+  --background: var(--caribbean-obsidian);
+  --foreground: var(--crystal-white);
+  --card: var(--midnight-caribbean);
+  --card-foreground: var(--crystal-white);
+  --popover: var(--blackrock-navy);
+  --popover-foreground: var(--crystal-white);
+  --primary: var(--emerald-caribbean);
+  --primary-foreground: var(--caribbean-obsidian);
+  --secondary: var(--platinum-pearl);
+  --secondary-foreground: var(--caribbean-obsidian);
+  --muted: var(--blackrock-navy);
+  --muted-foreground: var(--corporate-silver);
+  --accent: var(--island-gold);
+  --accent-foreground: var(--caribbean-obsidian);
+  --destructive: var(--warning-amber);
   --destructive-foreground: var(--crystal-white);
-  --border: var(--platinum-silver);
-  --input: var(--midnight-black);
-  --ring: var(--emerald-glow);
+  --border: var(--platinum-pearl);
+  --input: var(--blackrock-navy);
+  --ring: var(--emerald-caribbean);
   --chart-1: var(--emerald-glow);
   --chart-2: var(--subtle-gold);
   --chart-3: var(--platinum-silver);
