@@ -73,27 +73,27 @@
   --neutral-900: hsl(221, 39%, 11%);
   --neutral-950: hsl(224, 71%, 4%);
 
-  /* 🌟 PROFESSIONAL MODE */
-  --background: hsl(0, 0%, 6%);
-  --background-solid: hsl(0, 0%, 6%);
-  --foreground: hsl(0, 0%, 98%);
-  --card: hsl(0, 0%, 10%);
-  --card-foreground: hsl(0, 0%, 98%);
-  --popover: hsl(0, 0%, 12%);
-  --popover-foreground: hsl(0, 0%, 98%);
+  /* 🖤 UBER-STYLE ELEGANT BLACK */
+  --background: hsl(0, 0%, 0%);
+  --background-solid: hsl(0, 0%, 0%);
+  --foreground: hsl(0, 0%, 100%);
+  --card: hsl(0, 0%, 2%);
+  --card-foreground: hsl(0, 0%, 100%);
+  --popover: hsl(0, 0%, 2%);
+  --popover-foreground: hsl(0, 0%, 100%);
   --primary: hsl(0, 0%, 100%);
-  --primary-foreground: hsl(0, 0%, 9%);
-  --secondary: hsl(0, 0%, 15%);
-  --secondary-foreground: hsl(0, 0%, 98%);
-  --muted: hsl(0, 0%, 15%);
-  --muted-foreground: hsl(0, 0%, 70%);
-  --accent: hsl(215, 16%, 47%);
-  --accent-foreground: hsl(0, 0%, 98%);
+  --primary-foreground: hsl(0, 0%, 0%);
+  --secondary: hsl(0, 0%, 8%);
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --muted: hsl(0, 0%, 8%);
+  --muted-foreground: hsl(0, 0%, 80%);
+  --accent: hsl(0, 0%, 100%);
+  --accent-foreground: hsl(0, 0%, 0%);
   --destructive: hsl(0, 84%, 60%);
-  --destructive-foreground: hsl(0, 0%, 98%);
-  --border: hsl(0, 0%, 20%);
-  --input: hsl(0, 0%, 10%);
-  --ring: hsl(215, 16%, 47%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(0, 0%, 12%);
+  --input: hsl(0, 0%, 5%);
+  --ring: hsl(0, 0%, 100%);
 
   /* 🎨 LUXURY CHART COLORS */
   --chart-1: var(--emerald-500);
@@ -145,27 +145,27 @@
 }
 
 .dark {
-  /* 🌙 PROFESSIONAL DARK MODE */
-  --background: hsl(0, 0%, 6%);
-  --background-solid: hsl(0, 0%, 4%);
-  --foreground: hsl(0, 0%, 98%);
-  --card: hsl(0, 0%, 10%);
-  --card-foreground: hsl(0, 0%, 98%);
-  --popover: hsl(0, 0%, 12%);
-  --popover-foreground: hsl(0, 0%, 98%);
+  /* 🖤 UBER-STYLE ELEGANT BLACK */
+  --background: hsl(0, 0%, 0%);
+  --background-solid: hsl(0, 0%, 0%);
+  --foreground: hsl(0, 0%, 100%);
+  --card: hsl(0, 0%, 2%);
+  --card-foreground: hsl(0, 0%, 100%);
+  --popover: hsl(0, 0%, 2%);
+  --popover-foreground: hsl(0, 0%, 100%);
   --primary: hsl(0, 0%, 100%);
-  --primary-foreground: hsl(0, 0%, 9%);
-  --secondary: hsl(0, 0%, 15%);
-  --secondary-foreground: hsl(0, 0%, 98%);
-  --muted: hsl(0, 0%, 15%);
-  --muted-foreground: hsl(0, 0%, 70%);
-  --accent: hsl(215, 16%, 47%);
-  --accent-foreground: hsl(0, 0%, 98%);
+  --primary-foreground: hsl(0, 0%, 0%);
+  --secondary: hsl(0, 0%, 8%);
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --muted: hsl(0, 0%, 8%);
+  --muted-foreground: hsl(0, 0%, 80%);
+  --accent: hsl(0, 0%, 100%);
+  --accent-foreground: hsl(0, 0%, 0%);
   --destructive: hsl(0, 84%, 60%);
-  --destructive-foreground: hsl(0, 0%, 98%);
-  --border: hsl(0, 0%, 20%);
-  --input: hsl(0, 0%, 10%);
-  --ring: hsl(215, 16%, 47%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(0, 0%, 12%);
+  --input: hsl(0, 0%, 5%);
+  --ring: hsl(0, 0%, 100%);
 
   /* Professional Accents */
   --glow-emerald: hsla(0, 0%, 45%, 0.3);
@@ -507,26 +507,11 @@
 
 body {
   font-family: var(--font-sans);
-  background: var(--background);
-  color: var(--foreground);
+  background: #000000;
+  color: #ffffff;
   line-height: 1.6;
   overflow-x: hidden;
   position: relative;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 20% 80%, var(--glow-emerald) 0%, transparent 50%),
-              radial-gradient(circle at 80% 20%, var(--glow-gold) 0%, transparent 50%),
-              radial-gradient(circle at 40% 40%, var(--glow-rose) 0%, transparent 50%);
-  opacity: 0.1;
-  pointer-events: none;
-  z-index: -1;
 }
 
 /* Luxury Typography Hierarchy */
@@ -540,21 +525,20 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-size: 4rem;
-  background: linear-gradient(135deg, var(--emerald-500), var(--gold-500));
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #ffffff;
+  font-weight: 700;
 }
 
 h2 {
   font-size: 3rem;
-  color: var(--emerald-600);
-  text-shadow: 0 0 20px var(--glow-emerald);
+  color: #ffffff;
+  font-weight: 600;
 }
 
 h3 {
   font-size: 2.5rem;
-  color: var(--gold-600);
+  color: #ffffff;
+  font-weight: 500;
 }
 
 /* Luxury Scrollbar */
