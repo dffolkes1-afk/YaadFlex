@@ -194,7 +194,23 @@ export default function SponsorshipPage() {
   };
 
   return (
-    <div className="yf-background-system min-h-screen bg-gradient-to-br from-emerald-50 via-amber-50 to-orange-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 relative luxury-yf">
+    <div className="yf-background-system min-h-screen bg-gradient-to-br from-emerald-50 via-amber-50 to-orange-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 relative luxury-yf overflow-hidden">
+      
+      {/* Glamorous Animated Background Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Floating Orbs */}
+        <div className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-r from-emerald-400/20 to-amber-400/20 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute top-40 right-32 w-24 h-24 bg-gradient-to-r from-amber-400/30 to-orange-400/20 rounded-full blur-lg animate-bounce" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute bottom-40 left-40 w-28 h-28 bg-gradient-to-r from-orange-400/25 to-rose-400/15 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        
+        {/* Geometric Shapes */}
+        <div className="absolute top-1/4 right-20 w-16 h-16 bg-gradient-to-br from-emerald-500/10 to-amber-500/10 transform rotate-45 animate-spin-slow"></div>
+        <div className="absolute bottom-1/3 left-32 w-12 h-12 bg-gradient-to-br from-amber-500/15 to-orange-500/10 transform rotate-12 animate-reverse-spin"></div>
+        
+        {/* Glowing Lines */}
+        <div className="absolute top-60 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-400/30 to-transparent animate-pulse"></div>
+        <div className="absolute bottom-80 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-400/25 to-transparent animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+      </div>
       
       {/* YF Watermark - subtle bottom right only */}
       <div className="yf-watermark"></div>
@@ -218,12 +234,16 @@ export default function SponsorshipPage() {
             <div className="inline-block px-8 py-3 border-2 border-amber-400 bg-gradient-to-r from-amber-100 to-emerald-100 dark:bg-gradient-to-r dark:from-amber-900 dark:to-emerald-900 mb-8">
               <span className="text-xs font-medium tracking-[0.4em] text-amber-800 dark:text-amber-200 uppercase">Partnership Portfolio</span>
             </div>
-            <div className="relative">
-              <h1 className="text-8xl font-extralight bg-gradient-to-r from-emerald-600 via-amber-600 to-orange-600 bg-clip-text text-transparent mb-6 tracking-[-0.02em] leading-none relative z-10">
+            <div className="relative group">
+              {/* Glamorous Glow Effect */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-emerald-400/20 via-amber-400/20 to-orange-400/20 rounded-lg blur-xl group-hover:blur-2xl transition-all duration-700 animate-pulse"></div>
+              
+              <h1 className="text-8xl font-extralight bg-gradient-to-r from-emerald-600 via-amber-600 to-orange-600 bg-clip-text text-transparent mb-6 tracking-[-0.02em] leading-none relative z-10 drop-shadow-2xl group-hover:scale-105 transition-transform duration-700">
                 YAADFLEX
               </h1>
-              {/* YF Monogram Behind Title */}
-              <div className="absolute -top-8 -left-8 yf-monogram text-[12rem] font-black text-emerald-200/20 dark:text-emerald-800/20 -z-10">YF</div>
+              
+              {/* YF Monogram Behind Title with Glow */}
+              <div className="absolute -top-8 -left-8 yf-monogram text-[12rem] font-black text-emerald-200/20 dark:text-emerald-800/20 -z-10 drop-shadow-xl"></div>
             </div>
             <div className="text-lg font-light text-emerald-700 dark:text-emerald-400 tracking-[0.2em] uppercase mb-8">
               Executive Partnerships
@@ -242,23 +262,40 @@ export default function SponsorshipPage() {
           </div>
           
           {/* Premium Statistics Bar */}
-          <div className="mt-16 border-t-2 border-b-2 border-amber-400 bg-gradient-to-r from-emerald-100 via-amber-50 to-orange-100 dark:from-slate-800 dark:to-slate-700 py-8 relative caribbean-yf">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-              <div className="text-center">
-                <div className="text-3xl font-extralight text-emerald-700 dark:text-emerald-400 mb-1">150K+</div>
-                <div className="text-xs font-light tracking-[0.15em] text-emerald-600 dark:text-emerald-500 uppercase">Active Users</div>
+          <div className="mt-16 border-t-2 border-b-2 border-amber-400 bg-gradient-to-r from-emerald-100 via-amber-50 to-orange-100 dark:from-slate-800 dark:to-slate-700 py-8 relative caribbean-yf shadow-2xl backdrop-blur-sm">
+            {/* Glamorous Shine Effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform -translate-x-full animate-pulse"></div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto relative z-10">
+              <div className="text-center group">
+                <div className="relative p-4 rounded-xl bg-gradient-to-br from-emerald-100 to-emerald-200 dark:from-emerald-900 dark:to-emerald-800 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-1 transition-all duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 to-transparent rounded-xl group-hover:from-emerald-400/40 transition-all duration-500"></div>
+                  <div className="text-3xl font-extralight text-emerald-700 dark:text-emerald-400 mb-1 relative z-10 group-hover:scale-110 transition-transform duration-300">150K+</div>
+                  <div className="text-xs font-light tracking-[0.15em] text-emerald-600 dark:text-emerald-500 uppercase relative z-10">Active Users</div>
+                </div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-extralight text-amber-700 dark:text-amber-400 mb-1">50K+</div>
-                <div className="text-xs font-light tracking-[0.15em] text-amber-600 dark:text-amber-500 uppercase">Professional Drivers</div>
+              
+              <div className="text-center group">
+                <div className="relative p-4 rounded-xl bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-900 dark:to-amber-800 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-1 transition-all duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-br from-amber-400/20 to-transparent rounded-xl group-hover:from-amber-400/40 transition-all duration-500"></div>
+                  <div className="text-3xl font-extralight text-amber-700 dark:text-amber-400 mb-1 relative z-10 group-hover:scale-110 transition-transform duration-300">50K+</div>
+                  <div className="text-xs font-light tracking-[0.15em] text-amber-600 dark:text-amber-500 uppercase relative z-10">Professional Drivers</div>
+                </div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-extralight text-orange-700 dark:text-orange-400 mb-1">24/7</div>
-                <div className="text-xs font-light tracking-[0.15em] text-orange-600 dark:text-orange-500 uppercase">Operations</div>
+              
+              <div className="text-center group">
+                <div className="relative p-4 rounded-xl bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900 dark:to-orange-800 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-1 transition-all duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-400/20 to-transparent rounded-xl group-hover:from-orange-400/40 transition-all duration-500"></div>
+                  <div className="text-3xl font-extralight text-orange-700 dark:text-orange-400 mb-1 relative z-10 group-hover:scale-110 transition-transform duration-300">24/7</div>
+                  <div className="text-xs font-light tracking-[0.15em] text-orange-600 dark:text-orange-500 uppercase relative z-10">Operations</div>
+                </div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-extralight text-rose-700 dark:text-rose-400 mb-1">14</div>
-                <div className="text-xs font-light tracking-[0.15em] text-rose-600 dark:text-rose-500 uppercase">Parishes</div>
+              
+              <div className="text-center group">
+                <div className="relative p-4 rounded-xl bg-gradient-to-br from-rose-100 to-rose-200 dark:from-rose-900 dark:to-rose-800 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-1 transition-all duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-br from-rose-400/20 to-transparent rounded-xl group-hover:from-rose-400/40 transition-all duration-500"></div>
+                  <div className="text-3xl font-extralight text-rose-700 dark:text-rose-400 mb-1 relative z-10 group-hover:scale-110 transition-transform duration-300">14</div>
+                  <div className="text-xs font-light tracking-[0.15em] text-rose-600 dark:text-rose-500 uppercase relative z-10">Parishes</div>
+                </div>
               </div>
             </div>
           </div>
@@ -278,26 +315,46 @@ export default function SponsorshipPage() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-              <div className="text-center">
-                <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg">
-                  <Users className="h-8 w-8 text-white" />
+              <div className="text-center group">
+                <div className="relative p-8 bg-gradient-to-br from-white via-emerald-50 to-white dark:from-slate-800 dark:to-slate-900 rounded-2xl shadow-2xl group-hover:shadow-3xl group-hover:-translate-y-2 transition-all duration-700">
+                  {/* Glamorous Border Effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 via-amber-400 to-emerald-400 rounded-2xl p-px">
+                    <div className="h-full w-full bg-gradient-to-br from-white via-emerald-50 to-white dark:from-slate-800 dark:to-slate-900 rounded-2xl"></div>
+                  </div>
+                  
+                  <div className="relative z-10">
+                    <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                      <div className="absolute inset-0 bg-gradient-to-br from-emerald-300/50 to-transparent rounded-full animate-pulse"></div>
+                      <Users className="h-10 w-10 text-white relative z-10" />
+                    </div>
+                    <div className="text-4xl font-extralight text-emerald-700 dark:text-emerald-400 mb-3 group-hover:scale-105 transition-transform duration-300">150,000+</div>
+                    <div className="text-sm font-light text-emerald-600 dark:text-emerald-500 tracking-[0.1em] uppercase mb-4">Monthly Active Users</div>
+                    <p className="text-sm font-light text-slate-700 dark:text-slate-300 leading-relaxed">
+                      Premium customer base across all 14 parishes with high engagement rates and loyalty
+                    </p>
+                  </div>
                 </div>
-                <div className="text-3xl font-extralight text-emerald-700 dark:text-emerald-400 mb-3">150,000+</div>
-                <div className="text-sm font-light text-emerald-600 dark:text-emerald-500 tracking-[0.1em] uppercase mb-4">Monthly Active Users</div>
-                <p className="text-sm font-light text-slate-700 dark:text-slate-300 leading-relaxed">
-                  Premium customer base across all 14 parishes with high engagement rates and loyalty
-                </p>
               </div>
               
-              <div className="text-center">
-                <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
-                  <TrendingUp className="h-8 w-8 text-white" />
+              <div className="text-center group">
+                <div className="relative p-8 bg-gradient-to-br from-white via-amber-50 to-white dark:from-slate-800 dark:to-slate-900 rounded-2xl shadow-2xl group-hover:shadow-3xl group-hover:-translate-y-2 transition-all duration-700">
+                  {/* Glamorous Border Effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-400 rounded-2xl p-px">
+                    <div className="h-full w-full bg-gradient-to-br from-white via-amber-50 to-white dark:from-slate-800 dark:to-slate-900 rounded-2xl"></div>
+                  </div>
+                  
+                  <div className="relative z-10">
+                    <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                      <div className="absolute inset-0 bg-gradient-to-br from-amber-300/50 to-transparent rounded-full animate-pulse"></div>
+                      <TrendingUp className="h-10 w-10 text-white relative z-10" />
+                    </div>
+                    <div className="text-4xl font-extralight text-amber-700 dark:text-amber-400 mb-3 group-hover:scale-105 transition-transform duration-300">$2M+</div>
+                    <div className="text-sm font-light text-amber-600 dark:text-amber-500 tracking-[0.1em] uppercase mb-4">Monthly Transaction Volume</div>
+                    <p className="text-sm font-light text-slate-700 dark:text-slate-300 leading-relaxed">
+                      Substantial economic impact with consistent growth and premium transaction values
+                    </p>
+                  </div>
                 </div>
-                <div className="text-3xl font-extralight text-amber-700 dark:text-amber-400 mb-3">$2M+</div>
-                <div className="text-sm font-light text-amber-600 dark:text-amber-500 tracking-[0.1em] uppercase mb-4">Monthly Transaction Volume</div>
-                <p className="text-sm font-light text-slate-700 dark:text-slate-300 leading-relaxed">
-                  Substantial economic impact with consistent growth and premium transaction values
-                </p>
               </div>
             </div>
           </div>
@@ -334,19 +391,28 @@ export default function SponsorshipPage() {
             {sponsorshipPackages.map((pkg) => (
               <div 
                 key={pkg.id}
-                className={`group cursor-pointer transition-all duration-700 bg-gradient-to-br from-white via-amber-50/30 to-emerald-50/30 dark:bg-slate-900 border-2 border-amber-200 dark:border-slate-700 hover:shadow-2xl hover:border-amber-400 dark:hover:border-slate-500 hover:-translate-y-1 ${
-                  selectedPackage === pkg.id ? 'ring-2 ring-amber-400 shadow-2xl border-amber-500 dark:border-slate-500 -translate-y-1' : ''
-                }`}
+                className={`group cursor-pointer transition-all duration-700 bg-gradient-to-br from-white via-amber-50/30 to-emerald-50/30 dark:bg-slate-900 rounded-2xl shadow-2xl hover:shadow-3xl hover:-translate-y-3 hover:rotate-1 ${
+                  selectedPackage === pkg.id ? 'shadow-3xl -translate-y-3 rotate-1 ring-4 ring-amber-400/50' : ''
+                } relative overflow-hidden`}
                 onClick={() => setSelectedPackage(pkg.id)}
                 data-testid={`package-${pkg.id}`}
               >
+                {/* Glamorous Border Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 via-amber-400/20 to-orange-400/20 rounded-2xl p-px opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="h-full w-full bg-gradient-to-br from-white via-amber-50/30 to-emerald-50/30 dark:bg-slate-900 rounded-2xl"></div>
+                </div>
+                
+                {/* Shine Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
+                
                 {/* Premium Package Layout */}
-                <div className="p-10">
+                <div className="p-10 relative z-10">
                   {/* Package Header */}
                   <div className="flex items-start justify-between mb-8">
                     <div className="flex items-center gap-4">
-                      <div className={`w-12 h-12 bg-gradient-to-br ${pkg.color} rounded-lg shadow-lg flex items-center justify-center`}>
-                        <div className="text-white">
+                      <div className={`w-16 h-16 bg-gradient-to-br ${pkg.color} rounded-2xl shadow-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 relative overflow-hidden`}>
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-2xl animate-pulse"></div>
+                        <div className="text-white relative z-10 group-hover:scale-110 transition-transform duration-300">
                           {pkg.icon}
                         </div>
                       </div>
@@ -417,8 +483,16 @@ export default function SponsorshipPage() {
               </p>
             </div>
             
-            <div className="bg-gradient-to-br from-white via-amber-50/20 to-emerald-50/20 dark:bg-slate-900 border-2 border-amber-200 dark:border-slate-700 p-12 shadow-xl">
-              <div className="space-y-8">
+            <div className="relative bg-gradient-to-br from-white via-amber-50/20 to-emerald-50/20 dark:bg-slate-900 rounded-2xl p-12 shadow-3xl overflow-hidden">
+              {/* Glamorous Border Effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 via-amber-400 to-orange-400 rounded-2xl p-px">
+                <div className="h-full w-full bg-gradient-to-br from-white via-amber-50/20 to-emerald-50/20 dark:bg-slate-900 rounded-2xl"></div>
+              </div>
+              
+              {/* Floating Elements */}
+              <div className="absolute top-10 right-10 w-6 h-6 bg-gradient-to-r from-emerald-400/30 to-amber-400/30 rounded-full blur-sm animate-pulse"></div>
+              <div className="absolute bottom-10 left-10 w-4 h-4 bg-gradient-to-r from-amber-400/40 to-orange-400/30 rounded-full blur-sm animate-bounce" style={{ animationDelay: '1s' }}></div>
+              <div className="space-y-8 relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
                     <Label htmlFor="companyName" className="text-sm font-light tracking-[0.1em] text-slate-600 dark:text-slate-400 uppercase mb-3 block">
@@ -494,18 +568,20 @@ export default function SponsorshipPage() {
                 <Button
                   onClick={submitPartnership}
                   disabled={partnershipMutation.isPending}
-                  className="px-12 py-4 bg-gradient-to-r from-emerald-600 to-amber-600 hover:from-emerald-700 hover:to-amber-700 text-white shadow-lg font-light tracking-[0.15em] uppercase transition-all duration-300"
+                  className="px-12 py-4 bg-gradient-to-r from-emerald-600 to-amber-600 hover:from-emerald-700 hover:to-amber-700 text-white shadow-2xl hover:shadow-3xl font-light tracking-[0.15em] uppercase transition-all duration-500 hover:scale-105 hover:-translate-y-1 relative overflow-hidden group"
                 >
-                  {partnershipMutation.isPending ? 'Submitting Inquiry...' : 'Submit Partnership Inquiry'}
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-amber-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <span className="relative z-10">{partnershipMutation.isPending ? 'Submitting Inquiry...' : 'Submit Partnership Inquiry'}</span>
                 </Button>
                 
                 <Button
                   onClick={generateLetter}
                   variant="outline"
                   disabled={generateLetterMutation.isPending}
-                  className="px-12 py-4 border-2 border-amber-400 text-amber-700 hover:bg-amber-100 dark:hover:bg-amber-900/20 font-light tracking-[0.15em] uppercase transition-all duration-300"
+                  className="px-12 py-4 border-2 border-amber-400 text-amber-700 hover:bg-gradient-to-r hover:from-amber-100 hover:to-orange-100 dark:hover:bg-amber-900/20 font-light tracking-[0.15em] uppercase transition-all duration-500 hover:scale-105 hover:-translate-y-1 shadow-lg hover:shadow-2xl relative overflow-hidden group"
                 >
-                  {generateLetterMutation.isPending ? 'Preparing...' : 'Request Executive Proposal'}
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-200/50 to-orange-200/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <span className="relative z-10">{generateLetterMutation.isPending ? 'Preparing...' : 'Request Executive Proposal'}</span>
                 </Button>
               </div>
             </div>
