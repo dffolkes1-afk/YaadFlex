@@ -194,7 +194,24 @@ export default function SponsorshipPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-amber-50 to-orange-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 relative">
+    <div className="yf-background-system min-h-screen bg-gradient-to-br from-emerald-50 via-amber-50 to-orange-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 relative luxury-yf">
+      
+      {/* YF Watermark */}
+      <div className="yf-watermark"></div>
+      
+      {/* YF Brand Watermarks */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.02]">
+        {/* Large YF Monograms */}
+        <div className="absolute top-20 left-10 yf-monogram text-9xl font-black text-emerald-600/10 rotate-12">YF</div>
+        <div className="absolute top-1/3 right-20 yf-monogram text-8xl font-black text-amber-600/10 -rotate-12">YF</div>
+        <div className="absolute bottom-1/4 left-1/3 yf-monogram text-7xl font-black text-orange-600/10 rotate-6">YF</div>
+        <div className="absolute bottom-40 right-1/4 yf-monogram text-6xl font-black text-emerald-600/10 -rotate-6">YF</div>
+        
+        {/* YaadFlex Text Watermarks */}
+        <div className="absolute top-40 right-1/3 text-4xl font-extralight text-amber-600/5 rotate-45 tracking-widest">YAADFLEX</div>
+        <div className="absolute top-2/3 left-20 text-3xl font-extralight text-emerald-600/5 -rotate-45 tracking-widest">YAADFLEX</div>
+        <div className="absolute bottom-60 right-10 text-3xl font-extralight text-orange-600/5 rotate-12 tracking-widest">YAADFLEX</div>
+      </div>
       
       {/* Luxury Magazine Paper Texture */}
       <div className="absolute inset-0 opacity-[0.015] pointer-events-none">
@@ -215,9 +232,13 @@ export default function SponsorshipPage() {
             <div className="inline-block px-8 py-3 border-2 border-amber-400 bg-gradient-to-r from-amber-100 to-emerald-100 dark:bg-gradient-to-r dark:from-amber-900 dark:to-emerald-900 mb-8">
               <span className="text-xs font-medium tracking-[0.4em] text-amber-800 dark:text-amber-200 uppercase">Partnership Portfolio</span>
             </div>
-            <h1 className="text-8xl font-extralight bg-gradient-to-r from-emerald-600 via-amber-600 to-orange-600 bg-clip-text text-transparent mb-6 tracking-[-0.02em] leading-none">
-              YAADFLEX
-            </h1>
+            <div className="relative">
+              <h1 className="text-8xl font-extralight bg-gradient-to-r from-emerald-600 via-amber-600 to-orange-600 bg-clip-text text-transparent mb-6 tracking-[-0.02em] leading-none relative z-10">
+                YAADFLEX
+              </h1>
+              {/* YF Monogram Behind Title */}
+              <div className="absolute -top-8 -left-8 yf-monogram text-[12rem] font-black text-emerald-200/20 dark:text-emerald-800/20 -z-10">YF</div>
+            </div>
             <div className="text-lg font-light text-emerald-700 dark:text-emerald-400 tracking-[0.2em] uppercase mb-8">
               Executive Partnerships
             </div>
@@ -235,7 +256,13 @@ export default function SponsorshipPage() {
           </div>
           
           {/* Premium Statistics Bar */}
-          <div className="mt-16 border-t-2 border-b-2 border-amber-400 bg-gradient-to-r from-emerald-100 via-amber-50 to-orange-100 dark:from-slate-800 dark:to-slate-700 py-8">
+          <div className="mt-16 border-t-2 border-b-2 border-amber-400 bg-gradient-to-r from-emerald-100 via-amber-50 to-orange-100 dark:from-slate-800 dark:to-slate-700 py-8 relative caribbean-yf">
+            {/* YF Pattern in Background */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none overflow-hidden">
+              <div className="absolute top-2 left-10 yf-monogram text-4xl font-black text-emerald-600 rotate-12">YF</div>
+              <div className="absolute top-2 right-20 yf-monogram text-4xl font-black text-amber-600 -rotate-12">YF</div>
+              <div className="absolute top-2 left-1/2 yf-monogram text-4xl font-black text-orange-600">YF</div>
+            </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
               <div className="text-center">
                 <div className="text-3xl font-extralight text-emerald-700 dark:text-emerald-400 mb-1">150K+</div>
@@ -297,9 +324,21 @@ export default function SponsorshipPage() {
         </div>
 
         {/* Executive Statement */}
-        <div className="mb-32 py-20 bg-gradient-to-r from-amber-100 via-emerald-100 to-orange-100 dark:bg-slate-900/30 border-t-2 border-b-2 border-amber-400">
-          <div className="max-w-3xl mx-auto text-center px-8">
-            <div className="text-7xl font-serif text-amber-400 mb-6 leading-none">"</div>
+        <div className="mb-32 py-20 bg-gradient-to-r from-amber-100 via-emerald-100 to-orange-100 dark:bg-slate-900/30 border-t-2 border-b-2 border-amber-400 relative luxury-yf">
+          {/* YF Branding Pattern */}
+          <div className="absolute inset-0 opacity-[0.02] pointer-events-none">
+            <div className="absolute top-10 left-20 yf-monogram text-6xl font-black text-amber-600 rotate-45">YF</div>
+            <div className="absolute top-10 right-20 yf-monogram text-6xl font-black text-emerald-600 -rotate-45">YF</div>
+            <div className="absolute bottom-10 left-1/4 yf-monogram text-5xl font-black text-orange-600 rotate-12">YF</div>
+            <div className="absolute bottom-10 right-1/4 yf-monogram text-5xl font-black text-amber-600 -rotate-12">YF</div>
+          </div>
+          
+          <div className="max-w-3xl mx-auto text-center px-8 relative z-10">
+            <div className="text-7xl font-serif text-amber-400 mb-6 leading-none relative">
+              "
+              {/* Small YF beside quote */}
+              <span className="yf-monogram text-2xl font-black text-amber-500/30 absolute -right-12 top-4">YF</span>
+            </div>
             <blockquote className="text-3xl font-extralight text-emerald-800 dark:text-emerald-200 leading-relaxed mb-8 italic">
               Partnership excellence through strategic alignment with Jamaica's premier mobility ecosystem
             </blockquote>
@@ -321,7 +360,14 @@ export default function SponsorshipPage() {
               Curated partnership opportunities designed for discerning organizations seeking strategic market positioning
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto relative">
+            {/* YF Branding Behind Cards */}
+            <div className="absolute inset-0 opacity-[0.015] pointer-events-none">
+              <div className="absolute top-20 left-10 yf-monogram text-8xl font-black text-emerald-600 rotate-6">YF</div>
+              <div className="absolute top-20 right-10 yf-monogram text-8xl font-black text-amber-600 -rotate-6">YF</div>
+              <div className="absolute bottom-20 left-1/3 yf-monogram text-7xl font-black text-orange-600 rotate-3">YF</div>
+              <div className="absolute bottom-20 right-1/3 yf-monogram text-7xl font-black text-emerald-600 -rotate-3">YF</div>
+            </div>
             {sponsorshipPackages.map((pkg) => (
               <div 
                 key={pkg.id}
@@ -336,10 +382,12 @@ export default function SponsorshipPage() {
                   {/* Package Header */}
                   <div className="flex items-start justify-between mb-8">
                     <div className="flex items-center gap-4">
-                      <div className={`w-12 h-12 bg-gradient-to-br ${pkg.color} rounded-lg shadow-lg flex items-center justify-center`}>
-                        <div className="text-white">
+                      <div className={`w-12 h-12 bg-gradient-to-br ${pkg.color} rounded-lg shadow-lg flex items-center justify-center relative`}>
+                        <div className="text-white relative z-10">
                           {pkg.icon}
                         </div>
+                        {/* Mini YF watermark on icon */}
+                        <div className="absolute inset-0 yf-monogram text-xs font-black text-white/20 flex items-center justify-center">YF</div>
                       </div>
                       <div>
                         <h3 className="text-2xl font-extralight text-slate-900 dark:text-white leading-tight">
@@ -408,8 +456,14 @@ export default function SponsorshipPage() {
               </p>
             </div>
             
-            <div className="bg-gradient-to-br from-white via-amber-50/20 to-emerald-50/20 dark:bg-slate-900 border-2 border-amber-200 dark:border-slate-700 p-12 shadow-xl">
-              <div className="space-y-8">
+            <div className="bg-gradient-to-br from-white via-amber-50/20 to-emerald-50/20 dark:bg-slate-900 border-2 border-amber-200 dark:border-slate-700 p-12 shadow-xl relative">
+              {/* YF Branding in Form Background */}
+              <div className="absolute inset-0 opacity-[0.01] pointer-events-none overflow-hidden">
+                <div className="absolute top-10 right-10 yf-monogram text-6xl font-black text-emerald-600 rotate-12">YF</div>
+                <div className="absolute bottom-10 left-10 yf-monogram text-5xl font-black text-amber-600 -rotate-12">YF</div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 yf-monogram text-4xl font-black text-orange-600/50">YF</div>
+              </div>
+              <div className="space-y-8 relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
                     <Label htmlFor="companyName" className="text-sm font-light tracking-[0.1em] text-slate-600 dark:text-slate-400 uppercase mb-3 block">
