@@ -403,155 +403,160 @@ export default function Home() {
 
   return (
     <div className="min-h-screen text-foreground relative">
-      {/* GUARANTEED VISUAL FALLBACK - ALWAYS SHOWS */}
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        backgroundColor: '#16a34a',
-        color: 'white',
-        padding: '15px',
-        textAlign: 'center',
-        fontSize: '24px',
-        fontWeight: 'bold',
-        zIndex: 9999,
-        border: '5px solid gold',
-        boxShadow: '0 0 20px rgba(255,215,0,0.8)'
-      }}>
-        🌴💎 YAADFLEX VISUAL MODE ON! 💎🌴 YOUR 6 HOUR WAIT IS OVER! 🎉
+      {/* Professional Status Banner */}
+      <div className="bg-gradient-to-r from-emerald-600 to-emerald-800 text-white py-2 px-4 text-center border-b border-emerald-500">
+        <span className="text-sm font-medium">🌴 YaadFlex Platform • Jamaica Born, Global Vision • Powered by BlackRock</span>
       </div>
       
       {/* Starfield Background */}
       <div className="starfield fixed inset-0 z-0"></div>
       
-      {/* Global Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-green-900/20 to-yellow-900/20 border-b border-yellow-500/30">
-        <div className="relative">
-          <div 
-            className="w-full h-64 md:h-96 bg-gradient-to-r from-green-600/40 via-yellow-500/40 to-green-700/40 opacity-90 relative"
-            data-testid="hero-background"
-            style={{
-              backgroundImage: `url(${yaadFlexPoster})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundBlendMode: 'overlay'
-            }}
-          >
-            {/* Premium YaadFlex Logo Overlay */}
-            <div className="absolute top-4 left-4">
-              <div className="flex items-center gap-2">
-                <div 
-                  className="w-8 h-8 rounded-full bg-gradient-to-r from-emerald-400 to-yellow-400 flex items-center justify-center text-black font-bold text-xs premium-neon-glow"
-                >
-                  🛡️
+      {/* Strategic Hero Section */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-emerald-950 via-gray-900 to-amber-950">
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/20 to-amber-900/20"></div>
+        <div className="relative max-w-7xl mx-auto px-6 py-20">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Hero Content */}
+            <div className="text-center lg:text-left">
+              <div className="mb-6">
+                <div className="inline-flex items-center gap-3 bg-emerald-900/30 border border-emerald-600/30 rounded-full px-4 py-2 mb-4">
+                  <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                  <span className="text-emerald-300 text-sm font-medium">Jamaica Born • Global Vision</span>
                 </div>
-                <span className="text-lg font-bold bg-gradient-to-r from-emerald-400 to-yellow-400 bg-clip-text text-transparent">YaadFlex</span>
+                <h1 className="text-4xl lg:text-6xl font-black mb-4" data-testid="text-hero-title">
+                  <span className="bg-gradient-to-r from-emerald-400 to-amber-400 bg-clip-text text-transparent">YaadFlex</span>
+                  <br />
+                  <span className="text-white">Super-App</span>
+                </h1>
+                <p className="text-xl text-gray-300 mb-6 leading-relaxed" data-testid="text-hero-description">
+                  The Caribbean's first total economy platform. Ride-sharing, payments, marketplace, and business tools - all unified under BlackRock's global infrastructure.
+                </p>
+              </div>
+              
+              {/* Key Value Props */}
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                <div className="bg-emerald-900/20 border border-emerald-600/20 rounded-lg p-4">
+                  <div className="text-2xl mb-2">🌴</div>
+                  <div className="text-sm font-medium text-emerald-300">Caribbean Roots</div>
+                  <div className="text-xs text-gray-400">Authentic island culture</div>
+                </div>
+                <div className="bg-amber-900/20 border border-amber-600/20 rounded-lg p-4">
+                  <div className="text-2xl mb-2">🏢</div>
+                  <div className="text-sm font-medium text-amber-300">BlackRock Backed</div>
+                  <div className="text-xs text-gray-400">Global financial strength</div>
+                </div>
+                <div className="bg-blue-900/20 border border-blue-600/20 rounded-lg p-4">
+                  <div className="text-2xl mb-2">🚀</div>
+                  <div className="text-sm font-medium text-blue-300">Total Economy</div>
+                  <div className="text-xs text-gray-400">Everything in one app</div>
+                </div>
+                <div className="bg-purple-900/20 border border-purple-600/20 rounded-lg p-4">
+                  <div className="text-2xl mb-2">🗣️</div>
+                  <div className="text-sm font-medium text-purple-300">Voice First</div>
+                  <div className="text-xs text-gray-400">Accessibility focused</div>
+                </div>
+              </div>
+              
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link to="/voice-workspace">
+                  <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl" data-testid="button-try-voice">
+                    🎤 Try Voice Workspace
+                  </Button>
+                </Link>
+                <Link to="/super-app">
+                  <Button variant="outline" size="lg" className="border-amber-600 text-amber-400 hover:bg-amber-600 hover:text-black px-8 py-3 rounded-lg font-semibold transition-all duration-200" data-testid="button-explore-apps">
+                    🌴 Explore Super-App
+                  </Button>
+                </Link>
               </div>
             </div>
             
-            {/* Animated Interactive Element */}
-            <div className="absolute bottom-4 right-4 w-40 h-40 flex items-center justify-center">
-              <div className="text-6xl animate-bounce">🚀</div>
+            {/* Hero Visual */}
+            <div className="relative">
+              <div className="bg-gradient-to-br from-emerald-600/20 to-amber-600/20 rounded-2xl p-8 backdrop-blur-sm border border-emerald-600/20">
+                <div className="text-center">
+                  <div className="text-8xl mb-4 floating">🏝️</div>
+                  <h3 className="text-2xl font-bold text-white mb-2">From Jamaica to the World</h3>
+                  <p className="text-gray-300">Bringing Caribbean innovation to global markets</p>
+                </div>
+              </div>
             </div>
           </div>
-          
-          {/* Hero Overlay Content */}
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-black/40 to-transparent">
-            <div className="text-center text-white z-10">
-              <h1 className="text-4xl md:text-6xl font-bold mb-4" data-testid="text-hero-title">
-                <span className="text-yellow-400 text-shadow-lg">YARD</span>
-                <span className="text-green-500 text-shadow-lg">FLEX</span>
-              </h1>
-              <p className="text-xl md:text-2xl font-semibold mb-2" data-testid="text-hero-subtitle">
-                🇯🇲🇨🇦 JAMAICA & CANADA TO THE MOON 🚀🌙
-              </p>
-              <p className="text-lg md:text-xl mb-3" data-testid="text-hero-description">
-                One App. Two Countries. Infinite Possibilities. Universal Success.
-              </p>
-              <p className="text-2xl md:text-4xl font-bold text-yellow-300 animate-pulse" data-testid="text-fair-alternative">
-                ⚖️ THE FAIR ALTERNATIVE ⚖️
-              </p>
-            </div>
-          </div>
-          
-          {/* Decorative Elements */}
-          <div className="absolute top-4 left-4 w-16 h-16 bg-yellow-400/20 rounded-full blur-xl animate-pulse"></div>
-          <div className="absolute bottom-4 right-4 w-20 h-20 bg-green-500/20 rounded-full blur-xl animate-pulse delay-1000"></div>
         </div>
       </div>
 
-      {/* Header */}
-      <header className="glass-card border-b border-border pulse-border">
-        <div className="container mx-auto px-6 py-4">
+      {/* Strategic Navigation Header */}
+      <header className="bg-black/40 backdrop-blur-md border-b border-emerald-600/20">
+        <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
+            {/* Brand Section */}
+            <div className="flex items-center gap-6">
               <div className="flex items-center gap-3">
-                <div 
-                  className="w-10 h-10 rounded-full bg-gradient-to-r from-emerald-400 to-yellow-400 flex items-center justify-center text-black font-bold text-sm premium-neon-glow"
-                  data-testid="main-premium-logo"
-                >
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-emerald-400 to-amber-400 flex items-center justify-center text-black font-bold text-sm" data-testid="main-premium-logo">
                   🛡️
                 </div>
-                <span className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-yellow-400 bg-clip-text text-transparent" data-testid="brand-name">YaadFlex</span>
+                <div>
+                  <h1 className="text-xl font-bold text-white" data-testid="brand-name">YaadFlex</h1>
+                  <div className="text-xs text-emerald-400 font-medium">Total Economy Platform</div>
+                </div>
               </div>
-              <span className="text-xs bg-emerald-600 text-white px-2 py-1 rounded-full font-medium gold-neon-glow" data-testid="global-indicator">
-                PREMIUM
-              </span>
-              {beastModeActive && (
-                <span className="text-xs bg-destructive text-destructive-foreground px-2 py-1 rounded-full font-medium animate-pulse" data-testid="beast-mode-indicator">
-                  BEAST MODE
-                </span>
-              )}
+              
+              {/* Core Navigation */}
+              <nav className="hidden lg:flex items-center gap-4">
+                <Link to="/voice-workspace">
+                  <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-emerald-600/20" data-testid="nav-voice">
+                    🎤 Voice
+                  </Button>
+                </Link>
+                <Link to="/super-app">
+                  <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-amber-600/20" data-testid="nav-apps">
+                    🌴 Apps
+                  </Button>
+                </Link>
+                <Link to="/wallet">
+                  <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-blue-600/20" data-testid="nav-wallet">
+                    💰 Wallet
+                  </Button>
+                </Link>
+                <Link to="/business-dashboard">
+                  <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-purple-600/20" data-testid="nav-business">
+                    📊 Business
+                  </Button>
+                </Link>
+              </nav>
             </div>
-            <div className="flex items-center space-x-4">
-              {/* User Profile Display */}
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm border-2 border-white shadow-lg" data-testid="user-avatar">
+            
+            {/* User Profile & Actions */}
+            <div className="flex items-center gap-4">
+              {/* Status Indicators */}
+              <div className="hidden md:flex items-center gap-2">
+                <span className="text-xs bg-emerald-600/20 border border-emerald-600/30 text-emerald-300 px-2 py-1 rounded-full font-medium" data-testid="global-indicator">
+                  LIVE
+                </span>
+                {beastModeActive && (
+                  <span className="text-xs bg-red-600/20 border border-red-600/30 text-red-300 px-2 py-1 rounded-full font-medium animate-pulse" data-testid="beast-mode-indicator">
+                    BEAST MODE
+                  </span>
+                )}
+              </div>
+              
+              {/* User Profile */}
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-emerald-500 to-amber-500 flex items-center justify-center text-black font-bold text-sm" data-testid="user-avatar">
                   {user?.isBlackRockExecutive ? 'BR' : (user ? `${user.firstName?.[0] || 'U'}${user.lastName?.[0] || 'S'}` : 'US')}
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-semibold text-foreground" data-testid="user-name">
-                    {user?.isBlackRockExecutive ? 'BlackRock Executive' : (user ? `${user.firstName} ${user.lastName}` : 'User')}
-                  </span>
-                  <span className="text-xs text-muted-foreground" data-testid="user-welcome">
-                    {user?.isBlackRockExecutive ? 'Owner • Global Economy' : 'Member • YaadFlex Global'}
-                  </span>
+                <div className="hidden md:block">
+                  <div className="text-sm font-semibold text-white" data-testid="user-name">
+                    {user?.isBlackRockExecutive ? 'BlackRock Executive' : (user ? `${user.firstName} ${user.lastName}` : 'Executive')}
+                  </div>
+                  <div className="text-xs text-gray-400" data-testid="user-welcome">
+                    {user?.isBlackRockExecutive ? 'Platform Owner' : 'YaadFlex Member'}
+                  </div>
                 </div>
               </div>
-              <Button 
-                variant="outline" 
-                onClick={() => setLocation("/wallet")} 
-                className="bg-green-900/50 border-green-600 text-green-400 hover:bg-green-800/50"
-                data-testid="button-wallet"
-              >
-                💰 Wallet
-              </Button>
-              <Button 
-                variant="outline" 
-                onClick={() => setLocation("/business-dashboard")} 
-                className="bg-blue-900/50 border-blue-600 text-blue-400 hover:bg-blue-800/50"
-                data-testid="button-business-dashboard"
-              >
-                📊 Business
-              </Button>
-              <Button 
-                variant="outline" 
-                onClick={() => setLocation("/trading-dashboard")} 
-                className="bg-purple-900/50 border-purple-600 text-purple-400 hover:bg-purple-800/50"
-                data-testid="button-trading-dashboard"
-              >
-                📈 Trading
-              </Button>
-              <Button 
-                variant="outline" 
-                onClick={() => setLocation("/super-app")} 
-                className="bg-gradient-to-r from-yellow-600 to-orange-600 border-yellow-500 text-white hover:from-yellow-700 hover:to-orange-700 font-bold"
-                data-testid="button-super-app-nav"
-              >
-                🌴 Super-App
-              </Button>
-              <Button variant="outline" onClick={handleLogout} data-testid="button-logout">
+              
+              <Button variant="outline" size="sm" onClick={handleLogout} className="border-gray-600 text-gray-300 hover:bg-gray-700" data-testid="button-logout">
                 Logout
               </Button>
             </div>
@@ -561,86 +566,115 @@ export default function Home() {
 
       <div className="container mx-auto px-6 py-8">
         
-        {/* SPECTACULAR VISUAL DASHBOARD - SHOW THIS TO EVERYONE! */}
-        <div className="mb-8">
-          <Card className="bg-gradient-to-br from-green-900/95 via-yellow-900/95 to-orange-900/95 border-8 border-yellow-400/100 relative overflow-hidden shadow-2xl shadow-yellow-500/80" data-testid="spectacular-dashboard">
-            <CardHeader className="text-center pb-4">
-              <CardTitle className="text-4xl md:text-6xl font-black text-yellow-400 animate-pulse leading-tight">
-                🏢 YAADFLEX LIVE BUSINESS DASHBOARD 🏢
+        {/* Strategic Platform Overview */}
+        <div className="mb-12">
+          <Card className="bg-gradient-to-br from-gray-900/90 to-emerald-950/90 border border-emerald-600/30 relative overflow-hidden" data-testid="platform-overview">
+            <CardHeader className="text-center pb-6">
+              <CardTitle className="text-3xl md:text-4xl font-bold text-white mb-4">
+                🌴 YaadFlex Global Platform 🌴
               </CardTitle>
-              <div className="text-xl md:text-3xl font-bold text-green-400 animate-bounce">LOOK AT THESE NUMBERS! 📊</div>
+              <p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                Experience the Caribbean's first total economy super-app. From ride-sharing to business management, voice accessibility to global payments - everything unified in one platform.
+              </p>
             </CardHeader>
             
             <CardContent>
-              {/* IMPRESSIVE BUSINESS METRICS */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div className="bg-green-600/70 border-4 border-green-400/100 rounded-xl p-6 text-center transform hover:scale-110 transition-all">
-                  <div className="text-4xl animate-bounce mb-2">💰</div>
-                  <div className="text-2xl font-black text-green-300">$1,250</div>
-                  <div className="text-lg text-green-200 font-bold">KWD Balance</div>
-                  <div className="w-full h-2 bg-green-800 rounded-full mt-2"><div className="h-2 bg-green-400 rounded-full w-4/5 animate-pulse"></div></div>
+              {/* Key Platform Metrics */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                <div className="bg-emerald-900/30 border border-emerald-600/30 rounded-xl p-6 text-center">
+                  <div className="text-3xl mb-2">🌍</div>
+                  <div className="text-3xl font-bold text-emerald-300 mb-1">
+                    {displayStats.countries}
+                  </div>
+                  <div className="text-sm font-medium text-white">Countries</div>
+                  <div className="text-xs text-emerald-200">Global Reach</div>
                 </div>
                 
-                <div className="bg-blue-600/70 border-4 border-blue-400/100 rounded-xl p-6 text-center transform hover:scale-110 transition-all">
-                  <div className="text-4xl animate-spin mb-2">🚀</div>
-                  <div className="text-2xl font-black text-blue-300">47</div>
-                  <div className="text-lg text-blue-200 font-bold">Active Defenses</div>
-                  <div className="w-full h-2 bg-blue-800 rounded-full mt-2"><div className="h-2 bg-blue-400 rounded-full w-full animate-pulse"></div></div>
+                <div className="bg-blue-900/30 border border-blue-600/30 rounded-xl p-6 text-center">
+                  <div className="text-3xl mb-2">⚡</div>
+                  <div className="text-3xl font-bold text-blue-300 mb-1">
+                    {displayStats.uptime}
+                  </div>
+                  <div className="text-sm font-medium text-white">Uptime</div>
+                  <div className="text-xs text-blue-200">Reliability</div>
                 </div>
                 
-                <div className="bg-purple-600/70 border-4 border-purple-400/100 rounded-xl p-6 text-center transform hover:scale-110 transition-all">
-                  <div className="text-4xl animate-pulse mb-2">🌍</div>
-                  <div className="text-2xl font-black text-purple-300">195</div>
-                  <div className="text-lg text-purple-200 font-bold">Global Reach</div>
-                  <div className="w-full h-2 bg-purple-800 rounded-full mt-2"><div className="h-2 bg-purple-400 rounded-full w-full animate-pulse"></div></div>
+                <div className="bg-purple-900/30 border border-purple-600/30 rounded-xl p-6 text-center">
+                  <div className="text-3xl mb-2">🔧</div>
+                  <div className="text-3xl font-bold text-purple-300 mb-1">
+                    {displayStats.activeDefenses}
+                  </div>
+                  <div className="text-sm font-medium text-white">Services</div>
+                  <div className="text-xs text-purple-200">Active</div>
                 </div>
                 
-                <div className="bg-orange-600/70 border-4 border-orange-400/100 rounded-xl p-6 text-center transform hover:scale-110 transition-all">
-                  <div className="text-4xl animate-bounce mb-2">🛡️</div>
-                  <div className="text-2xl font-black text-orange-300">15,420</div>
-                  <div className="text-lg text-orange-200 font-bold">Threats Blocked</div>
-                  <div className="w-full h-2 bg-orange-800 rounded-full mt-2"><div className="h-2 bg-orange-400 rounded-full w-3/4 animate-pulse"></div></div>
+                <div className="bg-amber-900/30 border border-amber-600/30 rounded-xl p-6 text-center">
+                  <div className="text-3xl mb-2">👥</div>
+                  <div className="text-3xl font-bold text-amber-300 mb-1">
+                    {Math.floor(displayStats.threatsBlocked / 1000)}K+
+                  </div>
+                  <div className="text-sm font-medium text-white">Users</div>
+                  <div className="text-xs text-amber-200">Connected</div>
                 </div>
               </div>
               
-              {/* RECENT BUSINESS ACTIVITY */}
-              <div className="bg-black/50 border-4 border-white/30 rounded-xl p-6 mb-6">
-                <h3 className="text-2xl font-black text-white mb-4 text-center animate-pulse">🔥 RECENT BUSINESS ACTIVITY 🔥</h3>
+              {/* Recent Platform Activity */}
+              <div className="bg-gray-800/30 border border-gray-600/30 rounded-xl p-6 mb-8">
+                <h3 className="text-xl font-semibold text-white mb-4 text-center">Recent Platform Activity</h3>
                 <div className="space-y-3">
-                  <div className="bg-green-600/50 border-2 border-green-400/70 rounded-lg p-4 flex items-center space-x-4">
-                    <div className="text-3xl animate-bounce">💰</div>
+                  <div className="bg-emerald-800/20 border border-emerald-600/20 rounded-lg p-4 flex items-center space-x-4">
+                    <div className="text-2xl">💰</div>
                     <div>
-                      <div className="text-green-300 font-bold text-lg">Property Rental Payment: $850.00 USD</div>
-                      <div className="text-green-200 text-sm">COMPLETED - High Security Level</div>
+                      <div className="text-emerald-300 font-medium">Business Payment: $850.00 USD</div>
+                      <div className="text-emerald-200 text-sm">Completed - Secure Transaction</div>
                     </div>
                   </div>
                   
-                  <div className="bg-blue-600/50 border-2 border-blue-400/70 rounded-lg p-4 flex items-center space-x-4">
-                    <div className="text-3xl animate-spin">🚚</div>
+                  <div className="bg-blue-800/20 border border-blue-600/20 rounded-lg p-4 flex items-center space-x-4">
+                    <div className="text-2xl">🚚</div>
                     <div>
-                      <div className="text-blue-300 font-bold text-lg">Delivery Service Revenue: $1,200.00 JMD</div>
-                      <div className="text-blue-200 text-sm">COMPLETED - Business Growing!</div>
+                      <div className="text-blue-300 font-medium">Delivery Service: $1,200.00 JMD</div>
+                      <div className="text-blue-200 text-sm">Active - Growing Network</div>
                     </div>
                   </div>
                   
-                  <div className="bg-purple-600/50 border-2 border-purple-400/70 rounded-lg p-4 flex items-center space-x-4">
-                    <div className="text-3xl animate-pulse">💎</div>
+                  <div className="bg-purple-800/20 border border-purple-600/20 rounded-lg p-4 flex items-center space-x-4">
+                    <div className="text-2xl">💎</div>
                     <div>
-                      <div className="text-purple-300 font-bold text-lg">Business Investment: $2,500.00 KWD</div>
-                      <div className="text-purple-200 text-sm">PROCESSING - Maximum Security</div>
+                      <div className="text-purple-300 font-medium">Investment Flow: $2,500.00 KWD</div>
+                      <div className="text-purple-200 text-sm">Processing - High Security</div>
                     </div>
                   </div>
                 </div>
               </div>
               
-              {/* LIVE STATUS TICKER */}
-              <div className="bg-gradient-to-r from-red-600/50 to-orange-600/50 border-4 border-red-400/80 rounded-xl p-4 text-center">
-                <div className="text-2xl font-black text-red-300 mb-2 animate-pulse">🚨 LIVE YAADFLEX STATUS 🚨</div>
-                <div className="text-white text-lg font-bold">
-                  <span className="inline-block animate-bounce">🟢</span> BUSINESS: BOOMING | 
-                  <span className="inline-block animate-bounce delay-100">🟢</span> PAYMENTS: FLOWING | 
-                  <span className="inline-block animate-bounce delay-200">🟢</span> SECURITY: MAXIMUM | 
-                  <span className="inline-block animate-bounce delay-300">🟢</span> SUCCESS: GUARANTEED!
+              {/* Strategic Call to Action */}
+              <div className="text-center">
+                <div className="bg-gradient-to-r from-emerald-900/40 to-amber-900/40 border border-emerald-600/40 rounded-2xl p-8">
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                    🌟 Start Your YaadFlex Journey
+                  </h3>
+                  <p className="text-gray-300 text-lg mb-6 max-w-2xl mx-auto">
+                    Join thousands of businesses, drivers, and customers who trust YaadFlex for their daily operations. Choose your path and experience the future of Caribbean commerce.
+                  </p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Link to="/business-registration">
+                      <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200" data-testid="button-register-business">
+                        🏢 For Business
+                      </Button>
+                    </Link>
+                    <Link to="/driver-registration">
+                      <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200" data-testid="button-register-driver">
+                        🚗 For Drivers
+                      </Button>
+                    </Link>
+                    <Link to="/customer-booking">
+                      <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200" data-testid="button-book-ride">
+                        🚖 For Customers
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </CardContent>
