@@ -15,15 +15,18 @@ export interface PerformanceThresholds {
   adaptiveIntensity: boolean;
 }
 
+// Stable default options to prevent re-render loops
+const DEFAULT_PERFORMANCE_THRESHOLDS: PerformanceThresholds = {
+  lowFpsThreshold: 30,
+  highMemoryThreshold: 50,
+  adaptiveIntensity: true,
+};
+
 /**
  * Hook to monitor performance and provide adaptive recommendations
  */
 export function usePerformanceMonitor(
-  options: PerformanceThresholds = {
-    lowFpsThreshold: 30,
-    highMemoryThreshold: 50,
-    adaptiveIntensity: true,
-  }
+  options?: Partial<PerformanceThresholds>
 ): PerformanceMetrics {
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
     fps: 60,
@@ -31,6 +34,12 @@ export function usePerformanceMonitor(
     isLowPerformance: false,
     recommendedIntensity: 'medium',
   });
+
+  // Stabilize options to prevent effect loops
+  const stableOptions = useMemo(() => ({
+    ...DEFAULT_PERFORMANCE_THRESHOLDS,
+    ...options,
+  }), [options?.lowFpsThreshold, options?.highMemoryThreshold, options?.adaptiveIntensity]);
 
   const frameRef = useRef<number>();
   const lastTimeRef = useRef<number>(performance.now());
@@ -88,12 +97,12 @@ export function usePerformanceMonitor(
   // Update performance assessment
   useEffect(() => {
     const isLowPerformance = 
-      metrics.fps < options.lowFpsThreshold || 
-      metrics.memoryUsage > options.highMemoryThreshold;
+      metrics.fps < stableOptions.lowFpsThreshold || 
+      metrics.memoryUsage > stableOptions.highMemoryThreshold;
 
     let recommendedIntensity: 'subtle' | 'medium' | 'bold' = 'medium';
 
-    if (options.adaptiveIntensity) {
+    if (stableOptions.adaptiveIntensity) {
       if (metrics.fps < 20 || metrics.memoryUsage > 70) {
         recommendedIntensity = 'subtle';
       } else if (metrics.fps > 50 && metrics.memoryUsage < 30) {
@@ -101,12 +110,19 @@ export function usePerformanceMonitor(
       }
     }
 
-    setMetrics(prev => ({
-      ...prev,
-      isLowPerformance,
-      recommendedIntensity,
-    }));
-  }, [metrics.fps, metrics.memoryUsage, options]);
+    // Only update if values actually changed to prevent loops
+    setMetrics(prev => {
+      if (prev.isLowPerformance === isLowPerformance && 
+          prev.recommendedIntensity === recommendedIntensity) {
+        return prev;
+      }
+      return {
+        ...prev,
+        isLowPerformance,
+        recommendedIntensity,
+      };
+    });
+  }, [metrics.fps, metrics.memoryUsage, stableOptions.lowFpsThreshold, stableOptions.highMemoryThreshold, stableOptions.adaptiveIntensity]);
 
   // Start monitoring
   useEffect(() => {

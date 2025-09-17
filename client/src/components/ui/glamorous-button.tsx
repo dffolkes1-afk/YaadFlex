@@ -54,11 +54,12 @@ const glamorousButtonVariants = cva(
 interface FloatingElementsProps {
   intensity: 'subtle' | 'medium' | 'bold';
   enabled: boolean;
+  actualIntensity: 'subtle' | 'medium' | 'bold';
+  effectMultiplier: number;
 }
 
-function FloatingElements({ intensity, enabled }: FloatingElementsProps) {
+function FloatingElements({ intensity, enabled, actualIntensity, effectMultiplier }: FloatingElementsProps) {
   const motionPreferences = useMotionPreferences();
-  const { actualIntensity, effectMultiplier } = useAdaptiveIntensity(intensity);
   
   if (!enabled || motionPreferences.prefersReducedMotion) return null;
   
@@ -75,9 +76,9 @@ function FloatingElements({ intensity, enabled }: FloatingElementsProps) {
   const elementCount = getElementCount();
   
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+    <span className="absolute inset-0 pointer-events-none overflow-hidden">
       {elements.slice(0, elementCount).map((element, i) => (
-        <div
+        <span
           key={i}
           className="absolute text-xs opacity-30 motion-safe:animate-float motion-reduce:animate-none"
           style={{
@@ -89,9 +90,9 @@ function FloatingElements({ intensity, enabled }: FloatingElementsProps) {
           aria-hidden="true"
         >
           {element}
-        </div>
+        </span>
       ))}
-    </div>
+    </span>
   );
 }
 
@@ -139,6 +140,7 @@ const GlamorousButton = React.forwardRef<HTMLButtonElement, GlamorousButtonProps
     const [ripples, setRipples] = React.useState<Array<{ id: number; x: number; y: number }>>([]);
     const [isVisible, setIsVisible] = React.useState(false);
     const buttonRef = React.useRef<HTMLButtonElement>(null);
+    const magneticRAF = React.useRef<number>();
     
     const motionPreferences = useMotionPreferences();
     const { actualIntensity, shouldReduceEffects } = useAdaptiveIntensity(elementIntensity);
@@ -154,7 +156,11 @@ const GlamorousButton = React.forwardRef<HTMLButtonElement, GlamorousButtonProps
       
       const observer = new IntersectionObserver(
         ([entry]) => {
-          setIsVisible(entry.isIntersecting);
+          // Only update if the visibility state actually changed
+          setIsVisible(prev => {
+            const newValue = entry.isIntersecting;
+            return prev !== newValue ? newValue : prev;
+          });
         },
         { rootMargin: '50px' }
       );
@@ -186,19 +192,30 @@ const GlamorousButton = React.forwardRef<HTMLButtonElement, GlamorousButtonProps
       onClick?.(event);
     }, [onClick, rippleEffect, isVisible, motionPreferences, shouldReduceEffects]);
     
-    // Magnetic hover effect with motion preferences
+    // Magnetic hover effect with requestAnimationFrame throttling
     const handleMouseMove = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
       if (magneticHover && buttonRef.current && !motionPreferences.prefersReducedMotion && !shouldReduceEffects) {
-        const rect = buttonRef.current.getBoundingClientRect();
-        const x = event.clientX - rect.left - rect.width / 2;
-        const y = event.clientY - rect.top - rect.height / 2;
+        if (magneticRAF.current) {
+          cancelAnimationFrame(magneticRAF.current);
+        }
         
-        const intensity = shouldReduceEffects ? 0.05 : 0.1;
-        buttonRef.current.style.transform = `translate(${x * intensity}px, ${y * intensity}px) scale(1.05)`;
+        magneticRAF.current = requestAnimationFrame(() => {
+          if (buttonRef.current) {
+            const rect = buttonRef.current.getBoundingClientRect();
+            const x = event.clientX - rect.left - rect.width / 2;
+            const y = event.clientY - rect.top - rect.height / 2;
+            
+            const intensity = shouldReduceEffects ? 0.05 : 0.1;
+            buttonRef.current.style.transform = `translate(${x * intensity}px, ${y * intensity}px) scale(1.05)`;
+          }
+        });
       }
     }, [magneticHover, motionPreferences.prefersReducedMotion, shouldReduceEffects]);
     
     const handleMouseLeave = React.useCallback(() => {
+      if (magneticRAF.current) {
+        cancelAnimationFrame(magneticRAF.current);
+      }
       if (magneticHover && buttonRef.current) {
         buttonRef.current.style.transform = '';
       }
@@ -215,23 +232,33 @@ const GlamorousButton = React.forwardRef<HTMLButtonElement, GlamorousButtonProps
       className
     );
     
+    // When using asChild, separate button-specific props from passthrough props
+    const buttonSpecificProps = asChild ? {} : {
+      onClick: handleClick,
+      onMouseMove: respectMotionPreferences ? handleMouseMove : undefined,
+      onMouseLeave: respectMotionPreferences ? handleMouseLeave : undefined,
+      disabled: disabled || loadingState,
+    };
+    
     return (
       <Comp
         className={buttonClasses}
         ref={buttonRef}
-        onClick={handleClick}
-        onMouseMove={respectMotionPreferences ? handleMouseMove : undefined}
-        onMouseLeave={respectMotionPreferences ? handleMouseLeave : undefined}
         data-testid={testId}
         aria-label={ariaLabel}
         aria-describedby={ariaDescribedby}
         aria-busy={loadingState}
-        disabled={disabled || loadingState}
+        {...buttonSpecificProps}
         {...props}
       >
         {/* Floating Elements */}
         {floatingElements && isVisible && (
-          <FloatingElements intensity={actualIntensity} enabled={floatingElements} />
+          <FloatingElements 
+            intensity={elementIntensity} 
+            enabled={floatingElements} 
+            actualIntensity={actualIntensity}
+            effectMultiplier={shouldReduceEffects ? 0.5 : 1}
+          />
         )}
         
         {/* Ripple Effects */}
@@ -260,7 +287,7 @@ const GlamorousButton = React.forwardRef<HTMLButtonElement, GlamorousButtonProps
         
         {/* Shine overlay for certain variants */}
         {(variant === 'luxury' || variant === 'premium' || variant === 'party') && isVisible && !motionPreferences.prefersReducedMotion && (
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 motion-safe:transition-opacity motion-safe:duration-300 motion-reduce:opacity-0 pointer-events-none" aria-hidden="true" />
+          <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 motion-safe:transition-opacity motion-safe:duration-300 motion-reduce:opacity-0 pointer-events-none" aria-hidden="true" />
         )}
       </Comp>
     );
