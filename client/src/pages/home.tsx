@@ -411,74 +411,165 @@ export default function Home() {
       {/* Starfield Background */}
       <div className="starfield fixed inset-0 z-0"></div>
       
-      {/* Strategic Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-emerald-950 via-gray-900 to-amber-950">
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/20 to-amber-900/20"></div>
-        <div className="relative max-w-7xl mx-auto px-6 py-20">
+      {/* Strategic Hero Section - GLAMOROUS LUXURY UPGRADE */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-emerald-900 via-slate-900 to-amber-900">
+        {/* GLAMOROUS Background Elements */}
+        <div className="absolute inset-0">
+          {/* Luxury gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/30 via-amber-500/20 to-orange-500/30"></div>
+          
+          {/* Floating orbs with blur effects */}
+          <div className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-r from-emerald-400/20 to-amber-400/15 rounded-full blur-xl animate-pulse"></div>
+          <div className="absolute bottom-40 right-20 w-40 h-40 bg-gradient-to-r from-amber-400/25 to-orange-400/20 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-gradient-to-r from-orange-400/20 to-emerald-400/15 rounded-full blur-lg animate-pulse" style={{ animationDelay: '2s' }}></div>
+          
+          {/* Animated geometric shapes */}
+          <div className="absolute top-10 right-1/4 w-16 h-16 border-2 border-emerald-400/30 rotate-45 animate-spin-slow"></div>
+          <div className="absolute bottom-20 left-1/3 w-12 h-12 border-2 border-amber-400/40 rounded-full animate-bounce"></div>
+          
+          {/* Luxury animated lines */}
+          <div className="absolute top-60 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent animate-pulse"></div>
+          <div className="absolute bottom-80 left-0 w-full h-px bg-gradient-to-r from-transparent via-amber-400/30 to-transparent animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+        </div>
+        
+        {/* Glamorous YF Theme Elements */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.06]">
+          <div className="absolute top-1/4 right-16 yf-monogram text-5xl font-black text-amber-500/30 animate-pulse drop-shadow-xl">YF</div>
+          <div className="absolute bottom-1/3 left-24 yf-monogram text-4xl font-black text-emerald-500/25 animate-pulse drop-shadow-lg" style={{ animationDelay: '1s' }}>YF</div>
+          <div className="absolute top-32 left-1/3 text-xl font-extralight tracking-[0.3em] bg-gradient-to-r from-emerald-400/15 to-amber-400/10 bg-clip-text text-transparent rotate-12">YAADFLEX</div>
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto px-6 py-20 z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Hero Content */}
             <div className="text-center lg:text-left">
               <div className="mb-6">
-                <div className="inline-flex items-center gap-3 bg-emerald-900/30 border border-emerald-600/30 rounded-full px-4 py-2 mb-4">
-                  <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
-                  <span className="text-emerald-300 text-sm font-medium">Jamaica Born • Global Vision</span>
+                {/* GLAMOROUS Status Badge */}
+                <div className="inline-flex items-center gap-3 bg-gradient-to-r from-emerald-600/40 via-amber-600/30 to-orange-600/40 border-2 border-emerald-400/50 rounded-full px-6 py-3 mb-6 backdrop-blur-sm shadow-lg shadow-emerald-500/25">
+                  <span className="w-3 h-3 bg-gradient-to-r from-emerald-400 to-amber-400 rounded-full animate-pulse drop-shadow-md"></span>
+                  <span className="text-emerald-200 text-sm font-bold tracking-[0.1em] uppercase drop-shadow-sm">Jamaica Born • Global Vision</span>
+                  {/* Sexy YF badge */}
+                  <span className="yf-monogram text-xs font-black text-amber-400/60 animate-pulse ml-2">YF</span>
                 </div>
-                <h1 className="text-4xl lg:text-6xl font-black mb-4" data-testid="text-hero-title">
-                  <span className="bg-gradient-to-r from-emerald-400 to-amber-400 bg-clip-text text-transparent">YaadFlex</span>
+                
+                {/* GLAMOROUS Title with Glow Effect */}
+                <h1 className="text-4xl lg:text-6xl font-black mb-6 relative" data-testid="text-hero-title">
+                  <span className="bg-gradient-to-r from-emerald-400 via-amber-400 to-orange-400 bg-clip-text text-transparent drop-shadow-2xl relative">
+                    YaadFlex
+                    {/* Glow halo effect */}
+                    <span className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 via-amber-400/20 to-orange-400/20 blur-xl -z-10"></span>
+                  </span>
                   <br />
-                  <span className="text-white">Super-App</span>
+                  <span className="text-white drop-shadow-lg relative group">
+                    Super-App
+                    {/* Interactive glow on hover */}
+                    <span className="absolute inset-0 bg-white/10 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></span>
+                  </span>
                 </h1>
-                <p className="text-xl text-gray-300 mb-6 leading-relaxed" data-testid="text-hero-description">
-                  The Caribbean's first total economy platform. Ride-sharing, payments, marketplace, and business tools - all unified under BlackRock's global infrastructure.
+                
+                {/* GLAMOROUS Description */}
+                <p className="text-xl text-gray-200 mb-6 leading-relaxed drop-shadow-sm" data-testid="text-hero-description">
+                  <span className="bg-gradient-to-r from-emerald-300 to-amber-300 bg-clip-text text-transparent font-bold">
+                    The Caribbean's first open economic platform.
+                  </span>
+                  <br />
+                  <span className="text-gray-300">
+                    Ride-sharing, payments, marketplace, and business tools - all unified under BlackRock's global infrastructure.
+                  </span>
                 </p>
               </div>
               
-              {/* Key Value Props */}
+              {/* GLAMOROUS Value Proposition Cards */}
               <div className="grid grid-cols-2 gap-4 mb-8">
-                <div className="bg-emerald-900/20 border border-emerald-600/20 rounded-lg p-4">
-                  <div className="text-2xl mb-2">🌴</div>
-                  <div className="text-sm font-medium text-emerald-300">Caribbean Roots</div>
-                  <div className="text-xs text-gray-400">Authentic island culture</div>
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/30 to-emerald-600/20 rounded-xl blur-sm group-hover:blur-md transition-all duration-300"></div>
+                  <div className="relative bg-gradient-to-br from-emerald-600/30 via-emerald-700/20 to-emerald-800/30 border-2 border-emerald-400/40 rounded-xl p-6 backdrop-blur-sm transform group-hover:scale-105 transition-all duration-300 shadow-lg shadow-emerald-500/20">
+                    <div className="text-3xl mb-3 animate-pulse drop-shadow-lg">🌴</div>
+                    <div className="text-sm font-bold text-emerald-200 tracking-wide drop-shadow-sm">Caribbean Roots</div>
+                    <div className="text-xs text-emerald-300/80">Authentic island culture</div>
+                  </div>
                 </div>
-                <div className="bg-amber-900/20 border border-amber-600/20 rounded-lg p-4">
-                  <div className="text-2xl mb-2">🏢</div>
-                  <div className="text-sm font-medium text-amber-300">BlackRock Backed</div>
-                  <div className="text-xs text-gray-400">Global financial strength</div>
+                
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-400/30 to-amber-600/20 rounded-xl blur-sm group-hover:blur-md transition-all duration-300"></div>
+                  <div className="relative bg-gradient-to-br from-amber-600/30 via-amber-700/20 to-amber-800/30 border-2 border-amber-400/40 rounded-xl p-6 backdrop-blur-sm transform group-hover:scale-105 transition-all duration-300 shadow-lg shadow-amber-500/20">
+                    <div className="text-3xl mb-3 animate-pulse drop-shadow-lg" style={{ animationDelay: '0.5s' }}>🏢</div>
+                    <div className="text-sm font-bold text-amber-200 tracking-wide drop-shadow-sm">BlackRock Backed</div>
+                    <div className="text-xs text-amber-300/80">Global financial strength</div>
+                  </div>
                 </div>
-                <div className="bg-blue-900/20 border border-blue-600/20 rounded-lg p-4">
-                  <div className="text-2xl mb-2">🚀</div>
-                  <div className="text-sm font-medium text-blue-300">Total Economy</div>
-                  <div className="text-xs text-gray-400">Everything in one app</div>
+                
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-400/30 to-blue-600/20 rounded-xl blur-sm group-hover:blur-md transition-all duration-300"></div>
+                  <div className="relative bg-gradient-to-br from-blue-600/30 via-blue-700/20 to-blue-800/30 border-2 border-blue-400/40 rounded-xl p-6 backdrop-blur-sm transform group-hover:scale-105 transition-all duration-300 shadow-lg shadow-blue-500/20">
+                    <div className="text-3xl mb-3 animate-pulse drop-shadow-lg" style={{ animationDelay: '1s' }}>🚀</div>
+                    <div className="text-sm font-bold text-blue-200 tracking-wide drop-shadow-sm">Total Economy</div>
+                    <div className="text-xs text-blue-300/80">Everything in one app</div>
+                  </div>
                 </div>
-                <div className="bg-purple-900/20 border border-purple-600/20 rounded-lg p-4">
-                  <div className="text-2xl mb-2">🗣️</div>
-                  <div className="text-sm font-medium text-purple-300">Voice First</div>
-                  <div className="text-xs text-gray-400">Accessibility focused</div>
+                
+                <div className="relative group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400/30 to-purple-600/20 rounded-xl blur-sm group-hover:blur-md transition-all duration-300"></div>
+                  <div className="relative bg-gradient-to-br from-purple-600/30 via-purple-700/20 to-purple-800/30 border-2 border-purple-400/40 rounded-xl p-6 backdrop-blur-sm transform group-hover:scale-105 transition-all duration-300 shadow-lg shadow-purple-500/20">
+                    <div className="text-3xl mb-3 animate-pulse drop-shadow-lg" style={{ animationDelay: '1.5s' }}>🗣️</div>
+                    <div className="text-sm font-bold text-purple-200 tracking-wide drop-shadow-sm">Voice First</div>
+                    <div className="text-xs text-purple-300/80">Accessibility focused</div>
+                  </div>
                 </div>
               </div>
               
-              {/* CTA Buttons */}
+              {/* GLAMOROUS CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/voice-workspace">
-                  <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl" data-testid="button-try-voice">
-                    🎤 Try Voice Workspace
+                  <Button 
+                    size="lg" 
+                    className="relative group bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 hover:from-emerald-500 hover:via-emerald-400 hover:to-emerald-500 text-white px-10 py-4 rounded-xl font-bold text-lg transition-all duration-300 shadow-xl shadow-emerald-500/30 hover:shadow-2xl hover:shadow-emerald-400/40 transform hover:scale-105 border-2 border-emerald-400/50" 
+                    data-testid="button-try-voice"
+                  >
+                    <span className="relative z-10">🎤 Try Voice Workspace</span>
+                    {/* Gradient overlay animation */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/0 via-emerald-300/20 to-emerald-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
                   </Button>
                 </Link>
+                
                 <Link to="/super-app">
-                  <Button variant="outline" size="lg" className="border-amber-600 text-amber-400 hover:bg-amber-600 hover:text-black px-8 py-3 rounded-lg font-semibold transition-all duration-200" data-testid="button-explore-apps">
-                    🌴 Explore Super-App
+                  <Button 
+                    size="lg" 
+                    className="relative group bg-gradient-to-r from-amber-600/20 via-amber-500/10 to-orange-600/20 border-2 border-amber-400/60 text-amber-300 hover:text-black hover:bg-gradient-to-r hover:from-amber-500 hover:via-amber-400 hover:to-orange-500 px-10 py-4 rounded-xl font-bold text-lg transition-all duration-300 shadow-xl shadow-amber-500/20 hover:shadow-2xl hover:shadow-amber-400/40 transform hover:scale-105 backdrop-blur-sm" 
+                    data-testid="button-explore-apps"
+                  >
+                    <span className="relative z-10">🌴 Explore Super-App</span>
+                    {/* Gradient overlay animation */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-amber-300/0 via-amber-200/30 to-orange-300/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
                   </Button>
                 </Link>
               </div>
             </div>
             
-            {/* Hero Visual */}
+            {/* GLAMOROUS Hero Visual */}
             <div className="relative">
-              <div className="bg-gradient-to-br from-emerald-600/20 to-amber-600/20 rounded-2xl p-8 backdrop-blur-sm border border-emerald-600/20">
-                <div className="text-center">
-                  <div className="text-8xl mb-4 floating">🏝️</div>
-                  <h3 className="text-2xl font-bold text-white mb-2">From Jamaica to the World</h3>
-                  <p className="text-gray-300">Bringing Caribbean innovation to global markets</p>
+              <div className="relative group">
+                {/* Outer glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/30 via-amber-400/20 to-orange-400/30 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                
+                {/* Main visual card */}
+                <div className="relative bg-gradient-to-br from-emerald-600/40 via-amber-600/30 to-orange-600/40 rounded-2xl p-8 backdrop-blur-md border-2 border-emerald-400/40 shadow-2xl shadow-emerald-500/25 transform group-hover:scale-105 transition-all duration-300">
+                  {/* Floating elements inside */}
+                  <div className="absolute top-4 right-4 w-4 h-4 bg-gradient-to-r from-emerald-400 to-amber-400 rounded-full blur-sm animate-pulse"></div>
+                  <div className="absolute bottom-6 left-6 w-3 h-3 bg-gradient-to-r from-amber-400 to-orange-400 rounded-full blur-sm animate-pulse" style={{ animationDelay: '1s' }}></div>
+                  
+                  <div className="text-center relative z-10">
+                    <div className="text-8xl mb-6 floating drop-shadow-2xl relative">
+                      🏝️
+                      {/* Glow effect around emoji */}
+                      <div className="absolute inset-0 text-8xl opacity-30 blur-sm animate-pulse">🏝️</div>
+                    </div>
+                    <h3 className="text-3xl font-bold text-white mb-3 drop-shadow-lg">From Jamaica to the World</h3>
+                    <p className="text-gray-200 text-lg drop-shadow-sm">Bringing Caribbean innovation to global markets</p>
+                    
+                    {/* Subtle YF branding */}
+                    <div className="absolute top-6 left-6 yf-monogram text-xl font-black text-emerald-400/20 animate-pulse drop-shadow-sm">YF</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -618,63 +709,130 @@ export default function Home() {
                 </div>
               </div>
               
-              {/* Recent Platform Activity */}
-              <div className="bg-gray-800/30 border border-gray-600/30 rounded-xl p-6 mb-8">
-                <h3 className="text-xl font-semibold text-white mb-4 text-center">Recent Platform Activity</h3>
-                <div className="space-y-3">
-                  <div className="bg-emerald-800/20 border border-emerald-600/20 rounded-lg p-4 flex items-center space-x-4">
-                    <div className="text-2xl">💰</div>
-                    <div>
-                      <div className="text-emerald-300 font-medium">Business Payment: $850.00 USD</div>
-                      <div className="text-emerald-200 text-sm">Completed - Secure Transaction</div>
-                    </div>
-                  </div>
+              {/* GLAMOROUS PAYMENT MARKETPLACE - LUXURY UPGRADE */}
+              <div className="relative">
+                {/* Outer glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 via-amber-400/15 to-orange-400/20 rounded-2xl blur-xl"></div>
+                
+                <div className="relative bg-gradient-to-br from-slate-800/60 via-emerald-900/40 to-amber-900/60 border-2 border-emerald-400/40 rounded-2xl p-8 mb-8 backdrop-blur-sm shadow-2xl shadow-emerald-500/20">
+                  {/* Floating elements */}
+                  <div className="absolute top-4 right-6 w-6 h-6 bg-gradient-to-r from-emerald-400/30 to-amber-400/25 rounded-full blur-sm animate-pulse"></div>
+                  <div className="absolute bottom-6 left-8 w-4 h-4 bg-gradient-to-r from-amber-400/40 to-orange-400/30 rounded-full blur-sm animate-pulse" style={{ animationDelay: '1s' }}></div>
                   
-                  <div className="bg-blue-800/20 border border-blue-600/20 rounded-lg p-4 flex items-center space-x-4">
-                    <div className="text-2xl">🚚</div>
-                    <div>
-                      <div className="text-blue-300 font-medium">Delivery Service: $1,200.00 JMD</div>
-                      <div className="text-blue-200 text-sm">Active - Growing Network</div>
-                    </div>
-                  </div>
+                  <h3 className="text-2xl font-bold text-center mb-6 relative">
+                    <span className="bg-gradient-to-r from-emerald-400 via-amber-400 to-orange-400 bg-clip-text text-transparent drop-shadow-lg">
+                      🌟 Live Payment Marketplace Network
+                    </span>
+                    {/* Glow halo effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/10 via-amber-400/10 to-orange-400/10 blur-lg -z-10"></div>
+                    {/* Subtle YF branding */}
+                    <div className="absolute -right-8 -top-2 yf-monogram text-sm font-black text-amber-400/30 animate-pulse drop-shadow-sm">YF</div>
+                  </h3>
                   
-                  <div className="bg-purple-800/20 border border-purple-600/20 rounded-lg p-4 flex items-center space-x-4">
-                    <div className="text-2xl">💎</div>
-                    <div>
-                      <div className="text-purple-300 font-medium">Investment Flow: $2,500.00 KWD</div>
-                      <div className="text-purple-200 text-sm">Processing - High Security</div>
+                  <div className="space-y-4 relative z-10">
+                    {/* GLAMOROUS TRANSACTION CARDS */}
+                    <div className="relative group">
+                      <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/30 to-emerald-600/20 rounded-xl blur-sm group-hover:blur-md transition-all duration-300"></div>
+                      <div className="relative bg-gradient-to-br from-emerald-600/40 via-emerald-700/30 to-emerald-800/40 border-2 border-emerald-400/50 rounded-xl p-6 backdrop-blur-sm transform group-hover:scale-105 group-hover:shadow-xl group-hover:shadow-emerald-400/30 transition-all duration-300 flex items-center space-x-6">
+                        <div className="text-4xl animate-pulse drop-shadow-lg">💰</div>
+                        <div className="flex-1">
+                          <div className="bg-gradient-to-r from-emerald-200 to-emerald-100 bg-clip-text text-transparent font-bold text-lg drop-shadow-sm">Business Payment: $850.00 USD</div>
+                          <div className="text-emerald-300/90 text-sm font-medium">Completed - Luxury Security Protocol</div>
+                        </div>
+                        {/* Subtle YF on transaction card */}
+                        <div className="yf-monogram text-xs font-black text-emerald-400/40 animate-pulse">YF</div>
+                      </div>
+                    </div>
+                    
+                    <div className="relative group">
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-400/30 to-blue-600/20 rounded-xl blur-sm group-hover:blur-md transition-all duration-300"></div>
+                      <div className="relative bg-gradient-to-br from-blue-600/40 via-blue-700/30 to-blue-800/40 border-2 border-blue-400/50 rounded-xl p-6 backdrop-blur-sm transform group-hover:scale-105 group-hover:shadow-xl group-hover:shadow-blue-400/30 transition-all duration-300 flex items-center space-x-6">
+                        <div className="text-4xl animate-pulse drop-shadow-lg" style={{ animationDelay: '0.5s' }}>🚚</div>
+                        <div className="flex-1">
+                          <div className="bg-gradient-to-r from-blue-200 to-blue-100 bg-clip-text text-transparent font-bold text-lg drop-shadow-sm">Delivery Service: $1,200.00 JMD</div>
+                          <div className="text-blue-300/90 text-sm font-medium">Active - Premium Network Growth</div>
+                        </div>
+                        {/* Subtle YF on transaction card */}
+                        <div className="yf-monogram text-xs font-black text-blue-400/40 animate-pulse">YF</div>
+                      </div>
+                    </div>
+                    
+                    <div className="relative group">
+                      <div className="absolute inset-0 bg-gradient-to-r from-purple-400/30 to-purple-600/20 rounded-xl blur-sm group-hover:blur-md transition-all duration-300"></div>
+                      <div className="relative bg-gradient-to-br from-purple-600/40 via-purple-700/30 to-purple-800/40 border-2 border-purple-400/50 rounded-xl p-6 backdrop-blur-sm transform group-hover:scale-105 group-hover:shadow-xl group-hover:shadow-purple-400/30 transition-all duration-300 flex items-center space-x-6">
+                        <div className="text-4xl animate-pulse drop-shadow-lg" style={{ animationDelay: '1s' }}>💎</div>
+                        <div className="flex-1">
+                          <div className="bg-gradient-to-r from-purple-200 to-purple-100 bg-clip-text text-transparent font-bold text-lg drop-shadow-sm">Investment Flow: $2,500.00 KWD</div>
+                          <div className="text-purple-300/90 text-sm font-medium">Processing - Maximum Security Suite</div>
+                        </div>
+                        {/* Subtle YF on transaction card */}
+                        <div className="yf-monogram text-xs font-black text-purple-400/40 animate-pulse">YF</div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
               
-              {/* Strategic Call to Action */}
-              <div className="text-center">
-                <div className="bg-gradient-to-r from-emerald-900/40 to-amber-900/40 border border-emerald-600/40 rounded-2xl p-8">
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                    🌟 Start Your YaadFlex Journey
+              {/* GLAMOROUS CARIBBEAN COMMERCE CTA - LUXURY UPGRADE */}
+              <div className="text-center relative">
+                {/* Outer glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/25 via-amber-400/20 to-orange-400/25 rounded-3xl blur-2xl"></div>
+                
+                <div className="relative bg-gradient-to-br from-emerald-600/30 via-amber-600/25 to-orange-600/30 border-2 border-emerald-400/50 rounded-3xl p-10 backdrop-blur-md shadow-2xl shadow-emerald-500/25">
+                  {/* Floating elements */}
+                  <div className="absolute top-6 right-8 w-8 h-8 bg-gradient-to-r from-emerald-400/30 to-amber-400/25 rounded-full blur-sm animate-pulse"></div>
+                  <div className="absolute bottom-8 left-10 w-5 h-5 bg-gradient-to-r from-amber-400/40 to-orange-400/30 rounded-full blur-sm animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+                  <div className="absolute top-16 left-16 w-3 h-3 bg-gradient-to-r from-orange-400/35 to-emerald-400/25 rounded-full blur-sm animate-pulse" style={{ animationDelay: '2s' }}></div>
+                  
+                  <h3 className="text-3xl md:text-4xl font-black mb-6 relative">
+                    <span className="bg-gradient-to-r from-emerald-300 via-amber-300 to-orange-300 bg-clip-text text-transparent drop-shadow-xl">
+                      🌟 Enter Caribbean's First Economy Platform
+                    </span>
+                    {/* Glow halo effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/15 via-amber-400/15 to-orange-400/15 blur-xl -z-10"></div>
+                    {/* Glamorous YF branding */}
+                    <div className="absolute -right-12 -top-4 yf-monogram text-lg font-black text-amber-400/40 animate-pulse drop-shadow-md">YF</div>
                   </h3>
-                  <p className="text-gray-300 text-lg mb-6 max-w-2xl mx-auto">
-                    Join thousands of businesses, drivers, and customers who trust YaadFlex for their daily operations. Choose your path and experience the future of Caribbean commerce.
+                  
+                  <p className="text-gray-200 text-xl mb-8 max-w-2xl mx-auto leading-relaxed drop-shadow-sm">
+                    <span className="bg-gradient-to-r from-emerald-300 to-amber-300 bg-clip-text text-transparent font-bold">
+                      Join thousands of businesses, drivers, and customers
+                    </span>
+                    <br />
+                    <span className="text-gray-300">
+                      who trust YaadFlex for their daily operations. Choose your path and experience the future of 
+                      <span className="bg-gradient-to-r from-amber-300 to-orange-300 bg-clip-text text-transparent font-semibold"> Caribbean commerce.</span>
+                    </span>
                   </p>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
                     <Link to="/business-registration">
-                      <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200" data-testid="button-register-business">
-                        🏢 For Business
+                      <Button className="group relative w-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 hover:from-emerald-500 hover:via-emerald-400 hover:to-emerald-500 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 shadow-xl shadow-emerald-500/30 hover:shadow-2xl hover:shadow-emerald-400/40 transform hover:scale-105 border-2 border-emerald-400/50" data-testid="button-register-business">
+                        <span className="relative z-10">🏢 For Business</span>
+                        {/* Gradient overlay animation */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-300/0 via-emerald-200/20 to-emerald-300/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
                       </Button>
                     </Link>
+                    
                     <Link to="/driver-registration">
-                      <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200" data-testid="button-register-driver">
-                        🚗 For Drivers
+                      <Button className="group relative w-full bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 hover:from-blue-500 hover:via-blue-400 hover:to-blue-500 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 shadow-xl shadow-blue-500/30 hover:shadow-2xl hover:shadow-blue-400/40 transform hover:scale-105 border-2 border-blue-400/50" data-testid="button-register-driver">
+                        <span className="relative z-10">🚗 For Drivers</span>
+                        {/* Gradient overlay animation */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-300/0 via-blue-200/20 to-blue-300/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
                       </Button>
                     </Link>
+                    
                     <Link to="/customer-booking">
-                      <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200" data-testid="button-book-ride">
-                        🚖 For Customers
+                      <Button className="group relative w-full bg-gradient-to-r from-purple-600 via-purple-500 to-purple-600 hover:from-purple-500 hover:via-purple-400 hover:to-purple-500 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 shadow-xl shadow-purple-500/30 hover:shadow-2xl hover:shadow-purple-400/40 transform hover:scale-105 border-2 border-purple-400/50" data-testid="button-book-ride">
+                        <span className="relative z-10">🚖 For Customers</span>
+                        {/* Gradient overlay animation */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-300/0 via-purple-200/20 to-purple-300/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
                       </Button>
                     </Link>
                   </div>
+                  
+                  {/* Additional YF branding element */}
+                  <div className="absolute bottom-6 right-6 yf-monogram text-sm font-black text-amber-400/25 animate-pulse drop-shadow-sm">YF</div>
                 </div>
               </div>
             </CardContent>
