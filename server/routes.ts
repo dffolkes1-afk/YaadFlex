@@ -1647,6 +1647,238 @@ Time: ${new Date().toISOString()}
     }
   });
 
+  // ===================== GENERAL MARKETPLACE ROUTES =====================
+  
+  // Get marketplace items with filters
+  app.get('/api/marketplace/items', async (req, res) => {
+    try {
+      const { search, category, parish, maxPrice } = req.query;
+      
+      // Mock marketplace items for now - in production, this would query globalProducts table
+      const mockItems = [
+        {
+          id: 'MP001',
+          title: 'Traditional Blue Mountain Coffee Beans',
+          description: 'Premium Jamaican Blue Mountain coffee beans, hand-picked from family farms in the Blue Mountains. Perfect for the coffee connoisseur who appreciates authentic Jamaican flavor.',
+          price: 3500,
+          currency: 'JMD',
+          category: 'caribbean_culture',
+          condition: 'new',
+          images: [],
+          sellerId: 'seller001',
+          sellerName: 'Coffee Farmer John',
+          sellerRating: 4.8,
+          location: 'Newcastle',
+          parish: 'St. Andrew',
+          datePosted: new Date().toISOString(),
+          viewCount: 245,
+          favoriteCount: 18,
+          isActive: true,
+          isFeatured: true,
+          tags: ['coffee', 'organic', 'blue mountain', 'authentic'],
+          negotiable: false,
+          deliveryAvailable: true,
+          culturalSignificance: 'Blue Mountain Coffee is a world-renowned Jamaican cultural export, representing centuries of coffee cultivation heritage.'
+        },
+        {
+          id: 'MP002',
+          title: 'iPhone 13 Pro Max - Excellent Condition',
+          description: 'Barely used iPhone 13 Pro Max, 256GB storage. Comes with original charger, box, and screen protector already applied. No scratches or damages.',
+          price: 180000,
+          currency: 'JMD',
+          category: 'electronics',
+          condition: 'like_new',
+          images: [],
+          sellerId: 'seller002',
+          sellerName: 'TechGuru876',
+          sellerRating: 4.9,
+          location: 'New Kingston',
+          parish: 'Kingston',
+          datePosted: new Date().toISOString(),
+          viewCount: 512,
+          favoriteCount: 45,
+          isActive: true,
+          isFeatured: false,
+          tags: ['iphone', 'apple', 'smartphone', 'unlocked'],
+          negotiable: true,
+          deliveryAvailable: true,
+          culturalSignificance: ''
+        },
+        {
+          id: 'MP003',
+          title: 'Handmade Rastafarian Jewelry Set',
+          description: 'Beautiful handcrafted jewelry set featuring traditional Rastafarian colors and symbols. Made by local artisan with natural materials.',
+          price: 8500,
+          currency: 'JMD',
+          category: 'caribbean_culture',
+          condition: 'new',
+          images: [],
+          sellerId: 'seller003',
+          sellerName: 'Ras Marcus Crafts',
+          sellerRating: 4.7,
+          location: 'Trench Town',
+          parish: 'Kingston',
+          datePosted: new Date().toISOString(),
+          viewCount: 89,
+          favoriteCount: 12,
+          isActive: true,
+          isFeatured: false,
+          tags: ['jewelry', 'handmade', 'rastafarian', 'cultural', 'authentic'],
+          negotiable: true,
+          deliveryAvailable: false,
+          culturalSignificance: 'Represents Rastafarian cultural heritage and traditional craftsmanship passed down through generations.'
+        }
+      ];
+
+      // Apply filters
+      let filteredItems = mockItems;
+      
+      if (search) {
+        const searchLower = (search as string).toLowerCase();
+        filteredItems = filteredItems.filter(item => 
+          item.title.toLowerCase().includes(searchLower) ||
+          item.description.toLowerCase().includes(searchLower) ||
+          item.tags.some(tag => tag.toLowerCase().includes(searchLower))
+        );
+      }
+      
+      if (category && category !== 'all') {
+        filteredItems = filteredItems.filter(item => item.category === category);
+      }
+      
+      if (parish && parish !== 'all') {
+        filteredItems = filteredItems.filter(item => item.parish === parish);
+      }
+      
+      if (maxPrice) {
+        filteredItems = filteredItems.filter(item => item.price <= parseInt(maxPrice as string));
+      }
+
+      res.json(filteredItems);
+    } catch (error) {
+      console.error("Error fetching marketplace items:", error);
+      res.status(500).json({ message: "Failed to fetch marketplace items" });
+    }
+  });
+
+  // Get user's marketplace listings
+  app.get('/api/marketplace/my-listings', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      
+      // Mock user listings - in production, query by sellerId
+      const mockUserListings = [
+        {
+          id: 'UL001',
+          title: 'Gaming Laptop for Sale',
+          description: 'High-performance gaming laptop, perfect for work and play.',
+          price: 250000,
+          currency: 'JMD',
+          category: 'electronics',
+          condition: 'good',
+          images: [],
+          sellerId: userId,
+          sellerName: 'Current User',
+          sellerRating: 4.5,
+          location: 'Half Way Tree',
+          parish: 'St. Andrew',
+          datePosted: new Date().toISOString(),
+          viewCount: 156,
+          favoriteCount: 23,
+          isActive: true,
+          isFeatured: false,
+          tags: ['laptop', 'gaming', 'computer'],
+          negotiable: true,
+          deliveryAvailable: true,
+          culturalSignificance: ''
+        }
+      ];
+
+      res.json(mockUserListings);
+    } catch (error) {
+      console.error("Error fetching user listings:", error);
+      res.status(500).json({ message: "Failed to fetch your listings" });
+    }
+  });
+
+  // Create new marketplace listing
+  app.post('/api/marketplace/items', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const {
+        title,
+        description,
+        price,
+        currency,
+        category,
+        condition,
+        location,
+        parish,
+        tags,
+        negotiable,
+        deliveryAvailable,
+        culturalSignificance
+      } = req.body;
+
+      if (!title || !description || !price || !category) {
+        return res.status(400).json({ 
+          message: "Title, description, price, and category are required" 
+        });
+      }
+
+      const itemId = `MP-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+      // Log marketplace listing creation
+      await storage.logSecurityEvent({
+        userId,
+        eventType: 'marketplace_listing_created',
+        severity: 'low',
+        description: `User created marketplace listing: ${title} in ${category} for ${price} ${currency}`,
+        ipAddress: req.ip,
+        userAgent: req.get('User-Agent'),
+      });
+
+      const newItem = {
+        id: itemId,
+        title,
+        description,
+        price: parseFloat(price),
+        currency: currency || 'JMD',
+        category,
+        condition: condition || 'good',
+        location,
+        parish,
+        sellerId: userId,
+        tags: tags ? tags.split(',').map((tag: string) => tag.trim()) : [],
+        negotiable: negotiable === true,
+        deliveryAvailable: deliveryAvailable === true,
+        culturalSignificance: culturalSignificance || '',
+        datePosted: new Date().toISOString(),
+        viewCount: 0,
+        favoriteCount: 0,
+        isActive: true,
+        isFeatured: false
+      };
+
+      res.json({
+        success: true,
+        itemId,
+        item: newItem,
+        message: `${title} has been successfully listed on YaadFlex Marketplace! Your item is now visible to thousands of potential buyers across Jamaica.`,
+        nextSteps: [
+          "Add photos to increase visibility by 300%",
+          "Share your listing on social media for more exposure",
+          "Respond quickly to buyer inquiries for better ratings",
+          "Consider offering delivery for higher sales potential"
+        ]
+      });
+
+    } catch (error) {
+      console.error("Error creating marketplace listing:", error);
+      res.status(500).json({ message: "Failed to create listing" });
+    }
+  });
+
   // Get driver earnings and payout history
   app.get('/api/drivers/earnings', isAuthenticated, async (req: any, res) => {
     try {

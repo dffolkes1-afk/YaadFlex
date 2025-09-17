@@ -21,6 +21,7 @@ import SponsorshipPage from "@/pages/sponsorship";
 import RealEstatePage from "@/pages/real-estate";
 import CarMarketplacePage from "@/pages/car-marketplace";
 import PremiumStorefrontPage from "@/pages/premium-storefront";
+import MarketplacePage from "@/pages/marketplace";
 import SimpleLinksPage from "@/pages/simple-links";
 import ContactlessSystemPage from "@/pages/contactless-system";
 import CBRadioPage from "@/pages/cb-radio";
@@ -130,6 +131,9 @@ function Router() {
       <Route path="/voice-test" component={RipleyTest} />
       <Route path="/portal" component={GalacticPortalPage} />
       <Route path="/real-estate" component={RealEstatePage} />
+      <Route path="/marketplace" component={MarketplacePage} />
+      <Route path="/buy" component={MarketplacePage} />
+      <Route path="/sell" component={MarketplacePage} />
       <Route path="/car-marketplace" component={CarMarketplacePage} />
       <Route path="/premium-storefront" component={PremiumStorefrontPage} />
       <Route path="/links" component={SimpleLinksPage} />
