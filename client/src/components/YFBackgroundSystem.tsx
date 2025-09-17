@@ -88,11 +88,12 @@ export function YFBackgroundSwitcher() {
           <button
             key={style.id}
             onClick={() => switchBackground(style.id)}
-            className={`p-2 text-sm rounded border transition-smooth ${
+            className={`p-2 text-sm border transition-smooth ${
               currentStyle === style.id
                 ? 'bg-primary text-primary-foreground border-primary'
                 : 'bg-background border-border hover:bg-muted'
             }`}
+            style={{ borderRadius: 'var(--radius)' }}
           >
             <div className="font-medium">{style.name}</div>
             <div className="text-xs opacity-75">{style.description}</div>

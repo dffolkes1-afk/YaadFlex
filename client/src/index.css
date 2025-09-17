@@ -58,7 +58,7 @@
   --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
   
   /* Geometry - Minimal & Clean */
-  --radius: 0.25rem;
+  --radius: 0.75rem;
   
   /* Shadows - Subtle and Professional */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -317,7 +317,7 @@ input:focus, textarea:focus, select:focus {
 .yf-wallpaper-preview {
   position: relative;
   background: var(--card);
-  border-radius: 8px;
+  border-radius: var(--radius);
 }
 
 .yf-monogram {
