@@ -23,7 +23,8 @@ import {
   Fuel,
   CreditCard,
   Store,
-  Car
+  Car,
+  CheckCircle
 } from 'lucide-react';
 
 type SponsorType = 'bank' | 'gas_station' | 'retail' | 'restaurant' | 'hotel' | 'other';
@@ -129,16 +130,16 @@ export default function SponsorshipPage() {
     onError: (error: any) => {
       toast({
         title: "Letter Generation Failed",
-        description: error.message || "Unable to generate sponsor letter.",
+        description: "Try again or contact support for assistance.",
         variant: "destructive",
       });
-    },
+    }
   });
 
-  // Submit partnership interest
+  // Submit partnership interest mutation
   const partnershipMutation = useMutation({
-    mutationFn: async (data: any) => {
-      const response = await apiRequest('POST', '/api/sponsors/register-interest', data);
+    mutationFn: async (data: typeof sponsorForm & { selectedPackage: string }) => {
+      const response = await apiRequest('POST', '/api/partnerships', data);
       return response.json();
     },
     onSuccess: (data) => {
@@ -157,25 +158,22 @@ export default function SponsorshipPage() {
         budget: '',
         message: ''
       });
+      setSelectedPackage('');
     },
     onError: (error: any) => {
       toast({
-        title: "Registration Failed",
-        description: error.message || "Unable to register partnership interest.",
+        title: "Submission Failed",
+        description: "Please try again or contact our partnerships team directly.",
         variant: "destructive",
       });
-    },
+    }
   });
 
-  const handleInputChange = (field: keyof typeof sponsorForm, value: string) => {
-    setSponsorForm(prev => ({ ...prev, [field]: value }));
-  };
-
-  const generateSponsorLetter = () => {
-    if (!sponsorForm.companyName || !sponsorForm.contactName || !sponsorForm.sponsorType) {
+  const generateLetter = () => {
+    if (!sponsorForm.companyName || !sponsorForm.email || !selectedPackage) {
       toast({
         title: "Missing Information",
-        description: "Please fill in company name, contact name, and sponsor type.",
+        description: "Please fill in company name, email, and select a package to generate a sponsor letter.",
         variant: "destructive",
       });
       return;
@@ -206,345 +204,244 @@ export default function SponsorshipPage() {
 
       <div className="container mx-auto max-w-6xl relative z-10">
         
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center mb-4">
-            <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-yellow-500 rounded-full animate-pulse mr-3 flex items-center justify-center">
-              <div className="w-6 h-6 bg-white rounded-full animate-spin"></div>
+        {/* Magazine-Style Header */}
+        <div className="text-center mb-16 relative">
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1 h-24 bg-gradient-to-b from-amber-500 to-emerald-600"></div>
+          <div className="pt-8">
+            <div className="inline-block border-2 border-amber-500 px-6 py-2 mb-6 bg-gradient-to-r from-amber-50 to-emerald-50">
+              <span className="text-xs font-bold tracking-[0.3em] text-amber-700 uppercase">Luxury Partnership</span>
             </div>
-            <Building2 className="h-12 w-12 text-green-600 animate-pulse" />
-            <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full animate-pulse ml-3 flex items-center justify-center">
-              <div className="w-6 h-6 bg-white rounded-full animate-bounce"></div>
-            </div>
+            <h1 className="text-7xl font-light text-slate-900 dark:text-white mb-4 tracking-tight leading-tight">
+              YAADFLEX
+            </h1>
+            <div className="w-32 h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mb-6"></div>
+            <p className="text-xl font-light text-slate-700 dark:text-slate-300 italic leading-relaxed max-w-2xl mx-auto">
+              "Join Jamaica's most prestigious ride-sharing network and elevate your brand to luxury status"
+            </p>
           </div>
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 bg-clip-text text-transparent mb-4">
-            🤖 YaadFlex Partnership Machine 🇯🇲
-          </h1>
-          <p className="text-2xl text-foreground/80 mb-6">
-            Power up Jamaica's fastest-growing super-app and connect with 100,000+ active users
-          </p>
-          <div className="flex justify-center gap-2 flex-wrap mb-8">
-            <Badge variant="secondary" className="text-emerald-700 bg-emerald-100 text-lg px-4 py-2">✓ 50,000+ Drivers</Badge>
-            <Badge variant="secondary" className="text-amber-700 bg-amber-100 text-lg px-4 py-2">✓ 100,000+ Customers</Badge>
-            <Badge variant="secondary" className="text-purple-600 text-lg px-4 py-2">✓ Island-Wide Coverage</Badge>
-            <Badge variant="secondary" className="text-orange-600 text-lg px-4 py-2">✓ 24/7 Operations</Badge>
+          
+          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+            <div className="text-center">
+              <div className="text-3xl font-light text-emerald-600 mb-2">150K+</div>
+              <div className="text-xs tracking-wider text-slate-600 uppercase">Premium Users</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-light text-amber-600 mb-2">50K+</div>
+              <div className="text-xs tracking-wider text-slate-600 uppercase">Elite Drivers</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-light text-rose-600 mb-2">24/7</div>
+              <div className="text-xs tracking-wider text-slate-600 uppercase">Operations</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-light text-purple-600 mb-2">100%</div>
+              <div className="text-xs tracking-wider text-slate-600 uppercase">Island Coverage</div>
+            </div>
           </div>
         </div>
 
-        {/* Why Partner With YaadFlex */}
-        <Card className="mb-12 bg-gradient-to-br from-emerald-200/40 to-amber-200/40 dark:from-emerald-950/30 dark:to-amber-950/30 border-emerald-300 dark:border-emerald-700">
-          <CardHeader>
-            <CardTitle className="text-3xl text-center">🚀 Why Partner With YaadFlex?</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
-              <div>
-                <Users className="h-12 w-12 mx-auto text-green-600 mb-3" />
-                <div className="text-2xl font-bold text-green-600">150K+</div>
-                <div className="text-sm text-muted-foreground">Active Users Monthly</div>
+        {/* Magazine-Style Feature Section */}
+        <div className="mb-20 bg-gradient-to-r from-slate-50 via-white to-slate-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-16 -mx-4 px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="inline-block border-b-2 border-amber-500 pb-2 mb-4">
+                <h2 className="text-4xl font-light tracking-wide text-slate-900 dark:text-white">THE YAADFLEX ADVANTAGE</h2>
               </div>
-              <div>
-                <TrendingUp className="h-12 w-12 mx-auto text-blue-600 mb-3" />
-                <div className="text-2xl font-bold text-blue-600">500%</div>
-                <div className="text-sm text-muted-foreground">Growth This Year</div>
+              <p className="text-lg font-light text-slate-600 dark:text-slate-400 italic">Luxury partnerships for discerning brands</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="text-center group">
+                <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Users className="h-10 w-10 text-white" />
+                </div>
+                <div className="text-2xl font-light text-emerald-600 mb-2">150K+</div>
+                <div className="text-sm font-light text-slate-600 dark:text-slate-400 uppercase tracking-wider">Active Users Monthly</div>
               </div>
-              <div>
-                <MapPin className="h-12 w-12 mx-auto text-purple-600 mb-3" />
-                <div className="text-2xl font-bold text-purple-600">All 14</div>
-                <div className="text-sm text-muted-foreground">Parishes Covered</div>
+              <div className="text-center group">
+                <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <TrendingUp className="h-10 w-10 text-white" />
+                </div>
+                <div className="text-2xl font-light text-amber-600 mb-2">300%</div>
+                <div className="text-sm font-light text-slate-600 dark:text-slate-400 uppercase tracking-wider">Growth Year Over Year</div>
               </div>
-              <div>
-                <DollarSign className="h-12 w-12 mx-auto text-orange-600 mb-3" />
-                <div className="text-2xl font-bold text-orange-600">$50M+</div>
-                <div className="text-sm text-muted-foreground">JMD Monthly Volume</div>
+              <div className="text-center group">
+                <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-rose-500 to-rose-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <MapPin className="h-10 w-10 text-white" />
+                </div>
+                <div className="text-2xl font-light text-rose-600 mb-2">14</div>
+                <div className="text-sm font-light text-slate-600 dark:text-slate-400 uppercase tracking-wider">Parishes Covered</div>
+              </div>
+              <div className="text-center group">
+                <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <DollarSign className="h-10 w-10 text-white" />
+                </div>
+                <div className="text-2xl font-light text-purple-600 mb-2">$2M+</div>
+                <div className="text-sm font-light text-slate-600 dark:text-slate-400 uppercase tracking-wider">Monthly Transaction Volume</div>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        {/* Partnership Packages */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8">🤝 Partnership Packages</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Luxury Quote Section */}
+        <div className="mb-20 text-center">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-6xl text-amber-500 mb-4">"</div>
+            <blockquote className="text-2xl font-light text-slate-700 dark:text-slate-300 italic leading-relaxed mb-6">
+              Join the most exclusive partnership network in the Caribbean. Where luxury meets innovation.
+            </blockquote>
+            <div className="w-24 h-px bg-gradient-to-r from-transparent via-slate-400 to-transparent mx-auto mb-4"></div>
+            <cite className="text-sm font-light text-slate-500 uppercase tracking-widest">YaadFlex Executive Team</cite>
+          </div>
+        </div>
+
+        {/* Luxury Partnership Packages */}
+        <div className="mb-20">
+          <div className="text-center mb-16">
+            <div className="inline-block border-t-2 border-b-2 border-amber-500 py-4 px-8 mb-6">
+              <h2 className="text-4xl font-light tracking-widest text-slate-900 dark:text-white uppercase">Partnership Tiers</h2>
+            </div>
+            <p className="text-lg font-light text-slate-600 dark:text-slate-400 italic">Exclusive opportunities for distinguished brands</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {sponsorshipPackages.map((pkg) => (
-              <Card 
+              <div 
                 key={pkg.id}
-                className={`cursor-pointer transition-all bg-white/90 dark:bg-slate-900/70 border-emerald-200 hover:bg-emerald-50/60 hover:shadow-lg ${
-                  selectedPackage === pkg.id ? 'ring-2 ring-emerald-500 shadow-lg bg-emerald-50/80' : ''
+                className={`group cursor-pointer transition-all duration-500 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:shadow-2xl hover:-translate-y-2 ${
+                  selectedPackage === pkg.id ? 'ring-2 ring-amber-500 shadow-2xl -translate-y-2 bg-gradient-to-br from-amber-50 to-emerald-50 dark:from-slate-700 dark:to-slate-800' : ''
                 }`}
                 onClick={() => setSelectedPackage(pkg.id)}
                 data-testid={`package-${pkg.id}`}
               >
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-3">
-                    <div className={`p-2 rounded-lg bg-gradient-to-r ${pkg.color} text-white`}>
-                      {pkg.icon}
+                {/* Luxury Package Header */}
+                <div className="relative overflow-hidden">
+                  <div className={`h-2 bg-gradient-to-r ${pkg.color}`}></div>
+                  <div className="p-8">
+                    <div className="flex items-center justify-between mb-6">
+                      <div className={`p-4 rounded-full bg-gradient-to-r ${pkg.color} shadow-lg`}>
+                        <div className="text-white">
+                          {pkg.icon}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-xs font-light text-slate-500 uppercase tracking-widest mb-1">Starting At</div>
+                        <div className="text-2xl font-light text-slate-900 dark:text-white">{pkg.price.split(' ')[1]}</div>
+                        <div className="text-sm font-light text-slate-500">{pkg.price.split(' ')[2]}</div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="text-xl">{pkg.name}</div>
-                      <div className="text-lg font-bold text-green-600">{pkg.price}</div>
-                    </div>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    {pkg.benefits.map((benefit, index) => (
-                      <div key={index} className="flex items-center gap-2 text-sm">
-                        <div className="w-2 h-2 bg-green-500 rounded-full" />
-                        <span>{benefit}</span>
+                    <h3 className="text-2xl font-light text-slate-900 dark:text-white mb-2 group-hover:text-amber-700 transition-colors">
+                      {pkg.name.split(' ').slice(1).join(' ')}
+                    </h3>
+                    <div className="w-16 h-px bg-gradient-to-r from-amber-500 to-transparent mb-6"></div>
+                  </div>
+                </div>
+
+                {/* Luxury Benefits List */}
+                <div className="px-8 pb-8">
+                  <div className="space-y-4">
+                    {pkg.benefits.map((benefit, idx) => (
+                      <div key={idx} className="flex items-start gap-3 group-hover:translate-x-2 transition-transform duration-300" style={{ transitionDelay: `${idx * 100}ms` }}>
+                        <div className="w-2 h-2 bg-gradient-to-r from-amber-500 to-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
+                        <span className="text-slate-700 dark:text-slate-300 font-light leading-relaxed">{benefit}</span>
                       </div>
                     ))}
                   </div>
-                  {selectedPackage === pkg.id && (
-                    <div className="mt-4 p-3 bg-accent/20 rounded-lg">
-                      <div className="text-sm font-medium text-accent-foreground">
-                        ✅ Package Selected - Fill form below to proceed
+                  <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-600">
+                    <div className="text-center">
+                      <div className={`inline-block px-6 py-2 bg-gradient-to-r ${pkg.color} text-white text-sm font-light uppercase tracking-widest rounded-full`}>
+                        Premium Tier
                       </div>
                     </div>
-                  )}
-                </CardContent>
-              </Card>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
 
         {/* Partnership Form */}
-        <Card className="mb-12">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <FileText className="h-6 w-6" />
-              Partnership Application & Letter Generator
-            </CardTitle>
-            <CardDescription>
-              Generate professional sponsor letters for banks, gas stations, and businesses
+        <Card className="bg-white/90 dark:bg-slate-900/90 backdrop-blur border-amber-200 dark:border-amber-800">
+          <CardHeader className="text-center">
+            <div className="w-16 h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mb-4"></div>
+            <CardTitle className="text-3xl font-light tracking-wide text-slate-900 dark:text-white">Begin Your Partnership Journey</CardTitle>
+            <CardDescription className="text-lg font-light text-slate-600 dark:text-slate-400 italic">
+              Connect with Jamaica's premier ride-sharing network
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <CardContent className="p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <Label htmlFor="companyName">Company Name *</Label>
+                <Label htmlFor="companyName" className="text-sm font-light uppercase tracking-wider text-slate-600 dark:text-slate-400">Company Name</Label>
                 <Input
                   id="companyName"
-                  placeholder="e.g., National Commercial Bank"
                   value={sponsorForm.companyName}
-                  onChange={(e) => handleInputChange('companyName', e.target.value)}
-                  data-testid="input-company-name"
+                  onChange={(e) => setSponsorForm({...sponsorForm, companyName: e.target.value})}
+                  className="mt-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                  placeholder="Your distinguished company"
                 />
               </div>
-              
               <div>
-                <Label htmlFor="contactName">Contact Person *</Label>
+                <Label htmlFor="contactName" className="text-sm font-light uppercase tracking-wider text-slate-600 dark:text-slate-400">Contact Person</Label>
                 <Input
                   id="contactName"
-                  placeholder="Full name of decision maker"
                   value={sponsorForm.contactName}
-                  onChange={(e) => handleInputChange('contactName', e.target.value)}
-                  data-testid="input-contact-name"
+                  onChange={(e) => setSponsorForm({...sponsorForm, contactName: e.target.value})}
+                  className="mt-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                  placeholder="Executive representative"
                 />
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <Label htmlFor="email">Email Address</Label>
+                <Label htmlFor="email" className="text-sm font-light uppercase tracking-wider text-slate-600 dark:text-slate-400">Email Address</Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="contact@company.com"
                   value={sponsorForm.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  data-testid="input-email"
+                  onChange={(e) => setSponsorForm({...sponsorForm, email: e.target.value})}
+                  className="mt-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                  placeholder="executive@yourcompany.com"
                 />
               </div>
-              
               <div>
-                <Label htmlFor="phone">Phone Number</Label>
+                <Label htmlFor="phone" className="text-sm font-light uppercase tracking-wider text-slate-600 dark:text-slate-400">Phone Number</Label>
                 <Input
                   id="phone"
-                  placeholder="+1-876-XXX-XXXX"
                   value={sponsorForm.phone}
-                  onChange={(e) => handleInputChange('phone', e.target.value)}
-                  data-testid="input-phone"
+                  onChange={(e) => setSponsorForm({...sponsorForm, phone: e.target.value})}
+                  className="mt-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                  placeholder="1-876-XXX-XXXX"
                 />
               </div>
-
-              <div>
-                <Label htmlFor="sponsorType">Business Type *</Label>
-                <Select 
-                  onValueChange={(value) => handleInputChange('sponsorType', value)}
-                  value={sponsorForm.sponsorType}
-                >
-                  <SelectTrigger data-testid="select-sponsor-type">
-                    <SelectValue placeholder="Select Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="bank">🏦 Bank / Financial Institution</SelectItem>
-                    <SelectItem value="gas_station">⛽ Gas Station (Ruby's, Texaco, etc.)</SelectItem>
-                    <SelectItem value="retail">🛒 Retail Store / Supermarket</SelectItem>
-                    <SelectItem value="restaurant">🍽️ Restaurant / Food Chain</SelectItem>
-                    <SelectItem value="hotel">🏨 Hotel / Accommodation</SelectItem>
-                    <SelectItem value="other">🏢 Other Business</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="location">Location / Parish</Label>
-                <Input
-                  id="location"
-                  placeholder="e.g., Kingston, Montego Bay"
-                  value={sponsorForm.location}
-                  onChange={(e) => handleInputChange('location', e.target.value)}
-                  data-testid="input-location"
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="budget">Estimated Monthly Budget</Label>
-                <Input
-                  id="budget"
-                  placeholder="e.g., JMD $50,000"
-                  value={sponsorForm.budget}
-                  onChange={(e) => handleInputChange('budget', e.target.value)}
-                  data-testid="input-budget"
+              <div className="md:col-span-2">
+                <Label htmlFor="message" className="text-sm font-light uppercase tracking-wider text-slate-600 dark:text-slate-400">Partnership Vision</Label>
+                <Textarea
+                  id="message"
+                  value={sponsorForm.message}
+                  onChange={(e) => setSponsorForm({...sponsorForm, message: e.target.value})}
+                  className="mt-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"
+                  rows={4}
+                  placeholder="Share your vision for this luxury partnership..."
                 />
               </div>
             </div>
 
-            <div>
-              <Label htmlFor="interests">Partnership Interests</Label>
-              <Textarea
-                id="interests"
-                placeholder="What specific partnership opportunities interest you? (e.g., fuel discounts, payment processing, customer rewards)"
-                value={sponsorForm.interests}
-                onChange={(e) => handleInputChange('interests', e.target.value)}
-                data-testid="textarea-interests"
-                rows={3}
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="message">Additional Message</Label>
-              <Textarea
-                id="message"
-                placeholder="Any additional information or questions?"
-                value={sponsorForm.message}
-                onChange={(e) => handleInputChange('message', e.target.value)}
-                data-testid="textarea-message"
-                rows={3}
-              />
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-col md:flex-row gap-4">
-              <Button
-                onClick={generateSponsorLetter}
-                disabled={generateLetterMutation.isPending}
-                variant="outline"
-                className="flex-1"
-                data-testid="button-generate-letter"
-              >
-                <Download className="h-4 w-4 mr-2" />
-                {generateLetterMutation.isPending ? "Generating..." : "📄 Generate Sponsor Letter"}
-              </Button>
-              
+            <div className="flex justify-center gap-4 mt-8 pt-8 border-t border-slate-200 dark:border-slate-600">
               <Button
                 onClick={submitPartnership}
                 disabled={partnershipMutation.isPending}
-                className="flex-1 bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 hover:from-green-600 hover:via-yellow-600 hover:to-red-600"
-                data-testid="button-submit-partnership"
+                className="px-8 py-3 bg-gradient-to-r from-emerald-600 to-amber-600 hover:from-emerald-700 hover:to-amber-700 text-white font-light tracking-wider uppercase"
               >
-                <Building2 className="h-4 w-4 mr-2" />
-                {partnershipMutation.isPending ? "Submitting..." : "🤝 Submit Partnership Interest"}
+                {partnershipMutation.isPending ? 'Processing...' : 'Join Partnership'}
+              </Button>
+              <Button
+                onClick={generateLetter}
+                variant="outline"
+                disabled={generateLetterMutation.isPending}
+                className="px-8 py-3 border-amber-500 text-amber-700 hover:bg-amber-50 font-light tracking-wider uppercase"
+              >
+                {generateLetterMutation.isPending ? 'Generating...' : 'Generate Proposal'}
               </Button>
             </div>
-
-            {/* Partnership Benefits */}
-            {selectedPackage && (
-              <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-blue-200 dark:border-blue-800">
-                <CardContent className="p-4">
-                  <h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-3">
-                    🎯 Your Partnership Benefits
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <strong>Immediate Access:</strong>
-                      <ul className="mt-1 space-y-1 text-blue-600 dark:text-blue-400">
-                        <li>• 50,000+ active drivers</li>
-                        <li>• 100,000+ monthly customers</li>
-                        <li>• Island-wide brand exposure</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <strong>Growth Potential:</strong>
-                      <ul className="mt-1 space-y-1 text-blue-600 dark:text-blue-400">
-                        <li>• 500% annual user growth</li>
-                        <li>• Expanding to other Caribbean islands</li>
-                        <li>• First-mover advantage in Jamaica</li>
-                      </ul>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
           </CardContent>
         </Card>
-
-        {/* Success Stories */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle className="text-center">🌟 Partnership Success Stories</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="text-4xl mb-2">⛽</div>
-                <h4 className="font-semibold mb-2">Gas Station Partners</h4>
-                <p className="text-sm text-muted-foreground">
-                  Partners see 40% increase in fuel sales from YaadFlex drivers and customer referrals.
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl mb-2">🏦</div>
-                <h4 className="font-semibold mb-2">Banking Partners</h4>
-                <p className="text-sm text-muted-foreground">
-                  Process $50M+ JMD monthly, gaining thousands of new accounts and transaction fees.
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl mb-2">🛒</div>
-                <h4 className="font-semibold mb-2">Retail Partners</h4>
-                <p className="text-sm text-muted-foreground">
-                  25% boost in sales through driver discounts and customer delivery partnerships.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Contact Information */}
-        <Card className="text-center">
-          <CardContent className="p-8">
-            <h3 className="text-2xl font-bold mb-4">Ready to Partner With YaadFlex?</h3>
-            <p className="text-lg text-muted-foreground mb-6">
-              Join Jamaica's most successful businesses and grow together with YaadFlex!
-            </p>
-            <div className="flex justify-center gap-8 text-sm">
-              <div className="flex items-center gap-2">
-                <Mail className="h-4 w-4 text-blue-600" />
-                <span>partnerships@yaadflex.com</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-green-600" />
-                <span>1-800-YAADFLEX</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
       </div>
     </div>
   );
