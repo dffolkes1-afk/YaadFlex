@@ -196,16 +196,35 @@ export default function SponsorshipPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/10 py-8 px-4">
-      <div className="container mx-auto max-w-6xl">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/10 py-8 px-4 relative overflow-hidden">
+      
+      {/* Animated Partnership Machine Background */}
+      <div className="absolute inset-0 pointer-events-none opacity-5">
+        <div className="absolute top-20 left-10 w-32 h-32 border-4 border-emerald-400 rounded-full animate-spin" style={{ animationDuration: '8s' }}></div>
+        <div className="absolute top-40 right-20 w-24 h-24 border-3 border-yellow-400 rounded-lg animate-pulse"></div>
+        <div className="absolute bottom-32 left-1/4 w-16 h-16 bg-gradient-to-r from-green-400 to-yellow-400 rounded-full animate-bounce"></div>
+        <div className="absolute top-1/2 right-1/3 w-20 h-20 border-2 border-dashed border-red-400 rounded-full" style={{ animation: 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite' }}></div>
+        <div className="absolute bottom-20 right-10 w-14 h-14 bg-emerald-300 rotate-45 animate-pulse"></div>
+      </div>
+
+      <div className="container mx-auto max-w-6xl relative z-10">
         
         {/* Header */}
         <div className="text-center mb-12">
+          <div className="flex items-center justify-center mb-4">
+            <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-yellow-500 rounded-full animate-pulse mr-3 flex items-center justify-center">
+              <div className="w-6 h-6 bg-white rounded-full animate-spin"></div>
+            </div>
+            <Building2 className="h-12 w-12 text-green-600 animate-pulse" />
+            <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full animate-pulse ml-3 flex items-center justify-center">
+              <div className="w-6 h-6 bg-white rounded-full animate-bounce"></div>
+            </div>
+          </div>
           <h1 className="text-5xl font-bold bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 bg-clip-text text-transparent mb-4">
-            🇯🇲 YaadFlex Partnership Program
+            🤖 YaadFlex Partnership Machine 🇯🇲
           </h1>
           <p className="text-2xl text-muted-foreground mb-6">
-            Join Jamaica's fastest-growing super-app and reach 100,000+ active users
+            Power up Jamaica's fastest-growing super-app and connect with 100,000+ active users
           </p>
           <div className="flex justify-center gap-2 flex-wrap mb-8">
             <Badge variant="secondary" className="text-green-600 text-lg px-4 py-2">✓ 50,000+ Drivers</Badge>

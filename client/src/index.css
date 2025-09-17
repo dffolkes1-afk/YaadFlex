@@ -25,20 +25,20 @@
   --warning-amber: hsl(38, 92%, 50%);
   --danger-red: hsl(0, 84%, 60%);
 
-  /* Light Mode - Professional Corporate Theme */
-  --background: hsl(0, 0%, 100%);
+  /* Light Mode - More Colorful Corporate Theme */
+  --background: hsl(160, 15%, 97%);
   --foreground: var(--slate-950);
-  --card: hsl(0, 0%, 100%);
+  --card: hsl(160, 20%, 99%);
   --card-foreground: var(--slate-950);
-  --popover: hsl(0, 0%, 100%);
+  --popover: hsl(160, 20%, 99%);
   --popover-foreground: var(--slate-950);
   --primary: var(--emerald-accent);
   --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: var(--slate-100);
+  --secondary: hsl(160, 30%, 95%);
   --secondary-foreground: var(--slate-900);
-  --muted: var(--slate-100);
+  --muted: hsl(160, 25%, 96%);
   --muted-foreground: var(--slate-600);
-  --accent: var(--slate-100);
+  --accent: hsl(43, 40%, 92%);
   --accent-foreground: var(--slate-900);
   --destructive: var(--danger-red);
   --destructive-foreground: hsl(0, 0%, 100%);
@@ -563,4 +563,23 @@ input:focus, textarea:focus, select:focus {
   color: var(--primary);
   background: none;
   -webkit-text-fill-color: var(--primary);
+}
+
+/* Machine Animations */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes reverse-spin {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+.animate-reverse-spin {
+  animation: reverse-spin 6s linear infinite;
 }
