@@ -194,7 +194,7 @@ export default function SponsorshipPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 relative">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-amber-50 to-orange-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 relative">
       
       {/* Luxury Magazine Paper Texture */}
       <div className="absolute inset-0 opacity-[0.015] pointer-events-none">
@@ -212,16 +212,16 @@ export default function SponsorshipPage() {
           
           {/* Magazine Title Section */}
           <div className="mb-12">
-            <div className="inline-block px-8 py-3 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 mb-8">
-              <span className="text-xs font-medium tracking-[0.4em] text-slate-600 dark:text-slate-400 uppercase">Partnership Portfolio</span>
+            <div className="inline-block px-8 py-3 border-2 border-amber-400 bg-gradient-to-r from-amber-100 to-emerald-100 dark:bg-gradient-to-r dark:from-amber-900 dark:to-emerald-900 mb-8">
+              <span className="text-xs font-medium tracking-[0.4em] text-amber-800 dark:text-amber-200 uppercase">Partnership Portfolio</span>
             </div>
-            <h1 className="text-8xl font-extralight text-slate-900 dark:text-white mb-6 tracking-[-0.02em] leading-none">
+            <h1 className="text-8xl font-extralight bg-gradient-to-r from-emerald-600 via-amber-600 to-orange-600 bg-clip-text text-transparent mb-6 tracking-[-0.02em] leading-none">
               YAADFLEX
             </h1>
-            <div className="text-lg font-light text-slate-500 dark:text-slate-400 tracking-[0.2em] uppercase mb-8">
+            <div className="text-lg font-light text-emerald-700 dark:text-emerald-400 tracking-[0.2em] uppercase mb-8">
               Executive Partnerships
             </div>
-            <div className="w-24 h-px bg-slate-400 dark:bg-slate-500 mx-auto mb-8"></div>
+            <div className="w-24 h-px bg-gradient-to-r from-emerald-500 to-amber-500 mx-auto mb-8"></div>
           </div>
 
           {/* Sophisticated Subtitle */}
@@ -235,60 +235,60 @@ export default function SponsorshipPage() {
           </div>
           
           {/* Premium Statistics Bar */}
-          <div className="mt-16 border-t border-b border-slate-200 dark:border-slate-700 py-8">
+          <div className="mt-16 border-t-2 border-b-2 border-amber-400 bg-gradient-to-r from-emerald-100 via-amber-50 to-orange-100 dark:from-slate-800 dark:to-slate-700 py-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
               <div className="text-center">
-                <div className="text-3xl font-extralight text-slate-900 dark:text-white mb-1">150K+</div>
-                <div className="text-xs font-light tracking-[0.15em] text-slate-600 dark:text-slate-400 uppercase">Active Users</div>
+                <div className="text-3xl font-extralight text-emerald-700 dark:text-emerald-400 mb-1">150K+</div>
+                <div className="text-xs font-light tracking-[0.15em] text-emerald-600 dark:text-emerald-500 uppercase">Active Users</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-extralight text-slate-900 dark:text-white mb-1">50K+</div>
-                <div className="text-xs font-light tracking-[0.15em] text-slate-600 dark:text-slate-400 uppercase">Professional Drivers</div>
+                <div className="text-3xl font-extralight text-amber-700 dark:text-amber-400 mb-1">50K+</div>
+                <div className="text-xs font-light tracking-[0.15em] text-amber-600 dark:text-amber-500 uppercase">Professional Drivers</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-extralight text-slate-900 dark:text-white mb-1">24/7</div>
-                <div className="text-xs font-light tracking-[0.15em] text-slate-600 dark:text-slate-400 uppercase">Operations</div>
+                <div className="text-3xl font-extralight text-orange-700 dark:text-orange-400 mb-1">24/7</div>
+                <div className="text-xs font-light tracking-[0.15em] text-orange-600 dark:text-orange-500 uppercase">Operations</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-extralight text-slate-900 dark:text-white mb-1">14</div>
-                <div className="text-xs font-light tracking-[0.15em] text-slate-600 dark:text-slate-400 uppercase">Parishes</div>
+                <div className="text-3xl font-extralight text-rose-700 dark:text-rose-400 mb-1">14</div>
+                <div className="text-xs font-light tracking-[0.15em] text-rose-600 dark:text-rose-500 uppercase">Parishes</div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Premium Feature Spread */}
-        <div className="mb-32 py-20 border-t border-slate-200 dark:border-slate-700">
+        <div className="mb-32 py-20 bg-gradient-to-r from-emerald-100/50 via-amber-100/50 to-orange-100/50 dark:from-slate-900/50 dark:via-slate-800/50 dark:to-slate-700/50">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-20">
-              <h2 className="text-5xl font-extralight text-slate-900 dark:text-white mb-6 tracking-[-0.01em]">
+              <h2 className="text-5xl font-extralight bg-gradient-to-r from-emerald-600 to-amber-600 bg-clip-text text-transparent mb-6 tracking-[-0.01em]">
                 The Platform
               </h2>
-              <div className="w-16 h-px bg-slate-400 dark:bg-slate-500 mx-auto mb-8"></div>
-              <p className="text-xl font-light text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl mx-auto">
+              <div className="w-16 h-px bg-gradient-to-r from-emerald-500 to-amber-500 mx-auto mb-8"></div>
+              <p className="text-xl font-light text-emerald-800 dark:text-emerald-300 leading-relaxed max-w-2xl mx-auto">
                 A comprehensive ecosystem connecting premium brands with Jamaica's most sophisticated mobile platform
               </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
               <div className="text-center">
-                <div className="w-16 h-16 mx-auto mb-6 border border-slate-300 dark:border-slate-600 flex items-center justify-center">
-                  <Users className="h-8 w-8 text-slate-700 dark:text-slate-300" />
+                <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg">
+                  <Users className="h-8 w-8 text-white" />
                 </div>
-                <div className="text-3xl font-extralight text-slate-900 dark:text-white mb-3">150,000+</div>
-                <div className="text-sm font-light text-slate-600 dark:text-slate-400 tracking-[0.1em] uppercase mb-4">Monthly Active Users</div>
-                <p className="text-sm font-light text-slate-500 dark:text-slate-500 leading-relaxed">
+                <div className="text-3xl font-extralight text-emerald-700 dark:text-emerald-400 mb-3">150,000+</div>
+                <div className="text-sm font-light text-emerald-600 dark:text-emerald-500 tracking-[0.1em] uppercase mb-4">Monthly Active Users</div>
+                <p className="text-sm font-light text-slate-700 dark:text-slate-300 leading-relaxed">
                   Premium customer base across all 14 parishes with high engagement rates and loyalty
                 </p>
               </div>
               
               <div className="text-center">
-                <div className="w-16 h-16 mx-auto mb-6 border border-slate-300 dark:border-slate-600 flex items-center justify-center">
-                  <TrendingUp className="h-8 w-8 text-slate-700 dark:text-slate-300" />
+                <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
+                  <TrendingUp className="h-8 w-8 text-white" />
                 </div>
-                <div className="text-3xl font-extralight text-slate-900 dark:text-white mb-3">$2M+</div>
-                <div className="text-sm font-light text-slate-600 dark:text-slate-400 tracking-[0.1em] uppercase mb-4">Monthly Transaction Volume</div>
-                <p className="text-sm font-light text-slate-500 dark:text-slate-500 leading-relaxed">
+                <div className="text-3xl font-extralight text-amber-700 dark:text-amber-400 mb-3">$2M+</div>
+                <div className="text-sm font-light text-amber-600 dark:text-amber-500 tracking-[0.1em] uppercase mb-4">Monthly Transaction Volume</div>
+                <p className="text-sm font-light text-slate-700 dark:text-slate-300 leading-relaxed">
                   Substantial economic impact with consistent growth and premium transaction values
                 </p>
               </div>
@@ -297,14 +297,14 @@ export default function SponsorshipPage() {
         </div>
 
         {/* Executive Statement */}
-        <div className="mb-32 py-20 bg-slate-50 dark:bg-slate-900/30 border-t border-b border-slate-200 dark:border-slate-700">
+        <div className="mb-32 py-20 bg-gradient-to-r from-amber-100 via-emerald-100 to-orange-100 dark:bg-slate-900/30 border-t-2 border-b-2 border-amber-400">
           <div className="max-w-3xl mx-auto text-center px-8">
-            <div className="text-7xl font-serif text-slate-300 dark:text-slate-600 mb-6 leading-none">"</div>
-            <blockquote className="text-3xl font-extralight text-slate-800 dark:text-slate-200 leading-relaxed mb-8 italic">
+            <div className="text-7xl font-serif text-amber-400 mb-6 leading-none">"</div>
+            <blockquote className="text-3xl font-extralight text-emerald-800 dark:text-emerald-200 leading-relaxed mb-8 italic">
               Partnership excellence through strategic alignment with Jamaica's premier mobility ecosystem
             </blockquote>
-            <div className="w-20 h-px bg-slate-400 dark:bg-slate-500 mx-auto mb-6"></div>
-            <cite className="text-sm font-light text-slate-600 dark:text-slate-400 tracking-[0.2em] uppercase">
+            <div className="w-20 h-px bg-gradient-to-r from-emerald-500 to-amber-500 mx-auto mb-6"></div>
+            <cite className="text-sm font-light text-amber-700 dark:text-amber-400 tracking-[0.2em] uppercase">
               Executive Leadership Team
             </cite>
           </div>
@@ -313,11 +313,11 @@ export default function SponsorshipPage() {
         {/* Partnership Portfolio */}
         <div className="mb-32">
           <div className="text-center mb-20">
-            <h2 className="text-5xl font-extralight text-slate-900 dark:text-white mb-6 tracking-[-0.01em]">
+            <h2 className="text-5xl font-extralight bg-gradient-to-r from-emerald-600 to-amber-600 bg-clip-text text-transparent mb-6 tracking-[-0.01em]">
               Partnership Portfolio
             </h2>
-            <div className="w-16 h-px bg-slate-400 dark:bg-slate-500 mx-auto mb-8"></div>
-            <p className="text-xl font-light text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl mx-auto">
+            <div className="w-16 h-px bg-gradient-to-r from-emerald-500 to-amber-500 mx-auto mb-8"></div>
+            <p className="text-xl font-light text-emerald-800 dark:text-emerald-300 leading-relaxed max-w-2xl mx-auto">
               Curated partnership opportunities designed for discerning organizations seeking strategic market positioning
             </p>
           </div>
@@ -325,8 +325,8 @@ export default function SponsorshipPage() {
             {sponsorshipPackages.map((pkg) => (
               <div 
                 key={pkg.id}
-                className={`group cursor-pointer transition-all duration-700 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:shadow-xl hover:border-slate-400 dark:hover:border-slate-500 ${
-                  selectedPackage === pkg.id ? 'ring-1 ring-slate-400 shadow-xl border-slate-400 dark:border-slate-500' : ''
+                className={`group cursor-pointer transition-all duration-700 bg-gradient-to-br from-white via-amber-50/30 to-emerald-50/30 dark:bg-slate-900 border-2 border-amber-200 dark:border-slate-700 hover:shadow-2xl hover:border-amber-400 dark:hover:border-slate-500 hover:-translate-y-1 ${
+                  selectedPackage === pkg.id ? 'ring-2 ring-amber-400 shadow-2xl border-amber-500 dark:border-slate-500 -translate-y-1' : ''
                 }`}
                 onClick={() => setSelectedPackage(pkg.id)}
                 data-testid={`package-${pkg.id}`}
@@ -336,8 +336,8 @@ export default function SponsorshipPage() {
                   {/* Package Header */}
                   <div className="flex items-start justify-between mb-8">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 border border-slate-300 dark:border-slate-600 flex items-center justify-center">
-                        <div className="text-slate-700 dark:text-slate-300">
+                      <div className={`w-12 h-12 bg-gradient-to-br ${pkg.color} rounded-lg shadow-lg flex items-center justify-center`}>
+                        <div className="text-white">
                           {pkg.icon}
                         </div>
                       </div>
@@ -399,16 +399,16 @@ export default function SponsorshipPage() {
         <div className="mt-32 py-20 border-t border-slate-200 dark:border-slate-700">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-5xl font-extralight text-slate-900 dark:text-white mb-6 tracking-[-0.01em]">
+              <h2 className="text-5xl font-extralight bg-gradient-to-r from-emerald-600 to-amber-600 bg-clip-text text-transparent mb-6 tracking-[-0.01em]">
                 Partnership Inquiry
               </h2>
-              <div className="w-16 h-px bg-slate-400 dark:bg-slate-500 mx-auto mb-8"></div>
-              <p className="text-xl font-light text-slate-600 dark:text-slate-400 leading-relaxed">
+              <div className="w-16 h-px bg-gradient-to-r from-emerald-500 to-amber-500 mx-auto mb-8"></div>
+              <p className="text-xl font-light text-emerald-800 dark:text-emerald-300 leading-relaxed">
                 Submit your partnership inquiry for executive review and strategic consultation
               </p>
             </div>
             
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-12">
+            <div className="bg-gradient-to-br from-white via-amber-50/20 to-emerald-50/20 dark:bg-slate-900 border-2 border-amber-200 dark:border-slate-700 p-12 shadow-xl">
               <div className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
@@ -485,7 +485,7 @@ export default function SponsorshipPage() {
                 <Button
                   onClick={submitPartnership}
                   disabled={partnershipMutation.isPending}
-                  className="px-12 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 font-light tracking-[0.15em] uppercase transition-all duration-300"
+                  className="px-12 py-4 bg-gradient-to-r from-emerald-600 to-amber-600 hover:from-emerald-700 hover:to-amber-700 text-white shadow-lg font-light tracking-[0.15em] uppercase transition-all duration-300"
                 >
                   {partnershipMutation.isPending ? 'Submitting Inquiry...' : 'Submit Partnership Inquiry'}
                 </Button>
@@ -494,7 +494,7 @@ export default function SponsorshipPage() {
                   onClick={generateLetter}
                   variant="outline"
                   disabled={generateLetterMutation.isPending}
-                  className="px-12 py-4 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-light tracking-[0.15em] uppercase transition-all duration-300"
+                  className="px-12 py-4 border-2 border-amber-400 text-amber-700 hover:bg-amber-100 dark:hover:bg-amber-900/20 font-light tracking-[0.15em] uppercase transition-all duration-300"
                 >
                   {generateLetterMutation.isPending ? 'Preparing...' : 'Request Executive Proposal'}
                 </Button>
