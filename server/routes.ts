@@ -26,6 +26,7 @@ import {
   balanceYaadFlexPay, 
   statementYaadFlexPay 
 } from "./yaadflex-pay";
+import { getYaadFlexPaymentOptions, processYaadFlexPayment } from "./unified-yaadflex-payments";
 import { 
   demoWallets, 
   demoTransactions, 
@@ -438,6 +439,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/yaadflex-pay/statement", async (req, res) => {
     await statementYaadFlexPay(req, res);
+  });
+
+  // Unified YaadFlex Payment System (YaadFlex Pay + African Systems)
+  app.get("/api/yaadflex/payment-options", async (req, res) => {
+    await getYaadFlexPaymentOptions(req, res);
+  });
+
+  app.post("/api/yaadflex/process-payment", async (req, res) => {
+    await processYaadFlexPayment(req, res);
   });
   
   // Time-locked authentication routes
