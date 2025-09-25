@@ -22,7 +22,10 @@ import {
   yaadflexBuyGoods,
   yaadflexDeposit,
   yaadflexWithdraw,
-  yaadflexBalance
+  yaadflexBalance,
+  yaadflexSendToATM,
+  yaadflexCollectFromATM,
+  yaadflexCheckATMCollections
 } from "./simple-yaadflex-pay";
 import { 
   demoWallets, 
@@ -419,6 +422,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/yaadflex-pay/balance", async (req, res) => {
     await yaadflexBalance(req, res);
+  });
+
+  // YaadFlex Pay ATM Cash Collection (Like M-Pesa Agent Banking)
+  app.post("/api/yaadflex-pay/send-to-atm", async (req, res) => {
+    await yaadflexSendToATM(req, res);
+  });
+
+  app.post("/api/yaadflex-pay/collect-from-atm", async (req, res) => {
+    await yaadflexCollectFromATM(req, res);
+  });
+
+  app.post("/api/yaadflex-pay/check-atm-collections", async (req, res) => {
+    await yaadflexCheckATMCollections(req, res);
   });
 
   // =============================================================

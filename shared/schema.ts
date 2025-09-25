@@ -6568,7 +6568,7 @@ export const yaadflexPayWallets = pgTable("yaadflex_pay_wallets", {
 export const yaadflexPayTransactions = pgTable("yaadflex_pay_transactions", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   transactionId: varchar("transaction_id").notNull().unique(), // e.g., YF1758818245656
-  type: varchar("type").notNull(), // 'SEND_MONEY', 'BUY_GOODS', 'DEPOSIT', 'WITHDRAW', 'BALANCE_CHECK'
+  type: varchar("type").notNull(), // 'SEND_MONEY', 'BUY_GOODS', 'DEPOSIT', 'WITHDRAW', 'BALANCE_CHECK', 'ATM_SEND', 'ATM_COLLECT'
   fromUserId: varchar("from_user_id").references(() => yaadflexPayUsers.id).notNull(),
   toUserId: varchar("to_user_id").references(() => yaadflexPayUsers.id), // For P2P transfers
   merchantCode: varchar("merchant_code"), // For merchant payments
@@ -6581,6 +6581,15 @@ export const yaadflexPayTransactions = pgTable("yaadflex_pay_transactions", {
   bankTransactionId: varchar("bank_transaction_id"), // JN Bank/VM Bank transaction ID
   failureReason: text("failure_reason"), // If transaction fails
   ipAddress: varchar("ip_address"), // For security tracking
+  
+  // ATM Cash Collection Features
+  collectionCode: varchar("collection_code"), // 6-digit code for ATM collection
+  collectionCodeExpiry: timestamp("collection_code_expiry"), // When collection code expires
+  senderPhoto: text("sender_photo"), // Base64 photo from sender for verification
+  recipientPhone: varchar("recipient_phone"), // Phone number for SMS notification
+  atmLocationId: varchar("atm_location_id"), // Which ATM was used for collection
+  collectedAt: timestamp("collected_at"), // When cash was collected
+  verificationRequired: boolean("verification_required").default(false), // Require photo verification
   deviceId: varchar("device_id"), // Device fingerprint
   location: varchar("location"), // Geographic location if available
   isReversible: boolean("is_reversible").default(true),

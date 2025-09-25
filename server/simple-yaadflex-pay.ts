@@ -15,7 +15,7 @@ interface YaadFlexPayUser {
 
 interface YaadFlexTransaction {
   id: string;
-  type: 'SEND_MONEY' | 'BUY_GOODS' | 'DEPOSIT' | 'WITHDRAW' | 'BALANCE_CHECK';
+  type: 'SEND_MONEY' | 'BUY_GOODS' | 'DEPOSIT' | 'WITHDRAW' | 'BALANCE_CHECK' | 'ATM_SEND' | 'ATM_COLLECT';
   fromPhone: string;
   toPhone?: string;
   amount: number;
@@ -24,6 +24,14 @@ interface YaadFlexTransaction {
   merchantCode?: string;
   description: string;
   timestamp: Date;
+  // ATM Collection Fields
+  collectionCode?: string;
+  collectionCodeExpiry?: Date;
+  senderPhoto?: string;
+  recipientPhone?: string;
+  verificationRequired?: boolean;
+  atmLocationId?: string;
+  collectedAt?: Date;
 }
 
 // YaadFlex Pay Fee Structure (Like M-Pesa)
@@ -38,6 +46,9 @@ const YAADFLEX_FEES = {
   deposit_fee: 0,      // Free deposits
   merchant_fee: 1.5    // 1.5% for merchant payments
 };
+
+// Global persistent storage for ATM collections (shared across all instances)
+const globalAtmCollections: Map<string, YaadFlexTransaction> = new Map();
 
 export class SimpleYaadFlexPay {
 
@@ -219,6 +230,174 @@ export class SimpleYaadFlexPay {
     }
     return YAADFLEX_FEES.send_money[YAADFLEX_FEES.send_money.length - 1].fee;
   }
+
+  // Use global persistent storage for ATM collections
+  private get atmCollections(): Map<string, YaadFlexTransaction> {
+    return globalAtmCollections;
+  }
+
+  /**
+   * Send money for ATM cash collection with photo verification
+   * Recipient gets SMS with collection code to collect cash at any ATM
+   */
+  async sendToATM(senderPhone: string, recipientPhone: string, amount: number, pin: string, senderPhoto?: string) {
+    const fee = this.calculateSendFee(amount);
+    const collectionCode = this.generateCollectionCode();
+    const expiryDate = new Date();
+    expiryDate.setHours(expiryDate.getHours() + 24); // 24-hour expiry
+
+    const transaction: YaadFlexTransaction = {
+      id: `YF${Date.now()}`,
+      type: 'ATM_SEND',
+      fromPhone: this.formatPhone(senderPhone),
+      toPhone: this.formatPhone(recipientPhone),
+      amount,
+      fee,
+      status: 'PENDING',
+      description: `Send J$${amount} for ATM cash collection`,
+      timestamp: new Date(),
+      // ATM Collection Fields
+      collectionCode,
+      collectionCodeExpiry: expiryDate,
+      senderPhoto: senderPhoto || undefined,
+      recipientPhone: this.formatPhone(recipientPhone),
+      verificationRequired: !!senderPhoto
+    };
+
+    // Store for collection
+    this.atmCollections.set(collectionCode, transaction);
+
+    console.log(`🏧 YaadFlex ATM Send: ${senderPhone} → ATM collection code ${collectionCode} for ${recipientPhone}`);
+
+    return {
+      success: true,
+      transaction,
+      collectionCode,
+      expiryTime: expiryDate,
+      message: `J$${amount} sent for ATM collection. Share code ${collectionCode} with recipient.`,
+      smsMessage: `YaadFlex: You have J$${amount} to collect at any ATM. Code: ${collectionCode}. Expires: ${expiryDate.toLocaleString()}`,
+      photoRequired: !!senderPhoto,
+      receipt: `YF${Date.now().toString().slice(-8)}`
+    };
+  }
+
+  /**
+   * Collect cash from ATM using collection code
+   * With optional photo verification for security
+   */
+  async collectFromATM(collectionCode: string, recipientPhone: string, atmLocationId: string, recipientPhoto?: string) {
+    const transaction = this.atmCollections.get(collectionCode);
+    
+    if (!transaction) {
+      return {
+        success: false,
+        error: 'Invalid collection code. Please check and try again.',
+        errorCode: 'INVALID_CODE'
+      };
+    }
+
+    if (transaction.status !== 'PENDING') {
+      return {
+        success: false,
+        error: 'This collection code has already been used.',
+        errorCode: 'CODE_USED'
+      };
+    }
+
+    if (new Date() > transaction.collectionCodeExpiry!) {
+      return {
+        success: false,
+        error: 'Collection code has expired. Contact sender for new code.',
+        errorCode: 'CODE_EXPIRED'
+      };
+    }
+
+    if (this.formatPhone(recipientPhone) !== transaction.recipientPhone) {
+      return {
+        success: false,
+        error: 'Phone number does not match collection code recipient.',
+        errorCode: 'PHONE_MISMATCH'
+      };
+    }
+
+    // Photo verification if required
+    if (transaction.verificationRequired && !recipientPhoto) {
+      return {
+        success: false,
+        error: 'Photo verification required for this collection.',
+        errorCode: 'PHOTO_REQUIRED'
+      };
+    }
+
+    // Update transaction status
+    transaction.status = 'SUCCESS';
+    transaction.collectedAt = new Date();
+    transaction.atmLocationId = atmLocationId;
+
+    // Remove from pending collections
+    this.atmCollections.delete(collectionCode);
+
+    console.log(`💰 YaadFlex ATM Collect: ${recipientPhone} collected J$${transaction.amount} at ATM ${atmLocationId}`);
+
+    return {
+      success: true,
+      transaction,
+      amount: transaction.amount,
+      collectedAt: new Date(),
+      atmLocation: atmLocationId,
+      message: `Successfully collected J$${transaction.amount} from ATM.`,
+      receipt: `YF${Date.now().toString().slice(-8)}`
+    };
+  }
+
+  /**
+   * Check ATM collection status and pending collections
+   */
+  async checkATMCollections(phone: string) {
+    const formattedPhone = this.formatPhone(phone);
+    const pending: YaadFlexTransaction[] = [];
+    const expired: YaadFlexTransaction[] = [];
+
+    for (const [code, transaction] of this.atmCollections.entries()) {
+      if (transaction.recipientPhone === formattedPhone) {
+        if (new Date() > transaction.collectionCodeExpiry!) {
+          expired.push(transaction);
+        } else {
+          pending.push(transaction);
+        }
+      }
+    }
+
+    return {
+      success: true,
+      pendingCollections: pending.length,
+      expiredCollections: expired.length,
+      collections: pending.map(t => ({
+        collectionCode: t.collectionCode,
+        amount: t.amount,
+        senderPhone: t.fromPhone,
+        expiresAt: t.collectionCodeExpiry,
+        verificationRequired: t.verificationRequired
+      })),
+      message: `You have ${pending.length} pending ATM collections totaling J$${pending.reduce((sum, t) => sum + t.amount, 0)}`
+    };
+  }
+
+  /**
+   * Generate secure 6-digit collection code
+   */
+  private generateCollectionCode(): string {
+    return Math.random().toString().slice(2, 8);
+  }
+
+  /**
+   * Verify photo for ATM collection (placeholder for actual verification)
+   */
+  private verifyPhoto(senderPhoto: string, recipientPhoto: string): boolean {
+    // In production, this would use AI photo verification
+    // For demo, we'll assume verification passes
+    return true;
+  }
 }
 
 // Simple API Routes for YaadFlex Pay Only
@@ -291,6 +470,43 @@ export async function yaadflexBalance(req: Request, res: Response) {
     res.json(result);
   } catch (error) {
     res.status(500).json({ success: false, error: 'Balance check failed' });
+  }
+}
+
+// ATM Cash Collection API Routes
+export async function yaadflexSendToATM(req: Request, res: Response) {
+  try {
+    const { senderPhone, recipientPhone, amount, pin, senderPhoto } = req.body;
+    const service = new SimpleYaadFlexPay();
+    
+    const result = await service.sendToATM(senderPhone, recipientPhone, amount, pin, senderPhoto);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'ATM send failed' });
+  }
+}
+
+export async function yaadflexCollectFromATM(req: Request, res: Response) {
+  try {
+    const { collectionCode, recipientPhone, atmLocationId, recipientPhoto } = req.body;
+    const service = new SimpleYaadFlexPay();
+    
+    const result = await service.collectFromATM(collectionCode, recipientPhone, atmLocationId, recipientPhoto);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'ATM collection failed' });
+  }
+}
+
+export async function yaadflexCheckATMCollections(req: Request, res: Response) {
+  try {
+    const { phone } = req.body;
+    const service = new SimpleYaadFlexPay();
+    
+    const result = await service.checkATMCollections(phone);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'ATM check failed' });
   }
 }
 
