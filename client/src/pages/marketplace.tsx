@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
+import { LuxuryYaadFlexProducts } from '@/components/LuxuryYaadFlexProducts';
 import { GlamorousCard } from '@/components/ui/glamorous-card';
 import { GlamorousButton } from '@/components/ui/glamorous-button';
 import { GlamorousSection, PremiumSection, LuxuryHeroSection } from '@/components/ui/glamorous-section';
@@ -273,10 +274,14 @@ export default function MarketplacePage() {
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <Tabs defaultValue="browse" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
+          <TabsList className="grid w-full grid-cols-4 mb-8">
             <TabsTrigger value="browse" className="flex items-center gap-2">
               <Search className="h-4 w-4" />
               Browse Items
+            </TabsTrigger>
+            <TabsTrigger value="yaadflex-fashion" className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-gold-500 text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-600 data-[state=active]:to-gold-600">
+              <Star className="h-4 w-4" />
+              YaadFlex Fashion
             </TabsTrigger>
             <TabsTrigger value="sell" className="flex items-center gap-2">
               <Plus className="h-4 w-4" />
@@ -287,6 +292,11 @@ export default function MarketplacePage() {
               My Listings
             </TabsTrigger>
           </TabsList>
+
+          {/* YaadFlex Luxury Fashion Tab */}
+          <TabsContent value="yaadflex-fashion">
+            <LuxuryYaadFlexProducts />
+          </TabsContent>
 
           {/* Browse Items Tab */}
           <TabsContent value="browse">
