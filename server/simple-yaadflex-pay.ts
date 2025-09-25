@@ -34,17 +34,36 @@ interface YaadFlexTransaction {
   collectedAt?: Date;
 }
 
-// YaadFlex Pay Fee Structure (Like M-Pesa)
+// YaadFlex Pay Fee Structure & Limits (Matching African Mobile Money Standards)
 const YAADFLEX_FEES = {
   send_money: [
     { min: 1, max: 500, fee: 20 },      // J$20 for under J$500
     { min: 501, max: 2500, fee: 35 },   // J$35 for J$501-2500
     { min: 2501, max: 10000, fee: 50 }, // J$50 for J$2501-10000
-    { min: 10001, max: 999999, fee: 75 } // J$75 for higher amounts
+    { min: 10001, max: 150000, fee: 75 } // J$75 for up to J$150,000 (M-Pesa standard)
   ],
   withdraw_fee: 50,    // J$50 flat fee
   deposit_fee: 0,      // Free deposits
   merchant_fee: 1.5    // 1.5% for merchant payments
+};
+
+// African Mobile Money Standard Limits (Like M-Pesa)
+const TRANSACTION_LIMITS = {
+  // Single transaction limits (matching M-Pesa international standards)
+  maxSingleTransaction: 150000,    // J$150,000 (~$1,000 USD)
+  maxATMCollection: 150000,        // J$150,000 ATM limit
+  
+  // Daily limits (matching African mobile money standards)
+  maxDailyTransactions: 300000,    // J$300,000 (~$2,000 USD) 
+  maxDailyATMCollections: 300000,  // J$300,000 daily ATM limit
+  
+  // Monthly limits (proven African mobile money limits)
+  maxMonthlyTransactions: 1500000, // J$1.5M (~$10,000 USD)
+  maxMonthlyATMCollections: 1500000, // J$1.5M monthly ATM limit
+  
+  // International compliance
+  internationalDailyLimit: 450000,   // J$450,000 (~$3,000 USD)
+  internationalMonthlyLimit: 2250000 // J$2.25M (~$15,000 USD)
 };
 
 // Global persistent storage for ATM collections (shared across all instances)
@@ -86,6 +105,15 @@ export class SimpleYaadFlexPay {
    * Send money to another YaadFlex Pay user (like M-Pesa Send Money)
    */
   async sendMoney(fromPhone: string, toPhone: string, amount: number, pin: string) {
+    // Validate against African mobile money standards
+    if (amount > TRANSACTION_LIMITS.maxSingleTransaction) {
+      return {
+        success: false,
+        error: `Maximum single transaction is J$${TRANSACTION_LIMITS.maxSingleTransaction.toLocaleString()} (African mobile money standard)`,
+        errorCode: 'AMOUNT_EXCEEDS_SINGLE_LIMIT'
+      };
+    }
+
     const fee = this.calculateSendFee(amount);
     const totalDeduction = amount + fee;
 
@@ -241,6 +269,15 @@ export class SimpleYaadFlexPay {
    * Recipient gets SMS with collection code to collect cash at any ATM
    */
   async sendToATM(senderPhone: string, recipientPhone: string, amount: number, pin: string, senderPhoto?: string) {
+    // Validate against African mobile money ATM limits
+    if (amount > TRANSACTION_LIMITS.maxATMCollection) {
+      return {
+        success: false,
+        error: `Maximum ATM collection is J$${TRANSACTION_LIMITS.maxATMCollection.toLocaleString()} (M-Pesa standard)`,
+        errorCode: 'AMOUNT_EXCEEDS_ATM_LIMIT'
+      };
+    }
+
     const fee = this.calculateSendFee(amount);
     const collectionCode = this.generateCollectionCode();
     const expiryDate = new Date();
