@@ -25,7 +25,10 @@ import {
   yaadflexBalance,
   yaadflexSendToATM,
   yaadflexCollectFromATM,
-  yaadflexCheckATMCollections
+  yaadflexCheckATMCollections,
+  yaadflexVerifyPIN,
+  yaadflexVerifySMS,
+  yaadflexVerificationStatus
 } from "./simple-yaadflex-pay";
 import { 
   demoWallets, 
@@ -435,6 +438,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/yaadflex-pay/check-atm-collections", async (req, res) => {
     await yaadflexCheckATMCollections(req, res);
+  });
+
+  // Simple 2-Step Verification Routes (Customer-Friendly)
+  app.post("/api/yaadflex-pay/verify-pin", async (req, res) => {
+    await yaadflexVerifyPIN(req, res);
+  });
+
+  app.post("/api/yaadflex-pay/verify-sms", async (req, res) => {
+    await yaadflexVerifySMS(req, res);
+  });
+
+  app.post("/api/yaadflex-pay/verification-status", async (req, res) => {
+    await yaadflexVerificationStatus(req, res);
   });
 
   // =============================================================
