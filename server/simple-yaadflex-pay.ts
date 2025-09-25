@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { rsaVerification, RSAVerification } from './rsa-verification.js';
 
 // PURE YaadFlex Pay - Your Own Mobile Money System
 // Works exactly like M-Pesa but 100% YaadFlex branded
@@ -32,6 +33,10 @@ interface YaadFlexTransaction {
   verificationRequired?: boolean;
   atmLocationId?: string;
   collectedAt?: Date;
+  // RSA Verification Fields
+  rsaVerification?: RSAVerification;
+  securityHash?: string;
+  isRSAVerified?: boolean;
 }
 
 // YaadFlex Pay Fee Structure & Limits (Matching African Mobile Money Standards)
@@ -279,12 +284,20 @@ export class SimpleYaadFlexPay {
     }
 
     const fee = this.calculateSendFee(amount);
-    const collectionCode = this.generateCollectionCode();
+    const transactionId = `YF${Date.now()}`;
+    
+    // Generate secure ATM collection code with RSA verification
+    const secureATM = rsaVerification.generateSecureATMCode(
+      transactionId,
+      amount,
+      this.formatPhone(recipientPhone)
+    );
+    
     const expiryDate = new Date();
     expiryDate.setHours(expiryDate.getHours() + 24); // 24-hour expiry
 
     const transaction: YaadFlexTransaction = {
-      id: `YF${Date.now()}`,
+      id: transactionId,
       type: 'ATM_SEND',
       fromPhone: this.formatPhone(senderPhone),
       toPhone: this.formatPhone(recipientPhone),
@@ -294,25 +307,29 @@ export class SimpleYaadFlexPay {
       description: `Send J$${amount} for ATM cash collection`,
       timestamp: new Date(),
       // ATM Collection Fields
-      collectionCode,
+      collectionCode: secureATM.collectionCode,
       collectionCodeExpiry: expiryDate,
       senderPhoto: senderPhoto || undefined,
       recipientPhone: this.formatPhone(recipientPhone),
-      verificationRequired: !!senderPhoto
+      verificationRequired: !!senderPhoto,
+      // RSA Security Features
+      rsaVerification: secureATM.rsaVerification,
+      securityHash: secureATM.securityHash,
+      isRSAVerified: true
     };
 
     // Store for collection
-    this.atmCollections.set(collectionCode, transaction);
+    this.atmCollections.set(secureATM.collectionCode, transaction);
 
-    console.log(`🏧 YaadFlex ATM Send: ${senderPhone} → ATM collection code ${collectionCode} for ${recipientPhone}`);
+    console.log(`🏧 YaadFlex ATM Send: ${senderPhone} → ATM collection code ${secureATM.collectionCode} for ${recipientPhone}`);
 
     return {
       success: true,
       transaction,
-      collectionCode,
+      collectionCode: secureATM.collectionCode,
       expiryTime: expiryDate,
-      message: `J$${amount} sent for ATM collection. Share code ${collectionCode} with recipient.`,
-      smsMessage: `YaadFlex: You have J$${amount} to collect at any ATM. Code: ${collectionCode}. Expires: ${expiryDate.toLocaleString()}`,
+      message: `J$${amount} sent for ATM collection. Share code ${secureATM.collectionCode} with recipient.`,
+      smsMessage: `YaadFlex: You have J$${amount} to collect at any ATM. Code: ${secureATM.collectionCode}. Expires: ${expiryDate.toLocaleString()}`,
       photoRequired: !!senderPhoto,
       receipt: `YF${Date.now().toString().slice(-8)}`
     };
@@ -331,6 +348,26 @@ export class SimpleYaadFlexPay {
         error: 'Invalid collection code. Please check and try again.',
         errorCode: 'INVALID_CODE'
       };
+    }
+
+    // RSA VERIFICATION - Critical Security Check
+    if (transaction.rsaVerification && transaction.securityHash && transaction.isRSAVerified) {
+      const rsaResult = rsaVerification.verifyATMCollection(
+        collectionCode,
+        transaction,
+        transaction.rsaVerification,
+        transaction.securityHash
+      );
+
+      if (!rsaResult.isValid) {
+        return {
+          success: false,
+          error: 'RSA verification failed. Transaction security compromised.',
+          errorCode: 'RSA_VERIFICATION_FAILED'
+        };
+      }
+
+      console.log(`🔐 RSA verification passed for ATM collection ${collectionCode}`);
     }
 
     if (transaction.status !== 'PENDING') {
