@@ -16,6 +16,7 @@ import { registerSocialRoutes } from "./routes/social";
 import { autonomousOpsAgent } from "./autonomous-ops-agent";
 import { paymentTunnel } from "./unified-payment-tunnel";
 import { createPaypalOrder, capturePaypalOrder, loadPaypalDefault } from "./paypal";
+import { getAfricanPaymentMethods, initializeAfricanPayment, handleAfricanPaymentCallback } from "./african-payments";
 import { 
   demoWallets, 
   demoTransactions, 
@@ -386,6 +387,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/paypal/order/:orderID/capture", async (req, res) => {
     await capturePaypalOrder(req, res);
+  });
+
+  // African Payment Systems - Mobile Money & Banking
+  app.get("/api/african-payments/methods", async (req, res) => {
+    await getAfricanPaymentMethods(req, res);
+  });
+
+  app.post("/api/african-payments/initialize", async (req, res) => {
+    await initializeAfricanPayment(req, res);
+  });
+
+  app.post("/api/african-payments/callback/:provider", async (req, res) => {
+    await handleAfricanPaymentCallback(req, res);
   });
   
   // Time-locked authentication routes
