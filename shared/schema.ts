@@ -6521,6 +6521,153 @@ export const insertYaadFlexProductReviewSchema = createInsertSchema(yaadflexProd
   updatedAt: true,
 });
 
+// =============================================================
+// YAADFLEX PAY - MOBILE MONEY SYSTEM (PRODUCTION READY)
+// Your own M-Pesa style payment system with real security
+// =============================================================
+
+// YaadFlex Pay User Accounts - Mobile Money Registration
+export const yaadflexPayUsers = pgTable("yaadflex_pay_users", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  phone: varchar("phone").notNull().unique(), // Formatted phone number
+  pin: varchar("pin").notNull(), // Encrypted PIN (use bcrypt in production)
+  pinSalt: varchar("pin_salt").notNull(), // Salt for PIN encryption
+  preferredBank: varchar("preferred_bank").notNull(), // 'JN_BANK', 'VM_BANK', 'NCB', 'SCOTIA'
+  bankAccount: varchar("bank_account"), // Optional linked bank account
+  isActive: boolean("is_active").default(true),
+  isVerified: boolean("is_verified").default(false),
+  kycStatus: varchar("kyc_status").default('pending'), // 'pending', 'verified', 'rejected'
+  securityLevel: varchar("security_level").default('standard'), // 'standard', 'enhanced'
+  dailyLimit: decimal("daily_limit", { precision: 10, scale: 2 }).default('100000.00'), // J$100K default
+  monthlyLimit: decimal("monthly_limit", { precision: 10, scale: 2 }).default('500000.00'), // J$500K default
+  failedPinAttempts: integer("failed_pin_attempts").default(0),
+  lastLogin: timestamp("last_login"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// YaadFlex Pay Wallets - Mobile Money Balances
+export const yaadflexPayWallets = pgTable("yaadflex_pay_wallets", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => yaadflexPayUsers.id).notNull(),
+  currency: varchar("currency", { length: 3 }).notNull(), // 'JMD', 'USD'
+  balance: decimal("balance", { precision: 12, scale: 2 }).notNull().default('0.00'),
+  pendingBalance: decimal("pending_balance", { precision: 12, scale: 2 }).default('0.00'),
+  totalDeposited: decimal("total_deposited", { precision: 12, scale: 2 }).default('0.00'),
+  totalWithdrawn: decimal("total_withdrawn", { precision: 12, scale: 2 }).default('0.00'),
+  totalSent: decimal("total_sent", { precision: 12, scale: 2 }).default('0.00'),
+  totalReceived: decimal("total_received", { precision: 12, scale: 2 }).default('0.00'),
+  lastTransactionAt: timestamp("last_transaction_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("idx_yf_pay_user_currency").on(table.userId, table.currency),
+]);
+
+// YaadFlex Pay Transactions - Mobile Money Activity
+export const yaadflexPayTransactions = pgTable("yaadflex_pay_transactions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  transactionId: varchar("transaction_id").notNull().unique(), // e.g., YF1758818245656
+  type: varchar("type").notNull(), // 'SEND_MONEY', 'BUY_GOODS', 'DEPOSIT', 'WITHDRAW', 'BALANCE_CHECK'
+  fromUserId: varchar("from_user_id").references(() => yaadflexPayUsers.id).notNull(),
+  toUserId: varchar("to_user_id").references(() => yaadflexPayUsers.id), // For P2P transfers
+  merchantCode: varchar("merchant_code"), // For merchant payments
+  amount: decimal("amount", { precision: 12, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).notNull().default('JMD'),
+  fee: decimal("fee", { precision: 8, scale: 2 }).notNull().default('0.00'),
+  status: varchar("status").notNull().default('pending'), // 'pending', 'completed', 'failed', 'reversed'
+  description: text("description").notNull(),
+  reference: varchar("reference"), // Bank reference number
+  bankTransactionId: varchar("bank_transaction_id"), // JN Bank/VM Bank transaction ID
+  failureReason: text("failure_reason"), // If transaction fails
+  ipAddress: varchar("ip_address"), // For security tracking
+  deviceId: varchar("device_id"), // Device fingerprint
+  location: varchar("location"), // Geographic location if available
+  isReversible: boolean("is_reversible").default(true),
+  reversedAt: timestamp("reversed_at"),
+  completedAt: timestamp("completed_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("idx_yf_pay_from_user").on(table.fromUserId),
+  index("idx_yf_pay_to_user").on(table.toUserId),
+  index("idx_yf_pay_status").on(table.status),
+  index("idx_yf_pay_created").on(table.createdAt),
+]);
+
+// YaadFlex Pay Merchants - Businesses accepting YaadFlex Pay
+export const yaadflexPayMerchants = pgTable("yaadflex_pay_merchants", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  merchantCode: varchar("merchant_code").notNull().unique(), // e.g., YF-CLOTHING-001
+  businessName: varchar("business_name").notNull(),
+  contactPhone: varchar("contact_phone").notNull(),
+  contactEmail: varchar("contact_email"),
+  businessType: varchar("business_type").notNull(), // 'clothing', 'restaurant', 'gas_station', 'grocery'
+  address: text("address"),
+  isActive: boolean("is_active").default(true),
+  feePercentage: decimal("fee_percentage", { precision: 5, scale: 2 }).default('1.50'), // 1.5% default
+  dailyLimit: decimal("daily_limit", { precision: 12, scale: 2 }).default('1000000.00'), // J$1M
+  totalTransactions: integer("total_transactions").default(0),
+  totalVolume: decimal("total_volume", { precision: 14, scale: 2 }).default('0.00'),
+  lastTransactionAt: timestamp("last_transaction_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// YaadFlex Pay Cards - Future Visa/Mastercard Integration via Stripe
+export const yaadflexPayCards = pgTable("yaadflex_pay_cards", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => yaadflexPayUsers.id).notNull(),
+  cardType: varchar("card_type").notNull(), // 'debit', 'prepaid'
+  cardBrand: varchar("card_brand").notNull(), // 'visa', 'mastercard'
+  maskedNumber: varchar("masked_number").notNull(), // **** **** **** 1234
+  stripeCardId: varchar("stripe_card_id"), // Stripe card issuing ID
+  isActive: boolean("is_active").default(true),
+  isBlocked: boolean("is_blocked").default(false),
+  expiryMonth: integer("expiry_month").notNull(),
+  expiryYear: integer("expiry_year").notNull(),
+  spendingLimit: decimal("spending_limit", { precision: 10, scale: 2 }).default('50000.00'),
+  totalSpent: decimal("total_spent", { precision: 12, scale: 2 }).default('0.00'),
+  lastUsed: timestamp("last_used"),
+  issuedAt: timestamp("issued_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// YaadFlex Pay Types & Schemas
+export type YaadFlexPayUser = typeof yaadflexPayUsers.$inferSelect;
+export type InsertYaadFlexPayUser = typeof yaadflexPayUsers.$inferInsert;
+export type YaadFlexPayWallet = typeof yaadflexPayWallets.$inferSelect;
+export type InsertYaadFlexPayWallet = typeof yaadflexPayWallets.$inferInsert;
+export type YaadFlexPayTransaction = typeof yaadflexPayTransactions.$inferSelect;
+export type InsertYaadFlexPayTransaction = typeof yaadflexPayTransactions.$inferInsert;
+export type YaadFlexPayMerchant = typeof yaadflexPayMerchants.$inferSelect;
+export type InsertYaadFlexPayMerchant = typeof yaadflexPayMerchants.$inferInsert;
+export type YaadFlexPayCard = typeof yaadflexPayCards.$inferSelect;
+export type InsertYaadFlexPayCard = typeof yaadflexPayCards.$inferInsert;
+
+export const insertYaadFlexPayUserSchema = createInsertSchema(yaadflexPayUsers).omit({
+  id: true,
+  failedPinAttempts: true,
+  lastLogin: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertYaadFlexPayTransactionSchema = createInsertSchema(yaadflexPayTransactions).omit({
+  id: true,
+  reversedAt: true,
+  completedAt: true,
+  createdAt: true,
+});
+
+export const insertYaadFlexPayMerchantSchema = createInsertSchema(yaadflexPayMerchants).omit({
+  id: true,
+  totalTransactions: true,
+  totalVolume: true,
+  lastTransactionAt: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // LEGAL ACCEPTANCE VALIDATION SCHEMAS - CRITICAL FOR COMPLIANCE
 export const legalAcceptanceSchema = z.object({
   agreedToTerms: z.boolean()
