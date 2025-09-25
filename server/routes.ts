@@ -16,7 +16,6 @@ import { registerSocialRoutes } from "./routes/social";
 import { autonomousOpsAgent } from "./autonomous-ops-agent";
 import { paymentTunnel } from "./unified-payment-tunnel";
 import { createPaypalOrder, capturePaypalOrder, loadPaypalDefault } from "./paypal";
-import { getAfricanPaymentMethods, initializeAfricanPayment, handleAfricanPaymentCallback } from "./african-payments";
 import { 
   registerYaadFlexPay, 
   sendMoneyYaadFlexPay, 
@@ -26,7 +25,6 @@ import {
   balanceYaadFlexPay, 
   statementYaadFlexPay 
 } from "./yaadflex-pay";
-import { getYaadFlexPaymentOptions, processYaadFlexPayment } from "./unified-yaadflex-payments";
 import { 
   demoWallets, 
   demoTransactions, 
@@ -399,20 +397,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     await capturePaypalOrder(req, res);
   });
 
-  // African Payment Systems - Mobile Money & Banking
-  app.get("/api/african-payments/methods", async (req, res) => {
-    await getAfricanPaymentMethods(req, res);
-  });
-
-  app.post("/api/african-payments/initialize", async (req, res) => {
-    await initializeAfricanPayment(req, res);
-  });
-
-  app.post("/api/african-payments/callback/:provider", async (req, res) => {
-    await handleAfricanPaymentCallback(req, res);
-  });
-
-  // YaadFlex Pay - Custom Caribbean Mobile Money System
+  // YaadFlex Pay - Your Own Mobile Money System (Works like M-Pesa)
   app.post("/api/yaadflex-pay/register", async (req, res) => {
     await registerYaadFlexPay(req, res);
   });
@@ -439,15 +424,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/yaadflex-pay/statement", async (req, res) => {
     await statementYaadFlexPay(req, res);
-  });
-
-  // Unified YaadFlex Payment System (YaadFlex Pay + African Systems)
-  app.get("/api/yaadflex/payment-options", async (req, res) => {
-    await getYaadFlexPaymentOptions(req, res);
-  });
-
-  app.post("/api/yaadflex/process-payment", async (req, res) => {
-    await processYaadFlexPayment(req, res);
   });
   
   // Time-locked authentication routes
