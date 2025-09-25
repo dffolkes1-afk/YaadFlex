@@ -443,6 +443,208 @@ export type SystemHealthCheck = typeof systemHealthChecks.$inferSelect;
 export type InsertSystemHealthCheck = typeof systemHealthChecks.$inferInsert;
 
 // =============================================================
+// YAADFLEX LUXURY CLOTHING LINE & DROP SHIPPING SYSTEM
+// Premium branded merchandise with Gucci-style luxury aesthetic
+// =============================================================
+
+// YaadFlex Product Categories (Clothing, Accessories, Coffee, etc.)
+export const yaadflexCategories = pgTable("yaadflex_categories", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name").notNull(), // 'YF Shirts', 'YF Shoes', 'YF Coffee', 'YF Accessories'
+  displayName: varchar("display_name").notNull(), // 'YaadFlex Premium Shirts'
+  description: text("description"),
+  categoryType: varchar("category_type").notNull(), // 'clothing', 'accessories', 'lifestyle', 'beverages'
+  iconUrl: varchar("icon_url"), // Category icon for display
+  isActive: boolean("is_active").default(true),
+  sortOrder: integer("sort_order").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// YaadFlex Luxury Products
+export const yaadflexProducts = pgTable("yaadflex_products", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  categoryId: varchar("category_id").references(() => yaadflexCategories.id).notNull(),
+  name: varchar("name").notNull(), // 'YF Gold Luxury Tee', 'YF Premium Coffee Blend'
+  description: text("description").notNull(),
+  shortDescription: varchar("short_description"), // For quick displays
+  
+  // Pricing & Inventory
+  basePrice: decimal("base_price", { precision: 10, scale: 2 }).notNull(),
+  salePrice: decimal("sale_price", { precision: 10, scale: 2 }), // Optional sale price
+  currency: varchar("currency", { length: 3 }).default('USD'),
+  costPrice: decimal("cost_price", { precision: 10, scale: 2 }), // For profit calculations
+  
+  // Product Details
+  sku: varchar("sku").unique().notNull(), // 'YF-SHIRT-001', 'YF-COFFEE-PREMIUM'
+  brand: varchar("brand").default('YaadFlex'),
+  sizes: jsonb("sizes"), // ['XS', 'S', 'M', 'L', 'XL', 'XXL'] for clothing
+  colors: jsonb("colors"), // ['Emerald', 'Gold', 'Rose', 'Black', 'White']
+  materials: jsonb("materials"), // ['100% Cotton', 'Premium Leather', 'Organic Beans']
+  
+  // Images & Media
+  images: jsonb("images"), // Array of image URLs
+  primaryImageUrl: varchar("primary_image_url"),
+  videoUrl: varchar("video_url"), // Product showcase video
+  
+  // Drop Shipping Info
+  supplierId: varchar("supplier_id").references(() => yaadflexSuppliers.id),
+  supplierProductId: varchar("supplier_product_id"), // Supplier's internal product ID
+  shippingWeight: decimal("shipping_weight", { precision: 6, scale: 2 }), // in kg
+  shippingDimensions: jsonb("shipping_dimensions"), // {length, width, height} in cm
+  processingDays: integer("processing_days").default(3), // Days to process order
+  estimatedShippingDays: integer("estimated_shipping_days").default(7),
+  
+  // Status & Inventory
+  status: varchar("status").default('active'), // 'active', 'inactive', 'discontinued', 'out_of_stock'
+  stockQuantity: integer("stock_quantity").default(0),
+  lowStockThreshold: integer("low_stock_threshold").default(10),
+  isDropShipped: boolean("is_drop_shipped").default(true),
+  isFeatured: boolean("is_featured").default(false),
+  isLuxury: boolean("is_luxury").default(true), // All YF products are luxury
+  
+  // SEO & Marketing
+  seoTitle: varchar("seo_title"),
+  seoDescription: text("seo_description"),
+  tags: jsonb("tags"), // ['luxury', 'premium', 'gucci-style', 'caribbean']
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Drop Shipping Suppliers
+export const yaadflexSuppliers = pgTable("yaadflex_suppliers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name").notNull(), // 'Premium Apparel Co', 'Luxury Coffee Roasters'
+  contactEmail: varchar("contact_email").notNull(),
+  contactPhone: varchar("contact_phone"),
+  website: varchar("website"),
+  
+  // Supplier Details
+  address: text("address"),
+  country: varchar("country"),
+  apiEndpoint: varchar("api_endpoint"), // For automated order processing
+  apiKey: varchar("api_key"), // Encrypted supplier API key
+  
+  // Business Terms
+  minimumOrder: decimal("minimum_order", { precision: 10, scale: 2 }).default('0.00'),
+  shippingCost: decimal("shipping_cost", { precision: 8, scale: 2 }).default('0.00'),
+  freeShippingThreshold: decimal("free_shipping_threshold", { precision: 10, scale: 2 }),
+  paymentTerms: varchar("payment_terms").default('prepaid'), // 'prepaid', 'net_30', 'cod'
+  
+  // Performance Metrics
+  reliability: decimal("reliability", { precision: 3, scale: 2 }).default('5.00'), // 0-5 rating
+  averageProcessingTime: integer("average_processing_time").default(3), // days
+  qualityRating: decimal("quality_rating", { precision: 3, scale: 2 }).default('5.00'),
+  
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// YaadFlex Drop Shipping Orders
+export const yaadflexOrders = pgTable("yaadflex_orders", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  customerId: varchar("customer_id").references(() => users.id).notNull(),
+  
+  // Order Details
+  orderNumber: varchar("order_number").unique().notNull(), // 'YF-2024-001234'
+  status: varchar("status").default('pending'), // 'pending', 'processing', 'shipped', 'delivered', 'cancelled'
+  
+  // Pricing
+  subtotal: decimal("subtotal", { precision: 10, scale: 2 }).notNull(),
+  shippingCost: decimal("shipping_cost", { precision: 8, scale: 2 }).default('0.00'),
+  taxAmount: decimal("tax_amount", { precision: 8, scale: 2 }).default('0.00'),
+  discountAmount: decimal("discount_amount", { precision: 8, scale: 2 }).default('0.00'),
+  totalAmount: decimal("total_amount", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency", { length: 3 }).default('USD'),
+  
+  // Shipping Information
+  shippingAddress: jsonb("shipping_address"), // Full address object
+  billingAddress: jsonb("billing_address"),
+  shippingMethod: varchar("shipping_method").default('standard'), // 'standard', 'express', 'overnight'
+  trackingNumber: varchar("tracking_number"),
+  trackingUrl: varchar("tracking_url"),
+  
+  // Drop Shipping Details
+  supplierId: varchar("supplier_id").references(() => yaadflexSuppliers.id),
+  supplierOrderId: varchar("supplier_order_id"), // Supplier's order reference
+  
+  // Timestamps
+  orderDate: timestamp("order_date").defaultNow(),
+  processedAt: timestamp("processed_at"),
+  shippedAt: timestamp("shipped_at"),
+  deliveredAt: timestamp("delivered_at"),
+  estimatedDelivery: timestamp("estimated_delivery"),
+  
+  // Notes & Communication
+  customerNotes: text("customer_notes"),
+  internalNotes: text("internal_notes"),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Order Items (individual products in each order)
+export const yaadflexOrderItems = pgTable("yaadflex_order_items", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  orderId: varchar("order_id").references(() => yaadflexOrders.id).notNull(),
+  productId: varchar("product_id").references(() => yaadflexProducts.id).notNull(),
+  
+  // Product Details at time of order (for history)
+  productName: varchar("product_name").notNull(),
+  productSku: varchar("product_sku").notNull(),
+  productImage: varchar("product_image"),
+  
+  // Variation Details
+  selectedSize: varchar("selected_size"), // 'M', 'L', etc.
+  selectedColor: varchar("selected_color"), // 'Emerald', 'Gold', etc.
+  customization: text("customization"), // Any custom text/embroidery
+  
+  // Pricing
+  quantity: integer("quantity").notNull().default(1),
+  unitPrice: decimal("unit_price", { precision: 10, scale: 2 }).notNull(),
+  totalPrice: decimal("total_price", { precision: 10, scale: 2 }).notNull(),
+  
+  // Drop Shipping Status
+  itemStatus: varchar("item_status").default('pending'), // 'pending', 'processing', 'shipped', 'delivered'
+  supplierStatus: varchar("supplier_status"), // Supplier's status for this item
+  
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Product Reviews for YaadFlex merchandise
+export const yaadflexProductReviews = pgTable("yaadflex_product_reviews", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  productId: varchar("product_id").references(() => yaadflexProducts.id).notNull(),
+  customerId: varchar("customer_id").references(() => users.id).notNull(),
+  orderId: varchar("order_id").references(() => yaadflexOrders.id), // Optional link to purchase
+  
+  // Review Details
+  rating: integer("rating").notNull(), // 1-5 stars
+  title: varchar("title"),
+  reviewText: text("review_text"),
+  pros: text("pros"), // What they liked
+  cons: text("cons"), // What could be improved
+  
+  // Verification
+  isVerifiedPurchase: boolean("is_verified_purchase").default(false),
+  isVisible: boolean("is_visible").default(true),
+  isModerated: boolean("is_moderated").default(false),
+  
+  // Images/Video
+  reviewImages: jsonb("review_images"), // Customer photos of product
+  reviewVideo: varchar("review_video"),
+  
+  // Helpful votes
+  helpfulVotes: integer("helpful_votes").default(0),
+  unhelpfulVotes: integer("unhelpful_votes").default(0),
+  
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// =============================================================
 // YAADLEX ULTIMATE AI VEHICLE VALUATOR + OBD SYSTEM
 // Revolutionary honest pricing engine to prevent dealership lowballs
 // =============================================================
@@ -6253,6 +6455,71 @@ export type CreditTransfer = typeof creditTransfers.$inferSelect;
 export type InsertCreditTransfer = z.infer<typeof insertCreditTransferSchema>;
 export type PaymentMethodConfig = typeof paymentMethodConfigs.$inferSelect;
 export type InsertPaymentMethodConfig = z.infer<typeof insertPaymentMethodConfigSchema>;
+
+// =============================================================
+// YAADFLEX LUXURY CLOTHING LINE TYPES & SCHEMAS
+// =============================================================
+
+// YaadFlex Product Categories Types
+export type YaadFlexCategory = typeof yaadflexCategories.$inferSelect;
+export type InsertYaadFlexCategory = typeof yaadflexCategories.$inferInsert;
+
+// YaadFlex Products Types
+export type YaadFlexProduct = typeof yaadflexProducts.$inferSelect;
+export type InsertYaadFlexProduct = typeof yaadflexProducts.$inferInsert;
+
+// YaadFlex Suppliers Types
+export type YaadFlexSupplier = typeof yaadflexSuppliers.$inferSelect;
+export type InsertYaadFlexSupplier = typeof yaadflexSuppliers.$inferInsert;
+
+// YaadFlex Orders Types
+export type YaadFlexOrder = typeof yaadflexOrders.$inferSelect;
+export type InsertYaadFlexOrder = typeof yaadflexOrders.$inferInsert;
+
+// YaadFlex Order Items Types
+export type YaadFlexOrderItem = typeof yaadflexOrderItems.$inferSelect;
+export type InsertYaadFlexOrderItem = typeof yaadflexOrderItems.$inferInsert;
+
+// YaadFlex Product Reviews Types
+export type YaadFlexProductReview = typeof yaadflexProductReviews.$inferSelect;
+export type InsertYaadFlexProductReview = typeof yaadflexProductReviews.$inferInsert;
+
+// YaadFlex Clothing Line Zod Schemas
+export const insertYaadFlexCategorySchema = createInsertSchema(yaadflexCategories).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertYaadFlexProductSchema = createInsertSchema(yaadflexProducts).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertYaadFlexSupplierSchema = createInsertSchema(yaadflexSuppliers).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertYaadFlexOrderSchema = createInsertSchema(yaadflexOrders).omit({
+  id: true,
+  orderDate: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertYaadFlexOrderItemSchema = createInsertSchema(yaadflexOrderItems).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertYaadFlexProductReviewSchema = createInsertSchema(yaadflexProductReviews).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
 
 // LEGAL ACCEPTANCE VALIDATION SCHEMAS - CRITICAL FOR COMPLIANCE
 export const legalAcceptanceSchema = z.object({
