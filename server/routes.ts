@@ -18,6 +18,15 @@ import { paymentTunnel } from "./unified-payment-tunnel";
 import { createPaypalOrder, capturePaypalOrder, loadPaypalDefault } from "./paypal";
 import { getAfricanPaymentMethods, initializeAfricanPayment, handleAfricanPaymentCallback } from "./african-payments";
 import { 
+  registerYaadFlexPay, 
+  sendMoneyYaadFlexPay, 
+  payMerchantYaadFlexPay, 
+  depositYaadFlexPay, 
+  withdrawYaadFlexPay, 
+  balanceYaadFlexPay, 
+  statementYaadFlexPay 
+} from "./yaadflex-pay";
+import { 
   demoWallets, 
   demoTransactions, 
   demoOrders, 
@@ -400,6 +409,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/african-payments/callback/:provider", async (req, res) => {
     await handleAfricanPaymentCallback(req, res);
+  });
+
+  // YaadFlex Pay - Custom Caribbean Mobile Money System
+  app.post("/api/yaadflex-pay/register", async (req, res) => {
+    await registerYaadFlexPay(req, res);
+  });
+
+  app.post("/api/yaadflex-pay/send-money", async (req, res) => {
+    await sendMoneyYaadFlexPay(req, res);
+  });
+
+  app.post("/api/yaadflex-pay/pay-merchant", async (req, res) => {
+    await payMerchantYaadFlexPay(req, res);
+  });
+
+  app.post("/api/yaadflex-pay/deposit", async (req, res) => {
+    await depositYaadFlexPay(req, res);
+  });
+
+  app.post("/api/yaadflex-pay/withdraw", async (req, res) => {
+    await withdrawYaadFlexPay(req, res);
+  });
+
+  app.post("/api/yaadflex-pay/balance", async (req, res) => {
+    await balanceYaadFlexPay(req, res);
+  });
+
+  app.post("/api/yaadflex-pay/statement", async (req, res) => {
+    await statementYaadFlexPay(req, res);
   });
   
   // Time-locked authentication routes
