@@ -420,6 +420,208 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/yaadflex-pay/balance", async (req, res) => {
     await yaadflexBalance(req, res);
   });
+
+  // =============================================================
+  // YAADFLEX VISA CARD ISSUING ROUTES
+  // Real Visa debit cards for ATM withdrawals and global payments
+  // =============================================================
+
+  // Create cardholder profile (required before issuing cards)
+  app.post("/api/yaadflex-cards/create-cardholder", isAuthenticated, async (req: any, res) => {
+    try {
+      if (!process.env.STRIPE_SECRET_KEY) {
+        return res.status(500).json({ 
+          success: false, 
+          error: "Card issuing not available - Stripe keys required" 
+        });
+      }
+
+      const { initializeCardIssuing } = await import("./yaadflex-card-issuing");
+      const cardService = initializeCardIssuing(process.env.STRIPE_SECRET_KEY);
+
+      const userId = req.user?.claims?.sub;
+      const result = await cardService.createCardholder(userId, req.body);
+      
+      res.json(result);
+    } catch (error: any) {
+      res.status(500).json({ success: false, error: error.message });
+    }
+  });
+
+  // Issue virtual YaadFlex Visa card (instant digital card)
+  app.post("/api/yaadflex-cards/issue-virtual", isAuthenticated, async (req: any, res) => {
+    try {
+      if (!process.env.STRIPE_SECRET_KEY) {
+        return res.status(500).json({ 
+          success: false, 
+          error: "Card issuing not available - Stripe keys required" 
+        });
+      }
+
+      const { getCardIssuingService } = await import("./yaadflex-card-issuing");
+      const cardService = getCardIssuingService();
+
+      const userId = req.user?.claims?.sub;
+      const { cardholderId, currency, spendingLimit } = req.body;
+      
+      const result = await cardService.issueVirtualCard(userId, cardholderId, {
+        currency,
+        spendingLimit
+      });
+      
+      res.json(result);
+    } catch (error: any) {
+      res.status(500).json({ success: false, error: error.message });
+    }
+  });
+
+  // Order physical YaadFlex Visa card (real plastic card for ATMs)
+  app.post("/api/yaadflex-cards/order-physical", isAuthenticated, async (req: any, res) => {
+    try {
+      if (!process.env.STRIPE_SECRET_KEY) {
+        return res.status(500).json({ 
+          success: false, 
+          error: "Card issuing not available - Stripe keys required" 
+        });
+      }
+
+      const { getCardIssuingService } = await import("./yaadflex-card-issuing");
+      const cardService = getCardIssuingService();
+
+      const userId = req.user?.claims?.sub;
+      const { cardholderId, currency, spendingLimit, shippingAddress } = req.body;
+      
+      const result = await cardService.orderPhysicalCard(userId, cardholderId, {
+        currency,
+        spendingLimit,
+        shippingAddress
+      });
+      
+      res.json(result);
+    } catch (error: any) {
+      res.status(500).json({ success: false, error: error.message });
+    }
+  });
+
+  // Get user's YaadFlex cards
+  app.get("/api/yaadflex-cards", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      const cards = await storage.getUserYaadFlexPayCards(userId);
+      res.json({ success: true, cards });
+    } catch (error: any) {
+      res.status(500).json({ success: false, error: error.message });
+    }
+  });
+
+  // Get card details
+  app.get("/api/yaadflex-cards/:cardId", isAuthenticated, async (req: any, res) => {
+    try {
+      if (!process.env.STRIPE_SECRET_KEY) {
+        return res.status(500).json({ 
+          success: false, 
+          error: "Card issuing not available - Stripe keys required" 
+        });
+      }
+
+      const { getCardIssuingService } = await import("./yaadflex-card-issuing");
+      const cardService = getCardIssuingService();
+
+      const cardDetails = await cardService.getCardDetails(req.params.cardId);
+      res.json({ success: true, card: cardDetails });
+    } catch (error: any) {
+      res.status(500).json({ success: false, error: error.message });
+    }
+  });
+
+  // Freeze/unfreeze card
+  app.post("/api/yaadflex-cards/:cardId/toggle", isAuthenticated, async (req: any, res) => {
+    try {
+      if (!process.env.STRIPE_SECRET_KEY) {
+        return res.status(500).json({ 
+          success: false, 
+          error: "Card issuing not available - Stripe keys required" 
+        });
+      }
+
+      const { getCardIssuingService } = await import("./yaadflex-card-issuing");
+      const cardService = getCardIssuingService();
+
+      const { freeze } = req.body;
+      const result = await cardService.toggleCardStatus(req.params.cardId, freeze);
+      
+      res.json(result);
+    } catch (error: any) {
+      res.status(500).json({ success: false, error: error.message });
+    }
+  });
+
+  // Update spending limits
+  app.post("/api/yaadflex-cards/:cardId/spending-limit", isAuthenticated, async (req: any, res) => {
+    try {
+      if (!process.env.STRIPE_SECRET_KEY) {
+        return res.status(500).json({ 
+          success: false, 
+          error: "Card issuing not available - Stripe keys required" 
+        });
+      }
+
+      const { getCardIssuingService } = await import("./yaadflex-card-issuing");
+      const cardService = getCardIssuingService();
+
+      const { monthlyLimit } = req.body;
+      const result = await cardService.updateSpendingLimits(req.params.cardId, monthlyLimit);
+      
+      res.json(result);
+    } catch (error: any) {
+      res.status(500).json({ success: false, error: error.message });
+    }
+  });
+
+  // Get card transactions
+  app.get("/api/yaadflex-cards/:cardId/transactions", isAuthenticated, async (req: any, res) => {
+    try {
+      if (!process.env.STRIPE_SECRET_KEY) {
+        return res.status(500).json({ 
+          success: false, 
+          error: "Card issuing not available - Stripe keys required" 
+        });
+      }
+
+      const { getCardIssuingService } = await import("./yaadflex-card-issuing");
+      const cardService = getCardIssuingService();
+
+      const limit = parseInt(req.query.limit as string) || 50;
+      const transactions = await cardService.getCardTransactions(req.params.cardId, limit);
+      
+      res.json({ success: true, transactions });
+    } catch (error: any) {
+      res.status(500).json({ success: false, error: error.message });
+    }
+  });
+
+  // Fund card from YaadFlex wallet
+  app.post("/api/yaadflex-cards/fund", isAuthenticated, async (req: any, res) => {
+    try {
+      if (!process.env.STRIPE_SECRET_KEY) {
+        return res.status(500).json({ 
+          success: false, 
+          error: "Card issuing not available - Stripe keys required" 
+        });
+      }
+
+      const { getCardIssuingService } = await import("./yaadflex-card-issuing");
+      const cardService = getCardIssuingService();
+
+      const userId = req.user?.claims?.sub;
+      const { amount, currency } = req.body;
+      
+      const result = await cardService.fundCardFromWallet(userId, amount, currency);
+      res.json(result);
+    } catch (error: any) {
+      res.status(500).json({ success: false, error: error.message });
+    }
+  });
   
   // Time-locked authentication routes
   app.use(timeAuthRoutes);

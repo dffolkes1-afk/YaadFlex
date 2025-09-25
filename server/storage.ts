@@ -2027,6 +2027,73 @@ class DemoStorage implements IStorage {
     // Mock approval processing - no actual action needed in demo mode
     console.log(`Demo mode: Processed approval ${taskId} with action ${action} by user ${userId}`);
   }
+
+  // YaadFlex Pay Card Methods - Demo implementations
+  async createYaadFlexPayCard(cardData: any): Promise<any> {
+    return {
+      id: `card_${Date.now()}`,
+      userId: cardData.userId,
+      stripeCardId: cardData.stripeCardId || `card_stripe_${Date.now()}`,
+      cardType: cardData.cardType || 'virtual',
+      last4: cardData.last4 || '1234',
+      brand: cardData.brand || 'visa',
+      currency: cardData.currency || 'USD',
+      isActive: cardData.isActive ?? true,
+      isBlocked: cardData.isBlocked ?? false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+  }
+
+  async getUserYaadFlexPayCards(userId: string): Promise<any[]> {
+    return [
+      {
+        id: '1',
+        userId,
+        stripeCardId: 'card_demo_virtual',
+        cardType: 'virtual',
+        last4: '4242',
+        brand: 'visa',
+        currency: 'USD',
+        isActive: true,
+        isBlocked: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ];
+  }
+
+  async getYaadFlexPayCard(id: string): Promise<any | undefined> {
+    return {
+      id,
+      userId: 'demo_user',
+      stripeCardId: 'card_demo',
+      cardType: 'virtual',
+      last4: '4242',
+      brand: 'visa',
+      currency: 'USD',
+      isActive: true,
+      isBlocked: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+  }
+
+  async updateYaadFlexPayCardStatus(id: string, isActive: boolean, isBlocked?: boolean): Promise<any> {
+    return {
+      id,
+      userId: 'demo_user',
+      stripeCardId: 'card_demo',
+      cardType: 'virtual',
+      last4: '4242',
+      brand: 'visa',
+      currency: 'USD',
+      isActive,
+      isBlocked: isBlocked ?? false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+  }
 }
 
 export const storage = new DemoStorage();
