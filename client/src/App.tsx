@@ -86,6 +86,7 @@ import ContactMagic from "@/pages/ContactMagic";
 import WorldTakeover from "@/pages/WorldTakeover";
 import YaadParty from "@/pages/YaadParty";
 import GlamourShowcase from "@/pages/glamour-showcase";
+import YaadFlexGothicConcept from "@/pages/YaadFlexGothicConcept";
 import VoiceControl from "@/components/VoiceControl";
 import LiveStatusIndicator from "@/components/LiveStatusIndicator";
 import DashboardButton from "@/components/DashboardButton";
@@ -231,6 +232,12 @@ function Router() {
       <Route path="/glamour-showcase" component={GlamourShowcase} />
       <Route path="/design-system" component={GlamourShowcase} />
       <Route path="/luxury-demo" component={GlamourShowcase} />
+      
+      {/* YaadFlex Gothic Concept Document */}
+      <Route path="/yaadflex-gothic" component={YaadFlexGothicConcept} />
+      <Route path="/blackrock-gothic" component={YaadFlexGothicConcept} />
+      <Route path="/gothic-concept" component={YaadFlexGothicConcept} />
+      <Route path="/concept-doc" component={YaadFlexGothicConcept} />
       
       {/* Hidden Founder Profile - Private */}
       <Route path="/founder-vision-2024" component={FounderProfile} />

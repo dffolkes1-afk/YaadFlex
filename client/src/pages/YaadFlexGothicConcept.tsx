@@ -10,7 +10,7 @@ export default function YaadFlexGothicConcept() {
   return (
     <div className="min-h-screen bg-slate-900 print:bg-white">
       {/* Print Styles */}
-      <style jsx global>{`
+      <style>{`
         @media print {
           @page {
             margin: 0.5in;
