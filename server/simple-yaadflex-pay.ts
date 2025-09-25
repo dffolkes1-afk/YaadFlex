@@ -556,7 +556,8 @@ export async function yaadflexSendToATM(req: Request, res: Response) {
     const result = await service.sendToATM(senderPhone, recipientPhone, amount, pin, senderPhoto);
     res.json(result);
   } catch (error) {
-    res.status(500).json({ success: false, error: 'ATM send failed' });
+    console.error('🚨 ATM send error:', error);
+    res.status(500).json({ success: false, error: 'ATM send failed', details: error instanceof Error ? error.message : String(error) });
   }
 }
 
