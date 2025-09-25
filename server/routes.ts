@@ -114,6 +114,13 @@ import {
   insertPaymentJobSchema,
   // Fare Rules Insert Schemas
   insertFareRuleSchema,
+  // YaadFlex Luxury Clothing Line Schemas
+  insertYaadFlexCategorySchema,
+  insertYaadFlexProductSchema,
+  insertYaadFlexOrderSchema,
+  insertYaadFlexOrderItemSchema,
+  insertYaadFlexProductReviewSchema,
+  insertYaadFlexSupplierSchema,
 } from "@shared/schema";
 import { z } from "zod";
 import { desc, eq, and, sql, lte, gte, or } from "drizzle-orm";
@@ -6096,6 +6103,156 @@ P.S. - Early business partners get exclusive territory rights and preferred part
     };
     
     res.json(channelStreams[channelId] || []);
+  });
+
+  // ============================================================
+  // YAADFLEX LUXURY CLOTHING LINE API ENDPOINTS
+  // ============================================================
+
+  // Product Categories
+  app.get('/api/yaadflex/categories', async (req, res) => {
+    try {
+      const categories = await storage.getYaadFlexCategories();
+      res.json(categories);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      res.status(500).json({ message: 'Failed to fetch categories' });
+    }
+  });
+
+  app.post('/api/yaadflex/categories', isAuthenticated, async (req, res) => {
+    try {
+      const categoryData = insertYaadFlexCategorySchema.parse(req.body);
+      const category = await storage.createYaadFlexCategory(categoryData);
+      res.status(201).json(category);
+    } catch (error) {
+      console.error('Error creating category:', error);
+      res.status(500).json({ message: 'Failed to create category' });
+    }
+  });
+
+  // Products
+  app.get('/api/yaadflex/products', async (req, res) => {
+    try {
+      const { category, featured } = req.query;
+      
+      let products;
+      if (category) {
+        products = await storage.getYaadFlexProductsByCategory(category as string);
+      } else if (featured === 'true') {
+        products = await storage.getFeaturedYaadFlexProducts();
+      } else {
+        products = await storage.getYaadFlexProducts();
+      }
+      
+      res.json(products);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      res.status(500).json({ message: 'Failed to fetch products' });
+    }
+  });
+
+  app.get('/api/yaadflex/products/:id', async (req, res) => {
+    try {
+      const product = await storage.getYaadFlexProduct(req.params.id);
+      if (!product) {
+        return res.status(404).json({ message: 'Product not found' });
+      }
+      res.json(product);
+    } catch (error) {
+      console.error('Error fetching product:', error);
+      res.status(500).json({ message: 'Failed to fetch product' });
+    }
+  });
+
+  app.post('/api/yaadflex/products', isAuthenticated, async (req, res) => {
+    try {
+      const productData = insertYaadFlexProductSchema.parse(req.body);
+      const product = await storage.createYaadFlexProduct(productData);
+      res.status(201).json(product);
+    } catch (error) {
+      console.error('Error creating product:', error);
+      res.status(500).json({ message: 'Failed to create product' });
+    }
+  });
+
+  // Orders
+  app.get('/api/yaadflex/orders', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      if (!userId) {
+        return res.status(401).json({ message: 'User not authenticated' });
+      }
+      const orders = await storage.getUserYaadFlexOrders(userId);
+      res.json(orders);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+      res.status(500).json({ message: 'Failed to fetch orders' });
+    }
+  });
+
+  app.post('/api/yaadflex/orders', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      if (!userId) {
+        return res.status(401).json({ message: 'User not authenticated' });
+      }
+
+      const orderData = insertYaadFlexOrderSchema.parse({
+        ...req.body,
+        customerId: userId,
+        orderNumber: `YF-${Date.now()}`,
+      });
+
+      const order = await storage.createYaadFlexOrder(orderData);
+      
+      // Create order items if provided
+      if (req.body.items && Array.isArray(req.body.items)) {
+        for (const itemData of req.body.items) {
+          const orderItemData = insertYaadFlexOrderItemSchema.parse({
+            ...itemData,
+            orderId: order.id,
+          });
+          await storage.createYaadFlexOrderItem(orderItemData);
+        }
+      }
+
+      res.status(201).json(order);
+    } catch (error) {
+      console.error('Error creating order:', error);
+      res.status(500).json({ message: 'Failed to create order' });
+    }
+  });
+
+  // Product Reviews
+  app.get('/api/yaadflex/products/:productId/reviews', async (req, res) => {
+    try {
+      const reviews = await storage.getYaadFlexProductReviews(req.params.productId);
+      res.json(reviews);
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+      res.status(500).json({ message: 'Failed to fetch reviews' });
+    }
+  });
+
+  app.post('/api/yaadflex/reviews', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      if (!userId) {
+        return res.status(401).json({ message: 'User not authenticated' });
+      }
+
+      const reviewData = insertYaadFlexProductReviewSchema.parse({
+        ...req.body,
+        customerId: userId,
+      });
+
+      const review = await storage.createYaadFlexProductReview(reviewData);
+      res.status(201).json(review);
+    } catch (error) {
+      console.error('Error creating review:', error);
+      res.status(500).json({ message: 'Failed to create review' });
+    }
   });
 
   // Initialize observability system

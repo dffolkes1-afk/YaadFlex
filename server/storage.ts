@@ -78,6 +78,25 @@ import {
   type InsertChatParticipant,
   type TranslationReport,
   type InsertTranslationReport,
+  // YaadFlex Clothing Line imports
+  yaadflexCategories,
+  yaadflexProducts,
+  yaadflexSuppliers,
+  yaadflexOrders,
+  yaadflexOrderItems,
+  yaadflexProductReviews,
+  type YaadFlexCategory,
+  type InsertYaadFlexCategory,
+  type YaadFlexProduct,
+  type InsertYaadFlexProduct,
+  type YaadFlexSupplier,
+  type InsertYaadFlexSupplier,
+  type YaadFlexOrder,
+  type InsertYaadFlexOrder,
+  type YaadFlexOrderItem,
+  type InsertYaadFlexOrderItem,
+  type YaadFlexProductReview,
+  type InsertYaadFlexProductReview,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql } from "drizzle-orm";
@@ -205,6 +224,49 @@ export interface IStorage {
     captionVoiceMessages?: boolean;
     autoTranslateEnabled?: boolean;
   }): Promise<User>;
+
+  // =============================================================
+  // YAADFLEX LUXURY CLOTHING LINE OPERATIONS
+  // =============================================================
+  
+  // Category operations
+  createYaadFlexCategory(category: InsertYaadFlexCategory): Promise<YaadFlexCategory>;
+  getYaadFlexCategories(): Promise<YaadFlexCategory[]>;
+  getYaadFlexCategory(id: string): Promise<YaadFlexCategory | undefined>;
+  updateYaadFlexCategory(id: string, updates: Partial<InsertYaadFlexCategory>): Promise<YaadFlexCategory>;
+  
+  // Product operations
+  createYaadFlexProduct(product: InsertYaadFlexProduct): Promise<YaadFlexProduct>;
+  getYaadFlexProducts(): Promise<YaadFlexProduct[]>;
+  getYaadFlexProductsByCategory(categoryId: string): Promise<YaadFlexProduct[]>;
+  getFeaturedYaadFlexProducts(): Promise<YaadFlexProduct[]>;
+  getYaadFlexProduct(id: string): Promise<YaadFlexProduct | undefined>;
+  updateYaadFlexProduct(id: string, updates: Partial<InsertYaadFlexProduct>): Promise<YaadFlexProduct>;
+  updateYaadFlexProductStock(id: string, quantity: number): Promise<YaadFlexProduct>;
+  
+  // Supplier operations
+  createYaadFlexSupplier(supplier: InsertYaadFlexSupplier): Promise<YaadFlexSupplier>;
+  getYaadFlexSuppliers(): Promise<YaadFlexSupplier[]>;
+  getYaadFlexSupplier(id: string): Promise<YaadFlexSupplier | undefined>;
+  updateYaadFlexSupplier(id: string, updates: Partial<InsertYaadFlexSupplier>): Promise<YaadFlexSupplier>;
+  
+  // Order operations
+  createYaadFlexOrder(order: InsertYaadFlexOrder): Promise<YaadFlexOrder>;
+  getUserYaadFlexOrders(customerId: string): Promise<YaadFlexOrder[]>;
+  getAllYaadFlexOrders(): Promise<YaadFlexOrder[]>;
+  getYaadFlexOrder(id: string): Promise<YaadFlexOrder | undefined>;
+  updateYaadFlexOrderStatus(id: string, status: string): Promise<YaadFlexOrder>;
+  
+  // Order item operations
+  createYaadFlexOrderItem(item: InsertYaadFlexOrderItem): Promise<YaadFlexOrderItem>;
+  getYaadFlexOrderItems(orderId: string): Promise<YaadFlexOrderItem[]>;
+  updateYaadFlexOrderItemStatus(id: string, status: string): Promise<YaadFlexOrderItem>;
+  
+  // Review operations
+  createYaadFlexProductReview(review: InsertYaadFlexProductReview): Promise<YaadFlexProductReview>;
+  getYaadFlexProductReviews(productId: string): Promise<YaadFlexProductReview[]>;
+  getUserYaadFlexReviews(customerId: string): Promise<YaadFlexProductReview[]>;
+  updateYaadFlexReviewVisibility(id: string, isVisible: boolean): Promise<YaadFlexProductReview>;
 }
 
 export class DatabaseStorage implements IStorage {
