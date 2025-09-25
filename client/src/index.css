@@ -7,45 +7,47 @@
 :root {
   /* ✨ LUXURY GLAMOUR DESIGN SYSTEM ✨ */
   
-  /* 💼 PROFESSIONAL COLOR PALETTE */
-  /* Neutral Collection */
-  --emerald-50: hsl(0, 0%, 98%);
-  --emerald-100: hsl(0, 0%, 96%);
-  --emerald-200: hsl(0, 0%, 94%);
-  --emerald-300: hsl(0, 0%, 85%);
-  --emerald-400: hsl(0, 0%, 64%);
-  --emerald-500: hsl(0, 0%, 45%);
-  --emerald-600: hsl(0, 0%, 32%);
-  --emerald-700: hsl(0, 0%, 25%);
-  --emerald-800: hsl(0, 0%, 15%);
-  --emerald-900: hsl(0, 0%, 9%);
-  --emerald-950: hsl(0, 0%, 4%);
+  /* 💎 LUXURY EMERALD COLLECTION */
+  /* Vibrant Emerald for YaadFlex Luxury Branding */
+  --emerald-50: hsl(152, 64%, 95%);
+  --emerald-100: hsl(152, 64%, 88%);
+  --emerald-200: hsl(152, 64%, 75%);
+  --emerald-300: hsl(152, 64%, 62%);
+  --emerald-400: hsl(152, 64%, 48%);
+  --emerald-500: hsl(152, 64%, 40%);
+  --emerald-600: hsl(152, 64%, 32%);
+  --emerald-700: hsl(152, 64%, 25%);
+  --emerald-800: hsl(152, 64%, 18%);
+  --emerald-900: hsl(152, 64%, 12%);
+  --emerald-950: hsl(152, 64%, 8%);
 
-  /* Professional Accent Collection */
-  --gold-50: hsl(210, 20%, 98%);
-  --gold-100: hsl(210, 20%, 96%);
-  --gold-200: hsl(210, 16%, 93%);
-  --gold-300: hsl(213, 13%, 87%);
-  --gold-400: hsl(215, 12%, 70%);
-  --gold-500: hsl(215, 16%, 47%);
-  --gold-600: hsl(215, 19%, 35%);
-  --gold-700: hsl(215, 25%, 27%);
-  --gold-800: hsl(217, 33%, 17%);
-  --gold-900: hsl(222, 47%, 11%);
-  --gold-950: hsl(222, 84%, 5%);
+  /* 🏆 LUXURY GOLD COLLECTION */
+  /* Rich Gold for Premium YaadFlex Effects */
+  --gold-50: hsl(44, 90%, 95%);
+  --gold-100: hsl(44, 90%, 88%);
+  --gold-200: hsl(44, 90%, 75%);
+  --gold-300: hsl(44, 90%, 62%);
+  --gold-400: hsl(44, 90%, 55%);
+  --gold-500: hsl(44, 90%, 50%);
+  --gold-600: hsl(44, 90%, 42%);
+  --gold-700: hsl(44, 90%, 35%);
+  --gold-800: hsl(44, 90%, 28%);
+  --gold-900: hsl(44, 90%, 22%);
+  --gold-950: hsl(44, 90%, 15%);
 
-  /* Subtle Blue Accent Collection */
-  --rose-50: hsl(210, 40%, 98%);
-  --rose-100: hsl(210, 40%, 96%);
-  --rose-200: hsl(214, 32%, 91%);
-  --rose-300: hsl(213, 27%, 84%);
-  --rose-400: hsl(215, 20%, 65%);
-  --rose-500: hsl(215, 16%, 47%);
-  --rose-600: hsl(215, 19%, 35%);
-  --rose-700: hsl(215, 25%, 27%);
-  --rose-800: hsl(217, 33%, 17%);
-  --rose-900: hsl(222, 47%, 11%);
-  --rose-950: hsl(222, 84%, 5%);
+  /* 🌹 LUXURY ROSE COLLECTION */
+  /* Elegant Rose for YaadFlex Sophistication */
+  --rose-50: hsl(335, 82%, 95%);
+  --rose-100: hsl(335, 82%, 88%);
+  --rose-200: hsl(335, 82%, 75%);
+  --rose-300: hsl(335, 82%, 62%);
+  --rose-400: hsl(335, 82%, 55%);
+  --rose-500: hsl(335, 82%, 48%);
+  --rose-600: hsl(335, 82%, 40%);
+  --rose-700: hsl(335, 82%, 32%);
+  --rose-800: hsl(335, 82%, 25%);
+  --rose-900: hsl(335, 82%, 18%);
+  --rose-950: hsl(335, 82%, 12%);
 
   /* Dark Professional Collection */
   --orange-50: hsl(0, 0%, 98%);
@@ -102,12 +104,12 @@
   --chart-4: var(--orange-500);
   --chart-5: var(--neutral-400);
 
-  /* ✨ PROFESSIONAL ACCENTS */
-  --glow-emerald: hsla(0, 0%, 45%, 0.3);
-  --glow-gold: hsla(215, 16%, 47%, 0.3);
-  --glow-rose: hsla(215, 16%, 47%, 0.3);
-  --glow-orange: hsla(0, 0%, 45%, 0.3);
-  --glow-white: hsla(0, 0%, 100%, 0.2);
+  /* ✨ LUXURY GLOW EFFECTS */
+  --glow-emerald: hsla(152, 64%, 40%, 0.5);
+  --glow-gold: hsla(44, 90%, 50%, 0.5);
+  --glow-rose: hsla(335, 82%, 48%, 0.5);
+  --glow-orange: hsla(23, 92%, 55%, 0.5);
+  --glow-white: hsla(0, 0%, 100%, 0.3);
 
   /* 💫 TYPOGRAPHY - Luxury Fonts */
   --font-display: 'Playfair Display', Georgia, serif;
@@ -167,12 +169,12 @@
   --input: hsl(0, 0%, 98%);
   --ring: hsl(220, 100%, 50%);
 
-  /* Professional Accents */
-  --glow-emerald: hsla(0, 0%, 45%, 0.3);
-  --glow-gold: hsla(215, 16%, 47%, 0.3);
-  --glow-rose: hsla(215, 16%, 47%, 0.3);
-  --glow-orange: hsla(0, 0%, 45%, 0.3);
-  --glow-white: hsla(0, 0%, 100%, 0.2);
+  /* ✨ LUXURY GLOW EFFECTS */
+  --glow-emerald: hsla(152, 64%, 40%, 0.5);
+  --glow-gold: hsla(44, 90%, 50%, 0.5);
+  --glow-rose: hsla(335, 82%, 48%, 0.5);
+  --glow-orange: hsla(23, 92%, 55%, 0.5);
+  --glow-white: hsla(0, 0%, 100%, 0.3);
 }
 
 /* ==================== ✨ LUXURY COMPONENT SYSTEM ✨ ==================== */
@@ -528,7 +530,11 @@ body::before {
   font-family: var(--font-display);
   font-weight: 900;
   font-size: 6rem;
-  color: rgba(0, 0, 0, 0.02);
+  background: linear-gradient(135deg, var(--emerald-400), var(--gold-400));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: rgba(152, 64, 40, 0.08);
   word-spacing: 4rem;
   line-height: 8rem;
   transform: rotate(-15deg);
@@ -536,6 +542,7 @@ body::before {
   z-index: -1;
   overflow: hidden;
   white-space: pre-wrap;
+  filter: drop-shadow(0 0 20px var(--glow-emerald));
 }
 
 body::after {
@@ -548,7 +555,11 @@ body::after {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 2rem;
-  color: rgba(59, 130, 246, 0.05);
+  background: linear-gradient(135deg, var(--gold-400), var(--rose-400));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: rgba(44, 90, 50, 0.12);
   word-spacing: 2rem;
   line-height: 4rem;
   transform: rotate(45deg) translateX(50%);
@@ -557,6 +568,7 @@ body::after {
   overflow: hidden;
   white-space: pre-wrap;
   animation: slide-watermark 20s linear infinite;
+  filter: drop-shadow(0 0 15px var(--glow-gold));
 }
 
 @keyframes slide-watermark {
