@@ -344,22 +344,31 @@ export class SimpleYaadFlexPay {
     }
 
     // SIMPLE 2-STEP VERIFICATION - Customer-Friendly
-    if (transaction.verificationRequired && !transaction.isVerified) {
-      // Start 2-step verification process
-      const verificationResult = simpleVerification.startVerification(
-        transaction.id,
-        this.formatPhone(recipientPhone),
-        transaction.amount
-      );
+    if (transaction.verificationRequired) {
+      // Check if 2-step verification is already complete
+      const isVerified = simpleVerification.isVerificationComplete(transaction.id);
+      
+      if (!isVerified) {
+        // Start 2-step verification process
+        const verificationResult = simpleVerification.startVerification(
+          transaction.id,
+          this.formatPhone(recipientPhone),
+          transaction.amount
+        );
 
-      return {
-        success: false,
-        error: 'Verification required. Please complete 2-step verification.',
-        errorCode: 'VERIFICATION_REQUIRED',
-        verificationSteps: verificationResult.steps,
-        message: verificationResult.message,
-        nextStep: 'PIN_VERIFICATION'
-      };
+        return {
+          success: false,
+          error: 'Verification required. Please complete 2-step verification.',
+          errorCode: 'VERIFICATION_REQUIRED',
+          verificationSteps: verificationResult.steps,
+          message: verificationResult.message,
+          nextStep: 'PIN_VERIFICATION'
+        };
+      }
+      
+      // Verification is complete - mark transaction as verified
+      transaction.isVerified = true;
+      console.log(`🔓 2-Step verification confirmed for transaction ${transaction.id} - proceeding with ATM collection`);
     }
 
     if (transaction.status !== 'PENDING') {

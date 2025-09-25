@@ -20,6 +20,8 @@ export interface TransactionVerification {
   smsCodeExpiry?: Date;
   isComplete: boolean;
   startTime: Date;
+  completionTime?: Date;
+  graceExpiry?: Date; // Keep completed verifications for 10 minutes
 }
 
 // Global storage for verification sessions
@@ -178,11 +180,13 @@ export class YaadFlexSimpleVerification {
     if (smsCode === verification.smsCode) {
       smsStep.status = 'VERIFIED';
       verification.isComplete = true;
+      verification.completionTime = new Date();
+      verification.graceExpiry = new Date(Date.now() + 10 * 60 * 1000); // Keep for 10 minutes
 
       console.log(`✅ 2-Step verification complete for ${verification.phone} - ATM collection approved`);
 
-      // Clean up verification session
-      activeVerifications.delete(transactionId);
+      // Don't delete immediately - keep for 10 minutes grace period
+      // activeVerifications.delete(transactionId);
 
       return {
         success: true,
@@ -212,6 +216,44 @@ export class YaadFlexSimpleVerification {
   }
 
   /**
+   * Check if verification is complete (for ATM collection)
+   */
+  public isVerificationComplete(transactionId: string): boolean {
+    this.cleanupExpiredVerifications();
+    
+    const verification = activeVerifications.get(transactionId);
+    if (!verification) {
+      return false;
+    }
+
+    // Check if verification is complete and still within grace period
+    if (verification.isComplete && verification.graceExpiry) {
+      return new Date() <= verification.graceExpiry;
+    }
+
+    return verification.isComplete;
+  }
+
+  /**
+   * Clean up expired completed verifications
+   */
+  private cleanupExpiredVerifications(): void {
+    const now = new Date();
+    for (const [transactionId, verification] of activeVerifications.entries()) {
+      // Remove expired completed verifications
+      if (verification.isComplete && verification.graceExpiry && now > verification.graceExpiry) {
+        activeVerifications.delete(transactionId);
+        console.log(`🧹 Cleaned up expired verification for transaction ${transactionId}`);
+      }
+      // Remove expired SMS codes for pending verifications
+      else if (!verification.isComplete && verification.smsCodeExpiry && now > verification.smsCodeExpiry) {
+        activeVerifications.delete(transactionId);
+        console.log(`🧹 Cleaned up expired SMS verification for transaction ${transactionId}`);
+      }
+    }
+  }
+
+  /**
    * Check verification status
    */
   public getVerificationStatus(transactionId: string): {
@@ -219,6 +261,8 @@ export class YaadFlexSimpleVerification {
     status?: TransactionVerification;
     currentStep?: string;
   } {
+    this.cleanupExpiredVerifications();
+    
     const verification = activeVerifications.get(transactionId);
     if (!verification) {
       return { found: false };
