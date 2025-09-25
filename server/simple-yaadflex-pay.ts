@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { rsaVerification, RSAVerification } from './rsa-verification.js';
+import { simpleVerification } from './simple-verification.js';
 
 // PURE YaadFlex Pay - Your Own Mobile Money System
 // Works exactly like M-Pesa but 100% YaadFlex branded
@@ -30,13 +30,12 @@ interface YaadFlexTransaction {
   collectionCodeExpiry?: Date;
   senderPhoto?: string;
   recipientPhone?: string;
-  verificationRequired?: boolean;
   atmLocationId?: string;
   collectedAt?: Date;
-  // RSA Verification Fields
-  rsaVerification?: RSAVerification;
-  securityHash?: string;
-  isRSAVerified?: boolean;
+  // Simple 2-Step Verification Fields
+  verificationRequired?: boolean;
+  verificationSteps?: string[];
+  isVerified?: boolean;
 }
 
 // YaadFlex Pay Fee Structure & Limits (Matching African Mobile Money Standards)
@@ -285,13 +284,7 @@ export class SimpleYaadFlexPay {
 
     const fee = this.calculateSendFee(amount);
     const transactionId = `YF${Date.now()}`;
-    
-    // Generate secure ATM collection code with RSA verification
-    const secureATM = rsaVerification.generateSecureATMCode(
-      transactionId,
-      amount,
-      this.formatPhone(recipientPhone)
-    );
+    const collectionCode = this.generateCollectionCode();
     
     const expiryDate = new Date();
     expiryDate.setHours(expiryDate.getHours() + 24); // 24-hour expiry
@@ -307,30 +300,30 @@ export class SimpleYaadFlexPay {
       description: `Send J$${amount} for ATM cash collection`,
       timestamp: new Date(),
       // ATM Collection Fields
-      collectionCode: secureATM.collectionCode,
+      collectionCode,
       collectionCodeExpiry: expiryDate,
       senderPhoto: senderPhoto || undefined,
       recipientPhone: this.formatPhone(recipientPhone),
-      verificationRequired: !!senderPhoto,
-      // RSA Security Features
-      rsaVerification: secureATM.rsaVerification,
-      securityHash: secureATM.securityHash,
-      isRSAVerified: true
+      // Simple 2-Step Verification (Customer-Friendly)
+      verificationRequired: true,
+      verificationSteps: ['Enter PIN', 'Confirm SMS code'],
+      isVerified: false
     };
 
     // Store for collection
-    this.atmCollections.set(secureATM.collectionCode, transaction);
+    this.atmCollections.set(collectionCode, transaction);
 
-    console.log(`🏧 YaadFlex ATM Send: ${senderPhone} → ATM collection code ${secureATM.collectionCode} for ${recipientPhone}`);
+    console.log(`🏧 YaadFlex ATM Send: ${senderPhone} → ATM collection code ${collectionCode} for ${recipientPhone}`);
 
     return {
       success: true,
       transaction,
-      collectionCode: secureATM.collectionCode,
+      collectionCode,
       expiryTime: expiryDate,
-      message: `J$${amount} sent for ATM collection. Share code ${secureATM.collectionCode} with recipient.`,
-      smsMessage: `YaadFlex: You have J$${amount} to collect at any ATM. Code: ${secureATM.collectionCode}. Expires: ${expiryDate.toLocaleString()}`,
+      message: `J$${amount} sent for ATM collection. Share code ${collectionCode} with recipient.`,
+      smsMessage: `YaadFlex: You have J$${amount} to collect at any ATM. Code: ${collectionCode}. Expires: ${expiryDate.toLocaleString()}`,
       photoRequired: !!senderPhoto,
+      verificationSteps: ['Enter your PIN', 'Confirm SMS code'],
       receipt: `YF${Date.now().toString().slice(-8)}`
     };
   }
@@ -350,24 +343,23 @@ export class SimpleYaadFlexPay {
       };
     }
 
-    // RSA VERIFICATION - Critical Security Check
-    if (transaction.rsaVerification && transaction.securityHash && transaction.isRSAVerified) {
-      const rsaResult = rsaVerification.verifyATMCollection(
-        collectionCode,
-        transaction,
-        transaction.rsaVerification,
-        transaction.securityHash
+    // SIMPLE 2-STEP VERIFICATION - Customer-Friendly
+    if (transaction.verificationRequired && !transaction.isVerified) {
+      // Start 2-step verification process
+      const verificationResult = simpleVerification.startVerification(
+        transaction.id,
+        this.formatPhone(recipientPhone),
+        transaction.amount
       );
 
-      if (!rsaResult.isValid) {
-        return {
-          success: false,
-          error: 'RSA verification failed. Transaction security compromised.',
-          errorCode: 'RSA_VERIFICATION_FAILED'
-        };
-      }
-
-      console.log(`🔐 RSA verification passed for ATM collection ${collectionCode}`);
+      return {
+        success: false,
+        error: 'Verification required. Please complete 2-step verification.',
+        errorCode: 'VERIFICATION_REQUIRED',
+        verificationSteps: verificationResult.steps,
+        message: verificationResult.message,
+        nextStep: 'PIN_VERIFICATION'
+      };
     }
 
     if (transaction.status !== 'PENDING') {
@@ -582,6 +574,41 @@ export async function yaadflexCheckATMCollections(req: Request, res: Response) {
     res.json(result);
   } catch (error) {
     res.status(500).json({ success: false, error: 'ATM check failed' });
+  }
+}
+
+// Simple 2-Step Verification API Routes (Customer-Friendly)
+
+export async function yaadflexVerifyPIN(req: Request, res: Response) {
+  try {
+    const { transactionId, pin } = req.body;
+    
+    const result = simpleVerification.verifyPIN(transactionId, pin);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'PIN verification failed' });
+  }
+}
+
+export async function yaadflexVerifySMS(req: Request, res: Response) {
+  try {
+    const { transactionId, smsCode } = req.body;
+    
+    const result = simpleVerification.verifySMS(transactionId, smsCode);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'SMS verification failed' });
+  }
+}
+
+export async function yaadflexVerificationStatus(req: Request, res: Response) {
+  try {
+    const { transactionId } = req.body;
+    
+    const result = simpleVerification.getVerificationStatus(transactionId);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Verification status check failed' });
   }
 }
 

@@ -93,8 +93,8 @@ export class YaadFlexRSAVerification {
         timestamp: transactionData.timestamp
       });
 
-      // Verify RSA digital signature using the correct method  
-      const isValid = this.rsaKey.verify(dataToVerify, verification.signature, 'utf8', 'base64');
+      // Verify RSA digital signature
+      const isValid = this.rsaKey.verify(dataToVerify, verification.signature, 'base64');
 
       const result: VerificationResult = {
         isValid,
