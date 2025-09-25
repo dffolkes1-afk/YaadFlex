@@ -59,9 +59,15 @@ export class SimpleYaadFlexPay {
 
     return {
       success: true,
-      message: `Welcome to YaadFlex Pay! Your number ${formattedPhone} is now registered.`,
+      message: `Welcome to YaadFlex Pay! Your account is linked to ${preferredBank === 'JN_BANK' ? 'JN Bank' : 'VM Bank'}`,
       accountNumber: `YF${phone.slice(-7)}`,
-      bankBackend: preferredBank === 'JN_BANK' ? 'JN Bank' : 'VM Bank'
+      user: {
+        phone: formattedPhone,
+        balance: 0,
+        currency: 'JMD',
+        preferredBank,
+        pin: this.hashPin(pin)
+      }
     };
   }
 
@@ -89,7 +95,7 @@ export class SimpleYaadFlexPay {
     return {
       success: true,
       transaction,
-      message: `You have sent J$${amount} to ${toPhone}. Transaction fee J$${fee}. Your new balance is J$0.`,
+      message: `You have sent J$${amount} to ${this.formatPhone(toPhone)}. Transaction fee J$${fee}.`,
       receipt: `YF${Date.now().toString().slice(-8)}`
     };
   }
@@ -178,25 +184,19 @@ export class SimpleYaadFlexPay {
    * Check YaadFlex Pay balance (like M-Pesa balance inquiry)
    */
   async checkBalance(phone: string, pin: string) {
-    // Mock balance for demo
-    const mockBalance = 15750;
-
-    const transaction: YaadFlexTransaction = {
-      id: `YF${Date.now()}`,
-      type: 'BALANCE_CHECK',
-      fromPhone: this.formatPhone(phone),
-      amount: 0,
-      fee: 0,
-      status: 'SUCCESS',
-      description: 'Balance inquiry',
-      timestamp: new Date()
-    };
+    // Mock balances for demo
+    const mockBalanceJMD = 15000;
+    const mockBalanceUSD = 95;
 
     return {
       success: true,
       phone: this.formatPhone(phone),
-      balance: mockBalance,
-      message: `Your YaadFlex Pay balance is J$${mockBalance.toLocaleString()}.`
+      balances: {
+        JMD: mockBalanceJMD,
+        USD: mockBalanceUSD
+      },
+      message: `Your YaadFlex Pay balance: J$${mockBalanceJMD.toLocaleString()} | US$${mockBalanceUSD}`,
+      lastTransaction: new Date()
     };
   }
 
