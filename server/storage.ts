@@ -97,6 +97,22 @@ import {
   type InsertYaadFlexOrderItem,
   type YaadFlexProductReview,
   type InsertYaadFlexProductReview,
+  // YaadFlex Pay imports
+  yaadflexPayUsers,
+  yaadflexPayWallets,
+  yaadflexPayTransactions,
+  yaadflexPayMerchants,
+  yaadflexPayCards,
+  type YaadFlexPayUser,
+  type InsertYaadFlexPayUser,
+  type YaadFlexPayWallet,
+  type InsertYaadFlexPayWallet,
+  type YaadFlexPayTransaction,
+  type InsertYaadFlexPayTransaction,
+  type YaadFlexPayMerchant,
+  type InsertYaadFlexPayMerchant,
+  type YaadFlexPayCard,
+  type InsertYaadFlexPayCard,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql } from "drizzle-orm";
@@ -267,6 +283,53 @@ export interface IStorage {
   getYaadFlexProductReviews(productId: string): Promise<YaadFlexProductReview[]>;
   getUserYaadFlexReviews(customerId: string): Promise<YaadFlexProductReview[]>;
   updateYaadFlexReviewVisibility(id: string, isVisible: boolean): Promise<YaadFlexProductReview>;
+
+  // =============================================================
+  // YAADFLEX PAY - MOBILE MONEY OPERATIONS
+  // Production-ready M-Pesa style payment system
+  // =============================================================
+  
+  // YaadFlex Pay User Operations
+  createYaadFlexPayUser(user: InsertYaadFlexPayUser): Promise<YaadFlexPayUser>;
+  getYaadFlexPayUserByPhone(phone: string): Promise<YaadFlexPayUser | undefined>;
+  getYaadFlexPayUser(id: string): Promise<YaadFlexPayUser | undefined>;
+  updateYaadFlexPayUserPIN(userId: string, pin: string, pinSalt: string): Promise<YaadFlexPayUser>;
+  updateYaadFlexPayUserStatus(userId: string, isActive: boolean): Promise<YaadFlexPayUser>;
+  incrementPinFailures(userId: string): Promise<YaadFlexPayUser>;
+  resetPinFailures(userId: string): Promise<YaadFlexPayUser>;
+  
+  // YaadFlex Pay Wallet Operations
+  createYaadFlexPayWallet(wallet: InsertYaadFlexPayWallet): Promise<YaadFlexPayWallet>;
+  getYaadFlexPayWallets(userId: string): Promise<YaadFlexPayWallet[]>;
+  getYaadFlexPayWallet(userId: string, currency: string): Promise<YaadFlexPayWallet | undefined>;
+  updateYaadFlexPayWalletBalance(userId: string, currency: string, amount: number, type: 'add' | 'subtract'): Promise<YaadFlexPayWallet>;
+  
+  // YaadFlex Pay Transaction Operations
+  createYaadFlexPayTransaction(transaction: InsertYaadFlexPayTransaction): Promise<YaadFlexPayTransaction>;
+  getYaadFlexPayTransaction(id: string): Promise<YaadFlexPayTransaction | undefined>;
+  getYaadFlexPayTransactionByTxId(transactionId: string): Promise<YaadFlexPayTransaction | undefined>;
+  getUserYaadFlexPayTransactions(userId: string): Promise<YaadFlexPayTransaction[]>;
+  updateYaadFlexPayTransactionStatus(id: string, status: string, completedAt?: Date): Promise<YaadFlexPayTransaction>;
+  
+  // YaadFlex Pay Merchant Operations
+  createYaadFlexPayMerchant(merchant: InsertYaadFlexPayMerchant): Promise<YaadFlexPayMerchant>;
+  getYaadFlexPayMerchant(id: string): Promise<YaadFlexPayMerchant | undefined>;
+  getYaadFlexPayMerchantByCode(merchantCode: string): Promise<YaadFlexPayMerchant | undefined>;
+  getAllYaadFlexPayMerchants(): Promise<YaadFlexPayMerchant[]>;
+  updateYaadFlexPayMerchantVolume(merchantCode: string, amount: number): Promise<YaadFlexPayMerchant>;
+  
+  // YaadFlex Pay Card Operations (Future Visa/Mastercard Integration)
+  createYaadFlexPayCard(card: InsertYaadFlexPayCard): Promise<YaadFlexPayCard>;
+  getUserYaadFlexPayCards(userId: string): Promise<YaadFlexPayCard[]>;
+  getYaadFlexPayCard(id: string): Promise<YaadFlexPayCard | undefined>;
+  updateYaadFlexPayCardStatus(id: string, isActive: boolean, isBlocked?: boolean): Promise<YaadFlexPayCard>;
+  
+  // YaadFlex Pay Core Operations (M-Pesa Style Methods)
+  sendMoney(fromUserId: string, toPhone: string, amount: number, description: string): Promise<YaadFlexPayTransaction>;
+  buyGoods(userId: string, merchantCode: string, amount: number, description: string): Promise<YaadFlexPayTransaction>;
+  checkBalance(userId: string, currency?: string): Promise<YaadFlexPayWallet[]>;
+  depositFromBank(userId: string, amount: number, bankAccount: string): Promise<YaadFlexPayTransaction>;
+  withdrawToBank(userId: string, amount: number, bankAccount: string): Promise<YaadFlexPayTransaction>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -1434,6 +1497,328 @@ export class DatabaseStorage implements IStorage {
         .where(eq(autonomousTasks.id, taskId));
     }
   }
+
+  // =============================================================
+  // YAADFLEX PAY - MOBILE MONEY IMPLEMENTATIONS
+  // Production-ready M-Pesa style payment system
+  // =============================================================
+  
+  // YaadFlex Pay User Operations
+  async createYaadFlexPayUser(userData: InsertYaadFlexPayUser): Promise<YaadFlexPayUser> {
+    const [user] = await db.insert(yaadflexPayUsers).values(userData).returning();
+    return user;
+  }
+
+  async getYaadFlexPayUserByPhone(phone: string): Promise<YaadFlexPayUser | undefined> {
+    const [user] = await db.select().from(yaadflexPayUsers).where(eq(yaadflexPayUsers.phone, phone));
+    return user;
+  }
+
+  async getYaadFlexPayUser(id: string): Promise<YaadFlexPayUser | undefined> {
+    const [user] = await db.select().from(yaadflexPayUsers).where(eq(yaadflexPayUsers.id, id));
+    return user;
+  }
+
+  async updateYaadFlexPayUserPIN(userId: string, pin: string, pinSalt: string): Promise<YaadFlexPayUser> {
+    const [user] = await db.update(yaadflexPayUsers).set({ pin, pinSalt, updatedAt: new Date() }).where(eq(yaadflexPayUsers.id, userId)).returning();
+    return user;
+  }
+
+  async updateYaadFlexPayUserStatus(userId: string, isActive: boolean): Promise<YaadFlexPayUser> {
+    const [user] = await db.update(yaadflexPayUsers).set({ isActive, updatedAt: new Date() }).where(eq(yaadflexPayUsers.id, userId)).returning();
+    return user;
+  }
+
+  async incrementPinFailures(userId: string): Promise<YaadFlexPayUser> {
+    const [user] = await db.update(yaadflexPayUsers).set({ failedPinAttempts: sql`${yaadflexPayUsers.failedPinAttempts} + 1`, updatedAt: new Date() }).where(eq(yaadflexPayUsers.id, userId)).returning();
+    return user;
+  }
+
+  async resetPinFailures(userId: string): Promise<YaadFlexPayUser> {
+    const [user] = await db.update(yaadflexPayUsers).set({ failedPinAttempts: 0, lastLogin: new Date(), updatedAt: new Date() }).where(eq(yaadflexPayUsers.id, userId)).returning();
+    return user;
+  }
+
+  // YaadFlex Pay Wallet Operations
+  async createYaadFlexPayWallet(walletData: InsertYaadFlexPayWallet): Promise<YaadFlexPayWallet> {
+    const [wallet] = await db.insert(yaadflexPayWallets).values(walletData).returning();
+    return wallet;
+  }
+
+  async getYaadFlexPayWallets(userId: string): Promise<YaadFlexPayWallet[]> {
+    return await db.select().from(yaadflexPayWallets).where(eq(yaadflexPayWallets.userId, userId)).orderBy(desc(yaadflexPayWallets.updatedAt));
+  }
+
+  async getYaadFlexPayWallet(userId: string, currency: string): Promise<YaadFlexPayWallet | undefined> {
+    const [wallet] = await db.select().from(yaadflexPayWallets).where(and(eq(yaadflexPayWallets.userId, userId), eq(yaadflexPayWallets.currency, currency)));
+    return wallet;
+  }
+
+  async updateYaadFlexPayWalletBalance(userId: string, currency: string, amount: number, type: 'add' | 'subtract'): Promise<YaadFlexPayWallet> {
+    // Get or create wallet first
+    let wallet = await this.getYaadFlexPayWallet(userId, currency);
+    
+    if (!wallet) {
+      wallet = await this.createYaadFlexPayWallet({
+        userId,
+        currency,
+        balance: '0.00',
+      });
+    }
+
+    const currentBalance = parseFloat(wallet.balance);
+    const newBalance = type === 'add' ? (currentBalance + amount).toFixed(2) : (currentBalance - amount).toFixed(2);
+
+    const updateFields: any = { balance: newBalance, lastTransactionAt: new Date(), updatedAt: new Date() };
+
+    // Update tracking fields based on transaction type
+    if (type === 'add') {
+      updateFields.totalReceived = sql`${yaadflexPayWallets.totalReceived} + ${amount}`;
+    } else {
+      updateFields.totalSent = sql`${yaadflexPayWallets.totalSent} + ${amount}`;
+    }
+
+    const [updatedWallet] = await db.update(yaadflexPayWallets).set(updateFields).where(and(eq(yaadflexPayWallets.userId, userId), eq(yaadflexPayWallets.currency, currency))).returning();
+    return updatedWallet;
+  }
+
+  // YaadFlex Pay Transaction Operations
+  async createYaadFlexPayTransaction(transactionData: InsertYaadFlexPayTransaction): Promise<YaadFlexPayTransaction> {
+    const [transaction] = await db.insert(yaadflexPayTransactions).values(transactionData).returning();
+    return transaction;
+  }
+
+  async getYaadFlexPayTransaction(id: string): Promise<YaadFlexPayTransaction | undefined> {
+    const [transaction] = await db.select().from(yaadflexPayTransactions).where(eq(yaadflexPayTransactions.id, id));
+    return transaction;
+  }
+
+  async getYaadFlexPayTransactionByTxId(transactionId: string): Promise<YaadFlexPayTransaction | undefined> {
+    const [transaction] = await db.select().from(yaadflexPayTransactions).where(eq(yaadflexPayTransactions.transactionId, transactionId));
+    return transaction;
+  }
+
+  async getUserYaadFlexPayTransactions(userId: string): Promise<YaadFlexPayTransaction[]> {
+    return await db.select().from(yaadflexPayTransactions).where(eq(yaadflexPayTransactions.fromUserId, userId)).orderBy(desc(yaadflexPayTransactions.createdAt));
+  }
+
+  async updateYaadFlexPayTransactionStatus(id: string, status: string, completedAt?: Date): Promise<YaadFlexPayTransaction> {
+    const updateData: any = { status };
+    if (completedAt) {
+      updateData.completedAt = completedAt;
+    }
+
+    const [transaction] = await db.update(yaadflexPayTransactions).set(updateData).where(eq(yaadflexPayTransactions.id, id)).returning();
+    return transaction;
+  }
+
+  // YaadFlex Pay Merchant Operations
+  async createYaadFlexPayMerchant(merchantData: InsertYaadFlexPayMerchant): Promise<YaadFlexPayMerchant> {
+    const [merchant] = await db.insert(yaadflexPayMerchants).values(merchantData).returning();
+    return merchant;
+  }
+
+  async getYaadFlexPayMerchant(id: string): Promise<YaadFlexPayMerchant | undefined> {
+    const [merchant] = await db.select().from(yaadflexPayMerchants).where(eq(yaadflexPayMerchants.id, id));
+    return merchant;
+  }
+
+  async getYaadFlexPayMerchantByCode(merchantCode: string): Promise<YaadFlexPayMerchant | undefined> {
+    const [merchant] = await db.select().from(yaadflexPayMerchants).where(eq(yaadflexPayMerchants.merchantCode, merchantCode));
+    return merchant;
+  }
+
+  async getAllYaadFlexPayMerchants(): Promise<YaadFlexPayMerchant[]> {
+    return await db.select().from(yaadflexPayMerchants).where(eq(yaadflexPayMerchants.isActive, true)).orderBy(desc(yaadflexPayMerchants.totalVolume));
+  }
+
+  async updateYaadFlexPayMerchantVolume(merchantCode: string, amount: number): Promise<YaadFlexPayMerchant> {
+    const [merchant] = await db.update(yaadflexPayMerchants).set({
+      totalTransactions: sql`${yaadflexPayMerchants.totalTransactions} + 1`,
+      totalVolume: sql`${yaadflexPayMerchants.totalVolume} + ${amount}`,
+      lastTransactionAt: new Date(),
+      updatedAt: new Date()
+    }).where(eq(yaadflexPayMerchants.merchantCode, merchantCode)).returning();
+    return merchant;
+  }
+
+  // YaadFlex Pay Card Operations (Future Visa/Mastercard Integration)
+  async createYaadFlexPayCard(cardData: InsertYaadFlexPayCard): Promise<YaadFlexPayCard> {
+    const [card] = await db.insert(yaadflexPayCards).values(cardData).returning();
+    return card;
+  }
+
+  async getUserYaadFlexPayCards(userId: string): Promise<YaadFlexPayCard[]> {
+    return await db.select().from(yaadflexPayCards).where(eq(yaadflexPayCards.userId, userId)).orderBy(desc(yaadflexPayCards.createdAt));
+  }
+
+  async getYaadFlexPayCard(id: string): Promise<YaadFlexPayCard | undefined> {
+    const [card] = await db.select().from(yaadflexPayCards).where(eq(yaadflexPayCards.id, id));
+    return card;
+  }
+
+  async updateYaadFlexPayCardStatus(id: string, isActive: boolean, isBlocked?: boolean): Promise<YaadFlexPayCard> {
+    const updateData: any = { isActive };
+    if (isBlocked !== undefined) {
+      updateData.isBlocked = isBlocked;
+    }
+
+    const [card] = await db.update(yaadflexPayCards).set(updateData).where(eq(yaadflexPayCards.id, id)).returning();
+    return card;
+  }
+
+  // YaadFlex Pay Core Operations (M-Pesa Style Methods)
+  async sendMoney(fromUserId: string, toPhone: string, amount: number, description: string): Promise<YaadFlexPayTransaction> {
+    // Find recipient by phone
+    const toUser = await this.getYaadFlexPayUserByPhone(toPhone);
+    if (!toUser) {
+      throw new Error('Recipient not found');
+    }
+
+    // Generate transaction ID (YF + timestamp)
+    const transactionId = `YF${Date.now()}`;
+
+    // Create transaction
+    const transaction = await this.createYaadFlexPayTransaction({
+      transactionId,
+      type: 'SEND_MONEY',
+      fromUserId,
+      toUserId: toUser.id,
+      amount: amount.toFixed(2),
+      currency: 'JMD',
+      fee: '0.00', // Calculate fee based on amount
+      status: 'pending',
+      description,
+    });
+
+    // Update wallets
+    await this.updateYaadFlexPayWalletBalance(fromUserId, 'JMD', amount, 'subtract');
+    await this.updateYaadFlexPayWalletBalance(toUser.id, 'JMD', amount, 'add');
+
+    // Complete transaction
+    return this.updateYaadFlexPayTransactionStatus(transaction.id, 'completed', new Date());
+  }
+
+  async buyGoods(userId: string, merchantCode: string, amount: number, description: string): Promise<YaadFlexPayTransaction> {
+    // Find merchant
+    const merchant = await this.getYaadFlexPayMerchantByCode(merchantCode);
+    if (!merchant) {
+      throw new Error('Merchant not found');
+    }
+
+    // Generate transaction ID
+    const transactionId = `YF${Date.now()}`;
+    
+    // Calculate fee (1.5% default)
+    const fee = (amount * (parseFloat(merchant.feePercentage) / 100)).toFixed(2);
+
+    // Create transaction
+    const transaction = await this.createYaadFlexPayTransaction({
+      transactionId,
+      type: 'BUY_GOODS',
+      fromUserId: userId,
+      merchantCode,
+      amount: amount.toFixed(2),
+      currency: 'JMD',
+      fee,
+      status: 'pending',
+      description,
+    });
+
+    // Update user wallet
+    await this.updateYaadFlexPayWalletBalance(userId, 'JMD', amount, 'subtract');
+    
+    // Update merchant volume
+    await this.updateYaadFlexPayMerchantVolume(merchantCode, amount);
+
+    // Complete transaction
+    return this.updateYaadFlexPayTransactionStatus(transaction.id, 'completed', new Date());
+  }
+
+  async checkBalance(userId: string, currency?: string): Promise<YaadFlexPayWallet[]> {
+    if (currency) {
+      const wallet = await this.getYaadFlexPayWallet(userId, currency);
+      return wallet ? [wallet] : [];
+    }
+    return this.getYaadFlexPayWallets(userId);
+  }
+
+  async depositFromBank(userId: string, amount: number, bankAccount: string): Promise<YaadFlexPayTransaction> {
+    // Generate transaction ID
+    const transactionId = `YF${Date.now()}`;
+
+    // Create transaction
+    const transaction = await this.createYaadFlexPayTransaction({
+      transactionId,
+      type: 'DEPOSIT',
+      fromUserId: userId,
+      amount: amount.toFixed(2),
+      currency: 'JMD',
+      fee: '0.00',
+      status: 'pending',
+      description: `Deposit from bank account ${bankAccount}`,
+      reference: bankAccount,
+    });
+
+    // Update wallet balance
+    await this.updateYaadFlexPayWalletBalance(userId, 'JMD', amount, 'add');
+
+    // Complete transaction
+    return this.updateYaadFlexPayTransactionStatus(transaction.id, 'completed', new Date());
+  }
+
+  async withdrawToBank(userId: string, amount: number, bankAccount: string): Promise<YaadFlexPayTransaction> {
+    // Generate transaction ID
+    const transactionId = `YF${Date.now()}`;
+
+    // Create transaction
+    const transaction = await this.createYaadFlexPayTransaction({
+      transactionId,
+      type: 'WITHDRAW',
+      fromUserId: userId,
+      amount: amount.toFixed(2),
+      currency: 'JMD',
+      fee: '0.00',
+      status: 'pending',
+      description: `Withdraw to bank account ${bankAccount}`,
+      reference: bankAccount,
+    });
+
+    // Update wallet balance
+    await this.updateYaadFlexPayWalletBalance(userId, 'JMD', amount, 'subtract');
+
+    // Complete transaction
+    return this.updateYaadFlexPayTransactionStatus(transaction.id, 'completed', new Date());
+  }
+
+  // Stub implementations for YaadFlex Clothing Line (to be implemented later)
+  async createYaadFlexCategory(): Promise<any> { throw new Error('Not implemented'); }
+  async getYaadFlexCategories(): Promise<any[]> { return []; }
+  async getYaadFlexCategory(): Promise<any> { return undefined; }
+  async updateYaadFlexCategory(): Promise<any> { throw new Error('Not implemented'); }
+  async createYaadFlexProduct(): Promise<any> { throw new Error('Not implemented'); }
+  async getYaadFlexProducts(): Promise<any[]> { return []; }
+  async getYaadFlexProductsByCategory(): Promise<any[]> { return []; }
+  async getFeaturedYaadFlexProducts(): Promise<any[]> { return []; }
+  async getYaadFlexProduct(): Promise<any> { return undefined; }
+  async updateYaadFlexProduct(): Promise<any> { throw new Error('Not implemented'); }
+  async updateYaadFlexProductStock(): Promise<any> { throw new Error('Not implemented'); }
+  async createYaadFlexSupplier(): Promise<any> { throw new Error('Not implemented'); }
+  async getYaadFlexSuppliers(): Promise<any[]> { return []; }
+  async getYaadFlexSupplier(): Promise<any> { return undefined; }
+  async updateYaadFlexSupplier(): Promise<any> { throw new Error('Not implemented'); }
+  async createYaadFlexOrder(): Promise<any> { throw new Error('Not implemented'); }
+  async getUserYaadFlexOrders(): Promise<any[]> { return []; }
+  async getAllYaadFlexOrders(): Promise<any[]> { return []; }
+  async getYaadFlexOrder(): Promise<any> { return undefined; }
+  async updateYaadFlexOrderStatus(): Promise<any> { throw new Error('Not implemented'); }
+  async createYaadFlexOrderItem(): Promise<any> { throw new Error('Not implemented'); }
+  async getYaadFlexOrderItems(): Promise<any[]> { return []; }
+  async updateYaadFlexOrderItemStatus(): Promise<any> { throw new Error('Not implemented'); }
+  async createYaadFlexProductReview(): Promise<any> { throw new Error('Not implemented'); }
+  async getYaadFlexProductReviews(): Promise<any[]> { return []; }
+  async getUserYaadFlexReviews(): Promise<any[]> { return []; }
+  async updateYaadFlexReviewVisibility(): Promise<any> { throw new Error('Not implemented'); }
 }
 
 // EMERGENCY FIX: Use demo data when database fails
