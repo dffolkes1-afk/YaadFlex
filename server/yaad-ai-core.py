@@ -1,62 +1,87 @@
 from flask import Flask, request, jsonify
-import firebase_admin
-from firebase_admin import credentials, firestore
-import google.generativeai as genai
 import os
 
 app = Flask(__name__)
 
-# --- SECURE Firebase Setup (Environment Variables) ---
+# --- Initialize Firebase (Secure way) ---
+firebase_ready = False
+db = None
+
 try:
-    # Use secure environment variables instead of firebase-key.json
-    firebase_config = {
-        "type": "service_account",
-        "project_id": os.getenv("FIREBASE_PROJECT_ID"),
-        "private_key_id": os.getenv("FIREBASE_PRIVATE_KEY_ID"),
-        "private_key": os.getenv("FIREBASE_PRIVATE_KEY", "").replace('\\n', '\n'),
-        "client_email": os.getenv("FIREBASE_CLIENT_EMAIL"),
-        "client_id": os.getenv("FIREBASE_CLIENT_ID"),
-        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-        "token_uri": "https://oauth2.googleapis.com/token",
-        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs"
-    }
+    import firebase_admin
+    from firebase_admin import credentials, firestore
     
-    if firebase_config["project_id"]:  # Check if Firebase is configured
+    # Use environment variables instead of firebase-key.json
+    firebase_project_id = os.getenv("FIREBASE_PROJECT_ID")
+    firebase_private_key = os.getenv("FIREBASE_PRIVATE_KEY")
+    firebase_client_email = os.getenv("FIREBASE_CLIENT_EMAIL")
+    
+    if firebase_project_id and firebase_private_key and firebase_client_email:
+        firebase_config = {
+            "type": "service_account",
+            "project_id": firebase_project_id,
+            "private_key": firebase_private_key.replace('\\n', '\n'),
+            "client_email": firebase_client_email,
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs"
+        }
+        
         cred = credentials.Certificate(firebase_config)
         firebase_admin.initialize_app(cred)
         db = firestore.client()
+        firebase_ready = True
         print("🔥 Firebase initialized securely")
     else:
-        db = None
-        print("⚠️ Firebase not configured - using fallback mode")
+        print("⚠️ Firebase credentials not found in environment variables")
+        
 except Exception as e:
-    db = None
-    print(f"⚠️ Firebase initialization failed: {e}")
+    print(f"⚠️ Firebase setup error: {e}")
 
-# --- SECURE Gemini AI Setup (Environment Variable) ---
-gemini_api_key = os.getenv("GEMINI_API_KEY")
-if gemini_api_key:
-    genai.configure(api_key=gemini_api_key)
-    print("🤖 Gemini AI initialized securely")
-else:
-    print("⚠️ GEMINI_API_KEY not set - AI features disabled")
+# --- Initialize Gemini AI (Secure way) ---
+gemini_ready = False
+genai = None
+
+try:
+    import google.generativeai as genai_module
+    
+    gemini_api_key = os.getenv("GEMINI_API_KEY")
+    if gemini_api_key:
+        genai_module.configure(api_key=gemini_api_key)
+        genai = genai_module
+        gemini_ready = True
+        print("🤖 Gemini AI initialized securely")
+    else:
+        print("⚠️ GEMINI_API_KEY not found in environment variables")
+        
+except Exception as e:
+    print(f"⚠️ Gemini AI setup error: {e}")
 
 @app.route("/")
 def home():
     return {"message": "🔥 YaadFlex Autonomous AI Core is online 🔥"}
 
-# --- Example: AI Ride Pricing ---
+@app.route("/health")
+def health():
+    return jsonify({
+        "status": "healthy",
+        "firebase": "ready" if firebase_ready else "not configured",
+        "gemini": "ready" if gemini_ready else "not configured",
+        "message": "YaadFlex AI Core operational"
+    })
+
+# --- AI Ride Pricing ---
 @app.route("/price", methods=["POST"])
 def price():
-    if not gemini_api_key:
-        return jsonify({"error": "AI pricing not available - API key not configured"}), 503
+    if not gemini_ready:
+        return jsonify({"error": "AI pricing not available - Gemini API key needed"}), 503
     
-    data = request.json
-    pickup = data.get("pickup")
-    dropoff = data.get("dropoff")
+    data = request.json or {}
+    pickup = data.get("pickup", "Unknown")
+    dropoff = data.get("dropoff", "Unknown")
 
-    # Save trip request in Firestore (if configured)
-    if db:
+    # Save trip request in Firestore (if available)
+    if firebase_ready and db:
         try:
             db.collection("trips").add({"pickup": pickup, "dropoff": dropoff})
         except Exception as e:
@@ -68,58 +93,65 @@ def price():
     try:
         model = genai.GenerativeModel("gemini-pro")
         response = model.generate_content(prompt)
-
+        
         return jsonify({
             "pickup": pickup,
             "dropoff": dropoff,
-            "ai_price": response.text.strip()
+            "ai_price": response.text.strip() if response.text else "Price calculation unavailable"
         })
     except Exception as e:
         return jsonify({"error": f"AI pricing error: {str(e)}"}), 503
 
-# --- Example: AI Voice/Chat ---
+# --- AI Voice/Chat ---
 @app.route("/chat", methods=["POST"])
 def chat():
-    if not gemini_api_key:
-        return jsonify({"error": "AI chat not available - API key not configured"}), 503
+    if not gemini_ready:
+        return jsonify({"error": "AI chat not available - Gemini API key needed"}), 503
     
-    message = request.json.get("message")
+    data = request.json or {}
+    message = data.get("message", "")
+    
+    if not message:
+        return jsonify({"error": "No message provided"}), 400
     
     try:
         model = genai.GenerativeModel("gemini-pro")
         response = model.generate_content(message)
-        return jsonify({"reply": response.text.strip()})
+        
+        return jsonify({
+            "reply": response.text.strip() if response.text else "AI response unavailable"
+        })
     except Exception as e:
         return jsonify({"error": f"AI chat error: {str(e)}"}), 503
 
-# --- Example: AI Marketplace Item Suggestion ---
+# --- AI Marketplace Item Suggestion ---
 @app.route("/marketplace", methods=["POST"])
 def marketplace():
-    if not gemini_api_key:
-        return jsonify({"error": "AI marketplace not available - API key not configured"}), 503
+    if not gemini_ready:
+        return jsonify({"error": "AI marketplace not available - Gemini API key needed"}), 503
     
-    item = request.json.get("item")
+    data = request.json or {}
+    item = data.get("item", "")
+    
+    if not item:
+        return jsonify({"error": "No item provided"}), 400
+    
     prompt = f"Suggest how to market '{item}' in YaadFlex Global Shop with a short tagline."
     
     try:
         model = genai.GenerativeModel("gemini-pro")
         response = model.generate_content(prompt)
-        return jsonify({"item": item, "tagline": response.text.strip()})
+        
+        return jsonify({
+            "item": item,
+            "tagline": response.text.strip() if response.text else "Marketing suggestion unavailable"
+        })
     except Exception as e:
         return jsonify({"error": f"AI marketplace error: {str(e)}"}), 503
 
-# --- Health Check ---
-@app.route("/health")
-def health():
-    return jsonify({
-        "status": "healthy",
-        "firebase": "ready" if db else "not configured",
-        "gemini": "ready" if gemini_api_key else "not configured",
-        "message": "YaadFlex AI Core operational"
-    })
-
 if __name__ == "__main__":
     print("🚀 Starting YaadFlex AI Core...")
-    print(f"🔥 Firebase: {'✅ Ready' if db else '❌ Not configured'}")
-    print(f"🤖 Gemini AI: {'✅ Ready' if gemini_api_key else '❌ Not configured'}")
+    print(f"🔥 Firebase: {'✅ Ready' if firebase_ready else '❌ Not configured'}")
+    print(f"🤖 Gemini AI: {'✅ Ready' if gemini_ready else '❌ Not configured'}")
+    print("📡 Running on http://0.0.0.0:8080")
     app.run(host="0.0.0.0", port=8080, debug=True)
