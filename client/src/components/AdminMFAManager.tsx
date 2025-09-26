@@ -82,9 +82,9 @@ export function AdminMFAManager() {
       const response = await apiRequest('POST', `/api/admin/employees/${employeeId}/mfa/setup`) as any;
       
       toast({
-        title: 'MFA Setup Initiated',
-        description: `Authenticator setup created for employee. Secret: ${response?.secret}`,
-        duration: 10000
+        title: 'MFA Setup Complete',
+        description: `Authenticator secret has been securely generated for the employee.`,
+        duration: 5000
       });
       
       await loadEmployees();

@@ -12,7 +12,13 @@ import { eq, desc, and } from "drizzle-orm";
 const router = express.Router();
 router.use(cookieParser());
 
-const JWT_SECRET = process.env.SESSION_SECRET || "dev_secret";
+const JWT_SECRET = process.env.SESSION_SECRET;
+
+// Fail fast if no proper JWT secret is configured
+if (!JWT_SECRET || JWT_SECRET === "dev_secret") {
+  console.error("SECURITY ERROR: SESSION_SECRET environment variable must be set to a secure value");
+  process.exit(1);
+}
 
 const nowUtc = () => new Date();
 const DAYS = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
