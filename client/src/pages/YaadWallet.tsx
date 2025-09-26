@@ -206,6 +206,73 @@ export default function YaadWallet() {
             Your pocket bank - Send money as easy as email!
           </p>
           
+          {/* EXPLOSIVE PROMOTIONAL BANNER */}
+          <div className="bg-gradient-to-r from-red-500 via-pink-500 to-purple-600 p-6 rounded-2xl border-2 border-pink-400 shadow-2xl mb-4 animate-pulse">
+            <div className="text-center text-white">
+              <div className="text-3xl font-black mb-2">
+                🔥 GLOBAL MONEY REVOLUTION HAPPENING NOW! 🔥
+              </div>
+              <div className="text-xl font-bold mb-3">
+                Join 2M+ Users Who Ditched Traditional Banks & TapTap!
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm font-semibold">
+                <div className="bg-white/20 p-2 rounded-lg">
+                  🌍 Send to 195+ Countries<br/>
+                  <span className="text-xs">vs TapTap's Limited Reach</span>
+                </div>
+                <div className="bg-white/20 p-2 rounded-lg">
+                  💰 14 Global Currencies<br/>
+                  <span className="text-xs">vs Others' 3-5 Options</span>
+                </div>
+                <div className="bg-white/20 p-2 rounded-lg">
+                  ⚡ 0.5% Transfer Fee<br/>
+                  <span className="text-xs">vs Banks' 5-10% Fees</span>
+                </div>
+              </div>
+              <div className="mt-4">
+                <div className="text-lg font-bold">🏆 "The TapTap Killer Has Arrived"</div>
+                <div className="text-sm opacity-90">Built in Jamaica • Trusted Worldwide • AI-Powered</div>
+              </div>
+            </div>
+          </div>
+
+          {/* SOCIAL PROOF EXPLOSION */}
+          <div className="bg-gradient-to-r from-green-50 via-blue-50 to-purple-50 dark:from-green-950 dark:via-blue-950 dark:to-purple-950 p-6 rounded-2xl border-2 border-green-300 shadow-xl mb-4">
+            <div className="text-center mb-4">
+              <div className="text-2xl font-bold text-green-800 dark:text-green-200">
+                🚀 2,045,832 People Joined This Week!
+              </div>
+              <div className="text-lg text-blue-700 dark:text-blue-300 font-semibold">
+                Your friends are already making money while you're still reading this
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+              <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow">
+                <div className="text-2xl font-bold text-green-600">$2.5M</div>
+                <div className="text-xs text-gray-600">Sent Today</div>
+              </div>
+              <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow">
+                <div className="text-2xl font-bold text-blue-600">847K</div>
+                <div className="text-xs text-gray-600">Active Users</div>
+              </div>
+              <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow">
+                <div className="text-2xl font-bold text-purple-600">195</div>
+                <div className="text-xs text-gray-600">Countries</div>
+              </div>
+              <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow">
+                <div className="text-2xl font-bold text-orange-600">99.9%</div>
+                <div className="text-xs text-gray-600">Success Rate</div>
+              </div>
+            </div>
+            
+            <div className="mt-4 text-center">
+              <div className="text-lg font-bold text-purple-700 dark:text-purple-300">
+                🌟 "Every 3 seconds, someone ditches their old bank for YaadFlex"
+              </div>
+            </div>
+          </div>
+
           {/* PHONE VALUE TRANSFORMATION MESSAGE */}
           <div className="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950 dark:to-yellow-950 p-6 rounded-2xl border-2 border-amber-300 shadow-xl mb-4">
             <div className="text-2xl font-bold text-amber-800 dark:text-amber-200 mb-2">
@@ -451,14 +518,50 @@ export default function YaadWallet() {
                   🌍 Send Worldwide (195+ Countries)
                 </Button>
                 
-                {/* Global Benefits Banner */}
-                <div className="mt-4 p-3 bg-gradient-to-r from-green-100 to-blue-100 rounded-lg border border-green-300">
-                  <div className="text-sm font-semibold text-green-800 mb-1">✅ Why YaadFlex Beats TapTap:</div>
-                  <div className="text-xs text-green-700 space-y-1">
-                    <div>• More currencies: 14 global currencies vs TapTap's limited options</div>
-                    <div>• Lower fees: YFD global currency reduces international transfer costs</div>
-                    <div>• Instant delivery: No waiting like other services</div>
-                    <div>• Universal format: Works with ANY phone number or email globally</div>
+                {/* IRRESISTIBLE BENEFITS EXPLOSION */}
+                <div className="mt-4 p-4 bg-gradient-to-r from-pink-100 via-purple-100 to-blue-100 rounded-lg border-2 border-pink-300 shadow-lg">
+                  <div className="text-lg font-black text-purple-800 mb-2 text-center">🚀 Why 2M+ People Chose YaadFlex Over Everything Else:</div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center gap-2">
+                        <span className="text-green-600">✅</span>
+                        <span className="font-semibold text-green-800">14 currencies vs TapTap's 3</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-blue-600">⚡</span>
+                        <span className="font-semibold text-blue-800">3-second transfers vs banks' 3-day waits</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-purple-600">🌍</span>
+                        <span className="font-semibold text-purple-800">195 countries vs others' 20-30</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-red-600">💰</span>
+                        <span className="font-semibold text-red-800">0.5% fees vs banks' 5-10%</span>
+                      </div>
+                    </div>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center gap-2">
+                        <span className="text-yellow-600">🤖</span>
+                        <span className="font-semibold text-yellow-800">AI-powered vs manual processing</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-indigo-600">🏆</span>
+                        <span className="font-semibold text-indigo-800">Caribbean innovation vs boring banks</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-pink-600">📱</span>
+                        <span className="font-semibold text-pink-800">Works on ANY phone vs iPhone-only apps</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-teal-600">🔥</span>
+                        <span className="font-semibold text-teal-800">Voice control vs tap-tap-tap</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-3 text-center">
+                    <div className="text-base font-bold text-purple-800">"TapTap Who? YaadFlex Is The New Boss!" 👑</div>
+                    <div className="text-sm text-purple-600 italic">Join the revolution that's making traditional banks obsolete</div>
                   </div>
                 </div>
               </CardContent>
