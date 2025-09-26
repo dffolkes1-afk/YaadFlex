@@ -25,7 +25,7 @@ export class AutonomousOpsAgent {
   constructor() {
     if (process.env.STRIPE_SECRET_KEY) {
       this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-        apiVersion: "2023-10-16",
+        apiVersion: "2025-08-27.basil",
       });
     }
   }
@@ -86,9 +86,9 @@ export class AutonomousOpsAgent {
   }
 
   // Check for obligations that are due
-  private async checkDueObligations() {
+  private async checkDueObligations(): Promise<Obligation[]> {
     const now = new Date();
-    const obligations = await db
+    const result = await db
       .select()
       .from(obligations)
       .where(
@@ -101,7 +101,7 @@ export class AutonomousOpsAgent {
         )
       );
     
-    return obligations;
+    return result;
   }
 
   // Create task from obligation

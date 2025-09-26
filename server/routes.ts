@@ -6522,6 +6522,40 @@ P.S. - Early business partners get exclusive territory rights and preferred part
     }
   });
 
+  // AI Autonomy Control Endpoints - Make YaadFlex fully AI-controlled
+  app.get('/api/ai/status', async (req, res) => {
+    try {
+      const status = await autonomousOpsAgent.getStatus();
+      res.json({
+        mode: 'FULL_AUTONOMY',
+        isRunning: status.isRunning,
+        status: status,
+        aiControlled: true,
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to get AI status' });
+    }
+  });
+
+  app.post('/api/ai/start', async (req, res) => {
+    try {
+      await autonomousOpsAgent.start();
+      res.json({ success: true, message: 'AI Autonomous Control activated' });
+    } catch (error) {
+      res.status(500).json({ success: false, message: 'Failed to start AI autonomy' });
+    }
+  });
+
+  app.post('/api/ai/stop', async (req, res) => {
+    try {
+      await autonomousOpsAgent.emergencyStop();
+      res.json({ success: true, message: 'AI Autonomous Control stopped' });
+    } catch (error) {
+      res.status(500).json({ success: false, message: 'Failed to stop AI autonomy' });
+    }
+  });
+
   // Initialize observability system
   try {
     await observabilityService.initializeSubsystems();
@@ -6530,12 +6564,12 @@ P.S. - Early business partners get exclusive territory rights and preferred part
     console.log('⚠️ Observability system will initialize when database is ready');
   }
 
-  // Start autonomous ops agent
+  // Start AI-controlled autonomous operations
   try {
     await autonomousOpsAgent.start();
-    console.log('🤖 Autonomous Ops Agent started');
+    console.log('🤖 YaadFlex AI Autonomous Control ACTIVATED - App is now fully AI-controlled');
   } catch (error) {
-    console.log('⚠️ Autonomous Ops Agent will start when database is ready');
+    console.log('⚠️ AI Autonomous Control will activate when database is ready');
   }
 
   const httpServer = createServer(app);

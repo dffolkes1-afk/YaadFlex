@@ -12,6 +12,7 @@ import { GlamorousSection, LuxuryHeroSection, PremiumSection, GradientSection } 
 import { VoiceButton } from "@/components/VoiceButton";
 import { VoiceTestPanel } from "@/components/VoiceTestPanel";
 import { PremiumYaadFlexLogo } from "@/components/PremiumYaadFlexLogo";
+import { AIAutonomousStatus } from "@/components/AIAutonomousStatus";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { COMPANY_INFO, CORPORATE_TEMPLATES } from '@shared/company';
 import { Input } from "@/components/ui/input";
@@ -439,6 +440,9 @@ export default function Home() {
       
       {/* Starfield Background */}
       <div className="starfield fixed inset-0 z-0"></div>
+      
+      {/* AI Autonomous Status Display */}
+      <AIAutonomousStatus />
       
       {/* Strategic Hero Section - GLAMOROUS LUXURY UPGRADE */}
       <div className="relative overflow-hidden bg-gradient-to-br from-emerald-900 via-slate-900 to-amber-900">
