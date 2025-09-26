@@ -96,6 +96,7 @@ import DashboardButton from "@/components/DashboardButton";
 import { BlackRockCorporateHeader } from "@/components/BlackRockCorporateHeader";
 import { BlackRockCorporateFooter } from "@/components/BlackRockCorporateFooter";
 import { PageModeWrapper } from "@/components/PageModeWrapper";
+import { GlobalPromoFloater } from "@/components/GlobalPromoFloater";
 
 // Legal Pages
 import TermsOfService from "@/pages/terms-of-service";
@@ -310,6 +311,7 @@ function App() {
             </PageModeWrapper>
             <RipleyControls />
             <VoiceControl />
+            <GlobalPromoFloater />
           </main>
           <BlackRockCorporateFooter />
         </div>
