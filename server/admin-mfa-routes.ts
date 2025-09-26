@@ -1,73 +1,73 @@
 import { Router } from 'express';
 import speakeasy from 'speakeasy';
 import QRCode from 'qrcode';
+import { db } from './db';
+import { users, userMfa, userSessions } from '@shared/schema';
+import { eq, desc } from 'drizzle-orm';
 import { storage } from './storage';
 import { requireAuth } from './security-patch';
 
 const router = Router();
 
-// Mock employee data for demo (in production this would come from database)
-const mockEmployees = [
-  {
-    id: 'emp1',
-    email: 'driver1@yaadflex.com',
-    firstName: 'Marcus',
-    lastName: 'Campbell',
-    role: 'driver',
-    mfaEnabled: true,
-    mfaSecret: 'JBSWY3DPEHPK3PXP',
-    lastLogin: new Date(Date.now() - 3600000),
-    isActive: true,
-    workAreas: ['driver_operations', 'vehicle_management']
-  },
-  {
-    id: 'emp2', 
-    email: 'finance@yaadflex.com',
-    firstName: 'Lisa',
-    lastName: 'Johnson',
-    role: 'finance_ops',
-    mfaEnabled: false,
-    mfaSecret: null,
-    lastLogin: new Date(Date.now() - 86400000),
-    isActive: true,
-    workAreas: ['finance_operations', 'payout_management']
-  },
-  {
-    id: 'emp3',
-    email: 'support@yaadflex.com', 
-    firstName: 'Devon',
-    lastName: 'Brown',
-    role: 'customer_support',
-    mfaEnabled: true,
-    mfaSecret: 'HXDMVJECJJWSRB3HWIZR4IFUGFTMXBOZ',
-    lastLogin: new Date(Date.now() - 1800000),
-    isActive: true,
-    workAreas: ['customer_support', 'dispute_resolution']
-  },
-  {
-    id: 'emp4',
-    email: 'manager@yaadflex.com',
-    firstName: 'Patricia',
-    lastName: 'Williams',
-    role: 'area_manager',
-    mfaEnabled: false,
-    mfaSecret: null,
-    lastLogin: null,
-    isActive: true,
-    workAreas: ['area_management', 'driver_registration']
-  }
-];
+const nowUtc = () => new Date();
 
 // Get all employees with MFA status
 router.get('/api/admin/employees', requireAuth, async (req, res) => {
   try {
-    const employees = mockEmployees;
+    // Get all users with their MFA status
+    const employeeUsers = await db.select({
+      id: users.id,
+      email: users.email,
+      firstName: users.firstName,
+      lastName: users.lastName,
+      role: users.role,
+      isActive: users.isActive,
+      createdAt: users.createdAt
+    })
+    .from(users)
+    .where(eq(users.role, 'employee'));
+
+    // Get MFA status for all employees
+    const mfaRecords = await db.select().from(userMfa);
+    const mfaMap = new Map(mfaRecords.map(mfa => [mfa.userId, mfa]));
+
+    // Get last login info
+    const sessionRecords = await db.select({
+      userId: userSessions.userId,
+      lastLogin: userSessions.startedAt
+    })
+    .from(userSessions)
+    .orderBy(desc(userSessions.startedAt));
+    
+    const lastLoginMap = new Map();
+    sessionRecords.forEach(session => {
+      if (!lastLoginMap.has(session.userId)) {
+        lastLoginMap.set(session.userId, session.lastLogin);
+      }
+    });
+
+    // Combine data
+    const employees = employeeUsers.map(user => {
+      const mfa = mfaMap.get(user.id);
+      return {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role,
+        mfaEnabled: mfa?.enabled || false,
+        mfaSecret: mfa?.totpSecret ? '[CONFIGURED]' : null,
+        lastLogin: lastLoginMap.get(user.id) || null,
+        isActive: user.isActive,
+        workAreas: ['employee_access'] // Default work area for employees
+      };
+    });
     
     const stats = {
       totalEmployees: employees.length,
       mfaEnabled: employees.filter(emp => emp.mfaEnabled).length,
       pendingSetup: employees.filter(emp => !emp.mfaSecret).length,
-      securityScore: Math.round((employees.filter(emp => emp.mfaEnabled).length / employees.length) * 100)
+      securityScore: employees.length > 0 ? Math.round((employees.filter(emp => emp.mfaEnabled).length / employees.length) * 100) : 0
     };
 
     res.json({
@@ -85,7 +85,8 @@ router.post('/api/admin/employees/:employeeId/mfa/setup', requireAuth, async (re
   try {
     const { employeeId } = req.params;
     
-    const employee = mockEmployees.find(emp => emp.id === employeeId);
+    // Check if employee exists
+    const [employee] = await db.select().from(users).where(eq(users.id, employeeId));
     if (!employee) {
       return res.status(404).json({ error: 'Employee not found' });
     }
@@ -97,15 +98,28 @@ router.post('/api/admin/employees/:employeeId/mfa/setup', requireAuth, async (re
       length: 32
     });
 
-    // Store the secret for the employee
-    employee.mfaSecret = secret.base32;
+    // Store the secret in database (disabled until verified)
+    await db.insert(userMfa).values({
+      userId: employeeId,
+      totpSecret: secret.base32,
+      enabled: false,
+      createdAt: nowUtc(),
+      updatedAt: nowUtc()
+    }).onConflictDoUpdate({
+      target: userMfa.userId,
+      set: {
+        totpSecret: secret.base32,
+        enabled: false,
+        updatedAt: nowUtc()
+      }
+    });
     
     // Generate QR code for easy setup
     const qrCodeUrl = await QRCode.toDataURL(secret.otpauth_url!);
 
     // Log security event
     await storage.logSecurityEvent({
-      userId: employee.id,
+      userId: employeeId,
       eventType: 'mfa_setup_initiated',
       severity: 'medium',
       description: `Admin initiated MFA setup for employee ${employee.email}`,
@@ -134,23 +148,47 @@ router.put('/api/admin/employees/:employeeId/mfa', requireAuth, async (req, res)
     const { employeeId } = req.params;
     const { enabled } = req.body;
     
-    const employee = mockEmployees.find(emp => emp.id === employeeId);
+    // Check if employee exists
+    const [employee] = await db.select().from(users).where(eq(users.id, employeeId));
     if (!employee) {
       return res.status(404).json({ error: 'Employee not found' });
     }
 
+    // Check if MFA record exists
+    const [mfaRecord] = await db.select().from(userMfa).where(eq(userMfa.userId, employeeId));
+    
     // If enabling MFA, ensure secret exists
-    if (enabled && !employee.mfaSecret) {
+    if (enabled && (!mfaRecord || !mfaRecord.totpSecret)) {
       return res.status(400).json({ error: 'Cannot enable MFA without setting up secret first' });
     }
 
-    employee.mfaEnabled = enabled;
+    // Update MFA status in database
+    if (mfaRecord) {
+      await db.update(userMfa)
+        .set({ 
+          enabled, 
+          updatedAt: nowUtc() 
+        })
+        .where(eq(userMfa.userId, employeeId));
+    } else if (enabled) {
+      return res.status(400).json({ error: 'No MFA setup found. Setup MFA first.' });
+    }
+
+    // If disabling MFA, also end all active sessions for immediate effect
+    if (!enabled) {
+      await db.update(userSessions)
+        .set({ 
+          active: false, 
+          endedAt: nowUtc() 
+        })
+        .where(eq(userSessions.userId, employeeId));
+    }
 
     // Log security event
     await storage.logSecurityEvent({
-      userId: employee.id,
+      userId: employeeId,
       eventType: enabled ? 'mfa_enabled' : 'mfa_disabled',
-      severity: enabled ? 'low' : 'high',
+      severity: enabled ? 'low' : 'critical',
       description: `Admin ${enabled ? 'enabled' : 'disabled'} MFA for employee ${employee.email}`,
       ipAddress: req.ip || 'unknown',
       userAgent: req.headers['user-agent'] || 'unknown',
@@ -163,9 +201,9 @@ router.put('/api/admin/employees/:employeeId/mfa', requireAuth, async (req, res)
       employee: {
         id: employee.id,
         email: employee.email,
-        mfaEnabled: employee.mfaEnabled
+        mfaEnabled: enabled
       },
-      message: `MFA ${enabled ? 'enabled' : 'disabled'} for ${employee.email}`
+      message: `MFA ${enabled ? 'enabled' : 'disabled'} for ${employee.email}. ${!enabled ? 'All sessions terminated.' : ''}`
     });
   } catch (error) {
     console.error('Error updating MFA status:', error);
@@ -176,40 +214,38 @@ router.put('/api/admin/employees/:employeeId/mfa', requireAuth, async (req, res)
 // Add new employee (with mandatory MFA requirement)
 router.post('/api/admin/employees', requireAuth, async (req, res) => {
   try {
-    const { email, requireMFA = true } = req.body;
+    const { email, firstName = 'New', lastName = 'Employee' } = req.body;
 
     if (!email) {
       return res.status(400).json({ error: 'Email is required' });
     }
 
     // Check if employee already exists
-    const existingEmployee = mockEmployees.find(emp => emp.email === email);
+    const [existingEmployee] = await db.select().from(users).where(eq(users.email, email));
     if (existingEmployee) {
       return res.status(400).json({ error: 'Employee already exists' });
     }
 
-    // Create new employee
-    const newEmployee = {
-      id: `emp${Date.now()}`,
+    // Create new employee in database
+    const employeeId = `emp_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
+    
+    const [newEmployee] = await db.insert(users).values({
+      id: employeeId,
       email,
-      firstName: 'New',
-      lastName: 'Employee',
+      firstName,
+      lastName,
       role: 'employee',
-      mfaEnabled: false,
-      mfaSecret: null,
-      lastLogin: null,
       isActive: true,
-      workAreas: ['general_access']
-    };
-
-    mockEmployees.push(newEmployee);
+      createdAt: nowUtc(),
+      updatedAt: nowUtc()
+    }).returning();
 
     // Log security event
     await storage.logSecurityEvent({
       userId: 'admin',
       eventType: 'employee_added',
       severity: 'medium',
-      description: `New employee added: ${email} (MFA required: ${requireMFA})`,
+      description: `New employee added: ${email} (MFA setup required)`,
       ipAddress: req.ip || 'unknown',
       userAgent: req.headers['user-agent'] || 'unknown',
       threatBlocked: false,
@@ -218,7 +254,16 @@ router.post('/api/admin/employees', requireAuth, async (req, res) => {
 
     res.json({
       success: true,
-      employee: newEmployee,
+      employee: {
+        id: newEmployee.id,
+        email: newEmployee.email,
+        firstName: newEmployee.firstName,
+        lastName: newEmployee.lastName,
+        role: newEmployee.role,
+        mfaEnabled: false,
+        mfaSecret: null,
+        isActive: newEmployee.isActive
+      },
       message: `Employee ${email} added successfully. MFA setup required.`
     });
   } catch (error) {
@@ -232,22 +277,37 @@ router.post('/api/admin/employees/:employeeId/reset-access', requireAuth, async 
   try {
     const { employeeId } = req.params;
     
-    const employee = mockEmployees.find(emp => emp.id === employeeId);
+    // Check if employee exists
+    const [employee] = await db.select().from(users).where(eq(users.id, employeeId));
     if (!employee) {
       return res.status(404).json({ error: 'Employee not found' });
     }
 
-    // Reset MFA settings
-    employee.mfaEnabled = false;
-    employee.mfaSecret = null;
-    employee.isActive = false; // Temporarily deactivate until re-setup
+    // Delete MFA record completely to force re-setup
+    await db.delete(userMfa).where(eq(userMfa.userId, employeeId));
+    
+    // End all active sessions immediately
+    await db.update(userSessions)
+      .set({ 
+        active: false, 
+        endedAt: nowUtc() 
+      })
+      .where(eq(userSessions.userId, employeeId));
+    
+    // Temporarily deactivate user until MFA re-setup
+    await db.update(users)
+      .set({ 
+        isActive: false,
+        updatedAt: nowUtc()
+      })
+      .where(eq(users.id, employeeId));
 
     // Log security event
     await storage.logSecurityEvent({
-      userId: employee.id,
+      userId: employeeId,
       eventType: 'access_reset',
-      severity: 'high',
-      description: `Admin reset access for employee ${employee.email}. MFA disabled and secret cleared.`,
+      severity: 'critical',
+      description: `Admin reset access for employee ${employee.email}. MFA disabled, secret cleared, all sessions terminated.`,
       ipAddress: req.ip || 'unknown',
       userAgent: req.headers['user-agent'] || 'unknown',
       threatBlocked: false,
@@ -256,7 +316,7 @@ router.post('/api/admin/employees/:employeeId/reset-access', requireAuth, async 
 
     res.json({
       success: true,
-      message: `Access reset for ${employee.email}. Employee must re-setup MFA to regain access.`
+      message: `Access completely reset for ${employee.email}. Employee must re-setup MFA and be reactivated to regain access.`
     });
   } catch (error) {
     console.error('Error resetting employee access:', error);
@@ -270,13 +330,20 @@ router.post('/api/admin/employees/:employeeId/mfa/verify', requireAuth, async (r
     const { employeeId } = req.params;
     const { token } = req.body;
     
-    const employee = mockEmployees.find(emp => emp.id === employeeId);
-    if (!employee || !employee.mfaSecret) {
-      return res.status(404).json({ error: 'Employee not found or MFA not setup' });
+    // Check if employee exists
+    const [employee] = await db.select().from(users).where(eq(users.id, employeeId));
+    if (!employee) {
+      return res.status(404).json({ error: 'Employee not found' });
+    }
+    
+    // Get MFA record
+    const [mfaRecord] = await db.select().from(userMfa).where(eq(userMfa.userId, employeeId));
+    if (!mfaRecord || !mfaRecord.totpSecret) {
+      return res.status(404).json({ error: 'MFA not setup for this employee' });
     }
 
     const isValid = speakeasy.totp.verify({
-      secret: employee.mfaSecret,
+      secret: mfaRecord.totpSecret,
       encoding: 'base32',
       token,
       window: 1
@@ -295,13 +362,25 @@ router.post('/api/admin/employees/:employeeId/mfa/verify', requireAuth, async (r
 // Get security overview for admin dashboard
 router.get('/api/admin/security/overview', requireAuth, async (req, res) => {
   try {
-    const employees = mockEmployees;
+    // Get all employees
+    const employees = await db.select().from(users).where(eq(users.role, 'employee'));
+    
+    // Get MFA status for all employees
+    const mfaRecords = await db.select().from(userMfa);
+    const mfaMap = new Map(mfaRecords.map(mfa => [mfa.userId, mfa]));
+    
+    // Count MFA-compliant employees
+    const mfaCompliant = employees.filter(emp => {
+      const mfa = mfaMap.get(emp.id);
+      return mfa?.enabled === true;
+    }).length;
+    
     const recentLogs = await storage.getSecurityLogs();
     
     const overview = {
       totalEmployees: employees.length,
-      mfaCompliant: employees.filter(emp => emp.mfaEnabled).length,
-      securityScore: Math.round((employees.filter(emp => emp.mfaEnabled).length / employees.length) * 100),
+      mfaCompliant,
+      securityScore: employees.length > 0 ? Math.round((mfaCompliant / employees.length) * 100) : 100,
       recentSecurityEvents: recentLogs.slice(0, 10),
       activeThreats: recentLogs.filter(log => log.severity === 'high' || log.severity === 'critical').length,
       lastSecurityCheck: new Date()
