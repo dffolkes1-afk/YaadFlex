@@ -13,6 +13,9 @@ import {
   uuid,
   numeric,
   time,
+  pgEnum,
+  unique,
+  check,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -443,115 +446,214 @@ export type SystemHealthCheck = typeof systemHealthChecks.$inferSelect;
 export type InsertSystemHealthCheck = typeof systemHealthChecks.$inferInsert;
 
 // =============================================================
-// YAADFLEX PROMOTIONAL CREDITS SYSTEM - Pre-Launch Value
+// YAADFLEX PROMOTIONAL CREDITS SYSTEM - Pre-Launch Value  
 // Compliant loyalty system that converts to real money later
 // =============================================================
 
-// Promotional campaigns
+// Enums for promotional system - ensures type safety and prevents invalid statuses
+export const campaignStatusEnum = pgEnum('campaign_status', ['draft', 'active', 'paused', 'expired', 'terminated']);
+export const campaignTypeEnum = pgEnum('campaign_type', ['welcome', 'referral', 'task_completion', 'admin_grant', 'seasonal']);
+export const transactionTypeEnum = pgEnum('transaction_type', ['credit', 'debit']);
+export const ledgerSourceEnum = pgEnum('ledger_source', ['welcome', 'task', 'referral', 'admin', 'redeem', 'expire', 'convert']);
+export const taskStatusEnum = pgEnum('task_status', ['pending', 'completed', 'verified', 'rejected']);
+export const referralStatusEnum = pgEnum('referral_status', ['pending', 'signed_up', 'activated', 'rewarded', 'expired']);
+
+// Promotional campaigns with legal compliance and robust controls
 export const promoCampaigns = pgTable("promo_campaigns", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  name: varchar("name").notNull(), // 'launch_bonus', 'referral_program', 'task_rewards'
+  name: varchar("name").notNull(), // 'YaadFlex Launch Credits', 'Global Referral Rewards'
   description: text("description"),
-  type: varchar("type").notNull(), // 'welcome', 'referral', 'task_completion', 'admin_grant'
+  type: campaignTypeEnum('type').notNull(),
+  status: campaignStatusEnum('status').notNull().default('draft'),
+  
+  // Budget and limits
   maxCreditsPerUser: decimal("max_credits_per_user", { precision: 10, scale: 2 }).default('50.00'),
   totalBudget: decimal("total_budget", { precision: 12, scale: 2 }),
   creditsGranted: decimal("credits_granted", { precision: 12, scale: 2 }).default('0.00'),
-  isActive: boolean("is_active").default(true),
+  maxTotalUsers: integer("max_total_users"), // Campaign-wide user limit
+  
+  // Legal compliance and control flags - CRITICAL for regulatory compliance
+  withdrawable: boolean("withdrawable").default(false).notNull(), // Can credits be withdrawn as cash?
+  kycRequired: boolean("kyc_required").default(true).notNull(), // Require KYC for conversion?
+  jurisdictionAllowList: jsonb("jurisdiction_allow_list"), // Array of allowed country codes
+  legalTermsRequired: boolean("legal_terms_required").default(true).notNull(),
+  
+  // Timing and activation
   startDate: timestamp("start_date").defaultNow(),
   endDate: timestamp("end_date"),
+  expiresAt: timestamp("expires_at"), // When credits expire
+  
+  // Conversion settings
   conversionRate: decimal("conversion_rate", { precision: 5, scale: 4 }).default('1.0000'), // 1 promo credit = 1 YFD
+  conversionEnabled: boolean("conversion_enabled").default(false).notNull(),
+  
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// User promotional credit wallets
+// User promotional credit wallets with idempotency and balance integrity
 export const promoWallets = pgTable("promo_wallets", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   userId: varchar("user_id").references(() => users.id).notNull(),
   campaignId: varchar("campaign_id").references(() => promoCampaigns.id).notNull(),
-  balance: decimal("balance", { precision: 10, scale: 2 }).default('0.00'),
-  totalEarned: decimal("total_earned", { precision: 10, scale: 2 }).default('0.00'),
-  totalSpent: decimal("total_spent", { precision: 10, scale: 2 }).default('0.00'),
+  balance: decimal("balance", { precision: 10, scale: 2 }).default('0.00').notNull(),
+  totalEarned: decimal("total_earned", { precision: 10, scale: 2 }).default('0.00').notNull(),
+  totalSpent: decimal("total_spent", { precision: 10, scale: 2 }).default('0.00').notNull(),
   isActive: boolean("is_active").default(true),
+  lastTransactionAt: timestamp("last_transaction_at"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 }, (table) => [
+  // CRITICAL: Prevent duplicate wallets per user-campaign - ensures idempotency
+  unique("unique_user_campaign_wallet").on(table.userId, table.campaignId),
   index("idx_user_campaign").on(table.userId, table.campaignId),
+  // Enforce non-negative balance at database level
+  check("positive_balance", sql`balance >= 0`),
+  check("positive_earned", sql`total_earned >= 0`),
+  check("positive_spent", sql`total_spent >= 0`),
 ]);
 
-// Promotional credits transaction ledger
+// Promotional credits transaction ledger - Complete audit trail
 export const promoLedger = pgTable("promo_ledger", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   userId: varchar("user_id").references(() => users.id).notNull(),
   campaignId: varchar("campaign_id").references(() => promoCampaigns.id).notNull(),
   walletId: varchar("wallet_id").references(() => promoWallets.id).notNull(),
-  transactionType: varchar("transaction_type").notNull(), // 'earn', 'spend', 'expire', 'convert', 'admin_adjust'
+  
+  // Structured transaction classification
+  transactionType: transactionTypeEnum('transaction_type').notNull(),
+  source: ledgerSourceEnum('source').notNull(), // What triggered this transaction
   amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
-  reason: varchar("reason").notNull(), // 'signup_bonus', 'profile_complete', 'referral_reward', 'task_reward', 'fee_waiver'
+  
+  // Audit and reversibility
+  reason: varchar("reason").notNull(), // 'signup_bonus', 'profile_complete', 'referral_reward'
   description: text("description"),
   referenceId: varchar("reference_id"), // Task ID, referral ID, etc.
+  idempotencyKey: varchar("idempotency_key"), // Prevent duplicate transactions
+  correlationId: varchar("correlation_id"), // Link related transactions
+  
+  // Balance tracking for integrity
   balanceBefore: decimal("balance_before", { precision: 10, scale: 2 }).notNull(),
   balanceAfter: decimal("balance_after", { precision: 10, scale: 2 }).notNull(),
+  
+  // Reversal capabilities for compliance
   isReversible: boolean("is_reversible").default(false),
   reversedAt: timestamp("reversed_at"),
+  reversedBy: varchar("reversed_by"), // Admin user who reversed
+  reversalReason: text("reversal_reason"),
+  
   createdAt: timestamp("created_at").defaultNow(),
 }, (table) => [
   index("idx_user_ledger").on(table.userId, table.createdAt),
+  index("idx_campaign_ledger").on(table.campaignId, table.createdAt),
+  index("idx_idempotency").on(table.idempotencyKey),
+  // Ensure idempotency keys are unique when provided
+  unique("unique_idempotency_key").on(table.idempotencyKey),
 ]);
 
-// Task definitions for earning credits
+// Task definitions for earning credits with enhanced controls
 export const promoTasks = pgTable("promo_tasks", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   campaignId: varchar("campaign_id").references(() => promoCampaigns.id).notNull(),
-  taskKey: varchar("task_key").notNull().unique(), // 'signup_bonus', 'profile_complete', 'first_login_streak'
+  taskKey: varchar("task_key").notNull(), // 'signup_bonus', 'profile_complete', 'first_login_streak'
   name: varchar("name").notNull(), // 'Complete Profile Setup'
   description: text("description"), // 'Add your name, phone, and photo to unlock $10 credits'
+  
+  // Reward configuration
   rewardAmount: decimal("reward_amount", { precision: 8, scale: 2 }).notNull(),
   maxCompletions: integer("max_completions").default(1), // How many times user can complete this task
+  maxCompletionsPerDay: integer("max_completions_per_day"), // Daily limits
+  
+  // Verification and requirements
   requiresVerification: boolean("requires_verification").default(false),
+  requiresKyc: boolean("requires_kyc").default(false),
+  minimumAccountAge: integer("minimum_account_age"), // Hours before task becomes available
+  
+  // Status and display
   isActive: boolean("is_active").default(true),
-  priority: integer("priority").default(1), // Display order
+  priority: integer("priority").default(100), // Display order
   unlockConditions: jsonb("unlock_conditions"), // Prerequisites for this task
+  
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
-});
+}, (table) => [
+  // Ensure task keys are unique within campaigns
+  unique("unique_campaign_task_key").on(table.campaignId, table.taskKey),
+  index("idx_campaign_tasks").on(table.campaignId, table.isActive),
+]);
 
-// User task completion tracking
+// User task completion tracking with idempotency
 export const userPromoTasks = pgTable("user_promo_tasks", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   userId: varchar("user_id").references(() => users.id).notNull(),
   taskId: varchar("task_id").references(() => promoTasks.id).notNull(),
   campaignId: varchar("campaign_id").references(() => promoCampaigns.id).notNull(),
-  status: varchar("status").notNull().default('pending'), // 'pending', 'completed', 'verified', 'rewarded'
+  
+  // Status tracking with enum
+  status: taskStatusEnum('status').notNull().default('pending'),
+  
+  // Completion tracking
   completedAt: timestamp("completed_at"),
+  verifiedAt: timestamp("verified_at"),
   rewardedAt: timestamp("rewarded_at"),
-  verificationData: jsonb("verification_data"), // Any data needed to verify task completion
+  verificationData: jsonb("verification_data"), // Screenshots, receipts, etc.
+  completionCount: integer("completion_count").default(1), // For repeatable tasks
+  
+  // Reward tracking
   rewardAmount: decimal("reward_amount", { precision: 8, scale: 2 }),
   ledgerEntryId: varchar("ledger_entry_id").references(() => promoLedger.id),
+  
+  // Admin tracking
+  verifiedBy: varchar("verified_by"), // Admin user who verified
+  rejectionReason: text("rejection_reason"),
+  
   createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 }, (table) => [
+  // CRITICAL: Prevent duplicate task completions per user - ensures idempotency
+  unique("unique_user_task_completion").on(table.userId, table.taskId),
   index("idx_user_task").on(table.userId, table.taskId),
+  index("idx_campaign_user_tasks").on(table.campaignId, table.userId),
 ]);
 
-// Referral tracking for promotional system
+// Referral system for viral growth with strong constraints
 export const promoReferrals = pgTable("promo_referrals", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   campaignId: varchar("campaign_id").references(() => promoCampaigns.id).notNull(),
   referrerId: varchar("referrer_id").references(() => users.id).notNull(),
-  refereeId: varchar("referee_id").references(() => users.id),
-  referralCode: varchar("referral_code").notNull().unique(),
+  referralCode: varchar("referral_code").notNull(), // 'YAAD-FLEX-ABC123'
+  
+  // Referee information and tracking
+  refereeUserId: varchar("referee_user_id").references(() => users.id), // Set when referee signs up
   refereeEmail: varchar("referee_email"),
   refereePhone: varchar("referee_phone"),
-  status: varchar("status").notNull().default('pending'), // 'pending', 'signed_up', 'activated', 'rewarded'
+  
+  // Status with enum for type safety
+  status: referralStatusEnum('status').notNull().default('pending'),
+  
+  // Reward configuration
   referrerReward: decimal("referrer_reward", { precision: 8, scale: 2 }).default('5.00'),
   refereeReward: decimal("referee_reward", { precision: 8, scale: 2 }).default('5.00'),
+  
+  // Timeline tracking
   signedUpAt: timestamp("signed_up_at"),
   activatedAt: timestamp("activated_at"), // When referee completed activation requirements
   rewardedAt: timestamp("rewarded_at"),
+  expiresAt: timestamp("expires_at"), // When referral link expires
+  
+  // Tracking and analytics
+  clickCount: integer("click_count").default(0),
+  lastClickedAt: timestamp("last_clicked_at"),
+  
   createdAt: timestamp("created_at").defaultNow(),
 }, (table) => [
+  // CRITICAL: Ensure referral code uniqueness across all campaigns
+  unique("unique_referral_code").on(table.referralCode),
+  // CRITICAL: Prevent duplicate referrals between same users
+  unique("unique_referrer_referee").on(table.referrerId, table.refereeUserId),
   index("idx_referrer").on(table.referrerId),
   index("idx_referral_code").on(table.referralCode),
+  index("idx_referee").on(table.refereeUserId),
 ]);
 
 // Types for promotional system
