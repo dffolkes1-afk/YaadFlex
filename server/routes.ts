@@ -9,6 +9,7 @@ import { requireCEOAccess } from "./auth/time-guard";
 import { seedTimeAuthSystem } from "./seed-time-auth";
 import rbacRoutes from "./rbac-routes";
 import { seedRbacSystem } from "./rbac-seed";
+import { adminMfaRoutes } from "./admin-mfa-routes";
 import deliveryRoutes from "./delivery-routes";
 import ttsRoutes from "./tts-routes";
 import { initializeDeliveryRealtime } from "./delivery-realtime";
@@ -660,6 +661,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // RBAC + Area Locking routes
   app.use(rbacRoutes);
+  
+  // Admin MFA Management routes (FULL SECURITY control)
+  app.use(adminMfaRoutes);
   
   // Universal Delivery Network routes
   app.use(deliveryRoutes);
