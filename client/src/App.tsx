@@ -62,6 +62,7 @@ import SocialFeed from "@/pages/SocialFeed";
 import GlobalJobs from "@/pages/GlobalJobs";
 import YaadWallet from "@/pages/YaadWallet";
 import TransferControlCenter from "@/pages/TransferControlCenter";
+import AIDevTeam from "@/pages/AIDevTeam";
 import CompanyDashboard from "@/pages/CompanyDashboard";
 import LogisticsBrokers from "@/pages/LogisticsBrokers";
 import HeritageDelivery from "@/pages/HeritageDelivery";
@@ -285,6 +286,10 @@ function Router() {
       <Route path="/money-control" component={TransferControlCenter} />
       <Route path="/transfer-center" component={TransferControlCenter} />
       <Route path="/global-transfers" component={TransferControlCenter} />
+      <Route path="/ai-devs" component={AIDevTeam} />
+      <Route path="/ai-team" component={AIDevTeam} />
+      <Route path="/developers" component={AIDevTeam} />
+      <Route path="/autonomous" component={AIDevTeam} />
       <Route component={NotFound} />
     </Switch>
   );

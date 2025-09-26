@@ -294,6 +294,32 @@ export default function TransferControlCenter() {
               </Card>
             </div>
 
+            {/* AI Dev Team Access */}
+            <Card className="bg-gradient-to-r from-green-900 to-blue-900 border-green-700 mb-6">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-green-300">
+                  <Shield className="h-6 w-6" />
+                  🤖 AI Development Team Active
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-white font-semibold">6 AI Developers Working 24/7</div>
+                    <div className="text-green-200 text-sm">Auto-repair, debt management, and system optimization</div>
+                  </div>
+                  <Button 
+                    onClick={() => window.location.href = '/ai-devs'}
+                    className="bg-green-600 hover:bg-green-700"
+                    data-testid="button-ai-team"
+                  >
+                    <Shield className="h-4 w-4 mr-2" />
+                    View AI Team
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* YaadFlex vs TapTap Advantage */}
             <Card className="bg-gradient-to-r from-cyan-900 to-purple-900 border-cyan-700">
               <CardHeader>
