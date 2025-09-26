@@ -2586,6 +2586,126 @@ class DemoStorage implements IStorage {
   async updateYaadFlexPayMerchant(id: string, updates: any): Promise<any> { return { id, ...updates }; }
   async processYaadFlexPayment(fromUserId: string, amount: number, currency: string, description?: string, recipientPhone?: string): Promise<any> { return { id: '1', fromUserId, amount, currency, status: 'completed' }; }
   async withdrawYaadFlexFunds(userId: string, amount: number, bankAccount: string): Promise<any> { return { id: '1', userId, amount, bankAccount, status: 'pending' }; }
+
+  // Promotional Credits System stub implementations
+  async createPromoCampaign(campaign: any): Promise<any> { return { id: '1', ...campaign, status: 'active' }; }
+  async getPromoCampaign(id: string): Promise<any> { return { id, name: 'YaadFlex Launch Credits', status: 'active', maxCreditsPerUser: '50.00' }; }
+  async getActivePromoCampaigns(): Promise<any[]> { 
+    return [{ 
+      id: 'WELCOME50', 
+      name: 'YaadFlex Launch Credits', 
+      type: 'welcome', 
+      status: 'active',
+      maxCreditsPerUser: '50.00',
+      description: 'Get $50 in promotional credits when you join YaadFlex!'
+    }]; 
+  }
+  async updatePromoCampaign(id: string, updates: any): Promise<any> { return { id, ...updates }; }
+  async createPromoWallet(wallet: any): Promise<any> { return { id: '1', ...wallet, balance: '50.00', totalEarned: '50.00' }; }
+  async getPromoWallet(userId: string, campaignId: string): Promise<any> { 
+    return { 
+      id: '1', 
+      userId, 
+      campaignId, 
+      balance: '50.00', 
+      totalEarned: '50.00', 
+      totalSpent: '0.00',
+      isActive: true 
+    }; 
+  }
+  async getUserPromoWallets(userId: string): Promise<any[]> { 
+    return [{ 
+      id: '1', 
+      userId, 
+      campaignId: 'WELCOME50', 
+      balance: '50.00', 
+      totalEarned: '50.00', 
+      totalSpent: '0.00',
+      isActive: true 
+    }]; 
+  }
+  async updatePromoWalletBalance(walletId: string, amount: number, type: string): Promise<any> { 
+    return { id: walletId, balance: type === 'add' ? '50.00' : '40.00' }; 
+  }
+  async createPromoLedgerEntry(entry: any): Promise<any> { return { id: '1', ...entry }; }
+  async getUserPromoLedger(userId: string, campaignId?: string): Promise<any[]> { 
+    return [{ 
+      id: '1', 
+      userId, 
+      campaignId: campaignId || 'WELCOME50',
+      transactionType: 'credit',
+      source: 'welcome',
+      amount: '50.00',
+      reason: 'welcome_bonus',
+      description: 'Welcome bonus: 50 promotional credits',
+      balanceBefore: '0.00',
+      balanceAfter: '50.00',
+      createdAt: new Date()
+    }]; 
+  }
+  async getPromoLedgerEntry(id: string): Promise<any> { return { id, amount: '50.00', reason: 'welcome_bonus' }; }
+  async createPromoTask(task: any): Promise<any> { return { id: '1', ...task }; }
+  async getPromoTasks(campaignId: string): Promise<any[]> { return []; }
+  async getActivePromoTasks(campaignId: string): Promise<any[]> { return []; }
+  async updatePromoTask(id: string, updates: any): Promise<any> { return { id, ...updates }; }
+  async createUserPromoTask(userTask: any): Promise<any> { return { id: '1', ...userTask }; }
+  async getUserPromoTask(userId: string, taskId: string): Promise<any> { return undefined; }
+  async getUserPromoTasks(userId: string, campaignId?: string): Promise<any[]> { return []; }
+  async updateUserPromoTaskStatus(id: string, status: string, completedAt?: Date): Promise<any> { return { id, status, completedAt }; }
+  async createPromoReferral(referral: any): Promise<any> { return { id: '1', ...referral }; }
+  async getPromoReferral(referralCode: string): Promise<any> { return { id: '1', referralCode, status: 'pending' }; }
+  async getUserReferrals(referrerId: string): Promise<any[]> { return []; }
+  async updatePromoReferralStatus(id: string, status: string, completedAt?: Date): Promise<any> { return { id, status, completedAt }; }
+  async claimWelcomeBonus(userId: string, campaignId: string): Promise<{ wallet: any; ledgerEntry: any }> {
+    const wallet = { id: '1', userId, campaignId, balance: '50.00', totalEarned: '50.00', totalSpent: '0.00', isActive: true };
+    const ledgerEntry = { 
+      id: '1', 
+      userId, 
+      campaignId,
+      transactionType: 'credit',
+      source: 'welcome',
+      amount: '50.00',
+      reason: 'welcome_bonus',
+      description: 'Welcome bonus: 50 promotional credits',
+      balanceBefore: '0.00',
+      balanceAfter: '50.00'
+    };
+    return { wallet, ledgerEntry };
+  }
+  async completePromoTask(userId: string, taskId: string, verificationData?: any): Promise<{ userTask: any; ledgerEntry?: any }> {
+    const userTask = { id: '1', userId, taskId, status: 'completed', completedAt: new Date() };
+    return { userTask };
+  }
+  async processReferral(referralCode: string, refereeUserId: string): Promise<any> { 
+    return { id: '1', referralCode, refereeUserId, status: 'signed_up' }; 
+  }
+  async redeemPromoCredits(userId: string, campaignId: string, amount: number, reason: string): Promise<any> { 
+    return { 
+      id: '1', 
+      userId, 
+      campaignId,
+      transactionType: 'debit',
+      source: 'redeem',
+      amount: amount.toString(),
+      reason,
+      description: `Redeemed ${amount} credits: ${reason}`
+    }; 
+  }
+  async grantPromoCredits(userId: string, campaignId: string, amount: number, reason: string, description?: string): Promise<any> { 
+    return { 
+      id: '1', 
+      userId, 
+      campaignId,
+      transactionType: 'credit',
+      source: 'admin',
+      amount: amount.toString(),
+      reason,
+      description: description || `Admin grant: ${amount} promotional credits`
+    }; 
+  }
+  async convertPromoCreditsToReal(campaignId: string, conversionRate?: number): Promise<{ convertedUsers: number; totalConverted: number }> { 
+    return { convertedUsers: 0, totalConverted: 0 }; 
+  }
 }
 
 export const storage = new DemoStorage();

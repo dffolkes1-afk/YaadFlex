@@ -129,6 +129,13 @@ import {
   insertPaymentJobSchema,
   // Fare Rules Insert Schemas
   insertFareRuleSchema,
+  // Promotional Credits Insert Schemas
+  insertPromoCampaignSchema,
+  insertPromoWalletSchema,
+  insertPromoLedgerSchema,
+  insertPromoTaskSchema,
+  insertUserPromoTaskSchema,
+  insertPromoReferralSchema,
   // YaadFlex Luxury Clothing Line Schemas
   insertYaadFlexCategorySchema,
   insertYaadFlexProductSchema,
@@ -955,6 +962,301 @@ Time: ${new Date().toISOString()}
     } catch (error) {
       console.error("Error fetching wallet:", error);
       res.status(500).json({ message: "Failed to fetch wallet" });
+    }
+  });
+
+  // ============================================================
+  // PROMOTIONAL CREDITS SYSTEM API ROUTES
+  // YaadFlex Launch Credits - Immediate value for early users
+  // ============================================================
+
+  // Get active promotional campaigns
+  app.get('/api/promo/campaigns', async (req, res) => {
+    try {
+      const campaigns = await storage.getActivePromoCampaigns();
+      res.json(campaigns);
+    } catch (error) {
+      console.error("Error fetching campaigns:", error);
+      res.status(500).json({ message: "Failed to fetch promotional campaigns" });
+    }
+  });
+
+  // Get user's promotional wallets
+  app.get('/api/promo/wallets', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const wallets = await storage.getUserPromoWallets(userId);
+      res.json(wallets);
+    } catch (error) {
+      console.error("Error fetching promo wallets:", error);
+      res.status(500).json({ message: "Failed to fetch promotional wallets" });
+    }
+  });
+
+  // Get user's promotional transaction history
+  app.get('/api/promo/ledger', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { campaignId } = req.query;
+      const ledger = await storage.getUserPromoLedger(userId, campaignId as string);
+      res.json(ledger);
+    } catch (error) {
+      console.error("Error fetching promo ledger:", error);
+      res.status(500).json({ message: "Failed to fetch promotional transaction history" });
+    }
+  });
+
+  // Claim welcome bonus (YaadFlex Launch Credits)
+  app.post('/api/promo/claim-welcome', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      
+      // Validate request body with Zod
+      const claimWelcomeSchema = z.object({
+        campaignId: z.string().min(1, "Campaign ID is required")
+      });
+      
+      const validatedData = claimWelcomeSchema.parse(req.body);
+      const { campaignId } = validatedData;
+
+      // Check if user has accepted legal terms
+      const user = await storage.getUser(userId);
+      if (!user?.termsAccepted || !user?.privacyAccepted) {
+        return res.status(403).json({ 
+          message: "You must accept the Terms of Service and Privacy Policy before claiming promotional credits",
+          requiresLegalAcceptance: true
+        });
+      }
+
+      // Log security event for promotional claim
+      await storage.logSecurityEvent({
+        userId,
+        eventType: 'promotional_claim',
+        severity: 'low',
+        description: `User claimed welcome bonus for campaign ${campaignId}`,
+        ipAddress: req.ip,
+        userAgent: req.get('User-Agent'),
+      });
+
+      const result = await storage.claimWelcomeBonus(userId, campaignId);
+      res.json({
+        success: true,
+        message: "Welcome bonus claimed successfully!",
+        wallet: result.wallet,
+        transaction: result.ledgerEntry
+      });
+
+    } catch (error: any) {
+      console.error("Error claiming welcome bonus:", error);
+      
+      if (error.message === 'Welcome bonus already claimed') {
+        return res.status(409).json({ message: "Welcome bonus has already been claimed for this campaign" });
+      }
+      
+      if (error.message === 'Campaign not available') {
+        return res.status(404).json({ message: "Promotional campaign is not available" });
+      }
+      
+      res.status(500).json({ message: "Failed to claim welcome bonus" });
+    }
+  });
+
+  // Get available promotional tasks
+  app.get('/api/promo/tasks/:campaignId', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { campaignId } = req.params;
+      
+      // Get campaign tasks
+      const tasks = await storage.getActivePromoTasks(campaignId);
+      
+      // Get user's task completions to show progress
+      const userTasks = await storage.getUserPromoTasks(userId, campaignId);
+      const userTaskMap = new Map(userTasks.map((ut: any) => [ut.taskId, ut]));
+      
+      // Combine tasks with user progress
+      const tasksWithProgress = tasks.map((task: any) => ({
+        ...task,
+        userProgress: userTaskMap.get(task.id) || null
+      }));
+      
+      res.json(tasksWithProgress);
+    } catch (error) {
+      console.error("Error fetching promo tasks:", error);
+      res.status(500).json({ message: "Failed to fetch promotional tasks" });
+    }
+  });
+
+  // Complete a promotional task
+  app.post('/api/promo/tasks/complete', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      
+      // Validate request body with Zod
+      const completeTaskSchema = z.object({
+        taskId: z.string().min(1, "Task ID is required"),
+        verificationData: z.any().optional()
+      });
+      
+      const validatedData = completeTaskSchema.parse(req.body);
+      const { taskId, verificationData } = validatedData;
+
+      // Log task completion attempt
+      await storage.logSecurityEvent({
+        userId,
+        eventType: 'promotional_task',
+        severity: 'low',
+        description: `User completed promotional task ${taskId}`,
+        ipAddress: req.ip,
+        userAgent: req.get('User-Agent'),
+      });
+
+      const result = await storage.completePromoTask(userId, taskId, verificationData);
+      
+      res.json({
+        success: true,
+        message: result.ledgerEntry ? "Task completed and reward granted!" : "Task completed, pending verification",
+        userTask: result.userTask,
+        reward: result.ledgerEntry
+      });
+
+    } catch (error: any) {
+      console.error("Error completing promo task:", error);
+      
+      if (error.message === 'Task not available') {
+        return res.status(404).json({ message: "Promotional task is not available" });
+      }
+      
+      res.status(500).json({ message: "Failed to complete promotional task" });
+    }
+  });
+
+  // Process referral signup
+  app.post('/api/promo/referral/process', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      
+      // Validate request body with Zod
+      const processReferralSchema = z.object({
+        referralCode: z.string().min(1, "Referral code is required")
+      });
+      
+      const validatedData = processReferralSchema.parse(req.body);
+      const { referralCode } = validatedData;
+
+      // Log referral processing
+      await storage.logSecurityEvent({
+        userId,
+        eventType: 'referral_signup',
+        severity: 'low',
+        description: `User signed up with referral code ${referralCode}`,
+        ipAddress: req.ip,
+        userAgent: req.get('User-Agent'),
+      });
+
+      const result = await storage.processReferral(referralCode, userId);
+      
+      res.json({
+        success: true,
+        message: "Referral processed successfully!",
+        referral: result
+      });
+
+    } catch (error: any) {
+      console.error("Error processing referral:", error);
+      
+      if (error.message === 'Invalid or expired referral code') {
+        return res.status(404).json({ message: "Invalid or expired referral code" });
+      }
+      
+      res.status(500).json({ message: "Failed to process referral" });
+    }
+  });
+
+  // Redeem promotional credits for real value
+  app.post('/api/promo/redeem', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      
+      // Validate request body with Zod
+      const redeemCreditsSchema = z.object({
+        campaignId: z.string().min(1, "Campaign ID is required"),
+        amount: z.number().positive("Amount must be greater than 0"),
+        reason: z.string().min(1, "Reason is required")
+      });
+      
+      const validatedData = redeemCreditsSchema.parse(req.body);
+      const { campaignId, amount, reason } = validatedData;
+
+      // Log redemption attempt
+      await storage.logSecurityEvent({
+        userId,
+        eventType: 'promotional_redeem',
+        severity: 'medium',
+        description: `User redeemed ${amount} promotional credits for ${reason}`,
+        ipAddress: req.ip,
+        userAgent: req.get('User-Agent'),
+      });
+
+      const result = await storage.redeemPromoCredits(userId, campaignId, amount, reason);
+      
+      res.json({
+        success: true,
+        message: "Promotional credits redeemed successfully!",
+        transaction: result
+      });
+
+    } catch (error: any) {
+      console.error("Error redeeming promo credits:", error);
+      
+      if (error.message === 'Insufficient promotional credits') {
+        return res.status(400).json({ message: "Insufficient promotional credits in your account" });
+      }
+      
+      if (error.message === 'Wallet not found') {
+        return res.status(404).json({ message: "Promotional wallet not found" });
+      }
+      
+      res.status(500).json({ message: "Failed to redeem promotional credits" });
+    }
+  });
+
+  // Admin route: Grant promotional credits
+  app.post('/api/admin/promo/grant', isAuthenticated, requireCEOAccess, async (req: any, res) => {
+    try {
+      // Validate request body with Zod
+      const grantCreditsSchema = z.object({
+        userId: z.string().min(1, "User ID is required"),
+        campaignId: z.string().min(1, "Campaign ID is required"),
+        amount: z.number().positive("Amount must be greater than 0"),
+        reason: z.string().min(1, "Reason is required"),
+        description: z.string().optional()
+      });
+      
+      const validatedData = grantCreditsSchema.parse(req.body);
+      const { userId, campaignId, amount, reason, description } = validatedData;
+
+      // Log admin grant
+      await storage.logSecurityEvent({
+        userId: req.user.claims.sub,
+        eventType: 'admin_promo_grant',
+        severity: 'high',
+        description: `Admin granted ${amount} promotional credits to user ${userId}`,
+        ipAddress: req.ip,
+        userAgent: req.get('User-Agent'),
+      });
+
+      const result = await storage.grantPromoCredits(userId, campaignId, amount, reason, description);
+      
+      res.json({
+        success: true,
+        message: "Promotional credits granted successfully!",
+        transaction: result
+      });
+
+    } catch (error) {
+      console.error("Error granting promo credits:", error);
+      res.status(500).json({ message: "Failed to grant promotional credits" });
     }
   });
 

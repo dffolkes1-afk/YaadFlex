@@ -7,10 +7,13 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { apiRequest, queryClient } from '@/lib/queryClient';
 import { 
   Wallet, Send, ArrowDownToLine, ArrowUpFromLine, CreditCard, 
   DollarSign, Users, Globe, Zap, QrCode, Phone, Mail,
-  TrendingUp, Shield, Clock, Plus, Minus, Eye, EyeOff, Banknote, Coins
+  TrendingUp, Shield, Clock, Plus, Minus, Eye, EyeOff, Banknote, Coins,
+  Gift, Star, Trophy, Target
 } from 'lucide-react';
 import YFDCurrency from '@/components/YFDCurrency';
 import YFDCoins from '@/components/YFDCoins';
@@ -29,6 +32,171 @@ interface Transaction {
   status: 'completed' | 'pending' | 'failed';
   from?: string;
   to?: string;
+}
+
+// Promotional Credits Component
+function PromoCreditsSection() {
+  const { toast } = useToast();
+  const [selectedCampaign, setSelectedCampaign] = useState<string>('');
+  
+  // Fetch active promotional campaigns
+  const { data: campaigns, isLoading: campaignsLoading } = useQuery({
+    queryKey: ['/api/promo/campaigns'],
+    staleTime: 5 * 60 * 1000 // 5 minutes
+  });
+  
+  // Fetch user's promotional wallets
+  const { data: wallets, isLoading: walletsLoading } = useQuery({
+    queryKey: ['/api/promo/wallets']
+  });
+  
+  // Get campaign tasks
+  const { data: tasks, isLoading: tasksLoading } = useQuery({
+    queryKey: ['/api/promo/tasks', selectedCampaign],
+    enabled: !!selectedCampaign
+  });
+  
+  // Welcome bonus claim mutation
+  const claimWelcomeMutation = useMutation({
+    mutationFn: (campaignId: string) => 
+      apiRequest(`/api/promo/claim-welcome`, 'POST', { campaignId }),
+    onSuccess: (data: any) => {
+      toast({
+        title: "🎉 Welcome Bonus Claimed!",
+        description: `You've received ${data?.amount || '$50'} promotional credits!`,
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/promo/wallets'] });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Claim Failed",
+        description: error.message || "Unable to claim welcome bonus",
+        variant: "destructive"
+      });
+    }
+  });
+  
+  // Calculate total promotional balance
+  const walletsArray = Array.isArray(wallets) ? wallets : [];
+  const totalPromoBalance = walletsArray.reduce((total: number, wallet: any) => 
+    total + parseFloat(wallet.balance || '0'), 0);
+  
+  // Find the launch campaign
+  const campaignsArray = Array.isArray(campaigns) ? campaigns : [];
+  const launchCampaign = campaignsArray.find((c: any) => 
+    c.name?.toLowerCase().includes('launch') || c.name?.toLowerCase().includes('welcome')
+  );
+  
+  return (
+    <div className="mb-8">
+      <Card className="bg-gradient-to-br from-emerald-500 via-green-500 to-teal-600 text-white border-2 border-emerald-300">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-2xl">
+            <Gift className="h-8 w-8" />
+            🎁 YaadFlex Launch Credits
+          </CardTitle>
+          <CardDescription className="text-emerald-100 text-lg">
+            Start with $50 in promotional credits - Use for fees, upgrades, and premium features!
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            {/* Current Balance */}
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+              <div className="text-3xl font-bold mb-2">
+                {walletsLoading ? "..." : `$${totalPromoBalance.toFixed(2)}`}
+              </div>
+              <div className="text-emerald-100">
+                Available Credits
+              </div>
+              <div className="text-sm text-emerald-200 mt-1">
+                Redeem for fees & features
+              </div>
+            </div>
+            
+            {/* Welcome Bonus */}
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+              <div className="text-2xl mb-2">🚀</div>
+              <div className="text-lg font-bold mb-2">Welcome Bonus</div>
+              {launchCampaign ? (
+                <Button
+                  onClick={() => claimWelcomeMutation.mutate(launchCampaign.id)}
+                  disabled={claimWelcomeMutation.isPending}
+                  className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold"
+                  data-testid="button-claim-welcome-bonus"
+                >
+                  {claimWelcomeMutation.isPending ? "Claiming..." : "Claim $50 Now"}
+                </Button>
+              ) : (
+                <div className="text-sm text-emerald-200">No active campaign</div>
+              )}
+            </div>
+            
+            {/* Earn More */}
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+              <div className="text-2xl mb-2">💪</div>
+              <div className="text-lg font-bold mb-2">Earn More</div>
+              <div className="text-sm text-emerald-200 mb-2">
+                Complete tasks for extra credits
+              </div>
+              <Button
+                variant="outline"
+                className="bg-transparent border-white text-white hover:bg-white hover:text-green-600"
+                size="sm"
+                data-testid="button-view-tasks"
+                onClick={() => setSelectedCampaign(launchCampaign?.id || '')}
+              >
+                <Trophy className="h-4 w-4 mr-1" />
+                View Tasks
+              </Button>
+            </div>
+          </div>
+          
+          {/* Available Tasks Preview */}
+          {selectedCampaign && Array.isArray(tasks) && tasks.length > 0 && (
+            <div className="mt-6 bg-white/10 backdrop-blur-sm rounded-xl p-4">
+              <h4 className="text-lg font-bold mb-3 flex items-center gap-2">
+                <Target className="h-5 w-5" />
+                Available Tasks
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {tasks.slice(0, 4).map((task: any) => (
+                  <div key={task.id} className="bg-white/10 rounded-lg p-3">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="font-semibold text-sm">{task.title}</div>
+                      <Badge variant="secondary" className="bg-yellow-500 text-black">
+                        +${task.rewardAmount}
+                      </Badge>
+                    </div>
+                    <div className="text-xs text-emerald-200 mb-2">
+                      {task.description}
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-emerald-300">
+                        {task.userProgress?.status || 'Not Started'}
+                      </span>
+                      {!task.userProgress && (
+                        <Button size="sm" variant="ghost" className="text-white hover:bg-white/20 text-xs px-2 py-1">
+                          Start Task
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {/* Legal Notice */}
+          <div className="mt-6 text-xs text-emerald-200 text-center">
+            ⚖️ Promotional credits are for platform fees and upgrades only. Not withdrawable as cash. 
+            Subject to terms and conditions.
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }
 
 export default function YaadWallet() {
@@ -304,6 +472,9 @@ export default function YaadWallet() {
             </div>
           </div>
         </div>
+
+        {/* Promotional Credits Section */}
+        <PromoCreditsSection />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
