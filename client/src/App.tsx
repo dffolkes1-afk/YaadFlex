@@ -61,6 +61,7 @@ import SocialSignup from "@/pages/SocialSignup";
 import SocialFeed from "@/pages/SocialFeed";
 import GlobalJobs from "@/pages/GlobalJobs";
 import YaadWallet from "@/pages/YaadWallet";
+import TransferControlCenter from "@/pages/TransferControlCenter";
 import CompanyDashboard from "@/pages/CompanyDashboard";
 import LogisticsBrokers from "@/pages/LogisticsBrokers";
 import HeritageDelivery from "@/pages/HeritageDelivery";
@@ -280,6 +281,10 @@ function Router() {
       <Route path="/wallet" component={YaadWallet} />
       <Route path="/bank" component={YaadWallet} />
       <Route path="/money" component={YaadWallet} />
+      <Route path="/transfer-control" component={TransferControlCenter} />
+      <Route path="/money-control" component={TransferControlCenter} />
+      <Route path="/transfer-center" component={TransferControlCenter} />
+      <Route path="/global-transfers" component={TransferControlCenter} />
       <Route component={NotFound} />
     </Switch>
   );

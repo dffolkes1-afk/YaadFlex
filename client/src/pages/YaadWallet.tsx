@@ -331,7 +331,7 @@ export default function YaadWallet() {
 
             {/* Quick Actions */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Card className="hover:shadow-lg transition-all cursor-pointer bg-green-50">
+              <Card className="hover:shadow-lg transition-all cursor-pointer bg-green-50" onClick={() => window.location.href = '/transfer-control'}>
                 <CardContent className="p-4 text-center">
                   <Send className="h-8 w-8 text-green-600 mx-auto mb-2" />
                   <div className="font-medium text-green-700">Send Money</div>
