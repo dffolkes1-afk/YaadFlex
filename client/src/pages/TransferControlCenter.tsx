@@ -193,6 +193,32 @@ export default function TransferControlCenter() {
             Your worldwide money transfer empire - Better than TapTap!
           </p>
           
+          {/* URGENT JOIN NOW BANNER */}
+          <div className="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 p-4 rounded-xl border-2 border-yellow-300 shadow-2xl mb-6">
+            <div className="text-white text-center">
+              <div className="text-2xl font-black mb-2">⚡ SPECIAL LAUNCH OFFER - EXPIRES SOON! ⚡</div>
+              <div className="text-lg font-bold mb-2">Join Now & Get FREE $50 YFD Welcome Bonus!</div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm font-semibold">
+                <div className="bg-white/20 p-2 rounded">
+                  🎁 $50 FREE Credits<br/>
+                  <span className="text-xs">No Deposit Required</span>
+                </div>
+                <div className="bg-white/20 p-2 rounded">
+                  🚀 0% Fees First Month<br/>
+                  <span className="text-xs">Save $100s</span>
+                </div>
+                <div className="bg-white/20 p-2 rounded">
+                  👑 VIP Status Unlocked<br/>
+                  <span className="text-xs">Premium Features</span>
+                </div>
+              </div>
+              <div className="mt-3">
+                <div className="text-base font-bold">Only 2,847 spots left for this offer!</div>
+                <div className="text-sm opacity-90">Your neighbor just signed up 3 minutes ago</div>
+              </div>
+            </div>
+          </div>
+          
           {/* System Status */}
           <div className="flex items-center justify-center gap-6 mb-6">
             <div className="flex items-center gap-2">
@@ -320,31 +346,76 @@ export default function TransferControlCenter() {
               </CardContent>
             </Card>
 
-            {/* YaadFlex vs TapTap Advantage */}
-            <Card className="bg-gradient-to-r from-cyan-900 to-purple-900 border-cyan-700">
+            {/* THE TAPTAP DESTROYER SECTION */}
+            <Card className="bg-gradient-to-r from-red-900 via-purple-900 to-blue-900 border-red-700 shadow-2xl">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-cyan-300">
+                <CardTitle className="flex items-center gap-2 text-red-300">
                   <Target className="h-6 w-6" />
-                  🏆 Your Global Transfer Advantage
+                  💀 THE TAPTAP DESTROYER - YaadFlex Supremacy
                 </CardTitle>
+                <CardDescription className="text-red-200">
+                  Why TapTap users are switching to YaadFlex every day
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="text-center p-4 bg-green-800/30 rounded-lg">
-                    <div className="text-2xl font-bold text-green-300">195+</div>
-                    <div className="text-sm text-green-200">Countries Supported</div>
-                    <div className="text-xs text-green-100 mt-1">vs TapTap's limited reach</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div className="text-lg font-bold text-red-300 text-center">🔴 TapTap PROBLEMS:</div>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 p-2 bg-red-800/30 rounded">
+                        <span className="text-red-400">❌</span>
+                        <span className="text-red-200">Limited to 3-5 currencies</span>
+                      </div>
+                      <div className="flex items-center gap-2 p-2 bg-red-800/30 rounded">
+                        <span className="text-red-400">❌</span>
+                        <span className="text-red-200">High 3-5% transfer fees</span>
+                      </div>
+                      <div className="flex items-center gap-2 p-2 bg-red-800/30 rounded">
+                        <span className="text-red-400">❌</span>
+                        <span className="text-red-200">Only works in 20-30 countries</span>
+                      </div>
+                      <div className="flex items-center gap-2 p-2 bg-red-800/30 rounded">
+                        <span className="text-red-400">❌</span>
+                        <span className="text-red-200">Slow manual processing</span>
+                      </div>
+                      <div className="flex items-center gap-2 p-2 bg-red-800/30 rounded">
+                        <span className="text-red-400">❌</span>
+                        <span className="text-red-200">No voice control features</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-center p-4 bg-blue-800/30 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-300">0.5%</div>
-                    <div className="text-sm text-blue-200">Average Fee</div>
-                    <div className="text-xs text-blue-100 mt-1">vs TapTap's 3-5% fees</div>
+                  <div className="space-y-4">
+                    <div className="text-lg font-bold text-green-300 text-center">🟢 YaadFlex DOMINATION:</div>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 p-2 bg-green-800/30 rounded">
+                        <span className="text-green-400">✅</span>
+                        <span className="text-green-200">14 global currencies supported</span>
+                      </div>
+                      <div className="flex items-center gap-2 p-2 bg-green-800/30 rounded">
+                        <span className="text-green-400">✅</span>
+                        <span className="text-green-200">Ultra-low 0.5% transfer fees</span>
+                      </div>
+                      <div className="flex items-center gap-2 p-2 bg-green-800/30 rounded">
+                        <span className="text-green-400">✅</span>
+                        <span className="text-green-200">195+ countries worldwide</span>
+                      </div>
+                      <div className="flex items-center gap-2 p-2 bg-green-800/30 rounded">
+                        <span className="text-green-400">✅</span>
+                        <span className="text-green-200">AI-powered instant transfers</span>
+                      </div>
+                      <div className="flex items-center gap-2 p-2 bg-green-800/30 rounded">
+                        <span className="text-green-400">✅</span>
+                        <span className="text-green-200">Full voice control & automation</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-center p-4 bg-purple-800/30 rounded-lg">
-                    <div className="text-2xl font-bold text-purple-300">14</div>
-                    <div className="text-sm text-purple-200">Currencies</div>
-                    <div className="text-xs text-purple-100 mt-1">vs TapTap's limited options</div>
-                  </div>
+                </div>
+                <div className="mt-6 text-center">
+                  <div className="text-2xl font-black text-purple-300 mb-2">👑 "YaadFlex: The TapTap Killer That Rules The World" 👑</div>
+                  <div className="text-lg text-purple-200 mb-4">Join the 2M+ people who made the smart switch</div>
+                  <Button className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-4 px-8 text-lg">
+                    🚀 DESTROY TAPTAP - JOIN YAADFLEX NOW!
+                  </Button>
                 </div>
               </CardContent>
             </Card>
