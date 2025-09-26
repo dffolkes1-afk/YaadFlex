@@ -1,0 +1,152 @@
+Perfect — I’ll package everything you need for Replit + Firebase + YardFlex autonomous AI core into a ready-to-run app skeleton. You’ll just upload the files to Replit and configure secrets.
+
+Here’s the full setup 👇
+
+
+---
+
+📂 Project Structure
+
+yardflex-app/
+│── main.py
+│── requirements.txt
+│── firebase-key.json   (upload from Firebase console, not public)
+│── README.md
+
+
+---
+
+🔑 requirements.txt
+
+flask
+firebase-admin
+google-generativeai
+gunicorn
+
+
+---
+
+🐍 main.py
+
+from flask import Flask, request, jsonify
+import firebase_admin
+from firebase_admin import credentials, firestore
+import google.generativeai as genai
+
+app = Flask(__name__)
+
+# --- Firebase Setup ---
+cred = credentials.Certificate("firebase-key.json")  # upload Firebase key
+firebase_admin.initialize_app(cred)
+db = firestore.client()
+
+# --- Gemini AI Setup ---
+genai.configure(api_key="YOUR_GEMINI_API_KEY")
+
+@app.route("/")
+def home():
+    return {"message": "🔥 YardFlex Autonomous AI Core is online 🔥"}
+
+# --- Example: AI Ride Pricing ---
+@app.route("/price", methods=["POST"])
+def price():
+    data = request.json
+    pickup = data.get("pickup")
+    dropoff = data.get("dropoff")
+
+    # Save trip request in Firestore
+    db.collection("trips").add({"pickup": pickup, "dropoff": dropoff})
+
+    # AI adjusts price
+    prompt = f"Suggest a professional but fair taxi price from {pickup} to {dropoff} in Jamaica."
+    response = genai.GenerativeModel("gemini-pro").generate_content(prompt)
+
+    return jsonify({
+        "pickup": pickup,
+        "dropoff": dropoff,
+        "ai_price": response.text.strip()
+    })
+
+# --- Example: AI Voice/Chat ---
+@app.route("/chat", methods=["POST"])
+def chat():
+    message = request.json.get("message")
+    response = genai.GenerativeModel("gemini-pro").generate_content(message)
+    return jsonify({"reply": response.text.strip()})
+
+# --- Example: AI Marketplace Item Suggestion ---
+@app.route("/marketplace", methods=["POST"])
+def marketplace():
+    item = request.json.get("item")
+    prompt = f"Suggest how to market '{item}' in YardFlex Global Shop with a short tagline."
+    response = genai.GenerativeModel("gemini-pro").generate_content(prompt)
+    return jsonify({"item": item, "tagline": response.text.strip()})
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)
+
+
+---
+
+📘 README.md
+
+# YardFlex Autonomous AI App (Replit + Firebase)
+
+This project connects **Replit**, **Firebase Firestore**, and **Gemini AI** to power the YardFlex app.
+
+---
+
+## 🔧 Setup Steps
+1. **Create Firebase Project**
+   - Go to Firebase Console → Create Project.
+   - Enable Firestore Database.
+   - Download `ServiceAccountKey.json` and rename it `firebase-key.json`.
+   - Upload it into Replit.
+
+2. **Install Dependencies**
+
+pip install -r requirements.txt
+
+3. **Secrets in Replit**
+- Add `YOUR_GEMINI_API_KEY` under Secrets.
+
+4. **Run the Server**
+
+python main.py
+
+You should see:
+
+🔥 YardFlex Autonomous AI Core is online 🔥
+
+---
+
+## 🚀 API Endpoints
+- `GET /` → Health check.  
+- `POST /price` → `{ "pickup": "Half Way Tree", "dropoff": "Airport" }`  
+Returns AI-suggested price.  
+- `POST /chat` → `{ "message": "Hi YardFlex" }`  
+Returns AI chat reply.  
+- `POST /marketplace` → `{ "item": "Leather Belt" }`  
+Returns AI marketing tagline.
+
+
+---
+
+✅ This gives you everything we discussed so far:
+
+Firebase connected.
+
+AI pricing system.
+
+AI chat system.
+
+AI marketplace taglines.
+
+Runs fully on Replit.
+
+
+
+---
+
+👉 Do you want me to bundle this into a single downloadable .zip so you can just drag-and-drop into Replit, instead of copy-pasting each file?
+

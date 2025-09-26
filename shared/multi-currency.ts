@@ -255,6 +255,83 @@ export const SUPPORTED_CURRENCIES: Record<string, Currency> = {
     isLocalCurrency: false,
     supportedRegions: ['EU'],
     exchangeRateSource: 'ecb'
+  },
+  'NGN': {
+    code: 'NGN',
+    name: 'Nigerian Naira',
+    symbol: '₦',
+    decimals: 2,
+    isActive: true,
+    isCryptoCurrency: false,
+    isLocalCurrency: false,
+    supportedRegions: ['NG'],
+    exchangeRateSource: 'central_bank_nigeria'
+  },
+  'GHS': {
+    code: 'GHS',
+    name: 'Ghanaian Cedi',
+    symbol: '₵',
+    decimals: 2,
+    isActive: true,
+    isCryptoCurrency: false,
+    isLocalCurrency: false,
+    supportedRegions: ['GH'],
+    exchangeRateSource: 'bank_of_ghana'
+  },
+  'INR': {
+    code: 'INR',
+    name: 'Indian Rupee',
+    symbol: '₹',
+    decimals: 2,
+    isActive: true,
+    isCryptoCurrency: false,
+    isLocalCurrency: false,
+    supportedRegions: ['IN'],
+    exchangeRateSource: 'reserve_bank_india'
+  },
+  'CAD': {
+    code: 'CAD',
+    name: 'Canadian Dollar',
+    symbol: 'C$',
+    decimals: 2,
+    isActive: true,
+    isCryptoCurrency: false,
+    isLocalCurrency: false,
+    supportedRegions: ['CA'],
+    exchangeRateSource: 'bank_of_canada'
+  },
+  'AUD': {
+    code: 'AUD',
+    name: 'Australian Dollar',
+    symbol: 'A$',
+    decimals: 2,
+    isActive: true,
+    isCryptoCurrency: false,
+    isLocalCurrency: false,
+    supportedRegions: ['AU'],
+    exchangeRateSource: 'reserve_bank_australia'
+  },
+  'MXN': {
+    code: 'MXN',
+    name: 'Mexican Peso',
+    symbol: '$',
+    decimals: 2,
+    isActive: true,
+    isCryptoCurrency: false,
+    isLocalCurrency: false,
+    supportedRegions: ['MX'],
+    exchangeRateSource: 'banco_de_mexico'
+  },
+  'BRL': {
+    code: 'BRL',
+    name: 'Brazilian Real',
+    symbol: 'R$',
+    decimals: 2,
+    isActive: true,
+    isCryptoCurrency: false,
+    isLocalCurrency: false,
+    supportedRegions: ['BR'],
+    exchangeRateSource: 'central_bank_brazil'
   }
 };
 

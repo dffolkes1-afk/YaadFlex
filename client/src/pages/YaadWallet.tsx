@@ -41,10 +41,20 @@ export default function YaadWallet() {
 
   // Wallet balances in different currencies
   const balances = {
-    JMD: 45750.00,
+    YFD: 2000.00,  // YaadFlex Digital - The global currency
     USD: 285.50,
-    KWD: 95.25,
-    YFD: 2000.00  // YaadFlex Digital - The global currency
+    JMD: 45750.00,
+    EUR: 245.75,
+    GBP: 195.40,
+    CAD: 355.90,
+    AUD: 385.25,
+    NGN: 125850.50,
+    GHS: 1250.75,
+    KES: 28450.00,
+    INR: 18750.25,
+    MXN: 4850.50,
+    BRL: 1455.75,
+    KWD: 95.25
   };
 
   // Exchange rates (1 YFD = X currency)
@@ -148,10 +158,20 @@ export default function YaadWallet() {
 
   const getCurrencyIcon = (currency: string) => {
     switch (currency) {
+      case 'YFD': return '🌍';
       case 'USD': return '🇺🇸';
       case 'JMD': return '🇯🇲';
+      case 'EUR': return '🇪🇺';
+      case 'GBP': return '🇬🇧';
+      case 'CAD': return '🇨🇦';
+      case 'AUD': return '🇦🇺';
+      case 'NGN': return '🇳🇬';
+      case 'GHS': return '🇬🇭';
+      case 'KES': return '🇰🇪';
+      case 'INR': return '🇮🇳';
+      case 'MXN': return '🇲🇽';
+      case 'BRL': return '🇧🇷';
       case 'KWD': return '🇰🇼';
-      case 'YFD': return '🌍';
       default: return '💰';
     }
   };
@@ -256,12 +276,18 @@ export default function YaadWallet() {
                 <div className="text-lg opacity-90 mb-4">
                   Worth: ${yfdValueInUSD} USD • J${yfdValueInJMD} JMD
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {Object.entries(balances).map(([currency, amount]) => (
-                    <div key={currency} className="text-center">
-                      <div className="text-2xl mb-1">{getCurrencyIcon(currency)}</div>
-                      <div className="text-sm opacity-90">{currency}</div>
-                      <div className="font-semibold">
+                {/* Global Currency Focus */}
+                <div className="bg-gradient-to-r from-yellow-400 via-green-400 to-blue-400 p-4 rounded-xl text-white text-center mb-4">
+                  <div className="text-lg font-bold">🌍 GLOBAL MONEY TRANSFER</div>
+                  <div className="text-sm opacity-90">Send to 195+ countries instantly • Like TapTap but BETTER</div>
+                </div>
+                
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+                  {Object.entries(balances).slice(0, 12).map(([currency, amount]) => (
+                    <div key={currency} className="text-center p-2 bg-white/20 rounded-lg">
+                      <div className="text-lg mb-1">{getCurrencyIcon(currency)}</div>
+                      <div className="text-xs opacity-90">{currency}</div>
+                      <div className="font-semibold text-sm">
                         {showBalance ? amount.toLocaleString() : '••••'}
                       </div>
                     </div>
@@ -377,10 +403,20 @@ export default function YaadWallet() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="JMD">🇯🇲 JMD</SelectItem>
+                          <SelectItem value="YFD">🌍 YFD (Global)</SelectItem>
                           <SelectItem value="USD">🇺🇸 USD</SelectItem>
+                          <SelectItem value="JMD">🇯🇲 JMD</SelectItem>
+                          <SelectItem value="EUR">🇪🇺 EUR</SelectItem>
+                          <SelectItem value="GBP">🇬🇧 GBP</SelectItem>
+                          <SelectItem value="CAD">🇨🇦 CAD</SelectItem>
+                          <SelectItem value="AUD">🇦🇺 AUD</SelectItem>
+                          <SelectItem value="NGN">🇳🇬 NGN</SelectItem>
+                          <SelectItem value="GHS">🇬🇭 GHS</SelectItem>
+                          <SelectItem value="KES">🇰🇪 KES</SelectItem>
+                          <SelectItem value="INR">🇮🇳 INR</SelectItem>
+                          <SelectItem value="MXN">🇲🇽 MXN</SelectItem>
+                          <SelectItem value="BRL">🇧🇷 BRL</SelectItem>
                           <SelectItem value="KWD">🇰🇼 KWD</SelectItem>
-                          <SelectItem value="YFD">🌍 YFD</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
