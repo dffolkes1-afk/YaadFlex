@@ -43,6 +43,9 @@ export default function AdminSecurityPage() {
     return <Badge variant="destructive">Needs Attention</Badge>;
   };
 
+  // Cast the data to our interface type
+  const overview = securityOverview as SecurityOverview;
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
@@ -110,32 +113,32 @@ export default function AdminSecurityPage() {
                     <Shield className="h-5 w-5" />
                     Overall Security Status
                   </span>
-                  {securityOverview && getScoreBadge(securityOverview.securityScore)}
+                  {overview && getScoreBadge(overview.securityScore || 0)}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                   <div className="text-center">
-                    <div className={`text-4xl font-bold ${getScoreColor(securityOverview?.securityScore || 0)}`} data-testid="score-overall">
-                      {securityOverview?.securityScore || 0}%
+                    <div className={`text-4xl font-bold ${getScoreColor(overview?.securityScore || 0)}`} data-testid="score-overall">
+                      {overview?.securityScore || 0}%
                     </div>
                     <p className="text-sm text-gray-600 mt-1">Security Score</p>
                   </div>
                   <div className="text-center">
                     <div className="text-4xl font-bold text-blue-600" data-testid="count-employees">
-                      {securityOverview?.totalEmployees || 0}
+                      {overview?.totalEmployees || 0}
                     </div>
                     <p className="text-sm text-gray-600 mt-1">Total Employees</p>
                   </div>
                   <div className="text-center">
                     <div className="text-4xl font-bold text-green-600" data-testid="count-mfa-compliant">
-                      {securityOverview?.mfaCompliant || 0}
+                      {overview?.mfaCompliant || 0}
                     </div>
                     <p className="text-sm text-gray-600 mt-1">MFA Compliant</p>
                   </div>
                   <div className="text-center">
                     <div className="text-4xl font-bold text-red-600" data-testid="count-active-threats">
-                      {securityOverview?.activeThreats || 0}
+                      {overview?.activeThreats || 0}
                     </div>
                     <p className="text-sm text-gray-600 mt-1">Active Threats</p>
                   </div>
@@ -153,7 +156,7 @@ export default function AdminSecurityPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {securityOverview?.recentSecurityEvents?.slice(0, 5).map((event, index) => (
+                  {overview?.recentSecurityEvents?.slice(0, 5).map((event: any, index: number) => (
                     <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg" data-testid={`security-event-${index}`}>
                       <div className="flex items-center gap-3">
                         <div className={`h-2 w-2 rounded-full ${

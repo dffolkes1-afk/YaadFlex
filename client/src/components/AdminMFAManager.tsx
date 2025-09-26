@@ -62,9 +62,9 @@ export function AdminMFAManager() {
   const loadEmployees = async () => {
     setLoading(true);
     try {
-      const response = await apiRequest('GET', '/api/admin/employees');
-      setEmployees(response.employees || []);
-      setStats(response.stats || stats);
+      const response = await apiRequest('GET', '/api/admin/employees') as any;
+      setEmployees(response?.employees || []);
+      setStats(response?.stats || stats);
     } catch (error) {
       toast({
         title: 'Error',
@@ -79,11 +79,11 @@ export function AdminMFAManager() {
   const registerEmployeeMFA = async (employeeId: string) => {
     try {
       setLoading(true);
-      const response = await apiRequest('POST', `/api/admin/employees/${employeeId}/mfa/setup`);
+      const response = await apiRequest('POST', `/api/admin/employees/${employeeId}/mfa/setup`) as any;
       
       toast({
         title: 'MFA Setup Initiated',
-        description: `Authenticator setup created for employee. Secret: ${response.secret}`,
+        description: `Authenticator setup created for employee. Secret: ${response?.secret}`,
         duration: 10000
       });
       
