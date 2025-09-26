@@ -443,6 +443,140 @@ export type SystemHealthCheck = typeof systemHealthChecks.$inferSelect;
 export type InsertSystemHealthCheck = typeof systemHealthChecks.$inferInsert;
 
 // =============================================================
+// YAADFLEX PROMOTIONAL CREDITS SYSTEM - Pre-Launch Value
+// Compliant loyalty system that converts to real money later
+// =============================================================
+
+// Promotional campaigns
+export const promoCampaigns = pgTable("promo_campaigns", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name").notNull(), // 'launch_bonus', 'referral_program', 'task_rewards'
+  description: text("description"),
+  type: varchar("type").notNull(), // 'welcome', 'referral', 'task_completion', 'admin_grant'
+  maxCreditsPerUser: decimal("max_credits_per_user", { precision: 10, scale: 2 }).default('50.00'),
+  totalBudget: decimal("total_budget", { precision: 12, scale: 2 }),
+  creditsGranted: decimal("credits_granted", { precision: 12, scale: 2 }).default('0.00'),
+  isActive: boolean("is_active").default(true),
+  startDate: timestamp("start_date").defaultNow(),
+  endDate: timestamp("end_date"),
+  conversionRate: decimal("conversion_rate", { precision: 5, scale: 4 }).default('1.0000'), // 1 promo credit = 1 YFD
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// User promotional credit wallets
+export const promoWallets = pgTable("promo_wallets", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  campaignId: varchar("campaign_id").references(() => promoCampaigns.id).notNull(),
+  balance: decimal("balance", { precision: 10, scale: 2 }).default('0.00'),
+  totalEarned: decimal("total_earned", { precision: 10, scale: 2 }).default('0.00'),
+  totalSpent: decimal("total_spent", { precision: 10, scale: 2 }).default('0.00'),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("idx_user_campaign").on(table.userId, table.campaignId),
+]);
+
+// Promotional credits transaction ledger
+export const promoLedger = pgTable("promo_ledger", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  campaignId: varchar("campaign_id").references(() => promoCampaigns.id).notNull(),
+  walletId: varchar("wallet_id").references(() => promoWallets.id).notNull(),
+  transactionType: varchar("transaction_type").notNull(), // 'earn', 'spend', 'expire', 'convert', 'admin_adjust'
+  amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
+  reason: varchar("reason").notNull(), // 'signup_bonus', 'profile_complete', 'referral_reward', 'task_reward', 'fee_waiver'
+  description: text("description"),
+  referenceId: varchar("reference_id"), // Task ID, referral ID, etc.
+  balanceBefore: decimal("balance_before", { precision: 10, scale: 2 }).notNull(),
+  balanceAfter: decimal("balance_after", { precision: 10, scale: 2 }).notNull(),
+  isReversible: boolean("is_reversible").default(false),
+  reversedAt: timestamp("reversed_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("idx_user_ledger").on(table.userId, table.createdAt),
+]);
+
+// Task definitions for earning credits
+export const promoTasks = pgTable("promo_tasks", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  campaignId: varchar("campaign_id").references(() => promoCampaigns.id).notNull(),
+  taskKey: varchar("task_key").notNull().unique(), // 'signup_bonus', 'profile_complete', 'first_login_streak'
+  name: varchar("name").notNull(), // 'Complete Profile Setup'
+  description: text("description"), // 'Add your name, phone, and photo to unlock $10 credits'
+  rewardAmount: decimal("reward_amount", { precision: 8, scale: 2 }).notNull(),
+  maxCompletions: integer("max_completions").default(1), // How many times user can complete this task
+  requiresVerification: boolean("requires_verification").default(false),
+  isActive: boolean("is_active").default(true),
+  priority: integer("priority").default(1), // Display order
+  unlockConditions: jsonb("unlock_conditions"), // Prerequisites for this task
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// User task completion tracking
+export const userPromoTasks = pgTable("user_promo_tasks", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  taskId: varchar("task_id").references(() => promoTasks.id).notNull(),
+  campaignId: varchar("campaign_id").references(() => promoCampaigns.id).notNull(),
+  status: varchar("status").notNull().default('pending'), // 'pending', 'completed', 'verified', 'rewarded'
+  completedAt: timestamp("completed_at"),
+  rewardedAt: timestamp("rewarded_at"),
+  verificationData: jsonb("verification_data"), // Any data needed to verify task completion
+  rewardAmount: decimal("reward_amount", { precision: 8, scale: 2 }),
+  ledgerEntryId: varchar("ledger_entry_id").references(() => promoLedger.id),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("idx_user_task").on(table.userId, table.taskId),
+]);
+
+// Referral tracking for promotional system
+export const promoReferrals = pgTable("promo_referrals", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  campaignId: varchar("campaign_id").references(() => promoCampaigns.id).notNull(),
+  referrerId: varchar("referrer_id").references(() => users.id).notNull(),
+  refereeId: varchar("referee_id").references(() => users.id),
+  referralCode: varchar("referral_code").notNull().unique(),
+  refereeEmail: varchar("referee_email"),
+  refereePhone: varchar("referee_phone"),
+  status: varchar("status").notNull().default('pending'), // 'pending', 'signed_up', 'activated', 'rewarded'
+  referrerReward: decimal("referrer_reward", { precision: 8, scale: 2 }).default('5.00'),
+  refereeReward: decimal("referee_reward", { precision: 8, scale: 2 }).default('5.00'),
+  signedUpAt: timestamp("signed_up_at"),
+  activatedAt: timestamp("activated_at"), // When referee completed activation requirements
+  rewardedAt: timestamp("rewarded_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("idx_referrer").on(table.referrerId),
+  index("idx_referral_code").on(table.referralCode),
+]);
+
+// Types for promotional system
+export type PromoCampaign = typeof promoCampaigns.$inferSelect;
+export type InsertPromoCampaign = typeof promoCampaigns.$inferInsert;
+export type PromoWallet = typeof promoWallets.$inferSelect;
+export type InsertPromoWallet = typeof promoWallets.$inferInsert;
+export type PromoLedgerEntry = typeof promoLedger.$inferSelect;
+export type InsertPromoLedgerEntry = typeof promoLedger.$inferInsert;
+export type PromoTask = typeof promoTasks.$inferSelect;
+export type InsertPromoTask = typeof promoTasks.$inferInsert;
+export type UserPromoTask = typeof userPromoTasks.$inferSelect;
+export type InsertUserPromoTask = typeof userPromoTasks.$inferInsert;
+export type PromoReferral = typeof promoReferrals.$inferSelect;
+export type InsertPromoReferral = typeof promoReferrals.$inferInsert;
+
+// Zod schemas for promotional system
+export const insertPromoCampaignSchema = createInsertSchema(promoCampaigns);
+export const insertPromoWalletSchema = createInsertSchema(promoWallets);
+export const insertPromoLedgerSchema = createInsertSchema(promoLedger);
+export const insertPromoTaskSchema = createInsertSchema(promoTasks);
+export const insertUserPromoTaskSchema = createInsertSchema(userPromoTasks);
+export const insertPromoReferralSchema = createInsertSchema(promoReferrals);
+
+// =============================================================
 // YAADFLEX LUXURY CLOTHING LINE & DROP SHIPPING SYSTEM
 // Premium branded merchandise with Gucci-style luxury aesthetic
 // =============================================================
