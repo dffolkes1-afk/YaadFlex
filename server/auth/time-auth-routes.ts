@@ -30,11 +30,46 @@ async function getPolicy() {
 
 async function withinShiftWindow(userId: string) {
   const now = nowUtc();
-  const day = DAYS[now.getUTCDay()];
-  const current = `${now.getUTCHours().toString().padStart(2,'0')}:${now.getUTCMinutes().toString().padStart(2,'0')}:${now.getUTCSeconds().toString().padStart(2,'0')}`;
+  const currentDay = DAYS[now.getUTCDay()];
+  const currentMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
+  
+  const policy = await getPolicy();
+  const graceBefore = policy.graceMinutesBefore || 0;
+  const graceAfter = policy.graceMinutesAfter || 0;
   
   const rows = await db.select().from(workSchedules).where(eq(workSchedules.userId, userId));
-  return rows.some(s => s.dayOfWeek === day && current >= s.startTime && current <= s.endTime);
+  
+  return rows.some(schedule => {
+    const [startHour, startMin] = schedule.startTime.split(':').map(Number);
+    const [endHour, endMin] = schedule.endTime.split(':').map(Number);
+    
+    const startMinutes = startHour * 60 + startMin - graceBefore;
+    const endMinutes = endHour * 60 + endMin + graceAfter;
+    
+    // Handle same-day shifts
+    if (startMinutes <= endMinutes) {
+      return schedule.dayOfWeek === currentDay && 
+             currentMinutes >= startMinutes && 
+             currentMinutes <= endMinutes;
+    }
+    
+    // Handle overnight shifts (e.g., 22:00-06:00)
+    if (schedule.dayOfWeek === currentDay) {
+      // Current day, check if after start time
+      return currentMinutes >= startMinutes;
+    }
+    
+    // Check previous day for overnight shifts
+    const previousDayIndex = (now.getUTCDay() - 1 + 7) % 7;
+    const previousDay = DAYS[previousDayIndex];
+    
+    if (schedule.dayOfWeek === previousDay) {
+      // Previous day's shift that goes into current day
+      return currentMinutes <= endMinutes;
+    }
+    
+    return false;
+  });
 }
 
 async function hasCooldown(userId: string) {
