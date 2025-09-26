@@ -364,15 +364,18 @@ export default function YaadWallet() {
               </Card>
             </div>
 
-            {/* Send Money - Email Style */}
-            <Card>
+            {/* Worldwide Transfer Hub */}
+            <Card className="border-2 border-purple-300 bg-gradient-to-r from-purple-50 via-blue-50 to-green-50">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Mail className="h-5 w-5" />
-                  Send Money (Email Style)
+                <CardTitle className="flex items-center gap-2 text-purple-700">
+                  <Globe className="h-6 w-6" />
+                  🌍 YaadFlex Worldwide Transfer
                 </CardTitle>
-                <CardDescription>
-                  Send to email, phone number, or @username - as simple as sending an email!
+                <CardDescription className="text-purple-600">
+                  <div className="font-bold text-base">Send money to ANY country instantly - Better than TapTap!</div>
+                  <div className="text-sm mt-1 bg-yellow-100 p-2 rounded">
+                    ✨ <strong>Examples:</strong> marcus@gmail.com • +234-800-123-4567 • +1-876-555-0123 • @marcus.yaad
+                  </div>
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -441,12 +444,23 @@ export default function YaadWallet() {
                 
                 <Button 
                   onClick={handleEmailSend}
-                  className="w-full bg-green-600 hover:bg-green-700"
+                  className="w-full bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 hover:from-purple-700 hover:via-blue-700 hover:to-green-700 text-white font-bold py-3"
                   data-testid="button-send-money"
                 >
-                  <Send className="h-4 w-4 mr-2" />
-                  Send Money (Like Email!)
+                  <Globe className="h-5 w-5 mr-2" />
+                  🌍 Send Worldwide (195+ Countries)
                 </Button>
+                
+                {/* Global Benefits Banner */}
+                <div className="mt-4 p-3 bg-gradient-to-r from-green-100 to-blue-100 rounded-lg border border-green-300">
+                  <div className="text-sm font-semibold text-green-800 mb-1">✅ Why YaadFlex Beats TapTap:</div>
+                  <div className="text-xs text-green-700 space-y-1">
+                    <div>• More currencies: 14 global currencies vs TapTap's limited options</div>
+                    <div>• Lower fees: YFD global currency reduces international transfer costs</div>
+                    <div>• Instant delivery: No waiting like other services</div>
+                    <div>• Universal format: Works with ANY phone number or email globally</div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
@@ -494,6 +508,43 @@ export default function YaadWallet() {
                     <Zap className="h-4 w-4 mr-2" />
                     Cash Pocket Send
                   </Button>
+                </div>
+              </CardContent>
+            </Card>
+            {/* Global Transfer Comparison */}
+            <Card className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-300">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-amber-700">
+                  <TrendingUp className="h-5 w-5" />
+                  🏆 YaadFlex vs TapTap Global Comparison
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 bg-red-100 rounded-lg">
+                    <div className="font-bold text-red-800 mb-2">📱 TapTap Limitations:</div>
+                    <div className="text-sm text-red-700 space-y-1">
+                      <div>❌ Limited countries</div>
+                      <div>❌ Higher international fees</div>
+                      <div>❌ Slow processing times</div>
+                      <div>❌ Complex verification</div>
+                      <div>❌ Limited currency options</div>
+                    </div>
+                  </div>
+                  <div className="p-4 bg-green-100 rounded-lg">
+                    <div className="font-bold text-green-800 mb-2">🌍 YaadFlex Advantages:</div>
+                    <div className="text-sm text-green-700 space-y-1">
+                      <div>✅ 195+ countries supported</div>
+                      <div>✅ Lower fees with YFD currency</div>
+                      <div>✅ Instant worldwide delivery</div>
+                      <div>✅ Simple email/phone sending</div>
+                      <div>✅ 14 major currencies</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-4 p-3 bg-gradient-to-r from-purple-200 to-blue-200 rounded-lg text-center">
+                  <div className="font-bold text-purple-800">🎯 Your own TapTap system is READY and BETTER!</div>
+                  <div className="text-sm text-purple-700 mt-1">Send money to Nigeria, Ghana, India, Canada, anywhere!</div>
                 </div>
               </CardContent>
             </Card>
