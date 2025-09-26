@@ -2094,6 +2094,54 @@ class DemoStorage implements IStorage {
       updatedAt: new Date()
     };
   }
+
+  // YaadFlex Marketplace methods - Demo implementations
+  async createYaadFlexCategory(category: any): Promise<any> { return { id: '1', ...category }; }
+  async getYaadFlexCategories(): Promise<any[]> { return []; }
+  async getYaadFlexCategory(id: string): Promise<any> { return undefined; }
+  async updateYaadFlexCategory(id: string, updates: any): Promise<any> { return { id, ...updates }; }
+  async createYaadFlexProduct(product: any): Promise<any> { return { id: '1', ...product }; }
+  async getYaadFlexProducts(): Promise<any[]> { return []; }
+  async getYaadFlexProductsByCategory(categoryId: string): Promise<any[]> { return []; }
+  async getFeaturedYaadFlexProducts(): Promise<any[]> { return []; }
+  async getYaadFlexProduct(id: string): Promise<any> { return undefined; }
+  async updateYaadFlexProduct(id: string, updates: any): Promise<any> { return { id, ...updates }; }
+  async updateYaadFlexProductStock(id: string, quantity: number): Promise<any> { return { id, stock: quantity }; }
+  async createYaadFlexSupplier(supplier: any): Promise<any> { return { id: '1', ...supplier }; }
+  async getYaadFlexSuppliers(): Promise<any[]> { return []; }
+  async getYaadFlexSupplier(id: string): Promise<any> { return undefined; }
+  async updateYaadFlexSupplier(id: string, updates: any): Promise<any> { return { id, ...updates }; }
+  async createYaadFlexOrder(order: any): Promise<any> { return { id: '1', ...order }; }
+  async getUserYaadFlexOrders(customerId: string): Promise<any[]> { return []; }
+  async getAllYaadFlexOrders(): Promise<any[]> { return []; }
+  async getYaadFlexOrder(id: string): Promise<any> { return undefined; }
+  async updateYaadFlexOrderStatus(id: string, status: string): Promise<any> { return { id, status }; }
+  async createYaadFlexOrderItem(item: any): Promise<any> { return { id: '1', ...item }; }
+  async getYaadFlexOrderItems(orderId: string): Promise<any[]> { return []; }
+  async updateYaadFlexOrderItemStatus(id: string, status: string): Promise<any> { return { id, status }; }
+  async createYaadFlexProductReview(review: any): Promise<any> { return { id: '1', ...review }; }
+  async getYaadFlexProductReviews(productId: string): Promise<any[]> { return []; }
+  async getUserYaadFlexReviews(customerId: string): Promise<any[]> { return []; }
+  async updateYaadFlexReviewVisibility(id: string, isVisible: boolean): Promise<any> { return { id, isVisible }; }
+
+  // YaadFlex Pay methods - Demo implementations  
+  async createYaadFlexPayUser(user: any): Promise<any> { return { id: '1', ...user }; }
+  async getYaadFlexPayUser(id: string): Promise<any> { return undefined; }
+  async updateYaadFlexPayUser(id: string, updates: any): Promise<any> { return { id, ...updates }; }
+  async createYaadFlexPayWallet(wallet: any): Promise<any> { return { id: '1', ...wallet }; }
+  async getYaadFlexPayWallets(userId: string): Promise<any[]> { return []; }
+  async getYaadFlexPayWallet(id: string): Promise<any> { return undefined; }
+  async updateYaadFlexPayWalletBalance(userId: string, currency: string, amount: number, operation: string): Promise<any> { return { userId, currency, balance: amount }; }
+  async createYaadFlexPayTransaction(transaction: any): Promise<any> { return { id: '1', ...transaction }; }
+  async getYaadFlexPayTransactions(userId?: string): Promise<any[]> { return []; }
+  async getYaadFlexPayTransaction(id: string): Promise<any> { return undefined; }
+  async updateYaadFlexPayTransactionStatus(id: string, status: string, completedAt?: Date): Promise<any> { return { id, status, completedAt }; }
+  async createYaadFlexPayMerchant(merchant: any): Promise<any> { return { id: '1', ...merchant }; }
+  async getYaadFlexPayMerchants(): Promise<any[]> { return []; }
+  async getYaadFlexPayMerchant(id: string): Promise<any> { return undefined; }
+  async updateYaadFlexPayMerchant(id: string, updates: any): Promise<any> { return { id, ...updates }; }
+  async processYaadFlexPayment(fromUserId: string, amount: number, currency: string, description?: string, recipientPhone?: string): Promise<any> { return { id: '1', fromUserId, amount, currency, status: 'completed' }; }
+  async withdrawYaadFlexFunds(userId: string, amount: number, bankAccount: string): Promise<any> { return { id: '1', userId, amount, bankAccount, status: 'pending' }; }
 }
 
 export const storage = new DemoStorage();
