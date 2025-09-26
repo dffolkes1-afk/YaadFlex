@@ -113,6 +113,25 @@ import {
   type InsertYaadFlexPayMerchant,
   type YaadFlexPayCard,
   type InsertYaadFlexPayCard,
+  // Promotional Credits System imports
+  promoCampaigns,
+  promoWallets,
+  promoLedger,
+  promoTasks,
+  userPromoTasks,
+  promoReferrals,
+  type PromoCampaign,
+  type InsertPromoCampaign,
+  type PromoWallet,
+  type InsertPromoWallet,
+  type PromoLedgerEntry,
+  type InsertPromoLedgerEntry,
+  type PromoTask,
+  type InsertPromoTask,
+  type UserPromoTask,
+  type InsertUserPromoTask,
+  type PromoReferral,
+  type InsertPromoReferral,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql } from "drizzle-orm";
@@ -330,6 +349,52 @@ export interface IStorage {
   checkBalance(userId: string, currency?: string): Promise<YaadFlexPayWallet[]>;
   depositFromBank(userId: string, amount: number, bankAccount: string): Promise<YaadFlexPayTransaction>;
   withdrawToBank(userId: string, amount: number, bankAccount: string): Promise<YaadFlexPayTransaction>;
+
+  // Promotional Credits System Operations
+  // Campaign management
+  createPromoCampaign(campaign: InsertPromoCampaign): Promise<PromoCampaign>;
+  getPromoCampaign(id: string): Promise<PromoCampaign | undefined>;
+  getActivePromoCampaigns(): Promise<PromoCampaign[]>;
+  updatePromoCampaign(id: string, updates: Partial<PromoCampaign>): Promise<PromoCampaign>;
+  
+  // Promo wallet operations
+  createPromoWallet(wallet: InsertPromoWallet): Promise<PromoWallet>;
+  getPromoWallet(userId: string, campaignId: string): Promise<PromoWallet | undefined>;
+  getUserPromoWallets(userId: string): Promise<PromoWallet[]>;
+  updatePromoWalletBalance(walletId: string, amount: number, type: 'add' | 'subtract'): Promise<PromoWallet>;
+  
+  // Promo credits transactions (ledger)
+  createPromoLedgerEntry(entry: InsertPromoLedgerEntry): Promise<PromoLedgerEntry>;
+  getUserPromoLedger(userId: string, campaignId?: string): Promise<PromoLedgerEntry[]>;
+  getPromoLedgerEntry(id: string): Promise<PromoLedgerEntry | undefined>;
+  
+  // Task management
+  createPromoTask(task: InsertPromoTask): Promise<PromoTask>;
+  getPromoTasks(campaignId: string): Promise<PromoTask[]>;
+  getActivePromoTasks(campaignId: string): Promise<PromoTask[]>;
+  updatePromoTask(id: string, updates: Partial<PromoTask>): Promise<PromoTask>;
+  
+  // User task tracking
+  createUserPromoTask(userTask: InsertUserPromoTask): Promise<UserPromoTask>;
+  getUserPromoTask(userId: string, taskId: string): Promise<UserPromoTask | undefined>;
+  getUserPromoTasks(userId: string, campaignId?: string): Promise<UserPromoTask[]>;
+  updateUserPromoTaskStatus(id: string, status: string, completedAt?: Date): Promise<UserPromoTask>;
+  
+  // Referral system
+  createPromoReferral(referral: InsertPromoReferral): Promise<PromoReferral>;
+  getPromoReferral(referralCode: string): Promise<PromoReferral | undefined>;
+  getUserReferrals(referrerId: string): Promise<PromoReferral[]>;
+  updatePromoReferralStatus(id: string, status: string, completedAt?: Date): Promise<PromoReferral>;
+  
+  // High-level promotional operations
+  claimWelcomeBonus(userId: string, campaignId: string): Promise<{ wallet: PromoWallet; ledgerEntry: PromoLedgerEntry }>;
+  completePromoTask(userId: string, taskId: string, verificationData?: any): Promise<{ userTask: UserPromoTask; ledgerEntry?: PromoLedgerEntry }>;
+  processReferral(referralCode: string, refereeUserId: string): Promise<PromoReferral>;
+  redeemPromoCredits(userId: string, campaignId: string, amount: number, reason: string): Promise<PromoLedgerEntry>;
+  
+  // Admin operations
+  grantPromoCredits(userId: string, campaignId: string, amount: number, reason: string, description?: string): Promise<PromoLedgerEntry>;
+  convertPromoCreditsToReal(campaignId: string, conversionRate?: number): Promise<{ convertedUsers: number; totalConverted: number }>;
 }
 
 export class DatabaseStorage implements IStorage {
