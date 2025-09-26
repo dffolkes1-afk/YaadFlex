@@ -3,15 +3,17 @@ import os
 
 app = Flask(__name__)
 
-# --- Initialize Firebase (Secure way) ---
+# --- Global variables ---
 firebase_ready = False
+gemini_ready = False
 db = None
+genai_model = None
 
+# --- Initialize Firebase (Secure way) ---
 try:
     import firebase_admin
     from firebase_admin import credentials, firestore
     
-    # Use environment variables instead of firebase-key.json
     firebase_project_id = os.getenv("FIREBASE_PROJECT_ID")
     firebase_private_key = os.getenv("FIREBASE_PRIVATE_KEY")
     firebase_client_email = os.getenv("FIREBASE_CLIENT_EMAIL")
@@ -33,26 +35,22 @@ try:
         firebase_ready = True
         print("🔥 Firebase initialized securely")
     else:
-        print("⚠️ Firebase credentials not found in environment variables")
+        print("⚠️ Firebase credentials not found - add FIREBASE_* secrets")
         
 except Exception as e:
     print(f"⚠️ Firebase setup error: {e}")
 
 # --- Initialize Gemini AI (Secure way) ---
-gemini_ready = False
-genai = None
-
 try:
-    import google.generativeai as genai_module
+    import google.generativeai as genai
     
     gemini_api_key = os.getenv("GEMINI_API_KEY")
     if gemini_api_key:
-        genai_module.configure(api_key=gemini_api_key)
-        genai = genai_module
+        genai.configure(api_key=gemini_api_key)
         gemini_ready = True
         print("🤖 Gemini AI initialized securely")
     else:
-        print("⚠️ GEMINI_API_KEY not found in environment variables")
+        print("⚠️ GEMINI_API_KEY not found - add to Secrets")
         
 except Exception as e:
     print(f"⚠️ Gemini AI setup error: {e}")
@@ -74,7 +72,7 @@ def health():
 @app.route("/price", methods=["POST"])
 def price():
     if not gemini_ready:
-        return jsonify({"error": "AI pricing not available - Gemini API key needed"}), 503
+        return jsonify({"error": "AI pricing not available - add GEMINI_API_KEY to Secrets"}), 503
     
     data = request.json or {}
     pickup = data.get("pickup", "Unknown")
@@ -91,6 +89,7 @@ def price():
     prompt = f"Suggest a professional but fair taxi price from {pickup} to {dropoff} in Jamaica."
     
     try:
+        import google.generativeai as genai
         model = genai.GenerativeModel("gemini-pro")
         response = model.generate_content(prompt)
         
@@ -106,7 +105,7 @@ def price():
 @app.route("/chat", methods=["POST"])
 def chat():
     if not gemini_ready:
-        return jsonify({"error": "AI chat not available - Gemini API key needed"}), 503
+        return jsonify({"error": "AI chat not available - add GEMINI_API_KEY to Secrets"}), 503
     
     data = request.json or {}
     message = data.get("message", "")
@@ -115,6 +114,7 @@ def chat():
         return jsonify({"error": "No message provided"}), 400
     
     try:
+        import google.generativeai as genai
         model = genai.GenerativeModel("gemini-pro")
         response = model.generate_content(message)
         
@@ -128,7 +128,7 @@ def chat():
 @app.route("/marketplace", methods=["POST"])
 def marketplace():
     if not gemini_ready:
-        return jsonify({"error": "AI marketplace not available - Gemini API key needed"}), 503
+        return jsonify({"error": "AI marketplace not available - add GEMINI_API_KEY to Secrets"}), 503
     
     data = request.json or {}
     item = data.get("item", "")
@@ -139,6 +139,7 @@ def marketplace():
     prompt = f"Suggest how to market '{item}' in YaadFlex Global Shop with a short tagline."
     
     try:
+        import google.generativeai as genai
         model = genai.GenerativeModel("gemini-pro")
         response = model.generate_content(prompt)
         
@@ -151,7 +152,7 @@ def marketplace():
 
 if __name__ == "__main__":
     print("🚀 Starting YaadFlex AI Core...")
-    print(f"🔥 Firebase: {'✅ Ready' if firebase_ready else '❌ Not configured'}")
-    print(f"🤖 Gemini AI: {'✅ Ready' if gemini_ready else '❌ Not configured'}")
+    print(f"🔥 Firebase: {'✅ Ready' if firebase_ready else '❌ Add FIREBASE_* secrets'}")
+    print(f"🤖 Gemini AI: {'✅ Ready' if gemini_ready else '❌ Add GEMINI_API_KEY secret'}")
     print("📡 Running on http://0.0.0.0:8080")
     app.run(host="0.0.0.0", port=8080, debug=True)
