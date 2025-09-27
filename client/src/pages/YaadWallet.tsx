@@ -708,6 +708,181 @@ export default function YaadWallet() {
               </div>
             </CardContent>
           </Card>
+
+          {/* FEATURED PROPERTIES SHOWCASE */}
+          <Card className="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 text-white border-2 border-amber-400">
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold">🔥 FEATURED PROPERTIES - HOT DEALS!</CardTitle>
+              <CardDescription className="text-amber-100 text-lg">
+                Premium properties with massive discounts - Use your $50 credits toward these deals!
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+                  <div className="text-lg font-bold mb-2">🏖️ Luxury Villa - St. Andrew</div>
+                  <div className="text-sm mb-2">Hope Pastures • 4 bed • 3 bath • 3,500 sqft</div>
+                  <div className="text-xl font-bold text-yellow-300 mb-2">J$45M ($280K USD)</div>
+                  <div className="text-xs text-amber-200 mb-3">Sandra Williams Real Estate • Pool • Gated</div>
+                  <Button size="sm" className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold">
+                    🏡 View Virtual Tour
+                  </Button>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+                  <div className="text-lg font-bold mb-2">🏢 Modern Apartment - Kingston</div>
+                  <div className="text-sm mb-2">New Kingston • 2 bed • 2 bath • 1,200 sqft</div>
+                  <div className="text-xl font-bold text-yellow-300 mb-2">J$18M ($112K USD)</div>
+                  <div className="text-xs text-amber-200 mb-3">City Properties Ltd • Gym • Security</div>
+                  <Button size="sm" className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold">
+                    🏢 Schedule Viewing
+                  </Button>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+                  <div className="text-lg font-bold mb-2">🌿 Prime Land - St. Catherine</div>
+                  <div className="text-sm mb-2">Spanish Town • Commercial • 2.5 acres</div>
+                  <div className="text-xl font-bold text-yellow-300 mb-2">J$25M ($156K USD)</div>
+                  <div className="text-xs text-amber-200 mb-3">Land Solutions JA • Development Ready</div>
+                  <Button size="sm" className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold">
+                    🌿 Invest Now
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* TRAVEL DEALS SHOWCASE */}
+          <Card className="bg-gradient-to-br from-purple-600 via-pink-600 to-rose-600 text-white border-2 border-purple-400">
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold">🌟 EXCLUSIVE TRAVEL DEALS - LIMITED TIME!</CardTitle>
+              <CardDescription className="text-purple-100 text-lg">
+                Book now with your $50 credits and save up to 40% on these premium packages!
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+                  <div className="text-lg font-bold mb-2">🏝️ Caribbean Paradise Package</div>
+                  <div className="text-sm mb-2">Barbados • 7 days • 4-star resort</div>
+                  <div className="text-xl font-bold text-yellow-300 mb-2">J$120K (was J$180K)</div>
+                  <div className="text-xs text-purple-200 mb-3">Flights + Hotel + Meals + Tours included</div>
+                  <Button size="sm" className="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold">
+                    🏝️ Book Paradise
+                  </Button>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+                  <div className="text-lg font-bold mb-2">🏢 Business Express - Miami</div>
+                  <div className="text-sm mb-2">Miami • 3 days • Business hotel</div>
+                  <div className="text-xl font-bold text-yellow-300 mb-2">J$85K (was J$120K)</div>
+                  <div className="text-xs text-purple-200 mb-3">Flight + Hotel + Airport transfer</div>
+                  <Button size="sm" className="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold">
+                    🏢 Book Business
+                  </Button>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+                  <div className="text-lg font-bold mb-2">🎢 Family Adventure - Orlando</div>
+                  <div className="text-sm mb-2">Orlando • 5 days • Family resort</div>
+                  <div className="text-xl font-bold text-yellow-300 mb-2">J$150K (was J$220K)</div>
+                  <div className="text-xs text-purple-200 mb-3">Flight + Resort + Theme park tickets</div>
+                  <Button size="sm" className="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold">
+                    🎢 Book Adventure
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* IMMIGRATION & HOTELS SERVICES */}
+          <Card className="bg-gradient-to-br from-indigo-600 via-blue-600 to-cyan-600 text-white border-2 border-indigo-400">
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold">🌍 GLOBAL MOBILITY & HOTELS</CardTitle>
+              <CardDescription className="text-indigo-100 text-lg">
+                Immigration services, visa assistance, and premium hotel bookings worldwide!
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="text-xl font-bold mb-3">📋 Immigration Programs:</h3>
+                  <div className="space-y-2">
+                    <div className="bg-white/10 p-3 rounded-lg">
+                      <div className="font-semibold">🇺🇸 USA Visa Applications</div>
+                      <div className="text-sm text-indigo-200">Tourist, Business, Student visas</div>
+                    </div>
+                    <div className="bg-white/10 p-3 rounded-lg">
+                      <div className="font-semibold">🇨🇦 Canada Immigration</div>
+                      <div className="text-sm text-indigo-200">Express Entry, Provincial programs</div>
+                    </div>
+                    <div className="bg-white/10 p-3 rounded-lg">
+                      <div className="font-semibold">🇬🇧 UK Settlement</div>
+                      <div className="text-sm text-indigo-200">Work permits, Family visas</div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold mb-3">🏨 Premium Hotels:</h3>
+                  <div className="space-y-2">
+                    <div className="bg-white/10 p-3 rounded-lg">
+                      <div className="font-semibold">⭐ 5-Star Luxury Hotels</div>
+                      <div className="text-sm text-indigo-200">Worldwide premium accommodations</div>
+                    </div>
+                    <div className="bg-white/10 p-3 rounded-lg">
+                      <div className="font-semibold">🏨 Business Hotels</div>
+                      <div className="text-sm text-indigo-200">Corporate rates, meeting facilities</div>
+                    </div>
+                    <div className="bg-white/10 p-3 rounded-lg">
+                      <div className="font-semibold">🏖️ Resort Packages</div>
+                      <div className="text-sm text-indigo-200">All-inclusive vacation resorts</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                <Button className="bg-cyan-500 hover:bg-cyan-600 text-white font-bold text-lg py-3">
+                  📋 Immigration Services
+                </Button>
+                <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold text-lg py-3">
+                  🏨 Premium Hotels
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* RENTAL PROPERTIES SECTION */}
+          <Card className="bg-gradient-to-br from-green-600 via-emerald-600 to-teal-600 text-white border-2 border-green-400">
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold">🏘️ YAAD RENTAL EMPIRE</CardTitle>
+              <CardDescription className="text-green-100 text-lg">
+                Rent anything from houses to cars to equipment - Jamaica's largest rental marketplace!
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl mb-2">🏠</div>
+                  <div className="font-bold">Houses</div>
+                  <div className="text-xs text-green-200">1,200+ available</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl mb-2">🚗</div>
+                  <div className="font-bold">Vehicles</div>
+                  <div className="text-xs text-green-200">800+ cars</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl mb-2">🔧</div>
+                  <div className="font-bold">Equipment</div>
+                  <div className="text-xs text-green-200">500+ tools</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl mb-2">🏖️</div>
+                  <div className="font-bold">Recreation</div>
+                  <div className="text-xs text-green-200">300+ items</div>
+                </div>
+              </div>
+              <Button className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold text-lg py-4">
+                🏘️ Browse All Rentals
+              </Button>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
