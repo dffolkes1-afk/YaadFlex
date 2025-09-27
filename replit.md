@@ -10,6 +10,8 @@ YaadFlex is Jamaica's #1 comprehensive super-app with global ambitions. It's a c
 
 🚗 **Worldwide Car Dealership**: 5,000+ Cars Available • 50+ Car Brands • 100+ Countries Sales • New & Used Cars • Car Financing • Car Insurance • Luxury Cars • Commercial Vehicles • Motorcycles • Car Parts & Accessories • International Car Shipping • Car Auctions • Trade-ins • Car History Reports • 24/7 Global Support
 
+🛍️ **Global Marketplace**: Jamaican Products Empire • Blue Mountain Coffee • Spices & Jerk Seasoning • Local Art & Crafts • Music & Books • Fashion & Jewelry • Electronics • Natural Products • Digital Services • 100% Legal Compliance • Global Shipping • 1,000+ Products Listed • 50+ Categories • 195+ Countries Reach
+
 💰 **Financial Services**: Multi-currency wallets, P2P transfers to 195+ countries, promotional credits system ($50 launch bonus), KWD/YFD currency system
 
 🚗 **Transportation**: Ride-sharing with 85% driver earnings, fleet management, real-time tracking

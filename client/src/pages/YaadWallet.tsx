@@ -96,7 +96,7 @@ function PromoCreditsSection() {
             🎁 YaadFlex Launch Credits
           </CardTitle>
           <CardDescription className="text-emerald-100 text-lg">
-            Start with $50 in promotional credits - Use for Real Estate listings, Travel bookings, Immigration services, Property management, Hotel reservations, Flight deals, Car rentals, Travel insurance, Property investment advisory, AR virtual tours, Luxury travel packages, Group bookings, Visa services, Car purchases, Car financing, Car insurance, Car parts, Car shipping, Car auctions, Car history reports, and ALL YaadFlex premium features!
+            Start with $50 in promotional credits - Use for Real Estate listings, Travel bookings, Immigration services, Property management, Hotel reservations, Flight deals, Car rentals, Travel insurance, Property investment advisory, AR virtual tours, Luxury travel packages, Group bookings, Visa services, Car purchases, Car financing, Car insurance, Car parts, Car shipping, Car auctions, Car history reports, Marketplace product listings, Global shipping, Digital services, and ALL YaadFlex premium features!
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -1011,6 +1011,168 @@ export default function YaadWallet() {
                   data-testid="button-car-financing"
                 >
                   💰 Car Financing
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* YAADFLEX GLOBAL MARKETPLACE - PROFITABLE JAMAICAN GOODS */}
+          <Card className="bg-gradient-to-br from-emerald-600 via-green-600 to-teal-600 text-white border-2 border-emerald-400">
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold">🛍️ YAADFLEX GLOBAL MARKETPLACE - JAMAICAN GOODS EMPIRE</CardTitle>
+              <CardDescription className="text-emerald-100 text-lg">
+                Sell Profitable Jamaican Products Worldwide - 100% Legal Online Sales with Global Shipping!
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl font-bold">1,000+</div>
+                  <div className="text-emerald-200">Products Listed</div>
+                  <div className="text-xs text-emerald-300">Ready to Ship</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl font-bold">50+</div>
+                  <div className="text-emerald-200">Categories</div>
+                  <div className="text-xs text-emerald-300">All Legal</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl font-bold">195+</div>
+                  <div className="text-emerald-200">Countries</div>
+                  <div className="text-xs text-emerald-300">Global Reach</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl font-bold">24/7</div>
+                  <div className="text-emerald-200">Sales</div>
+                  <div className="text-xs text-emerald-300">Always Open</div>
+                </div>
+              </div>
+
+              {/* Profitable Product Categories */}
+              <div className="mb-6">
+                <h3 className="text-xl font-bold mb-3">💰 Top Profitable Categories:</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">☕</div>
+                    <div className="font-semibold">Blue Mountain Coffee</div>
+                    <div className="text-xs text-emerald-300">Premium Export</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🌶️</div>
+                    <div className="font-semibold">Jamaican Spices</div>
+                    <div className="text-xs text-emerald-300">Jerk Seasoning</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🎨</div>
+                    <div className="font-semibold">Local Art & Crafts</div>
+                    <div className="text-xs text-emerald-300">Handmade Items</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🎵</div>
+                    <div className="font-semibold">Music & Books</div>
+                    <div className="text-xs text-emerald-300">Digital Products</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">👕</div>
+                    <div className="font-semibold">Fashion & Jewelry</div>
+                    <div className="text-xs text-emerald-300">Unique Designs</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">📱</div>
+                    <div className="font-semibold">Electronics</div>
+                    <div className="text-xs text-emerald-300">Phones & Gadgets</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🌿</div>
+                    <div className="font-semibold">Natural Products</div>
+                    <div className="text-xs text-emerald-300">Organic Goods</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">💼</div>
+                    <div className="font-semibold">Services</div>
+                    <div className="text-xs text-emerald-300">Digital Services</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Selling Benefits */}
+              <div className="mb-6">
+                <h3 className="text-xl font-bold mb-3">🚀 YaadFlex Selling Advantages:</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="bg-white/10 rounded-lg p-3">
+                    <div className="font-semibold">✅ 100% Legal Compliance</div>
+                    <div className="text-xs text-emerald-300">All export/import rules handled</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3">
+                    <div className="font-semibold">📦 Global Shipping</div>
+                    <div className="text-xs text-emerald-300">Worldwide delivery network</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3">
+                    <div className="font-semibold">💳 Secure Payments</div>
+                    <div className="text-xs text-emerald-300">Protected transactions</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3">
+                    <div className="font-semibold">📈 Marketing Support</div>
+                    <div className="text-xs text-emerald-300">Promote your products</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Featured Jamaican Products for Sale */}
+              <div className="mb-6">
+                <h3 className="text-xl font-bold mb-3">🔥 Featured Jamaican Products:</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+                    <div className="text-lg font-bold mb-2">☕ Blue Mountain Coffee - Premium</div>
+                    <div className="text-sm mb-2">1lb bag • Fresh roasted • Export certified</div>
+                    <div className="text-xl font-bold text-yellow-300 mb-2">$65 USD / J$10,400</div>
+                    <div className="text-xs text-emerald-200 mb-3">High demand worldwide • 40% profit margin</div>
+                    <Button size="sm" className="w-full bg-green-500 hover:bg-green-600 text-white font-bold">
+                      💰 Start Selling
+                    </Button>
+                  </div>
+                  <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+                    <div className="text-lg font-bold mb-2">🌶️ Jerk Seasoning Set</div>
+                    <div className="text-sm mb-2">Authentic blend • 3-pack • Ready to ship</div>
+                    <div className="text-xl font-bold text-yellow-300 mb-2">$25 USD / J$4,000</div>
+                    <div className="text-xs text-emerald-200 mb-3">Popular export • Easy shipping • 50% profit</div>
+                    <Button size="sm" className="w-full bg-green-500 hover:bg-green-600 text-white font-bold">
+                      🌶️ List Product
+                    </Button>
+                  </div>
+                  <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4">
+                    <div className="text-lg font-bold mb-2">🎨 Handmade Jamaican Art</div>
+                    <div className="text-sm mb-2">Original paintings • Local artists • Unique pieces</div>
+                    <div className="text-xl font-bold text-yellow-300 mb-2">$150 USD / J$24,000</div>
+                    <div className="text-xs text-emerald-200 mb-3">High value • Art collectors market • 60% margin</div>
+                    <Button size="sm" className="w-full bg-green-500 hover:bg-green-600 text-white font-bold">
+                      🎨 Sell Art
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Button 
+                  className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-lg py-4"
+                  onClick={() => window.location.href = '/marketplace'}
+                  data-testid="button-browse-marketplace"
+                >
+                  🛍️ Browse Marketplace
+                </Button>
+                <Button 
+                  className="bg-green-500 hover:bg-green-600 text-white font-bold text-lg py-4"
+                  onClick={() => window.location.href = '/marketplace'}
+                  data-testid="button-sell-products"
+                >
+                  💼 Sell Your Products
+                </Button>
+                <Button 
+                  className="bg-teal-500 hover:bg-teal-600 text-white font-bold text-lg py-4"
+                  onClick={() => window.location.href = '/marketplace'}
+                  data-testid="button-seller-dashboard"
+                >
+                  📈 Seller Dashboard
                 </Button>
               </div>
             </CardContent>
