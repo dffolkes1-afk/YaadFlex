@@ -2,7 +2,19 @@
 
 ## Overview
 
-YaadFlex is a comprehensive super-app born in Jamaica with global ambitions. It's a total economy platform that combines ride-sharing, P2P wallet services, marketplace functionality, and more into a single unified application. The project features an innovative multi-currency system, voice-first accessibility, real-time translation capabilities, and cultural authenticity across different countries. The architecture supports everything from basic ride booking to complex business registration, workforce management, and global commerce.
+YaadFlex is Jamaica's #1 comprehensive super-app with global ambitions. It's a complete total economy platform featuring:
+
+🏠 **Real Estate Empire**: 2,500+ Properties • 14 Parishes • $50M+ Listed Value • AR Virtual Tours • Houses (850+) • Apartments (650+) • Condos (420+) • Land (380+) • Commercial (200+) • Townhouses (150+) • Property Management • Investment Advisory • Financing Solutions • Market Analytics
+
+✈️ **Travel Agent Powerhouse**: 500+ Airlines • 50,000+ Hotels • 200+ Countries • Immigration Services (USA, Canada, UK) • Travel Insurance • Group Bookings • Corporate Travel • Luxury Packages • Car Rentals • Visa Services • Flight Deals from Jamaica to Miami (J$45K), NYC (J$75K), London (J$85K), Toronto (J$65K), Barbados (J$35K), Trinidad (J$28K)
+
+💰 **Financial Services**: Multi-currency wallets, P2P transfers to 195+ countries, promotional credits system ($50 launch bonus), KWD/YFD currency system
+
+🚗 **Transportation**: Ride-sharing with 85% driver earnings, fleet management, real-time tracking
+
+🏢 **Business Solutions**: Company registration, workforce management, marketplace functionality, and enterprise services
+
+The platform combines voice-first accessibility, real-time translation capabilities, and cultural authenticity across different countries, supporting everything from basic services to complex business operations and global commerce.
 
 ## User Preferences
 

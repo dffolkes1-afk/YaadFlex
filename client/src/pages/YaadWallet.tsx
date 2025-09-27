@@ -96,7 +96,7 @@ function PromoCreditsSection() {
             🎁 YaadFlex Launch Credits
           </CardTitle>
           <CardDescription className="text-emerald-100 text-lg">
-            Start with $50 in promotional credits - Use for fees, upgrades, and premium features!
+            Start with $50 in promotional credits - Use for Real Estate listings, Travel bookings, Immigration services, Property management, Hotel reservations, Flight deals, Car rentals, Travel insurance, Property investment advisory, AR virtual tours, Luxury travel packages, Group bookings, Visa services, and ALL YaadFlex premium features!
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -487,7 +487,7 @@ export default function YaadWallet() {
                 🏠 YaadFlex Real Estate Empire
               </CardTitle>
               <CardDescription className="text-emerald-100 text-xl">
-                Jamaica's #1 Property Platform - Buy, Sell, Rent Houses, Apartments, Land & Commercial Properties!
+                Jamaica's #1 Property Platform - 2,500+ Properties • 14 Parishes • $50M+ Listed Value • AR Virtual Tours • Houses (850+) • Apartments (650+) • Condos (420+) • Land (380+) • Commercial (200+) • Townhouses (150+) • Property Management • Investment Advisory • Financing Solutions • 24/7 Support • Market Analytics!
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -591,7 +591,7 @@ export default function YaadWallet() {
                 ✈️ YaadFlex Travel Agent Powerhouse
               </CardTitle>
               <CardDescription className="text-blue-100 text-xl">
-                Your Complete Travel Solution - Flights, Hotels, Cars, Packages Worldwide! We earn 8% commission to serve you better!
+                Your Complete Travel Solution - 500+ Airlines • 50,000+ Hotels • 200+ Countries • Immigration Services (USA, Canada, UK) • Travel Insurance • Group Bookings • Corporate Travel • Luxury Packages • Car Rentals • Visa Services • Flight Deals from Jamaica to Miami (J$45K), NYC (J$75K), London (J$85K), Toronto (J$65K), Barbados (J$35K), Trinidad (J$28K) • 8% Commission to serve you better!
               </CardDescription>
             </CardHeader>
             <CardContent>

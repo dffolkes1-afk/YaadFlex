@@ -200,7 +200,7 @@ export default function RealEstatePage() {
             🇯🇲 YaadFlex Real Estate Empire - Jamaica's #1 Property Platform
           </h1>
           <p className="text-2xl text-muted-foreground mb-6">
-            🏠 2,500+ Properties • 14 Parishes • $50M+ Listed • AR Virtual Tours • Property Management • Investment Advisory • Financing Solutions
+            🏠 2,500+ Properties • 14 Parishes • $50M+ Listed Value • AR Virtual Tours • Houses (850+) • Apartments (650+) • Condos (420+) • Land (380+) • Commercial (200+) • Townhouses (150+) • Property Management • Investment Advisory • Financing Solutions • 24/7 Support • Market Analytics • Rental Empire (1,200+ Houses, 800+ Vehicles, 500+ Equipment)
           </p>
           
           {/* Comprehensive Real Estate Stats */}

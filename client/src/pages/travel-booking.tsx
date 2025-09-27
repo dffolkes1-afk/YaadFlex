@@ -67,7 +67,7 @@ export default function TravelBooking() {
               ✈️ YaadFlex Travel Agent Powerhouse - Your Complete Travel Solution
             </h1>
             <p className="text-2xl text-gray-600 dark:text-gray-300 mb-6">
-              🌍 500+ Airlines • 50K+ Hotels • 200+ Countries • Immigration Services • Travel Insurance • Group Bookings • Luxury Packages
+              🌍 500+ Airlines • 50,000+ Hotels • 200+ Countries • Immigration Services (USA, Canada, UK) • Travel Insurance • Group Bookings • Corporate Travel • Luxury Packages • Car Rentals • Visa Services • Flight Deals from Jamaica: Miami (J$45K), NYC (J$75K), London (J$85K), Toronto (J$65K), Barbados (J$35K), Trinidad (J$28K) • 8% Commission
             </p>
             
             {/* Comprehensive Travel Stats */}
