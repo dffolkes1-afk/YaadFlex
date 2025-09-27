@@ -476,85 +476,236 @@ export default function YaadWallet() {
         {/* Promotional Credits Section */}
         <PromoCreditsSection />
 
-        {/* Real Estate & Travel Super Features */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {/* Real Estate Card */}
+        {/* MASSIVE REAL ESTATE & TRAVEL SHOWCASE */}
+        <div className="space-y-8 mb-8">
+          
+          {/* Real Estate Empire */}
           <Card className="bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-600 text-white border-2 border-emerald-400">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-2xl">
-                <Building className="h-8 w-8" />
-                🏠 YaadFlex Real Estate
+              <CardTitle className="flex items-center gap-2 text-3xl">
+                <Building className="h-10 w-10" />
+                🏠 YaadFlex Real Estate Empire
               </CardTitle>
-              <CardDescription className="text-emerald-100 text-lg">
-                Buy, sell & rent properties across Jamaica and globally - Use your $50 credits for listings!
+              <CardDescription className="text-emerald-100 text-xl">
+                Jamaica's #1 Property Platform - Buy, Sell, Rent Houses, Apartments, Land & Commercial Properties!
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center">
-                  <div className="text-xl font-bold">2,500+</div>
-                  <div className="text-emerald-200 text-sm">Properties</div>
+              {/* Property Stats */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl font-bold">2,500+</div>
+                  <div className="text-emerald-200">Active Listings</div>
+                  <div className="text-xs text-emerald-300">Updated Daily</div>
                 </div>
-                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center">
-                  <div className="text-xl font-bold">14 Parishes</div>
-                  <div className="text-emerald-200 text-sm">Jamaica Wide</div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl font-bold">14</div>
+                  <div className="text-emerald-200">All Parishes</div>
+                  <div className="text-xs text-emerald-300">Island Wide</div>
                 </div>
-                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center">
-                  <div className="text-xl font-bold">$50M+</div>
-                  <div className="text-emerald-200 text-sm">Listed Value</div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl font-bold">$50M+</div>
+                  <div className="text-emerald-200">Listed Value</div>
+                  <div className="text-xs text-emerald-300">JMD Total</div>
                 </div>
-                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center">
-                  <div className="text-xl font-bold">AR Tours</div>
-                  <div className="text-emerald-200 text-sm">Virtual Views</div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl font-bold">AR</div>
+                  <div className="text-emerald-200">Virtual Tours</div>
+                  <div className="text-xs text-emerald-300">See Before Visit</div>
                 </div>
               </div>
-              <Button 
-                className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold text-lg py-3"
-                onClick={() => window.location.href = '/real-estate'}
-                data-testid="button-real-estate"
-              >
-                🏡 Browse Properties Now
-              </Button>
+
+              {/* Property Types */}
+              <div className="mb-6">
+                <h3 className="text-xl font-bold mb-3">🏘️ Browse By Property Type:</h3>
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🏠</div>
+                    <div className="text-sm font-semibold">Houses</div>
+                    <div className="text-xs text-emerald-300">850+ listings</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🏢</div>
+                    <div className="text-sm font-semibold">Apartments</div>
+                    <div className="text-xs text-emerald-300">650+ listings</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🏘️</div>
+                    <div className="text-sm font-semibold">Condos</div>
+                    <div className="text-xs text-emerald-300">420+ listings</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🌿</div>
+                    <div className="text-sm font-semibold">Land</div>
+                    <div className="text-xs text-emerald-300">380+ listings</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🏪</div>
+                    <div className="text-sm font-semibold">Commercial</div>
+                    <div className="text-xs text-emerald-300">200+ listings</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🏡</div>
+                    <div className="text-sm font-semibold">Townhouses</div>
+                    <div className="text-xs text-emerald-300">150+ listings</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Featured Parishes */}
+              <div className="mb-6">
+                <h3 className="text-xl font-bold mb-3">📍 Popular Parishes:</h3>
+                <div className="flex flex-wrap gap-2">
+                  {['Kingston', 'St. Andrew', 'St. James', 'St. Catherine', 'Manchester', 'St. Ann'].map((parish) => (
+                    <div key={parish} className="bg-white/10 px-3 py-1 rounded-full text-sm font-semibold cursor-pointer hover:bg-white/20 transition-colors">
+                      {parish}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Button 
+                  className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold text-lg py-4"
+                  onClick={() => window.location.href = '/real-estate'}
+                  data-testid="button-browse-properties"
+                >
+                  🏡 Browse All Properties
+                </Button>
+                <Button 
+                  className="bg-green-500 hover:bg-green-600 text-white font-bold text-lg py-4"
+                  onClick={() => window.location.href = '/real-estate'}
+                  data-testid="button-list-property"
+                >
+                  💰 List Your Property (FREE)
+                </Button>
+              </div>
             </CardContent>
           </Card>
 
-          {/* Travel Agent Card */}
+          {/* Travel Agent Powerhouse */}
           <Card className="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 text-white border-2 border-blue-400">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-2xl">
-                <Plane className="h-8 w-8" />
-                ✈️ YaadFlex Travel Agent
+              <CardTitle className="flex items-center gap-2 text-3xl">
+                <Plane className="h-10 w-10" />
+                ✈️ YaadFlex Travel Agent Powerhouse
               </CardTitle>
-              <CardDescription className="text-blue-100 text-lg">
-                Book flights, hotels, cars worldwide - We earn 8% commission to help you travel better!
+              <CardDescription className="text-blue-100 text-xl">
+                Your Complete Travel Solution - Flights, Hotels, Cars, Packages Worldwide! We earn 8% commission to serve you better!
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center">
-                  <div className="text-xl font-bold">500+</div>
-                  <div className="text-blue-200 text-sm">Airlines</div>
+              {/* Travel Stats */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl font-bold">500+</div>
+                  <div className="text-blue-200">Airlines</div>
+                  <div className="text-xs text-blue-300">Global Network</div>
                 </div>
-                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center">
-                  <div className="text-xl font-bold">50K+</div>
-                  <div className="text-blue-200 text-sm">Hotels</div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl font-bold">50,000+</div>
+                  <div className="text-blue-200">Hotels</div>
+                  <div className="text-xs text-blue-300">Every Budget</div>
                 </div>
-                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center">
-                  <div className="text-xl font-bold">200+</div>
-                  <div className="text-blue-200 text-sm">Countries</div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl font-bold">200+</div>
+                  <div className="text-blue-200">Countries</div>
+                  <div className="text-xs text-blue-300">Destinations</div>
                 </div>
-                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center">
-                  <div className="text-xl font-bold">J$25K</div>
-                  <div className="text-blue-200 text-sm">From JA</div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl font-bold">J$25K</div>
+                  <div className="text-blue-200">From Jamaica</div>
+                  <div className="text-xs text-blue-300">Starting Price</div>
                 </div>
               </div>
-              <Button 
-                className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg py-3"
-                onClick={() => window.location.href = '/travel-booking'}
-                data-testid="button-travel-booking"
-              >
-                🌍 Book Travel Now
-              </Button>
+
+              {/* Popular Destinations */}
+              <div className="mb-6">
+                <h3 className="text-xl font-bold mb-3">🌟 Popular Destinations from Jamaica:</h3>
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🏖️</div>
+                    <div className="text-sm font-semibold">Miami</div>
+                    <div className="text-xs text-blue-300">From J$45K</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🗽</div>
+                    <div className="text-sm font-semibold">New York</div>
+                    <div className="text-xs text-blue-300">From J$75K</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🏰</div>
+                    <div className="text-sm font-semibold">London</div>
+                    <div className="text-xs text-blue-300">From J$85K</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🍁</div>
+                    <div className="text-sm font-semibold">Toronto</div>
+                    <div className="text-xs text-blue-300">From J$65K</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🌴</div>
+                    <div className="text-sm font-semibold">Barbados</div>
+                    <div className="text-xs text-blue-300">From J$35K</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🎭</div>
+                    <div className="text-sm font-semibold">Trinidad</div>
+                    <div className="text-xs text-blue-300">From J$28K</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Travel Services */}
+              <div className="mb-6">
+                <h3 className="text-xl font-bold mb-3">🎯 Complete Travel Services:</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className="bg-white/10 rounded-lg p-3 text-center">
+                    <div className="text-lg mb-1">✈️</div>
+                    <div className="text-sm font-semibold">Flight Booking</div>
+                    <div className="text-xs text-blue-300">Best Deals Daily</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center">
+                    <div className="text-lg mb-1">🏨</div>
+                    <div className="text-sm font-semibold">Hotel Booking</div>
+                    <div className="text-xs text-blue-300">All Star Ratings</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center">
+                    <div className="text-lg mb-1">🚗</div>
+                    <div className="text-sm font-semibold">Car Rental</div>
+                    <div className="text-xs text-blue-300">Airport Pickup</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center">
+                    <div className="text-lg mb-1">📦</div>
+                    <div className="text-sm font-semibold">Travel Packages</div>
+                    <div className="text-xs text-blue-300">All-Inclusive</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Button 
+                  className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg py-4"
+                  onClick={() => window.location.href = '/travel-booking'}
+                  data-testid="button-book-flights"
+                >
+                  ✈️ Book Flights
+                </Button>
+                <Button 
+                  className="bg-green-500 hover:bg-green-600 text-white font-bold text-lg py-4"
+                  onClick={() => window.location.href = '/travel-booking'}
+                  data-testid="button-book-hotels"
+                >
+                  🏨 Book Hotels
+                </Button>
+                <Button 
+                  className="bg-purple-500 hover:bg-purple-600 text-white font-bold text-lg py-4"
+                  onClick={() => window.location.href = '/travel-booking'}
+                  data-testid="button-book-packages"
+                >
+                  📦 Travel Packages
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </div>
