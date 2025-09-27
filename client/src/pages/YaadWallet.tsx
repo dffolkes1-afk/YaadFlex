@@ -96,7 +96,7 @@ function PromoCreditsSection() {
             🎁 YaadFlex Launch Credits
           </CardTitle>
           <CardDescription className="text-emerald-100 text-lg">
-            Start with $50 in promotional credits - Use for Real Estate listings, Travel bookings, Immigration services, Property management, Hotel reservations, Flight deals, Car rentals, Travel insurance, Property investment advisory, AR virtual tours, Luxury travel packages, Group bookings, Visa services, and ALL YaadFlex premium features!
+            Start with $50 in promotional credits - Use for Real Estate listings, Travel bookings, Immigration services, Property management, Hotel reservations, Flight deals, Car rentals, Travel insurance, Property investment advisory, AR virtual tours, Luxury travel packages, Group bookings, Visa services, Car purchases, Car financing, Car insurance, Car parts, Car shipping, Car auctions, Car history reports, and ALL YaadFlex premium features!
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -881,6 +881,138 @@ export default function YaadWallet() {
               <Button className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold text-lg py-4">
                 🏘️ Browse All Rentals
               </Button>
+            </CardContent>
+          </Card>
+
+          {/* WORLDWIDE CAR DEALERSHIP EMPIRE */}
+          <Card className="bg-gradient-to-br from-slate-600 via-gray-600 to-zinc-600 text-white border-2 border-slate-400">
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold">🚗 YAADFLEX WORLDWIDE CAR DEALERSHIP EMPIRE</CardTitle>
+              <CardDescription className="text-slate-100 text-lg">
+                Global Car Sales Network - New & Used Cars, All Makes & Models, Car Financing, Car Insurance, Luxury Cars, Commercial Vehicles, Car Parts & Accessories!
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl font-bold">5,000+</div>
+                  <div className="text-slate-200">Cars Available</div>
+                  <div className="text-xs text-slate-300">New & Used</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl font-bold">50+</div>
+                  <div className="text-slate-200">Car Brands</div>
+                  <div className="text-xs text-slate-300">All Major Makes</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl font-bold">100+</div>
+                  <div className="text-slate-200">Countries</div>
+                  <div className="text-xs text-slate-300">Worldwide Sales</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl font-bold">24/7</div>
+                  <div className="text-slate-200">Support</div>
+                  <div className="text-xs text-slate-300">Global Service</div>
+                </div>
+              </div>
+
+              {/* Car Categories */}
+              <div className="mb-6">
+                <h3 className="text-xl font-bold mb-3">🚙 Browse By Car Category:</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🚗</div>
+                    <div className="font-semibold">Sedans</div>
+                    <div className="text-xs text-slate-300">1,200+ cars</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🚙</div>
+                    <div className="font-semibold">SUVs</div>
+                    <div className="text-xs text-slate-300">950+ cars</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🚐</div>
+                    <div className="font-semibold">Vans</div>
+                    <div className="text-xs text-slate-300">400+ cars</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🚚</div>
+                    <div className="font-semibold">Trucks</div>
+                    <div className="text-xs text-slate-300">380+ cars</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🏎️</div>
+                    <div className="font-semibold">Luxury Cars</div>
+                    <div className="text-xs text-slate-300">250+ cars</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🏍️</div>
+                    <div className="font-semibold">Motorcycles</div>
+                    <div className="text-xs text-slate-300">180+ bikes</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">⚡</div>
+                    <div className="font-semibold">Electric</div>
+                    <div className="text-xs text-slate-300">150+ cars</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-2xl mb-1">🔧</div>
+                    <div className="font-semibold">Parts</div>
+                    <div className="text-xs text-slate-300">10K+ items</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Car Services */}
+              <div className="mb-6">
+                <h3 className="text-xl font-bold mb-3">🔧 Complete Car Services:</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className="bg-white/10 rounded-lg p-3 text-center">
+                    <div className="text-lg mb-1">💰</div>
+                    <div className="text-sm font-semibold">Car Financing</div>
+                    <div className="text-xs text-slate-300">Low Interest Rates</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center">
+                    <div className="text-lg mb-1">🛡️</div>
+                    <div className="text-sm font-semibold">Car Insurance</div>
+                    <div className="text-xs text-slate-300">Full Coverage</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center">
+                    <div className="text-lg mb-1">🚢</div>
+                    <div className="text-sm font-semibold">Int'l Shipping</div>
+                    <div className="text-xs text-slate-300">Worldwide Delivery</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center">
+                    <div className="text-lg mb-1">📋</div>
+                    <div className="text-sm font-semibold">History Reports</div>
+                    <div className="text-xs text-slate-300">Car Background</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Button 
+                  className="bg-slate-500 hover:bg-slate-600 text-white font-bold text-lg py-4"
+                  onClick={() => window.location.href = '/car-marketplace'}
+                  data-testid="button-browse-cars"
+                >
+                  🚗 Browse All Cars
+                </Button>
+                <Button 
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold text-lg py-4"
+                  onClick={() => window.location.href = '/car-marketplace'}
+                  data-testid="button-sell-car"
+                >
+                  💼 Sell Your Car
+                </Button>
+                <Button 
+                  className="bg-purple-500 hover:bg-purple-600 text-white font-bold text-lg py-4"
+                  onClick={() => window.location.href = '/car-marketplace'}
+                  data-testid="button-car-financing"
+                >
+                  💰 Car Financing
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </div>

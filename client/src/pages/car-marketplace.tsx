@@ -270,10 +270,10 @@ export default function CarMarketplacePage() {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 bg-clip-text text-transparent mb-4">
-            🇯🇲 YaadFlex Car Marketplace
+            🚗 YaadFlex Worldwide Car Dealership Empire
           </h1>
           <p className="text-2xl text-muted-foreground mb-6">
-            Jamaica's Premier Vehicle Marketplace with 3D Car Viewing
+            🌍 5,000+ Cars Available • 50+ Car Brands • 100+ Countries Sales • New & Used Cars • Car Financing • Car Insurance • Luxury Cars • Commercial Vehicles • Motorcycles • Car Parts & Accessories • International Car Shipping • Car Auctions • Trade-ins • Car History Reports • 24/7 Global Support
           </p>
           <div className="flex justify-center gap-2 flex-wrap mb-8">
             <Badge variant="secondary" className="text-green-600 text-lg px-4 py-2">✓ 3D Car Viewer</Badge>

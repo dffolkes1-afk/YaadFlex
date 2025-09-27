@@ -8,6 +8,8 @@ YaadFlex is Jamaica's #1 comprehensive super-app with global ambitions. It's a c
 
 ✈️ **Travel Agent Powerhouse**: 500+ Airlines • 50,000+ Hotels • 200+ Countries • Immigration Services (USA, Canada, UK) • Travel Insurance • Group Bookings • Corporate Travel • Luxury Packages • Car Rentals • Visa Services • Flight Deals from Jamaica to Miami (J$45K), NYC (J$75K), London (J$85K), Toronto (J$65K), Barbados (J$35K), Trinidad (J$28K)
 
+🚗 **Worldwide Car Dealership**: 5,000+ Cars Available • 50+ Car Brands • 100+ Countries Sales • New & Used Cars • Car Financing • Car Insurance • Luxury Cars • Commercial Vehicles • Motorcycles • Car Parts & Accessories • International Car Shipping • Car Auctions • Trade-ins • Car History Reports • 24/7 Global Support
+
 💰 **Financial Services**: Multi-currency wallets, P2P transfers to 195+ countries, promotional credits system ($50 launch bonus), KWD/YFD currency system
 
 🚗 **Transportation**: Ride-sharing with 85% driver earnings, fleet management, real-time tracking
