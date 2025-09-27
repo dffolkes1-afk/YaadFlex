@@ -62,15 +62,95 @@ export default function TravelBooking() {
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex items-center gap-3">
-            <Plane className="h-8 w-8 text-blue-600" />
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                YaadFlex Travel Agent
-              </h1>
-              <p className="text-gray-600 dark:text-gray-300">
-                Book flights, hotels, cars & packages worldwide - We earn 8% commission to help you travel better
-              </p>
+          <div className="text-center">
+            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent mb-4">
+              ✈️ YaadFlex Travel Agent Powerhouse - Your Complete Travel Solution
+            </h1>
+            <p className="text-2xl text-gray-600 dark:text-gray-300 mb-6">
+              🌍 500+ Airlines • 50K+ Hotels • 200+ Countries • Immigration Services • Travel Insurance • Group Bookings • Luxury Packages
+            </p>
+            
+            {/* Comprehensive Travel Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-6">
+              <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-xl text-center">
+                <div className="text-2xl font-bold text-blue-600">500+</div>
+                <div className="text-sm text-blue-700 dark:text-blue-300">Airlines</div>
+              </div>
+              <div className="bg-green-100 dark:bg-green-900 p-4 rounded-xl text-center">
+                <div className="text-2xl font-bold text-green-600">50K+</div>
+                <div className="text-sm text-green-700 dark:text-green-300">Hotels</div>
+              </div>
+              <div className="bg-purple-100 dark:bg-purple-900 p-4 rounded-xl text-center">
+                <div className="text-2xl font-bold text-purple-600">200+</div>
+                <div className="text-sm text-purple-700 dark:text-purple-300">Countries</div>
+              </div>
+              <div className="bg-orange-100 dark:bg-orange-900 p-4 rounded-xl text-center">
+                <div className="text-2xl font-bold text-orange-600">1K+</div>
+                <div className="text-sm text-orange-700 dark:text-orange-300">Car Rentals</div>
+              </div>
+              <div className="bg-teal-100 dark:bg-teal-900 p-4 rounded-xl text-center">
+                <div className="text-2xl font-bold text-teal-600">8%</div>
+                <div className="text-sm text-teal-700 dark:text-teal-300">Commission</div>
+              </div>
+              <div className="bg-red-100 dark:bg-red-900 p-4 rounded-xl text-center">
+                <div className="text-2xl font-bold text-red-600">24/7</div>
+                <div className="text-sm text-red-700 dark:text-red-300">Support</div>
+              </div>
+              <div className="bg-yellow-100 dark:bg-yellow-900 p-4 rounded-xl text-center">
+                <div className="text-2xl font-bold text-yellow-600">100+</div>
+                <div className="text-sm text-yellow-700 dark:text-yellow-300">Daily Bookings</div>
+              </div>
+              <div className="bg-indigo-100 dark:bg-indigo-900 p-4 rounded-xl text-center">
+                <div className="text-2xl font-bold text-indigo-600">🏆</div>
+                <div className="text-sm text-indigo-700 dark:text-indigo-300">#1 Agent</div>
+              </div>
+            </div>
+
+            {/* Travel Service Categories */}
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-4">🎯 Complete Travel Services</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl text-center cursor-pointer hover:shadow-lg transition-shadow border">
+                  <div className="text-3xl mb-2">✈️</div>
+                  <div className="font-semibold text-sm">Flight Booking</div>
+                  <div className="text-xs text-muted-foreground">Best Deals</div>
+                </div>
+                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl text-center cursor-pointer hover:shadow-lg transition-shadow border">
+                  <div className="text-3xl mb-2">🏨</div>
+                  <div className="font-semibold text-sm">Hotel Booking</div>
+                  <div className="text-xs text-muted-foreground">All Star Ratings</div>
+                </div>
+                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl text-center cursor-pointer hover:shadow-lg transition-shadow border">
+                  <div className="text-3xl mb-2">🚗</div>
+                  <div className="font-semibold text-sm">Car Rental</div>
+                  <div className="text-xs text-muted-foreground">Airport Pickup</div>
+                </div>
+                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl text-center cursor-pointer hover:shadow-lg transition-shadow border">
+                  <div className="text-3xl mb-2">📦</div>
+                  <div className="font-semibold text-sm">Travel Packages</div>
+                  <div className="text-xs text-muted-foreground">All-Inclusive</div>
+                </div>
+                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl text-center cursor-pointer hover:shadow-lg transition-shadow border">
+                  <div className="text-3xl mb-2">🛂</div>
+                  <div className="font-semibold text-sm">Visa Services</div>
+                  <div className="text-xs text-muted-foreground">Immigration</div>
+                </div>
+                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl text-center cursor-pointer hover:shadow-lg transition-shadow border">
+                  <div className="text-3xl mb-2">🛡️</div>
+                  <div className="font-semibold text-sm">Travel Insurance</div>
+                  <div className="text-xs text-muted-foreground">Full Coverage</div>
+                </div>
+                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl text-center cursor-pointer hover:shadow-lg transition-shadow border">
+                  <div className="text-3xl mb-2">👥</div>
+                  <div className="font-semibold text-sm">Group Travel</div>
+                  <div className="text-xs text-muted-foreground">Corporate</div>
+                </div>
+                <div className="bg-white dark:bg-gray-700 p-4 rounded-xl text-center cursor-pointer hover:shadow-lg transition-shadow border">
+                  <div className="text-3xl mb-2">💎</div>
+                  <div className="font-semibold text-sm">Luxury Travel</div>
+                  <div className="text-xs text-muted-foreground">VIP Service</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

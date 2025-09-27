@@ -197,16 +197,94 @@ export default function RealEstatePage() {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 bg-clip-text text-transparent mb-4">
-            🇯🇲 YaadFlex Real Estate
+            🇯🇲 YaadFlex Real Estate Empire - Jamaica's #1 Property Platform
           </h1>
           <p className="text-2xl text-muted-foreground mb-6">
-            Jamaica's Premier Property Marketplace - Buy, Sell, Invest
+            🏠 2,500+ Properties • 14 Parishes • $50M+ Listed • AR Virtual Tours • Property Management • Investment Advisory • Financing Solutions
           </p>
+          
+          {/* Comprehensive Real Estate Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-8">
+            <div className="bg-green-100 dark:bg-green-900 p-4 rounded-xl text-center">
+              <div className="text-2xl font-bold text-green-600">2,500+</div>
+              <div className="text-sm text-green-700 dark:text-green-300">Active Listings</div>
+            </div>
+            <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-xl text-center">
+              <div className="text-2xl font-bold text-blue-600">14</div>
+              <div className="text-sm text-blue-700 dark:text-blue-300">All Parishes</div>
+            </div>
+            <div className="bg-purple-100 dark:bg-purple-900 p-4 rounded-xl text-center">
+              <div className="text-2xl font-bold text-purple-600">$50M+</div>
+              <div className="text-sm text-purple-700 dark:text-purple-300">Total Value JMD</div>
+            </div>
+            <div className="bg-orange-100 dark:bg-orange-900 p-4 rounded-xl text-center">
+              <div className="text-2xl font-bold text-orange-600">500+</div>
+              <div className="text-sm text-orange-700 dark:text-orange-300">Agents</div>
+            </div>
+            <div className="bg-teal-100 dark:bg-teal-900 p-4 rounded-xl text-center">
+              <div className="text-2xl font-bold text-teal-600">AR</div>
+              <div className="text-sm text-teal-700 dark:text-teal-300">Virtual Tours</div>
+            </div>
+            <div className="bg-red-100 dark:bg-red-900 p-4 rounded-xl text-center">
+              <div className="text-2xl font-bold text-red-600">24/7</div>
+              <div className="text-sm text-red-700 dark:text-red-300">Support</div>
+            </div>
+            <div className="bg-yellow-100 dark:bg-yellow-900 p-4 rounded-xl text-center">
+              <div className="text-2xl font-bold text-yellow-600">150+</div>
+              <div className="text-sm text-yellow-700 dark:text-yellow-300">Daily Sales</div>
+            </div>
+            <div className="bg-indigo-100 dark:bg-indigo-900 p-4 rounded-xl text-center">
+              <div className="text-2xl font-bold text-indigo-600">🏆</div>
+              <div className="text-sm text-indigo-700 dark:text-indigo-300">#1 Platform</div>
+            </div>
+          </div>
+
+          {/* Property Type Breakdown */}
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold mb-4">🏘️ Browse By Property Type</h2>
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+              <div className="bg-white dark:bg-gray-800 p-4 rounded-xl text-center cursor-pointer hover:shadow-lg transition-shadow border">
+                <div className="text-3xl mb-2">🏠</div>
+                <div className="font-semibold">Houses</div>
+                <div className="text-sm text-muted-foreground">850+ listings</div>
+              </div>
+              <div className="bg-white dark:bg-gray-800 p-4 rounded-xl text-center cursor-pointer hover:shadow-lg transition-shadow border">
+                <div className="text-3xl mb-2">🏢</div>
+                <div className="font-semibold">Apartments</div>
+                <div className="text-sm text-muted-foreground">650+ listings</div>
+              </div>
+              <div className="bg-white dark:bg-gray-800 p-4 rounded-xl text-center cursor-pointer hover:shadow-lg transition-shadow border">
+                <div className="text-3xl mb-2">🏘️</div>
+                <div className="font-semibold">Condos</div>
+                <div className="text-sm text-muted-foreground">420+ listings</div>
+              </div>
+              <div className="bg-white dark:bg-gray-800 p-4 rounded-xl text-center cursor-pointer hover:shadow-lg transition-shadow border">
+                <div className="text-3xl mb-2">🌿</div>
+                <div className="font-semibold">Land</div>
+                <div className="text-sm text-muted-foreground">380+ listings</div>
+              </div>
+              <div className="bg-white dark:bg-gray-800 p-4 rounded-xl text-center cursor-pointer hover:shadow-lg transition-shadow border">
+                <div className="text-3xl mb-2">🏪</div>
+                <div className="font-semibold">Commercial</div>
+                <div className="text-sm text-muted-foreground">200+ listings</div>
+              </div>
+              <div className="bg-white dark:bg-gray-800 p-4 rounded-xl text-center cursor-pointer hover:shadow-lg transition-shadow border">
+                <div className="text-3xl mb-2">🏡</div>
+                <div className="font-semibold">Townhouses</div>
+                <div className="text-sm text-muted-foreground">150+ listings</div>
+              </div>
+            </div>
+          </div>
+
           <div className="flex justify-center gap-2 flex-wrap mb-8">
-            <Badge variant="secondary" className="text-green-600 text-lg px-4 py-2">✓ Island-Wide Properties</Badge>
+            <Badge variant="secondary" className="text-green-600 text-lg px-4 py-2">✓ All 14 Parishes</Badge>
             <Badge variant="secondary" className="text-blue-600 text-lg px-4 py-2">✓ Verified Sellers</Badge>
-            <Badge variant="secondary" className="text-purple-600 text-lg px-4 py-2">✓ Virtual Tours</Badge>
-            <Badge variant="secondary" className="text-orange-600 text-lg px-4 py-2">✓ YaadFlex Delivery</Badge>
+            <Badge variant="secondary" className="text-purple-600 text-lg px-4 py-2">✓ AR Virtual Tours</Badge>
+            <Badge variant="secondary" className="text-orange-600 text-lg px-4 py-2">✓ Property Management</Badge>
+            <Badge variant="secondary" className="text-teal-600 text-lg px-4 py-2">✓ Investment Advisory</Badge>
+            <Badge variant="secondary" className="text-red-600 text-lg px-4 py-2">✓ Financing Solutions</Badge>
+            <Badge variant="secondary" className="text-yellow-600 text-lg px-4 py-2">✓ 24/7 Support</Badge>
+            <Badge variant="secondary" className="text-indigo-600 text-lg px-4 py-2">✓ Market Analytics</Badge>
           </div>
         </div>
 

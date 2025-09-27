@@ -1094,6 +1094,236 @@ export default function Home() {
           </Card>
         </div>
 
+        {/* MASSIVE REAL ESTATE & TRAVEL SHOWCASE */}
+        <div className="space-y-8 mb-8">
+          
+          {/* YAADFLEX REAL ESTATE EMPIRE */}
+          <Card className="bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-600 text-white border-4 border-emerald-400 relative overflow-hidden min-h-[600px] shadow-2xl shadow-emerald-500/80">
+            <div className="absolute inset-0 opacity-20">
+              <div className="absolute top-4 left-4 text-8xl animate-bounce">🏠</div>
+              <div className="absolute top-4 right-4 text-8xl animate-pulse">🏢</div>
+              <div className="absolute bottom-4 left-4 text-8xl animate-bounce delay-300">🏘️</div>
+              <div className="absolute bottom-4 right-4 text-8xl animate-pulse delay-500">🌿</div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-12xl animate-pulse delay-200">🇯🇲</div>
+            </div>
+            
+            <CardHeader className="relative z-10 pb-8">
+              <CardTitle className="text-center space-y-6">
+                <div className="text-4xl md:text-6xl font-black text-white animate-pulse leading-tight">
+                  🏠 YAADFLEX REAL ESTATE EMPIRE! 🏠
+                </div>
+                <div className="text-2xl md:text-4xl font-black text-emerald-200 animate-bounce leading-tight">
+                  JAMAICA'S #1 PROPERTY PLATFORM!
+                </div>
+                <div className="text-xl md:text-3xl font-black text-cyan-300 animate-pulse">
+                  2,500+ PROPERTIES • 14 PARISHES • $50M+ LISTED VALUE
+                </div>
+              </CardTitle>
+            </CardHeader>
+            
+            <CardContent className="relative z-10 space-y-8">
+              {/* Property Stats Grid */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-3xl font-bold">2,500+</div>
+                  <div className="text-emerald-200">Active Listings</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-3xl font-bold">14</div>
+                  <div className="text-emerald-200">All Parishes</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-3xl font-bold">$50M+</div>
+                  <div className="text-emerald-200">Total Value JMD</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-3xl font-bold">AR</div>
+                  <div className="text-emerald-200">Virtual Tours</div>
+                </div>
+              </div>
+
+              {/* Property Types Showcase */}
+              <div>
+                <h3 className="text-2xl font-bold mb-4 text-center">🏘️ ALL PROPERTY TYPES AVAILABLE</h3>
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-3xl mb-2">🏠</div>
+                    <div className="font-semibold">Houses</div>
+                    <div className="text-xs text-emerald-300">850+ listings</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-3xl mb-2">🏢</div>
+                    <div className="font-semibold">Apartments</div>
+                    <div className="text-xs text-emerald-300">650+ listings</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-3xl mb-2">🏘️</div>
+                    <div className="font-semibold">Condos</div>
+                    <div className="text-xs text-emerald-300">420+ listings</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-3xl mb-2">🌿</div>
+                    <div className="font-semibold">Land</div>
+                    <div className="text-xs text-emerald-300">380+ listings</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-3xl mb-2">🏪</div>
+                    <div className="font-semibold">Commercial</div>
+                    <div className="text-xs text-emerald-300">200+ listings</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-3xl mb-2">🏡</div>
+                    <div className="font-semibold">Townhouses</div>
+                    <div className="text-xs text-emerald-300">150+ listings</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Link to="/real-estate">
+                  <GlamorousButton variant="luxury" size="lg" glow="intense" className="w-full">
+                    🏡 Browse All Properties
+                  </GlamorousButton>
+                </Link>
+                <Link to="/real-estate">
+                  <GlamorousButton variant="premium" size="lg" glow="intense" className="w-full">
+                    💰 List Your Property (FREE)
+                  </GlamorousButton>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* YAADFLEX TRAVEL AGENT POWERHOUSE */}
+          <Card className="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 text-white border-4 border-blue-400 relative overflow-hidden min-h-[600px] shadow-2xl shadow-blue-500/80">
+            <div className="absolute inset-0 opacity-20">
+              <div className="absolute top-4 left-4 text-8xl animate-bounce">✈️</div>
+              <div className="absolute top-4 right-4 text-8xl animate-pulse">🏨</div>
+              <div className="absolute bottom-4 left-4 text-8xl animate-bounce delay-300">🚗</div>
+              <div className="absolute bottom-4 right-4 text-8xl animate-pulse delay-500">🌍</div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-12xl animate-pulse delay-200">🇯🇲</div>
+            </div>
+            
+            <CardHeader className="relative z-10 pb-8">
+              <CardTitle className="text-center space-y-6">
+                <div className="text-4xl md:text-6xl font-black text-white animate-pulse leading-tight">
+                  ✈️ YAADFLEX TRAVEL POWERHOUSE! ✈️
+                </div>
+                <div className="text-2xl md:text-4xl font-black text-blue-200 animate-bounce leading-tight">
+                  YOUR COMPLETE TRAVEL SOLUTION!
+                </div>
+                <div className="text-xl md:text-3xl font-black text-purple-300 animate-pulse">
+                  500+ AIRLINES • 50K+ HOTELS • 200+ COUNTRIES
+                </div>
+              </CardTitle>
+            </CardHeader>
+            
+            <CardContent className="relative z-10 space-y-8">
+              {/* Travel Stats Grid */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-3xl font-bold">500+</div>
+                  <div className="text-blue-200">Airlines</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-3xl font-bold">50K+</div>
+                  <div className="text-blue-200">Hotels</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-3xl font-bold">200+</div>
+                  <div className="text-blue-200">Countries</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 text-center">
+                  <div className="text-3xl font-bold">8%</div>
+                  <div className="text-blue-200">Commission</div>
+                </div>
+              </div>
+
+              {/* Destinations Showcase */}
+              <div>
+                <h3 className="text-2xl font-bold mb-4 text-center">🌟 POPULAR DESTINATIONS FROM JAMAICA</h3>
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-3xl mb-2">🏖️</div>
+                    <div className="font-semibold">Miami</div>
+                    <div className="text-xs text-blue-300">From J$45K</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-3xl mb-2">🗽</div>
+                    <div className="font-semibold">New York</div>
+                    <div className="text-xs text-blue-300">From J$75K</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-3xl mb-2">🏰</div>
+                    <div className="font-semibold">London</div>
+                    <div className="text-xs text-blue-300">From J$85K</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-3xl mb-2">🍁</div>
+                    <div className="font-semibold">Toronto</div>
+                    <div className="text-xs text-blue-300">From J$65K</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-3xl mb-2">🌴</div>
+                    <div className="font-semibold">Barbados</div>
+                    <div className="text-xs text-blue-300">From J$35K</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-colors">
+                    <div className="text-3xl mb-2">🎭</div>
+                    <div className="font-semibold">Trinidad</div>
+                    <div className="text-xs text-blue-300">From J$28K</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Travel Services Grid */}
+              <div>
+                <h3 className="text-2xl font-bold mb-4 text-center">🎯 COMPLETE TRAVEL SERVICES</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="bg-white/10 rounded-lg p-3 text-center">
+                    <div className="text-2xl mb-2">✈️</div>
+                    <div className="font-semibold">Flight Booking</div>
+                    <div className="text-xs text-blue-300">Best Deals Daily</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center">
+                    <div className="text-2xl mb-2">🏨</div>
+                    <div className="font-semibold">Hotel Booking</div>
+                    <div className="text-xs text-blue-300">All Star Ratings</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center">
+                    <div className="text-2xl mb-2">🚗</div>
+                    <div className="font-semibold">Car Rental</div>
+                    <div className="text-xs text-blue-300">Airport Pickup</div>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center">
+                    <div className="text-2xl mb-2">🛂</div>
+                    <div className="font-semibold">Visa Services</div>
+                    <div className="text-xs text-blue-300">Immigration</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Link to="/travel-booking">
+                  <GlamorousButton variant="luxury" size="lg" glow="intense" className="w-full">
+                    ✈️ Book Flights
+                  </GlamorousButton>
+                </Link>
+                <Link to="/travel-booking">
+                  <GlamorousButton variant="premium" size="lg" glow="intense" className="w-full">
+                    🏨 Book Hotels
+                  </GlamorousButton>
+                </Link>
+                <Link to="/travel-booking">
+                  <GlamorousButton variant="neon" size="lg" glow="intense" className="w-full">
+                    📦 Travel Packages
+                  </GlamorousButton>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* ALL JAMAICA BUSINESSES WANT TO JOIN! */}
         <div className="mb-8">
           <Card className="bg-gradient-to-br from-green-900/95 via-yellow-900/95 to-orange-900/95 border-8 border-green-400/100 relative overflow-hidden min-h-[700px] shadow-2xl shadow-green-500/80" data-testid="all-businesses-jamaica-section">
