@@ -13,7 +13,7 @@ import {
   Wallet, Send, ArrowDownToLine, ArrowUpFromLine, CreditCard, 
   DollarSign, Users, Globe, Zap, QrCode, Phone, Mail,
   TrendingUp, Shield, Clock, Plus, Minus, Eye, EyeOff, Banknote, Coins,
-  Gift, Star, Trophy, Target
+  Gift, Star, Trophy, Target, Building, Plane
 } from 'lucide-react';
 import YFDCurrency from '@/components/YFDCurrency';
 import YFDCoins from '@/components/YFDCoins';
@@ -475,6 +475,89 @@ export default function YaadWallet() {
 
         {/* Promotional Credits Section */}
         <PromoCreditsSection />
+
+        {/* Real Estate & Travel Super Features */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* Real Estate Card */}
+          <Card className="bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-600 text-white border-2 border-emerald-400">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-2xl">
+                <Building className="h-8 w-8" />
+                🏠 YaadFlex Real Estate
+              </CardTitle>
+              <CardDescription className="text-emerald-100 text-lg">
+                Buy, sell & rent properties across Jamaica and globally - Use your $50 credits for listings!
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold">2,500+</div>
+                  <div className="text-emerald-200 text-sm">Properties</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold">14 Parishes</div>
+                  <div className="text-emerald-200 text-sm">Jamaica Wide</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold">$50M+</div>
+                  <div className="text-emerald-200 text-sm">Listed Value</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold">AR Tours</div>
+                  <div className="text-emerald-200 text-sm">Virtual Views</div>
+                </div>
+              </div>
+              <Button 
+                className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold text-lg py-3"
+                onClick={() => window.location.href = '/real-estate'}
+                data-testid="button-real-estate"
+              >
+                🏡 Browse Properties Now
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Travel Agent Card */}
+          <Card className="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 text-white border-2 border-blue-400">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-2xl">
+                <Plane className="h-8 w-8" />
+                ✈️ YaadFlex Travel Agent
+              </CardTitle>
+              <CardDescription className="text-blue-100 text-lg">
+                Book flights, hotels, cars worldwide - We earn 8% commission to help you travel better!
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold">500+</div>
+                  <div className="text-blue-200 text-sm">Airlines</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold">50K+</div>
+                  <div className="text-blue-200 text-sm">Hotels</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold">200+</div>
+                  <div className="text-blue-200 text-sm">Countries</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-center">
+                  <div className="text-xl font-bold">J$25K</div>
+                  <div className="text-blue-200 text-sm">From JA</div>
+                </div>
+              </div>
+              <Button 
+                className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-lg py-3"
+                onClick={() => window.location.href = '/travel-booking'}
+                data-testid="button-travel-booking"
+              >
+                🌍 Book Travel Now
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
