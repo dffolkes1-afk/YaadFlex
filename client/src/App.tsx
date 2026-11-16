@@ -88,6 +88,7 @@ import SurpriseLanding from "@/pages/SurpriseLanding";
 import ContactMagic from "@/pages/ContactMagic";
 import WorldTakeover from "@/pages/WorldTakeover";
 import YaadParty from "@/pages/YaadParty";
+import Sovereign from "@/pages/Sovereign";
 import GlamourShowcase from "@/pages/glamour-showcase";
 import YaadFlexGothicConcept from "@/pages/YaadFlexGothicConcept";
 import VoiceControl from "@/components/VoiceControl";
@@ -243,6 +244,10 @@ function Router() {
       <Route path="/gothic-concept" component={YaadFlexGothicConcept} />
       <Route path="/concept-doc" component={YaadFlexGothicConcept} />
       
+      {/* SOVEREIGN — Autonomous Creative Intelligence */}
+      <Route path="/sovereign" component={Sovereign} />
+      <Route path="/creative-brain" component={Sovereign} />
+
       {/* Hidden Founder Profile - Private */}
       <Route path="/founder-vision-2024" component={FounderProfile} />
       
